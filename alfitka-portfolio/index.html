@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alfitka Haerul Kurniawan - Frontend Developer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="#">Alfitka</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="theme-toggle">
+                <button id="themeToggle" aria-label="Toggle Dark Mode">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Hi, I'm <span class="highlight">Alfitka Haerul Kurniawan</span></h1>
+                    <p>A passionate Frontend Developer creating beautiful and functional web experiences. I love turning complex problems into simple, beautiful, and intuitive designs.</p>
+                    <div class="hero-buttons">
+                        <a href="#projects" class="btn primary-btn">View My Work</a>
+                        <a href="#contact" class="btn secondary-btn">Contact Me</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="profile-image">
+                        <div class="placeholder-image">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="container">
+                <div class="section-header">
+                    <h2>About Me</h2>
+                    <div class="underline"></div>
+                </div>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>With over 5 years of experience in frontend development, I specialize in building responsive, user-friendly web applications. My expertise includes modern JavaScript frameworks, CSS preprocessors, and design systems.</p>
+                        <p>I am passionate about creating seamless user experiences and staying up-to-date with the latest web technologies. I believe in writing clean, maintainable code and following best practices.</p>
+                        
+                        <div class="skills">
+                            <h3>My Skills</h3>
+                            <div class="skill-tags">
+                                <span class="skill-tag"><i class="fab fa-html5"></i> HTML5</span>
+                                <span class="skill-tag"><i class="fab fa-css3-alt"></i> CSS3</span>
+                                <span class="skill-tag"><i class="fab fa-js"></i> JavaScript</span>
+                                <span class="skill-tag"><i class="fab fa-react"></i> React</span>
+                                <span class="skill-tag"><i class="fab fa-vuejs"></i> Vue.js</span>
+                                <span class="skill-tag"><i class="fab fa-node-js"></i> Node.js</span>
+                                <span class="skill-tag"><i class="fas fa-code-branch"></i> Git</span>
+                                <span class="skill-tag"><i class="fas fa-palette"></i> Figma</span>
+                            </div>
+                        </div>
+                        
+                        <a href="#" class="btn resume-btn" id="downloadResume">
+                            <i class="fas fa-download"></i> Download Resume
+                        </a>
+                    </div>
+                    <div class="about-image">
+                        <div class="about-placeholder">
+                            <i class="fas fa-code"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="projects">
+            <div class="container">
+                <div class="section-header">
+                    <h2>My Projects</h2>
+                    <div class="underline"></div>
+                </div>
+                <div class="projects-grid">
+                    <!-- Project 1 -->
+                    <div class="project-card">
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3>E-commerce Platform</h3>
+                            <p>A fully responsive e-commerce platform with product listing, cart functionality, and checkout process. Built with React and Redux for state management.</p>
+                            <div class="project-tech">
+                                <span class="tech-icon"><i class="fab fa-react" title="React"></i></span>
+                                <span class="tech-icon"><i class="fab fa-node-js" title="Node.js"></i></span>
+                                <span class="tech-icon"><i class="fab fa-css3-alt" title="CSS3"></i></span>
+                                <span class="tech-icon"><i class="fas fa-database" title="MongoDB"></i></span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" class="project-link"><i class="fab fa-github"></i> Code</a>
+                                <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="project-card">
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3>Task Management App</h3>
+                            <p>A collaborative task management application with drag-and-drop functionality, team collaboration features, and real-time updates. Built with Vue.js and Firebase.</p>
+                            <div class="project-tech">
+                                <span class="tech-icon"><i class="fab fa-vuejs" title="Vue.js"></i></span>
+                                <span class="tech-icon"><i class="fas fa-fire" title="Firebase"></i></span>
+                                <span class="tech-icon"><i class="fab fa-css3-alt" title="CSS3"></i></span>
+                                <span class="tech-icon"><i class="fas fa-sync" title="Real-time"></i></span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" class="project-link"><i class="fab fa-github"></i> Code</a>
+                                <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="project-card">
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3>Analytics Dashboard</h3>
+                            <p>A comprehensive analytics dashboard with interactive charts, data visualization, and customizable widgets. Built with React and D3.js for advanced data visualization.</p>
+                            <div class="project-tech">
+                                <span class="tech-icon"><i class="fab fa-react" title="React"></i></span>
+                                <span class="tech-icon"><i class="fas fa-chart-bar" title="D3.js"></i></span>
+                                <span class="tech-icon"><i class="fab fa-css3-alt" title="CSS3"></i></span>
+                                <span class="tech-icon"><i class="fas fa-server" title="API"></i></span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" class="project-link"><i class="fab fa-github"></i> Code</a>
+                                <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 4 -->
+                    <div class="project-card">
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3>Mobile-First Social App</h3>
+                            <p>A mobile-first social networking application with real-time messaging, post sharing, and user profiles. Built with React Native and Node.js backend.</p>
+                            <div class="project-tech">
+                                <span class="tech-icon"><i class="fab fa-react" title="React Native"></i></span>
+                                <span class="tech-icon"><i class="fab fa-node-js" title="Node.js"></i></span>
+                                <span class="tech-icon"><i class="fas fa-socket" title="Socket.io"></i></span>
+                                <span class="tech-icon"><i class="fas fa-database" title="PostgreSQL"></i></span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" class="project-link"><i class="fab fa-github"></i> Code</a>
+                                <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="experience">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Work Experience</h2>
+                    <div class="underline"></div>
+                </div>
+                <div class="experience-timeline">
+                    <!-- Experience 1 -->
+                    <div class="experience-item">
+                        <div class="experience-dot"></div>
+                        <div class="experience-content">
+                            <div class="experience-header">
+                                <h3>Senior Frontend Developer</h3>
+                                <span class="experience-date">2023 - Present</span>
+                            </div>
+                            <div class="experience-company">
+                                <i class="fas fa-building"></i> Tech Innovations Inc.
+                            </div>
+                            <ul class="experience-description">
+                                <li>Lead a team of 5 frontend developers in building complex web applications</li>
+                                <li>Implemented responsive design systems that improved user experience by 40%</li>
+                                <li>Mentored junior developers and conducted code reviews to maintain code quality</li>
+                                <li>Introduced modern development practices and tools that increased team productivity by 30%</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Experience 2 -->
+                    <div class="experience-item">
+                        <div class="experience-dot"></div>
+                        <div class="experience-content">
+                            <div class="experience-header">
+                                <h3>Frontend Developer</h3>
+                                <span class="experience-date">2021 - 2023</span>
+                            </div>
+                            <div class="experience-company">
+                                <i class="fas fa-building"></i> Digital Solutions Ltd.
+                            </div>
+                            <ul class="experience-description">
+                                <li>Developed and maintained multiple client-facing web applications</li>
+                                <li>Collaborated with UX designers to implement pixel-perfect designs</li>
+                                <li>Optimized application performance, reducing load times by 50%</li>
+                                <li>Integrated third-party APIs and payment gateways into existing applications</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Experience 3 -->
+                    <div class="experience-item">
+                        <div class="experience-dot"></div>
+                        <div class="experience-content">
+                            <div class="experience-header">
+                                <h3>Junior Frontend Developer</h3>
+                                <span class="experience-date">2020 - 2021</span>
+                            </div>
+                            <div class="experience-company">
+                                <i class="fas fa-building"></i> WebCraft Agency
+                            </div>
+                            <ul class="experience-description">
+                                <li>Assisted in developing responsive websites for various clients</li>
+                                <li>Implemented UI components using modern CSS frameworks</li>
+                                <li>Participated in daily stand-ups and agile development processes</li>
+                                <li>Learned and applied best practices for code quality and version control</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Experience 4 -->
+                    <div class="experience-item">
+                        <div class="experience-dot"></div>
+                        <div class="experience-content">
+                            <div class="experience-header">
+                                <h3>Frontend Intern</h3>
+                                <span class="experience-date">2019 - 2020</span>
+                            </div>
+                            <div class="experience-company">
+                                <i class="fas fa-building"></i> Startup Hub
+                            </div>
+                            <ul class="experience-description">
+                                <li>Assisted senior developers with frontend development tasks</li>
+                                <li>Learned fundamentals of HTML, CSS, and JavaScript</li>
+                                <li>Created static web pages and simple interactive components</li>
+                                <li>Participated in code reviews and team meetings</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Get In Touch</h2>
+                    <div class="underline"></div>
+                </div>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h3>Let's Work Together</h3>
+                        <p>I'm currently open for new opportunities and collaborations. Whether you have a question or just want to say hi, I'll try my best to get back to you!</p>
+                        
+                        <div class="contact-methods">
+                            <div class="contact-method">
+                                <div class="contact-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h4>Email</h4>
+                                    <a href="mailto:alfitka.haerul@gmail.com">alfitka.haerul@gmail.com</a>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-method">
+                                <div class="contact-icon">
+                                    <i class="fab fa-linkedin"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h4>LinkedIn</h4>
+                                    <a href="https://linkedin.com/in/alfitkahaerul" target="_blank">linkedin.com/in/alfitkahaerul</a>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-method">
+                                <div class="contact-icon">
+                                    <i class="fab fa-github"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h4>GitHub</h4>
+                                    <a href="https://github.com/alfitkahaerul" target="_blank">github.com/alfitkahaerul</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-form">
+                        <form id="contactForm">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" name="name" required placeholder="Your name">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required placeholder="Your email">
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Subject</label>
+                                <input type="text" id="subject" name="subject" required placeholder="Subject">
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" rows="5" required placeholder="Your message"></textarea>
+                            </div>
+                            <button type="submit" class="btn submit-btn">
+                                <i class="fas fa-paper-plane"></i> Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>Alfitka Haerul Kurniawan</h3>
+                    <p>Frontend Developer</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-nav">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="#home">Home</a></li>
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#projects">Projects</a></li>
+                            <li><a href="#experience">Experience</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-social">
+                        <h4>Follow Me</h4>
+                        <div class="social-links">
+                            <a href="https://github.com/alfitkahaerul" target="_blank"><i class="fab fa-github"></i></a>
+                            <a href="https://linkedin.com/in/alfitkahaerul" target="_blank"><i class="fab fa-linkedin"></i></a>
+                            <a href="https://twitter.com/alfitkahaerul" target="_blank"><i class="fab fa-twitter"></i></a>
+                            <a href="https://instagram.com/alfitkahaerul" target="_blank"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Alfitka Haerul Kurniawan. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
