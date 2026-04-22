@@ -1,27 +1,21 @@
-@import "tailwindcss";
-
-@theme {
-  --color-primary: #4f46e5;
-  --color-secondary: #6366f1;
-  --color-accent: #8b5cf6;
-  --color-negative: #ef4444;
-  --color-positive: #3b82f6;
-  --color-electron: #fbbf24;
-  --color-proton: #f97316;
-  --color-hydrogen: #22c55e;
-  --color-oxygen: #ec4899;
-  --color-water: #06b6d4;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  padding: 0;
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
   min-height: 100vh;
+  color: #f1f5f9;
 }
 
 #app {
@@ -29,29 +23,137 @@ body {
   min-height: 100vh;
 }
 
-@keyframes pulse-glow {
-  0%, 100% {
-    filter: drop-shadow(0 0 5px currentColor);
+@layer utilities {
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
   }
-  50% {
-    filter: drop-shadow(0 0 15px currentColor);
-  }
-}
 
-@keyframes flow-animation {
-  0% {
-    stroke-dashoffset: 20;
+  .animate-flow-line {
+    stroke-dasharray: 5, 5;
+    animation: flow-animation 1s linear infinite;
   }
-  100% {
-    stroke-dashoffset: 0;
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
   }
-}
 
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
+  .animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out forwards;
+  }
 
-.flow-line {
-  stroke-dasharray: 5, 5;
-  animation: flow-animation 1s linear infinite;
+  .card-glass {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.9) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+  }
+
+  .card-hover {
+    transition: all 0.3s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border-color: rgba(139, 92, 246, 0.3);
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+  }
+
+  .btn-secondary {
+    background: linear-gradient(135deg, #334155 0%, #475569 100%);
+    transition: all 0.3s ease;
+  }
+
+  .btn-secondary:hover {
+    background: linear-gradient(135deg, #475569 0%, #64748b 100%);
+    transform: translateY(-1px);
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .status-badge.running {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+
+  .status-badge.paused {
+    background: rgba(251, 191, 36, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+  }
+
+  .pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(1.2);
+    }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      filter: drop-shadow(0 0 5px currentColor);
+    }
+    50% {
+      filter: drop-shadow(0 0 20px currentColor);
+    }
+  }
+
+  @keyframes flow-animation {
+    0% {
+      stroke-dashoffset: 20;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
