@@ -1,0 +1,53 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.output/
+.svelte-kit/
+.vite/
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# Logs & debug
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Caches
+.cache/
+.parcel-cache/
+.turbo/
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+
+# Test & coverage
+coverage/
+.nyc_output/
+
+# IDE & OS
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Deploy & tooling
+.vercel/
+.netlify/
+.wrangler/
+
+# Misc
+*.pem
+*.orig
