@@ -1,10 +1,18 @@
 import React, { createContext, useContext, useState, useMemo, ReactNode } from 'react';
-import { ThemeConfig } from 'antd';
+import { theme } from 'antd';
+
+const { defaultAlgorithm, darkAlgorithm } = theme;
 
 interface ThemeContextType {
   isDark: boolean;
   toggleTheme: () => void;
-  themeConfig: ThemeConfig;
+  themeConfig: {
+    token?: {
+      colorPrimary?: string;
+      borderRadius?: number;
+    };
+    algorithm?: typeof defaultAlgorithm | typeof darkAlgorithm | (typeof defaultAlgorithm | typeof darkAlgorithm)[];
+  };
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -16,12 +24,12 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     setIsDark(!isDark);
   };
 
-  const themeConfig: ThemeConfig = useMemo(() => ({
+  const themeConfig = useMemo(() => ({
     token: {
       colorPrimary: '#1677ff',
       borderRadius: 8,
     },
-    algorithm: isDark ? undefined : undefined,
+    algorithm: isDark ? darkAlgorithm : defaultAlgorithm,
   }), [isDark]);
 
   return (
