@@ -26,6 +26,7 @@ const { Header, Sider, Content } = Layout;
 const MainLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(3);
   const { user, logout, hasMenuPermission } = useAuth();
   const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
@@ -137,7 +138,14 @@ const MainLayout: React.FC = () => {
   };
 
   const handleNotificationClick = (e: { key: string }) => {
+    setUnreadCount(0);
     message.info(`查看通知: ${notificationItems.find(item => item.key === e.key)?.label}`);
+  };
+
+  const handleNotificationOpenChange = (open: boolean) => {
+    if (open && unreadCount > 0) {
+      setUnreadCount(0);
+    }
   };
 
   const selectedKeys = [location.pathname];
@@ -245,8 +253,9 @@ const MainLayout: React.FC = () => {
                 onClick: handleNotificationClick,
               }}
               placement="bottomRight"
+              onOpenChange={handleNotificationOpenChange}
             >
-              <Badge count={3} dot>
+              <Badge count={unreadCount} dot={unreadCount > 0}>
                 <Button type="text" icon={<BellOutlined />} />
               </Badge>
             </Dropdown>

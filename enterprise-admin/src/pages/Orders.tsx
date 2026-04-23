@@ -10,7 +10,7 @@ import {
   ReloadOutlined, DownloadOutlined, FilterOutlined, ShoppingCartOutlined,
   ExclamationCircleOutlined, CheckCircleOutlined, CloseCircleOutlined,
   InboxOutlined, TruckOutlined, SwapOutlined, FileTextOutlined,
-  ArrowRightOutlined
+  ArrowRightOutlined, ClockCircleOutlined
 } from '@ant-design/icons';
 import type { Order, OrderItem, Logistics } from '../types';
 import { mockOrders } from '../mock';
