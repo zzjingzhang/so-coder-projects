@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { User } from '../types';
+import type { User, Role } from '../types';
 import { mockUsers, mockRoles } from '../mock';
 
 interface AuthContextType {
@@ -26,13 +26,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
-      const parsedUser = JSON.parse(savedUser) as User;
-      setUser(parsedUser);
-      const role = mockRoles.find(r => r.id === parsedUser.roleId);
-      if (role) {
-        setPermissions(role.permissions);
-        setMenuPermissions(role.menuPermissions);
-        setButtonPermissions(role.buttonPermissions);
+      try {
+        const parsedUser = JSON.parse(savedUser) as User;
+        setUser(parsedUser);
+        const role = mockRoles.find((r: Role) => r.id === parsedUser.roleId);
+        if (role) {
+          setPermissions(role.permissions);
+          setMenuPermissions(role.menuPermissions);
+          setButtonPermissions(role.buttonPermissions);
+        }
+      } catch (e) {
+        console.error('Failed to parse saved user:', e);
       }
     }
   }, []);
@@ -42,7 +46,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     if (username === 'admin' && password === 'admin123') {
       const foundUser = mockUsers[0];
-      const role = mockRoles.find(r => r.code === 'admin');
+      const role = mockRoles.find((r: Role) => r.code === 'admin');
       if (role) {
         const adminUser: User = {
           ...foundUser,
@@ -60,9 +64,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
     }
 
-    const foundUser = mockUsers.find(u => u.username.toLowerCase() === username.toLowerCase());
+    const foundUser = mockUsers.find((u: User) => u.username.toLowerCase() === username.toLowerCase());
     if (foundUser && password === '123456') {
-      const role = mockRoles.find(r => r.id === foundUser.roleId);
+      const role = mockRoles.find((r: Role) => r.id === foundUser.roleId);
       setUser(foundUser);
       if (role) {
         setPermissions(role.permissions);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Row, Col, Card, Statistic, Typography, Table, Tag, List, Button, Space, 
-  Progress, Calendar, Badge, Tooltip 
+  Progress, Calendar, Badge, Tooltip, message 
 } from 'antd';
 import {
   UserOutlined,
@@ -13,6 +13,7 @@ import {
   RiseOutlined,
   FallOutlined,
 } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 import { 
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, 
   ResponsiveContainer, AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell 
@@ -23,6 +24,7 @@ import dayjs from 'dayjs';
 const { Title, Text } = Typography;
 
 const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [trendData, setTrendData] = useState<TrendData[]>([]);
   const [orderData, setOrderData] = useState<TrendData[]>([]);
@@ -259,8 +261,29 @@ const Dashboard: React.FC = () => {
             <Col xs={12} sm={6} lg={3} key={action.key}>
               <Button 
                 type="dashed" 
-                icon={action.icon} 
                 block
+                onClick={() => {
+                  switch(action.key) {
+                    case 'addUser':
+                      message.info('即将跳转到新增用户页面');
+                      navigate('/users');
+                      break;
+                    case 'addProduct':
+                      message.info('即将跳转到新增商品页面');
+                      navigate('/products');
+                      break;
+                    case 'addOrder':
+                      message.info('即将跳转到新建订单页面');
+                      navigate('/orders');
+                      break;
+                    case 'addArticle':
+                      message.info('即将跳转到发布文章页面');
+                      navigate('/content');
+                      break;
+                    default:
+                      message.info(action.label);
+                  }
+                }}
                 style={{ height: 80, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
               >
                 <span style={{ fontSize: 24, marginBottom: 4 }}>{action.icon}</span>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Menu, theme, Dropdown, Avatar, Button, Space, Badge, Drawer } from 'antd';
+import { Layout, Menu, theme, Dropdown, Avatar, Button, Space, Badge, Drawer, message } from 'antd';
 import { Outlet, useNavigate, useLocation, Link } from 'react-router-dom';
 import {
   DashboardOutlined,
@@ -108,11 +108,36 @@ const MainLayout: React.FC = () => {
     },
   ];
 
+  const notificationItems = [
+    {
+      key: '1',
+      label: '新用户注册审核',
+      description: '张三 提交了注册申请',
+      time: '10分钟前',
+    },
+    {
+      key: '2',
+      label: '订单待发货',
+      description: '订单 ORD20240101001 待发货',
+      time: '30分钟前',
+    },
+    {
+      key: '3',
+      label: '系统更新通知',
+      description: '系统将于今晚进行维护',
+      time: '1小时前',
+    },
+  ];
+
   const handleMenuClick = (e: { key: string }) => {
     if (e.key === 'logout') {
       logout();
       navigate('/login');
     }
+  };
+
+  const handleNotificationClick = (e: { key: string }) => {
+    message.info(`查看通知: ${notificationItems.find(item => item.key === e.key)?.label}`);
   };
 
   const selectedKeys = [location.pathname];
@@ -205,9 +230,26 @@ const MainLayout: React.FC = () => {
               icon={isDark ? <SunOutlined /> : <MoonOutlined />}
               onClick={toggleTheme}
             />
-            <Badge count={3} dot>
-              <Button type="text" icon={<BellOutlined />} />
-            </Badge>
+            <Dropdown
+              menu={{ 
+                items: notificationItems.map(item => ({
+                  key: item.key,
+                  label: (
+                    <div>
+                      <div style={{ fontWeight: 500 }}>{item.label}</div>
+                      <div style={{ fontSize: 12, color: '#8c8c8c', marginTop: 4 }}>{item.description}</div>
+                      <div style={{ fontSize: 11, color: '#bfbfbf', marginTop: 2 }}>{item.time}</div>
+                    </div>
+                  ),
+                })),
+                onClick: handleNotificationClick,
+              }}
+              placement="bottomRight"
+            >
+              <Badge count={3} dot>
+                <Button type="text" icon={<BellOutlined />} />
+              </Badge>
+            </Dropdown>
             <Dropdown
               menu={{ items: userMenuItems, onClick: handleMenuClick }}
               placement="bottomRight"

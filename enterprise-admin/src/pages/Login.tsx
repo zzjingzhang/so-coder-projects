@@ -29,22 +29,8 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div style={{ 
-      minHeight: '100vh', 
-      display: 'flex', 
-      alignItems: 'center', 
-      justifyContent: 'center',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    }}>
-      <Card 
-        style={{ 
-          width: '100%', 
-          maxWidth: 420,
-          margin: '0 16px',
-          borderRadius: 12,
-          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)',
-        }}
-      >
+    <div className="login-container">
+      <Card className="login-card">
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           <Title level={3} style={{ marginBottom: 8 }}>Enterprise Admin</Title>
           <Text type="secondary">企业级后台管理系统</Text>
@@ -59,21 +45,23 @@ const Login: React.FC = () => {
         >
           <Form.Item
             name="username"
-            rules={[{ required: true, message: '请输入用户名' }]
+            rules={[{ required: true, message: '请输入用户名' }]}
+            className="form-item-label"
           >
-            <Input 
-              prefix={<UserOutlined style={{ color: '#bfbfbf' }} />} 
-              placeholder="用户名" 
+            <Input
+              prefix={<UserOutlined style={{ color: '#bfbfbf' }} />}
+              placeholder="用户名"
             />
           </Form.Item>
 
           <Form.Item
             name="password"
             rules={[{ required: true, message: '请输入密码' }]}
+            className="form-item-label"
           >
-            <Input.Password 
-              prefix={<LockOutlined style={{ color: '#bfbfbf' }} />} 
-              placeholder="密码" 
+            <Input.Password
+              prefix={<LockOutlined style={{ color: '#bfbfbf' }} />}
+              placeholder="密码"
             />
           </Form.Item>
 
@@ -82,17 +70,17 @@ const Login: React.FC = () => {
               <Form.Item name="remember" valuePropName="checked" noStyle>
                 <Checkbox>记住我</Checkbox>
               </Form.Item>
-              <a href="#">忘记密码？</a>
+              <a href="#!">忘记密码？</a>
             </div>
           </Form.Item>
 
           <Form.Item>
-            <Button 
-              type="primary" 
-              htmlType="submit" 
-              loading={loading} 
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={loading}
               block
-              style={{ height: 44, fontSize: 16 }}
+              className="login-btn"
             >
               登录
             </Button>

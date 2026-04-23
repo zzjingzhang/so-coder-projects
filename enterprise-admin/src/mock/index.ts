@@ -112,21 +112,6 @@ export const generateMockOrders = (count: number): Order[] => {
         'totalAmount|100-10000': 1,
         'status|1': statuses,
         createTime: '@datetime("yyyy-MM-dd HH:mm:ss")',
-        payTime: function () {
-          return this.status !== 'pending' ? '@datetime("yyyy-MM-dd HH:mm:ss")' : undefined;
-        },
-        shipTime: function () {
-          return ['shipped', 'completed', 'refunded'].includes(this.status) ? '@datetime("yyyy-MM-dd HH:mm:ss")' : undefined;
-        },
-        completeTime: function () {
-          return this.status === 'completed' ? '@datetime("yyyy-MM-dd HH:mm:ss")' : undefined;
-        },
-        cancelTime: function () {
-          return this.status === 'cancelled' ? '@datetime("yyyy-MM-dd HH:mm:ss")' : undefined;
-        },
-        refundTime: function () {
-          return this.status === 'refunded' ? '@datetime("yyyy-MM-dd HH:mm:ss")' : undefined;
-        },
         address: {
           name: '@name',
           phone: /^1[3-9]\d{9}$/,
@@ -146,26 +131,6 @@ export const generateMockOrders = (count: number): Order[] => {
             totalPrice: 0,
           },
         ],
-        logistics: function () {
-          if (['shipped', 'completed'].includes(this.status)) {
-            return [
-              {
-                id: Random.integer(1, 100),
-                orderId: this.id,
-                courier: ['顺丰速运', '中通快递', '圆通速递', '申通快递', '韵达快递'][Random.integer(0, 4)],
-                trackingNo: Random.string('number', 12),
-                status: this.status === 'shipped' ? 'shipping' : 'delivered',
-                createTime: this.shipTime,
-                traces: [
-                  { time: this.createTime, description: '快递员已取件' },
-                  { time: this.shipTime, description: '包裹已发出' },
-                  { time: this.completeTime || this.shipTime, description: this.status === 'completed' ? '包裹已签收' : '运输中' },
-                ],
-              },
-            ];
-          }
-          return undefined;
-        },
       },
     ],
   }).list;
@@ -188,12 +153,6 @@ export const generateMockArticles = (count: number): Article[] => {
         author: '@cname',
         createTime: '@datetime("yyyy-MM-dd HH:mm:ss")',
         updateTime: '@datetime("yyyy-MM-dd HH:mm:ss")',
-        publishTime: function () {
-          return this.status === 'published' ? '@datetime("yyyy-MM-dd HH:mm:ss")' : undefined;
-        },
-        scheduledTime: function () {
-          return this.status === 'scheduled' ? '@datetime("yyyy-MM-dd HH:mm:ss")' : undefined;
-        },
         'viewCount|0-10000': 1,
       },
     ],
@@ -225,15 +184,7 @@ export const generateMockLogs = (count: number, type: 'operation' | 'login' | 'a
         ip: '@ip',
         userAgent: () => `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${Random.integer(100, 120)}.0.0.0 Safari/537.36`,
         'status|1': ['success', 'fail'],
-        errorMessage: function () {
-          return this.status === 'fail' ? '@sentence(10)' : undefined;
-        },
         createTime: '@datetime("yyyy-MM-dd HH:mm:ss")',
-        duration: type === 'api' ? Random.integer(10, 1000) : undefined,
-        requestUrl: type === 'api' ? actions.api[Math.floor(Math.random() * actions.api.length)].split(' ')[1] : undefined,
-        requestMethod: type === 'api' ? actions.api[Math.floor(Math.random() * actions.api.length)].split(' ')[0] : undefined,
-        requestParams: type === 'api' ? JSON.stringify({ page: 1, pageSize: 10 }) : undefined,
-        responseData: type === 'api' ? JSON.stringify({ code: 200, message: 'success', data: {} }) : undefined,
       },
     ],
   }).list;
