@@ -86,16 +86,20 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section id="stage" class="py-20 bg-gradient-to-b from-purple-dark to-deep-purple">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section id="stage" class="py-20 bg-gradient-to-b from-purple-dark to-deep-purple relative overflow-hidden">
+    <div class="absolute top-10 right-20 w-80 h-80 bg-electric-cyan/15 rounded-full blur-3xl animate-float-sway"></div>
+    <div class="absolute bottom-40 left-10 w-64 h-64 bg-purple-light/20 rounded-full blur-3xl animate-float-sway-reverse"></div>
+    <div class="absolute top-1/3 right-1/3 w-48 h-48 bg-neon-pink/10 rounded-full blur-3xl animate-breathe"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="text-center mb-16">
         <span
-          class="inline-block px-6 py-2 bg-gradient-to-r from-electric-blue/20 to-electric-cyan/20 border border-electric-blue/50 rounded-full text-electric-cyan text-sm font-semibold tracking-wider uppercase mb-6"
+          class="inline-block px-6 py-2 bg-gradient-to-r from-electric-blue/20 to-electric-cyan/20 border border-electric-blue/50 rounded-full text-electric-cyan text-sm font-semibold tracking-wider uppercase mb-6 animate-border-glow-rotate"
         >
           5大主题舞台
         </span>
         <h2
-          class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-electric-blue via-electric-cyan to-neon-pink text-gradient glow-text"
+          class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-electric-blue via-electric-cyan to-neon-pink text-gradient glow-text-strong animate-typography"
         >
           舞台体验
         </h2>
@@ -104,7 +108,7 @@ onUnmounted(() => {
         </p>
       </div>
 
-      <div class="relative rounded-3xl overflow-hidden bg-purple-dark/50 border border-purple-medium/30">
+      <div class="relative rounded-3xl overflow-hidden bg-purple-dark/50 border-2 border-purple-medium/40 shadow-2xl shadow-purple-dark/50">
         <div class="relative h-80 sm:h-96 md:h-[500px] overflow-hidden">
           <transition-group name="stage-slide" tag="div">
             <div
@@ -116,45 +120,55 @@ onUnmounted(() => {
               <img
                 :src="stage.image"
                 :alt="stage.name"
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover transition-transform duration-[3000ms] animate-ken-burns"
               />
               <div
                 class="absolute inset-0 bg-gradient-to-t from-purple-dark via-purple-dark/60 to-transparent"
+              ></div>
+              <div
+                :class="[
+                  'absolute inset-0 opacity-40 transition-opacity duration-1000',
+                  stage.color === 'electric-blue' ? 'bg-gradient-to-br from-electric-blue/30 to-transparent' :
+                  stage.color === 'purple-light' ? 'bg-gradient-to-br from-purple-light/30 to-transparent' :
+                  stage.color === 'neon-pink' ? 'bg-gradient-to-br from-neon-pink/30 to-transparent' :
+                  stage.color === 'electric-cyan' ? 'bg-gradient-to-br from-electric-cyan/30 to-transparent' :
+                  'bg-gradient-to-br from-purple-medium/30 to-transparent'
+                ]"
               ></div>
 
               <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8 md:p-12">
                 <div class="flex items-center gap-3 mb-4">
                   <div
                     :class="[
-                      'w-3 h-3 rounded-full animate-pulse',
-                      stage.color === 'electric-blue' ? 'bg-electric-blue' :
-                      stage.color === 'purple-light' ? 'bg-purple-light' :
-                      stage.color === 'neon-pink' ? 'bg-neon-pink' :
-                      stage.color === 'electric-cyan' ? 'bg-electric-cyan' :
-                      'bg-purple-medium'
+                      'w-4 h-4 rounded-full animate-pulse-glow-strong',
+                      stage.color === 'electric-blue' ? 'bg-electric-blue shadow-[0_0_20px_rgba(0,212,255,0.8)]' :
+                      stage.color === 'purple-light' ? 'bg-purple-light shadow-[0_0_20px_rgba(168,85,247,0.8)]' :
+                      stage.color === 'neon-pink' ? 'bg-neon-pink shadow-[0_0_20px_rgba(236,72,153,0.8)]' :
+                      stage.color === 'electric-cyan' ? 'bg-electric-cyan shadow-[0_0_20px_rgba(34,211,238,0.8)]' :
+                      'bg-purple-medium shadow-[0_0_20px_rgba(147,51,234,0.8)]'
                     ]"
                   ></div>
                   <span class="text-sm text-glow-white/70">{{ stage.capacity }}</span>
                 </div>
                 <h3
-                  class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-glow-white mb-4 glow-text"
+                  class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-glow-white mb-4 glow-text-strong animate-slide-up"
                 >
                   {{ stage.name }}
                 </h3>
-                <p class="text-lg text-glow-white/80 max-w-2xl mb-6">
+                <p class="text-lg text-glow-white/80 max-w-2xl mb-6 animate-slide-up" style="animation-delay: 100ms">
                   {{ stage.description }}
                 </p>
-                <div class="flex flex-wrap gap-3">
+                <div class="flex flex-wrap gap-3" style="animation-delay: 200ms">
                   <span
                     v-for="feature in stage.features"
                     :key="feature"
                     :class="[
-                      'px-4 py-2 rounded-full text-sm font-medium',
-                      stage.color === 'electric-blue' ? 'bg-electric-blue/20 text-electric-blue' :
-                      stage.color === 'purple-light' ? 'bg-purple-light/20 text-purple-light' :
-                      stage.color === 'neon-pink' ? 'bg-neon-pink/20 text-neon-pink' :
-                      stage.color === 'electric-cyan' ? 'bg-electric-cyan/20 text-electric-cyan' :
-                      'bg-purple-medium/20 text-purple-light'
+                      'px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105',
+                      stage.color === 'electric-blue' ? 'bg-electric-blue/30 text-electric-blue border border-electric-blue/50 shadow-[0_0_15px_rgba(0,212,255,0.3)]' :
+                      stage.color === 'purple-light' ? 'bg-purple-light/30 text-purple-light border border-purple-light/50 shadow-[0_0_15px_rgba(168,85,247,0.3)]' :
+                      stage.color === 'neon-pink' ? 'bg-neon-pink/30 text-neon-pink border border-neon-pink/50 shadow-[0_0_15px_rgba(236,72,153,0.3)]' :
+                      stage.color === 'electric-cyan' ? 'bg-electric-cyan/30 text-electric-cyan border border-electric-cyan/50 shadow-[0_0_15px_rgba(34,211,238,0.3)]' :
+                      'bg-purple-medium/30 text-purple-light border border-purple-medium/50 shadow-[0_0_15px_rgba(147,51,234,0.3)]'
                     ]"
                   >
                     {{ feature }}
@@ -167,29 +181,31 @@ onUnmounted(() => {
 
         <button
           @click="prevStage"
-          class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-deep-purple/80 backdrop-blur-sm text-glow-white hover:bg-electric-blue/80 transition-all duration-300 flex items-center justify-center z-10"
+          class="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-deep-purple/80 backdrop-blur-sm text-glow-white hover:bg-electric-blue/80 transition-all duration-300 flex items-center justify-center z-10 transform hover:scale-110 hover:shadow-[0_0_30px_rgba(0,212,255,0.5)] active:scale-95 border border-electric-blue/30"
         >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
         <button
           @click="nextStage"
-          class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-deep-purple/80 backdrop-blur-sm text-glow-white hover:bg-electric-blue/80 transition-all duration-300 flex items-center justify-center z-10"
+          class="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-deep-purple/80 backdrop-blur-sm text-glow-white hover:bg-electric-blue/80 transition-all duration-300 flex items-center justify-center z-10 transform hover:scale-110 hover:shadow-[0_0_30px_rgba(0,212,255,0.5)] active:scale-95 border border-electric-blue/30"
         >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
         </button>
 
-        <div class="flex justify-center gap-2 py-6 bg-purple-dark/50">
+        <div class="flex justify-center gap-3 py-6 bg-purple-dark/70 backdrop-blur-sm">
           <button
             v-for="(stage, index) in stages"
             :key="stage.id"
             @click="setActiveStage(index)"
             :class="[
-              'h-3 rounded-full transition-all duration-300',
-              index === activeStage ? 'w-8 bg-electric-blue' : 'w-3 bg-purple-medium/50 hover:bg-purple-light/50'
+              'h-4 rounded-full transition-all duration-500 transform',
+              index === activeStage
+                ? 'w-12 bg-gradient-to-r from-electric-blue to-electric-cyan shadow-[0_0_20px_rgba(0,212,255,0.6)] animate-pulse-glow'
+                : 'w-4 bg-purple-medium/50 hover:bg-purple-light/70 hover:scale-110 hover:shadow-[0_0_10px_rgba(168,85,247,0.4)]'
             ]"
           ></button>
         </div>
@@ -201,25 +217,27 @@ onUnmounted(() => {
           :key="stage.id"
           @click="setActiveStage(index)"
           :class="[
-            'cursor-pointer p-6 rounded-2xl border transition-all duration-500 transform hover:-translate-y-1',
+            'cursor-pointer p-6 rounded-2xl border transition-all duration-500 transform group',
+            'hover:-translate-y-2 hover:scale-[1.02]',
             index === activeStage
-              ? 'bg-gradient-to-br from-electric-blue/20 to-purple-light/20 border-electric-blue/50 shadow-lg shadow-electric-blue/20'
-              : 'bg-purple-dark/30 border-purple-medium/30 hover:border-electric-blue/30'
+              ? 'bg-gradient-to-br from-electric-blue/20 to-purple-light/20 border-electric-blue/60 shadow-[0_0_40px_rgba(0,212,255,0.3)] animate-border-glow-rotate'
+              : 'bg-purple-dark/30 border-purple-medium/30 hover:border-electric-blue/40 hover:shadow-[0_0_30px_rgba(0,212,255,0.15)]'
           ]"
         >
           <div
             :class="[
-              'w-12 h-12 rounded-xl flex items-center justify-center mb-4',
-              stage.color === 'electric-blue' ? 'bg-electric-blue/20' :
-              stage.color === 'purple-light' ? 'bg-purple-light/20' :
-              stage.color === 'neon-pink' ? 'bg-neon-pink/20' :
-              stage.color === 'electric-cyan' ? 'bg-electric-cyan/20' :
-              'bg-purple-medium/20'
+              'w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-all duration-500',
+              stage.color === 'electric-blue' ? 'bg-electric-blue/20 group-hover:bg-electric-blue/30' :
+              stage.color === 'purple-light' ? 'bg-purple-light/20 group-hover:bg-purple-light/30' :
+              stage.color === 'neon-pink' ? 'bg-neon-pink/20 group-hover:bg-neon-pink/30' :
+              stage.color === 'electric-cyan' ? 'bg-electric-cyan/20 group-hover:bg-electric-cyan/30' :
+              'bg-purple-medium/20 group-hover:bg-purple-medium/30',
+              index === activeStage ? 'animate-breathe shadow-lg' : ''
             ]"
           >
             <svg
               :class="[
-                'w-6 h-6',
+                'w-6 h-6 transition-transform duration-300 group-hover:scale-110',
                 stage.color === 'electric-blue' ? 'text-electric-blue' :
                 stage.color === 'purple-light' ? 'text-purple-light' :
                 stage.color === 'neon-pink' ? 'text-neon-pink' :
@@ -234,13 +252,13 @@ onUnmounted(() => {
           </div>
           <h4
             :class="[
-              'font-bold mb-2',
-              index === activeStage ? 'text-electric-blue' : 'text-glow-white'
+              'font-bold mb-2 transition-all duration-300',
+              index === activeStage ? 'text-electric-blue text-lg' : 'text-glow-white group-hover:text-electric-blue'
             ]"
           >
             {{ stage.name }}
           </h4>
-          <p class="text-sm text-glow-white/60">{{ stage.features.length }} 大特色</p>
+          <p class="text-sm text-glow-white/60 group-hover:text-glow-white/80 transition-colors duration-300">{{ stage.features.length }} 大特色</p>
         </div>
       </div>
     </div>
@@ -250,16 +268,16 @@ onUnmounted(() => {
 <style scoped>
 .stage-slide-enter-active,
 .stage-slide-leave-active {
-  transition: all 0.7s ease-in-out;
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .stage-slide-enter-from {
   opacity: 0;
-  transform: translateX(100%);
+  transform: translateX(100%) scale(1.1);
 }
 
 .stage-slide-leave-to {
   opacity: 0;
-  transform: translateX(-100%);
+  transform: translateX(-100%) scale(0.95);
 }
 </style>

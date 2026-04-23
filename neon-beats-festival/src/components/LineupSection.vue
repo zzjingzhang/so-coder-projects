@@ -109,86 +109,119 @@ const days = [
 </script>
 
 <template>
-  <section id="lineup" class="py-20 bg-gradient-to-b from-deep-purple to-purple-dark">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section id="lineup" class="py-20 bg-gradient-to-b from-deep-purple to-purple-dark relative overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none">
+      <div
+        class="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-purple-light/15 rounded-full blur-3xl animate-float-sway"
+      ></div>
+      <div
+        class="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] bg-electric-blue/15 rounded-full blur-3xl animate-float-sway-alt"
+      ></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="text-center mb-16">
         <span
-          class="inline-block px-6 py-2 bg-gradient-to-r from-purple-light/20 to-neon-pink/20 border border-purple-light/50 rounded-full text-purple-light text-sm font-semibold tracking-wider uppercase mb-6"
+          class="inline-block px-8 py-3 bg-gradient-to-r from-purple-light/30 to-neon-pink/30 border-2 border-purple-light/60 rounded-full text-purple-light text-base font-bold tracking-wider uppercase mb-8 animate-flicker-slow"
         >
+          <span class="animate-bounce-strong inline-block">🎧</span>
           顶级艺人阵容
+          <span class="animate-bounce-strong inline-block" style="animation-delay: 0.3s">🎧</span>
         </span>
         <h2
-          class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-electric-blue via-purple-light to-neon-pink text-gradient glow-text"
+          class="text-5xl sm:text-6xl md:text-7xl font-black mb-8 bg-gradient-to-r from-electric-blue via-purple-light to-neon-pink text-gradient glow-text-strong animate-typography"
         >
           演出阵容
         </h2>
-        <p class="text-lg text-glow-white/70 max-w-2xl mx-auto">
+        <p class="text-xl text-glow-white/70 max-w-3xl mx-auto leading-relaxed">
           来自全球的顶级电子音乐艺人，3天不间断的音乐盛宴，让你沉浸在最纯粹的电子音乐世界中
         </p>
       </div>
 
-      <div class="flex flex-wrap justify-center gap-3 mb-12">
+      <div class="flex flex-wrap justify-center gap-4 mb-12">
         <button
           v-for="day in days"
           :key="day.value"
           @click="filterArtists(day.value)"
           :class="[
-            'px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105',
+            'px-8 py-4 rounded-full font-bold text-lg transition-all duration-400 transform relative overflow-hidden group',
             selectedDay === day.value
-              ? 'bg-gradient-to-r from-electric-blue to-purple-light text-glow-white shadow-lg shadow-electric-blue/30'
-              : 'bg-purple-dark/50 text-glow-white/70 border border-purple-medium/30 hover:border-electric-blue/50',
+              ? 'bg-gradient-to-r from-electric-blue to-purple-light text-glow-white shadow-2xl shadow-electric-blue/40 scale-105 animate-border-glow-rotate'
+              : 'bg-purple-dark/60 text-glow-white/80 border-2 border-purple-medium/40 hover:border-electric-blue/60 hover:bg-electric-blue/10 hover:scale-105 hover:shadow-lg hover:shadow-electric-blue/20',
           ]"
         >
-          {{ day.label }}
+          <span class="relative z-10">{{ day.label }}</span>
+          <div
+            v-if="selectedDay === day.value"
+            class="absolute inset-0 bg-gradient-to-r from-neon-pink/20 to-electric-blue/20 animate-breathe"
+          ></div>
         </button>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <div
-          v-for="artist in filteredArtists"
+          v-for="(artist, index) in filteredArtists"
           :key="artist.id"
-          class="group relative bg-purple-dark/50 rounded-2xl overflow-hidden border border-purple-medium/30 hover:border-electric-blue/50 transition-all duration-500 transform hover:-translate-y-2"
+          class="group relative bg-purple-dark/60 rounded-3xl overflow-hidden border-2 border-purple-medium/40 transition-all duration-500 transform hover:-translate-y-6 hover:shadow-2xl hover:shadow-electric-blue/30"
+          :style="{
+            animationDelay: `${index * 0.1}s`,
+          }"
         >
-          <div class="relative h-64 overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-electric-blue/0 via-purple-light/0 to-neon-pink/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+
+          <div class="relative h-72 overflow-hidden">
             <img
               :src="artist.image"
               :alt="artist.name"
-              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              class="w-full h-full object-cover transition-all duration-1000 group-hover:scale-125 group-hover:brightness-110"
             />
             <div
-              class="absolute inset-0 bg-gradient-to-t from-purple-dark via-purple-dark/50 to-transparent"
+              class="absolute inset-0 bg-gradient-to-t from-purple-dark via-purple-dark/60 to-transparent"
             ></div>
+            <div class="absolute inset-0 bg-gradient-to-br from-electric-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
             <div
-              class="absolute top-4 right-4 px-3 py-1 bg-electric-blue/80 backdrop-blur-sm rounded-full text-xs font-bold text-glow-white"
+              class="absolute top-4 right-4 px-4 py-2 bg-gradient-to-r from-electric-blue/90 to-purple-light/90 backdrop-blur-md rounded-full text-sm font-bold text-glow-white shadow-lg shadow-electric-blue/40 animate-pulse-glow"
             >
-              {{ artist.day }}
+              <span class="animate-bounce-strong inline-block">{{ artist.day }}</span>
             </div>
+
+            <div
+              class="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-electric-blue via-purple-light to-neon-pink transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"
+            ></div>
           </div>
 
-          <div class="p-6">
+          <div class="p-8">
             <h3
-              class="text-2xl font-bold text-glow-white mb-2 group-hover:text-electric-blue transition-colors duration-300"
+              class="text-3xl font-black text-glow-white mb-3 group-hover:text-electric-blue transition-colors duration-300 glow-text group-hover:glow-text-strong"
             >
               {{ artist.name }}
             </h3>
-            <p class="text-electric-cyan text-sm mb-4">{{ artist.genre }}</p>
+            <p class="text-electric-cyan text-base mb-6 font-semibold flex items-center gap-2">
+              <span class="w-2 h-2 bg-electric-cyan rounded-full animate-pulse"></span>
+              {{ artist.genre }}
+            </p>
             <div
-              class="flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              class="flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0"
             >
               <button
-                class="flex items-center gap-2 text-electric-blue hover:text-purple-light transition-colors duration-300"
+                class="flex items-center gap-3 text-electric-blue hover:text-purple-light transition-colors duration-300 font-bold text-base group"
               >
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path
-                    d="M8 5v14l11-7z"
-                  />
-                </svg>
-                <span class="text-sm font-medium">查看演出</span>
+                <div
+                  class="w-10 h-10 rounded-full bg-electric-blue/20 flex items-center justify-center transition-all duration-300 group-hover:bg-electric-blue group-hover:text-white animate-breathe"
+                >
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M8 5v14l11-7z"
+                    />
+                  </svg>
+                </div>
+                <span>查看演出</span>
               </button>
               <button
-                class="p-2 rounded-full bg-electric-blue/20 text-electric-blue hover:bg-electric-blue/30 transition-colors duration-300"
+                class="w-12 h-12 rounded-full bg-electric-blue/20 text-electric-blue hover:bg-neon-pink hover:text-white transition-all duration-300 flex items-center justify-center hover:scale-110 hover:shadow-lg hover:shadow-neon-pink/40"
               >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -201,16 +234,23 @@ const days = [
           </div>
 
           <div
-            class="absolute inset-0 border-2 border-transparent group-hover:border-electric-blue/30 rounded-2xl transition-all duration-500 pointer-events-none"
+            class="absolute inset-0 border-2 border-transparent group-hover:border-electric-blue/50 rounded-3xl transition-all duration-500 pointer-events-none"
+          ></div>
+
+          <div
+            class="absolute -inset-4 bg-gradient-to-r from-electric-blue/0 via-purple-light/20 to-neon-pink/0 rounded-[3rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl pointer-events-none"
           ></div>
         </div>
       </div>
 
-      <div class="text-center mt-12">
+      <div class="text-center mt-16">
         <button
-          class="px-8 py-4 border-2 border-electric-blue/50 rounded-full text-lg font-bold text-electric-blue hover:bg-electric-blue/10 hover:border-electric-blue transition-all duration-300 transform hover:scale-105"
+          class="relative px-12 py-5 border-2 border-electric-blue/60 rounded-full text-xl font-bold text-electric-blue hover:bg-gradient-to-r from-electric-blue to-purple-light hover:text-white hover:border-transparent hover:shadow-2xl hover:shadow-electric-blue/50 transition-all duration-400 transform hover:scale-110 overflow-hidden group"
         >
-          查看完整阵容
+          <span class="relative z-10">🎵 查看完整阵容</span>
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-electric-blue to-purple-light opacity-0 group-hover:opacity-100 transition-opacity duration-400"
+          ></div>
         </button>
       </div>
     </div>
