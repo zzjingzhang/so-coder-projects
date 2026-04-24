@@ -26,9 +26,8 @@ const formatTime = (seconds: number): string => {
 }
 
 const playTrack = (track: Track, playlist?: Track[]) => {
-  state.currentTrack = track
-  state.state = 'playing'
   state.currentTime = 0
+  state.duration = 0
   
   if (playlist) {
     state.playlist = playlist
@@ -37,6 +36,9 @@ const playTrack = (track: Track, playlist?: Track[]) => {
     state.playlist = [track]
     state.currentIndex = 0
   }
+  
+  state.currentTrack = track
+  state.state = 'playing'
 }
 
 const togglePlay = () => {

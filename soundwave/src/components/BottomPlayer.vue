@@ -96,9 +96,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { usePlayerStore } from '../stores/playerStore'
-import type { Track } from '../types'
 
 const audioRef = ref<HTMLAudioElement | null>(null)
 const playerStore = usePlayerStore()
@@ -106,13 +105,17 @@ const isShuffle = ref(false)
 const isRepeat = ref(false)
 const previousVolume = ref(0.8)
 
+const currentTrackId = computed(() => playerStore.state.currentTrack?.id)
+
 const handlePlayPause = () => {
   if (!audioRef.value) return
   
   if (playerStore.isPlaying.value) {
     audioRef.value.pause()
   } else {
-    audioRef.value.play()
+    audioRef.value.play().catch((e) => {
+      console.log('Play failed:', e)
+    })
   }
   playerStore.togglePlay()
 }
@@ -122,11 +125,11 @@ const handlePrev = () => {
     audioRef.value.currentTime = 0
     playerStore.setCurrentTime(0)
   } else {
-    if (isShuffle.value) {
+    if (isShuffle.value && playerStore.state.playlist.length > 0) {
       const randomIndex = Math.floor(Math.random() * playerStore.state.playlist.length)
       const track = playerStore.state.playlist[randomIndex]
       if (track) {
-        playNewTrack(track)
+        playerStore.playTrack(track, playerStore.state.playlist)
       }
     } else {
       playerStore.prevTrack()
@@ -135,11 +138,11 @@ const handlePrev = () => {
 }
 
 const handleNext = () => {
-  if (isShuffle.value) {
+  if (isShuffle.value && playerStore.state.playlist.length > 0) {
     const randomIndex = Math.floor(Math.random() * playerStore.state.playlist.length)
     const track = playerStore.state.playlist[randomIndex]
     if (track) {
-      playNewTrack(track)
+      playerStore.playTrack(track, playerStore.state.playlist)
     }
   } else {
     playerStore.nextTrack()
@@ -162,7 +165,7 @@ const handleEnded = () => {
   if (isRepeat.value) {
     if (audioRef.value) {
       audioRef.value.currentTime = 0
-      audioRef.value.play()
+      audioRef.value.play().catch(() => {})
     }
   } else {
     handleNext()
@@ -170,7 +173,7 @@ const handleEnded = () => {
 }
 
 const handleProgressClick = (event: MouseEvent) => {
-  if (!audioRef.value) return
+  if (!audioRef.value || playerStore.state.duration === 0) return
   const progressBar = event.currentTarget as HTMLElement
   const rect = progressBar.getBoundingClientRect()
   const percent = (event.clientX - rect.left) / rect.width
@@ -212,34 +215,27 @@ const toggleRepeat = () => {
   isRepeat.value = !isRepeat.value
 }
 
-const playNewTrack = (track: Track) => {
-  playerStore.playTrack(track, playerStore.state.playlist)
-  if (audioRef.value) {
-    audioRef.value.load()
-    audioRef.value.play()
+const handleAudioPlay = () => {
+  if (playerStore.state.state !== 'playing') {
+    playerStore.state.state = 'playing'
+  }
+}
+
+const handleAudioPause = () => {
+  if (playerStore.state.state !== 'paused') {
+    playerStore.state.state = 'paused'
   }
 }
 
 watch(
-  () => playerStore.state.currentTrack,
-  (newTrack) => {
-    if (newTrack && audioRef.value) {
+  currentTrackId,
+  (newTrackId, oldTrackId) => {
+    if (newTrackId && newTrackId !== oldTrackId && audioRef.value) {
       audioRef.value.load()
       if (playerStore.isPlaying.value) {
-        audioRef.value.play()
-      }
-    }
-  }
-)
-
-watch(
-  () => playerStore.isPlaying.value,
-  (isPlaying) => {
-    if (audioRef.value) {
-      if (isPlaying) {
-        audioRef.value.play()
-      } else {
-        audioRef.value.pause()
+        audioRef.value.play().catch((e) => {
+          console.log('Auto play failed:', e)
+        })
       }
     }
   }
@@ -248,6 +244,9 @@ watch(
 onMounted(() => {
   if (audioRef.value) {
     audioRef.value.volume = playerStore.state.volume
+    
+    audioRef.value.addEventListener('play', handleAudioPlay)
+    audioRef.value.addEventListener('pause', handleAudioPause)
   }
 })
 </script>
