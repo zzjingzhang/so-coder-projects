@@ -1,17 +1,17 @@
-import { reactive, computed } from 'vue'
+import { reactive, computed, toRefs } from 'vue'
 import type { Track, PlayerStore } from '../types'
 
 const state = reactive<PlayerStore>({
   currentTrack: null,
   playlist: [],
   currentIndex: -1,
-  state: 'stopped',
+  playerState: 'stopped',
   volume: 0.8,
   currentTime: 0,
   duration: 0
 })
 
-const isPlaying = computed(() => state.state === 'playing')
+const isPlaying = computed(() => state.playerState === 'playing')
 const hasCurrentTrack = computed(() => state.currentTrack !== null)
 const progress = computed(() => {
   if (state.duration === 0) return 0
@@ -38,22 +38,26 @@ const playTrack = (track: Track, playlist?: Track[]) => {
   }
   
   state.currentTrack = track
-  state.state = 'playing'
+  state.playerState = 'playing'
 }
 
 const togglePlay = () => {
   if (state.currentTrack) {
-    state.state = state.state === 'playing' ? 'paused' : 'playing'
+    state.playerState = state.playerState === 'playing' ? 'paused' : 'playing'
   }
 }
 
 const pause = () => {
-  state.state = 'paused'
+  state.playerState = 'paused'
 }
 
 const stop = () => {
-  state.state = 'stopped'
+  state.playerState = 'stopped'
   state.currentTime = 0
+  state.currentTrack = null
+  state.playlist = []
+  state.currentIndex = -1
+  state.duration = 0
 }
 
 const nextTrack = () => {
@@ -62,7 +66,7 @@ const nextTrack = () => {
   state.currentIndex = (state.currentIndex + 1) % state.playlist.length
   state.currentTrack = state.playlist[state.currentIndex]
   state.currentTime = 0
-  state.state = 'playing'
+  state.playerState = 'playing'
 }
 
 const prevTrack = () => {
@@ -75,7 +79,7 @@ const prevTrack = () => {
   }
   state.currentTrack = state.playlist[state.currentIndex]
   state.currentTime = 0
-  state.state = 'playing'
+  state.playerState = 'playing'
 }
 
 const setVolume = (volume: number) => {
@@ -90,9 +94,14 @@ const setDuration = (duration: number) => {
   state.duration = duration
 }
 
+const setState = (newState: 'playing' | 'paused' | 'stopped') => {
+  state.playerState = newState
+}
+
 export const usePlayerStore = () => {
   return {
     state,
+    ...toRefs(state),
     isPlaying,
     hasCurrentTrack,
     progress,
@@ -105,6 +114,7 @@ export const usePlayerStore = () => {
     prevTrack,
     setVolume,
     setCurrentTime,
-    setDuration
+    setDuration,
+    setState
   }
 }

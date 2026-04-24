@@ -34,7 +34,7 @@ export interface PlayerStore {
   currentTrack: Track | null
   playlist: Track[]
   currentIndex: number
-  state: PlayerState
+  playerState: PlayerState
   volume: number
   currentTime: number
   duration: number

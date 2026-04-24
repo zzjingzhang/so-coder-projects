@@ -1,8 +1,8 @@
 <template>
-  <div v-if="playerStore.hasCurrentTrack" class="bottom-player">
+  <div v-if="hasCurrentTrack" class="bottom-player">
     <audio 
       ref="audioRef"
-      :src="playerStore.state.currentTrack?.audioUrl"
+      :src="currentTrack?.audioUrl"
       @timeupdate="handleTimeUpdate"
       @loadedmetadata="handleLoadedMetadata"
       @ended="handleEnded"
@@ -11,13 +11,13 @@
     <div class="player-content container flex items-center">
       <div class="player-info flex items-center gap-3">
         <img 
-          :src="playerStore.state.currentTrack?.cover" 
-          :alt="playerStore.state.currentTrack?.title"
+          :src="currentTrack?.cover" 
+          :alt="currentTrack?.title"
           class="track-cover"
         />
         <div class="track-details">
-          <h4 class="track-title text-truncate">{{ playerStore.state.currentTrack?.title }}</h4>
-          <p class="track-artist text-secondary text-sm text-truncate">{{ playerStore.state.currentTrack?.artist }}</p>
+          <h4 class="track-title text-truncate">{{ currentTrack?.title }}</h4>
+          <p class="track-artist text-secondary text-sm text-truncate">{{ currentTrack?.artist }}</p>
         </div>
         <button class="like-btn btn-icon">
           <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
@@ -39,7 +39,7 @@
             </svg>
           </button>
           <button class="play-btn btn-icon" @click="handlePlayPause">
-            <svg v-if="!playerStore.isPlaying" viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+            <svg v-if="!isPlaying" viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
               <path d="M8 5v14l11-7z"/>
             </svg>
             <svg v-else viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
@@ -59,21 +59,21 @@
         </div>
         
         <div class="progress-container flex items-center gap-3 w-full">
-          <span class="time-text text-sm text-secondary">{{ playerStore.formatTime(playerStore.state.currentTime) }}</span>
+          <span class="time-text text-sm text-secondary">{{ formatTime(currentTime) }}</span>
           <div class="progress-bar flex-1" @click="handleProgressClick">
-            <div class="progress-fill" :style="{ width: playerStore.progress + '%' }"></div>
+            <div class="progress-fill" :style="{ width: progress + '%' }"></div>
           </div>
-          <span class="time-text text-sm text-secondary">{{ playerStore.formatTime(playerStore.state.duration) }}</span>
+          <span class="time-text text-sm text-secondary">{{ formatTime(duration) }}</span>
         </div>
       </div>
       
       <div class="player-right flex items-center gap-3">
         <div class="volume-control flex items-center gap-2">
           <button class="volume-btn" @click="toggleMute">
-            <svg v-if="playerStore.state.volume === 0" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+            <svg v-if="volume === 0" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
               <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
             </svg>
-            <svg v-else-if="playerStore.state.volume < 0.5" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+            <svg v-else-if="volume < 0.5" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
               <path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/>
             </svg>
             <svg v-else viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
@@ -81,7 +81,7 @@
             </svg>
           </button>
           <div class="volume-slider" @click="handleVolumeClick">
-            <div class="volume-fill" :style="{ width: (playerStore.state.volume * 100) + '%' }"></div>
+            <div class="volume-fill" :style="{ width: (volume * 100) + '%' }"></div>
           </div>
         </div>
         
@@ -100,64 +100,75 @@ import { ref, onMounted, watch, computed } from 'vue'
 import { usePlayerStore } from '../stores/playerStore'
 
 const audioRef = ref<HTMLAudioElement | null>(null)
-const playerStore = usePlayerStore()
 const isShuffle = ref(false)
 const isRepeat = ref(false)
 const previousVolume = ref(0.8)
 
-const currentTrackId = computed(() => playerStore.state.currentTrack?.id)
+const {
+  currentTrack,
+  currentTime,
+  duration,
+  volume,
+  isPlaying,
+  hasCurrentTrack,
+  progress,
+  playlist,
+  formatTime,
+  playTrack,
+  togglePlay,
+  nextTrack,
+  prevTrack,
+  setVolume,
+  setCurrentTime,
+  setDuration
+} = usePlayerStore()
+
+const currentTrackId = computed(() => currentTrack.value?.id)
 
 const handlePlayPause = () => {
   if (!audioRef.value) return
   
-  if (playerStore.isPlaying.value) {
-    audioRef.value.pause()
-  } else {
-    audioRef.value.play().catch((e) => {
-      console.log('Play failed:', e)
-    })
-  }
-  playerStore.togglePlay()
+  togglePlay()
 }
 
 const handlePrev = () => {
   if (audioRef.value && audioRef.value.currentTime > 3) {
     audioRef.value.currentTime = 0
-    playerStore.setCurrentTime(0)
+    setCurrentTime(0)
   } else {
-    if (isShuffle.value && playerStore.state.playlist.length > 0) {
-      const randomIndex = Math.floor(Math.random() * playerStore.state.playlist.length)
-      const track = playerStore.state.playlist[randomIndex]
+    if (isShuffle.value && playlist.value.length > 0) {
+      const randomIndex = Math.floor(Math.random() * playlist.value.length)
+      const track = playlist.value[randomIndex]
       if (track) {
-        playerStore.playTrack(track, playerStore.state.playlist)
+        playTrack(track, playlist.value)
       }
     } else {
-      playerStore.prevTrack()
+      prevTrack()
     }
   }
 }
 
 const handleNext = () => {
-  if (isShuffle.value && playerStore.state.playlist.length > 0) {
-    const randomIndex = Math.floor(Math.random() * playerStore.state.playlist.length)
-    const track = playerStore.state.playlist[randomIndex]
+  if (isShuffle.value && playlist.value.length > 0) {
+    const randomIndex = Math.floor(Math.random() * playlist.value.length)
+    const track = playlist.value[randomIndex]
     if (track) {
-      playerStore.playTrack(track, playerStore.state.playlist)
+      playTrack(track, playlist.value)
     }
   } else {
-    playerStore.nextTrack()
+    nextTrack()
   }
 }
 
 const handleTimeUpdate = () => {
   if (audioRef.value) {
-    playerStore.setCurrentTime(audioRef.value.currentTime)
+    setCurrentTime(audioRef.value.currentTime)
   }
 }
 
 const handleLoadedMetadata = () => {
   if (audioRef.value) {
-    playerStore.setDuration(audioRef.value.duration)
+    setDuration(audioRef.value.duration)
   }
 }
 
@@ -173,14 +184,14 @@ const handleEnded = () => {
 }
 
 const handleProgressClick = (event: MouseEvent) => {
-  if (!audioRef.value || playerStore.state.duration === 0) return
+  if (!audioRef.value || duration.value === 0) return
   const progressBar = event.currentTarget as HTMLElement
   const rect = progressBar.getBoundingClientRect()
   const percent = (event.clientX - rect.left) / rect.width
-  const newTime = percent * playerStore.state.duration
+  const newTime = percent * duration.value
   
   audioRef.value.currentTime = newTime
-  playerStore.setCurrentTime(newTime)
+  setCurrentTime(newTime)
 }
 
 const handleVolumeClick = (event: MouseEvent) => {
@@ -189,21 +200,21 @@ const handleVolumeClick = (event: MouseEvent) => {
   const percent = (event.clientX - rect.left) / rect.width
   const newVolume = Math.max(0, Math.min(1, percent))
   
-  playerStore.setVolume(newVolume)
+  setVolume(newVolume)
   if (audioRef.value) {
     audioRef.value.volume = newVolume
   }
 }
 
 const toggleMute = () => {
-  if (playerStore.state.volume > 0) {
-    previousVolume.value = playerStore.state.volume
-    playerStore.setVolume(0)
+  if (volume.value > 0) {
+    previousVolume.value = volume.value
+    setVolume(0)
   } else {
-    playerStore.setVolume(previousVolume.value)
+    setVolume(previousVolume.value)
   }
   if (audioRef.value) {
-    audioRef.value.volume = playerStore.state.volume
+    audioRef.value.volume = volume.value
   }
 }
 
@@ -215,24 +226,12 @@ const toggleRepeat = () => {
   isRepeat.value = !isRepeat.value
 }
 
-const handleAudioPlay = () => {
-  if (playerStore.state.state !== 'playing') {
-    playerStore.state.state = 'playing'
-  }
-}
-
-const handleAudioPause = () => {
-  if (playerStore.state.state !== 'paused') {
-    playerStore.state.state = 'paused'
-  }
-}
-
 watch(
   currentTrackId,
   (newTrackId, oldTrackId) => {
     if (newTrackId && newTrackId !== oldTrackId && audioRef.value) {
       audioRef.value.load()
-      if (playerStore.isPlaying.value) {
+      if (isPlaying.value) {
         audioRef.value.play().catch((e) => {
           console.log('Auto play failed:', e)
         })
@@ -241,12 +240,24 @@ watch(
   }
 )
 
+watch(
+  isPlaying,
+  (playing) => {
+    if (!audioRef.value) return
+    
+    if (playing) {
+      audioRef.value.play().catch((e) => {
+        console.log('Play failed:', e)
+      })
+    } else {
+      audioRef.value.pause()
+    }
+  }
+)
+
 onMounted(() => {
   if (audioRef.value) {
-    audioRef.value.volume = playerStore.state.volume
-    
-    audioRef.value.addEventListener('play', handleAudioPlay)
-    audioRef.value.addEventListener('pause', handleAudioPause)
+    audioRef.value.volume = volume.value
   }
 })
 </script>
