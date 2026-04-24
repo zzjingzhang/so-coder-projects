@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>窗口标签页管理器</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>窗口标签页管理器</h1>
+            <p class="subtitle">浏览多个窗口及其标签页</p>
+        </header>
+
+        <div class="windows-list">
+            <ul class="windows">
+                <li class="window-item active" data-window-id="1">
+                    <div class="window-header">
+                        <div class="window-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                <line x1="8" y1="21" x2="16" y2="21"></line>
+                                <line x1="12" y1="17" x2="12" y2="21"></line>
+                            </svg>
+                        </div>
+                        <div class="window-info">
+                            <h3 class="window-title">工作窗口</h3>
+                            <span class="window-tabs-count">5 个标签页</span>
+                        </div>
+                        <div class="window-actions">
+                            <button class="toggle-btn" aria-label="展开/收起">
+                                <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <ul class="tabs-list">
+                        <li class="tab-item active" data-tab-id="1">
+                            <div class="tab-icon">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Google%20Chrome%20browser%20icon%20simple%20flat%20design%20minimal&image_size=square_hd" alt="Chrome" class="favicon">
+                            </div>
+                            <div class="tab-info">
+                                <h4 class="tab-title">GitHub - 代码仓库</h4>
+                                <p class="tab-url">https://github.com/</p>
+                            </div>
+                            <div class="tab-close">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </div>
+                        </li>
+                        <li class="tab-item" data-tab-id="2">
+                            <div class="tab-icon">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Stack%20Overflow%20logo%20orange%20color%20simple%20flat%20design&image_size=square_hd" alt="Stack Overflow" class="favicon">
+                            </div>
+                            <div class="tab-info">
+                                <h4 class="tab-title">Stack Overflow - JavaScript 问题</h4>
+                                <p class="tab-url">https://stackoverflow.com/questions/...</p>
+                            </div>
+                            <div class="tab-close">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </div>
+                        </li>
+                        <li class="tab-item" data-tab-id="3">
+                            <div class="tab-icon">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=MDN%20Web%20Docs%20logo%20blue%20color%20simple%20design&image_size=square_hd" alt="MDN" class="favicon">
+                            </div>
+                            <div class="tab-info">
+                                <h4 class="tab-title">MDN Web Docs - CSS Grid</h4>
+                                <p class="tab-url">https://developer.mozilla.org/...</p>
+                            </div>
+                            <div class="tab-close">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </div>
+                        </li>
+                        <li class="tab-item" data-tab-id="4">
+                            <div class="tab-icon">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Node.js%20logo%20green%20color%20hexagon%20simple%20flat%20design&image_size=square_hd" alt="Node.js" class="favicon">
+                            </div>
+                            <div class="tab-info">
+                                <h4 class="tab-title">Node.js 官方文档</h4>
+                                <p class="tab-url">https://nodejs.org/docs/...</p>
+                            </div>
+                            <div class="tab-close">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </div>
+                        </li>
+                        <li class="tab-item" data-tab-id="5">
+                            <div class="tab-icon">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=npm%20logo%20red%20color%20simple%20flat%20design&image_size=square_hd" alt="npm" class="favicon">
+                            </div>
+                            <div class="tab-info">
+                                <h4 class="tab-title">npm - react-router-dom</h4>
+                                <p class="tab-url">https://www.npmjs.com/package/react-router-dom</p>
+                            </div>
+                            <div class="tab-close">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="window-item" data-window-id="2">
+                    <div class="window-header">
+                        <div class="window-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                            </svg>
+                        </div>
+                        <div class="window-info">
+                            <h3 class="window-title">娱乐窗口</h3>
+                            <span class="window-tabs-count">3 个标签页</span>
+                        </div>
+                        <div class="window-actions">
+                            <button class="toggle-btn" aria-label="展开/收起">
+                                <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <ul class="tabs-list">
+                        <li class="tab-item active" data-tab-id="6">
+                            <div class="tab-icon">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=YouTube%20logo%20red%20play%20button%20simple%20flat%20design&image_size=square_hd" alt="YouTube" class="favicon">
+                            </div>
+                            <div class="tab-info">
+                                <h4 class="tab-title">YouTube - React 教程视频</h4>
+                                <p class="tab-url">https://www.youtube.com/watch?v=...</p>
+                            </div>
+                            <div class="tab-close">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </div>
+                        </li>
+                        <li class="tab-item" data-tab-id="7">
+                            <div class="tab-icon">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=music%20note%20icon%20purple%20color%20simple%20flat%20design&image_size=square_hd" alt="Music" class="favicon">
+                            </div>
+                            <div class="tab-info">
+                                <h4 class="tab-title">网易云音乐 - 我的收藏</h4>
+                                <p class="tab-url">https://music.163.com/...</p>
+                            </div>
+                            <div class="tab-close">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </div>
+                        </li>
+                        <li class="tab-item" data-tab-id="8">
+                            <div class="tab-icon">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=game%20controller%20icon%20green%20color%20simple%20flat%20design&image_size=square_hd" alt="Game" class="favicon">
+                            </div>
+                            <div class="tab-info">
+                                <h4 class="tab-title">Steam 商店</h4>
+                                <p class="tab-url">https://store.steampowered.com/</p>
+                            </div>
+                            <div class="tab-close">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="window-item" data-window-id="3">
+                    <div class="window-header">
+                        <div class="window-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="window-info">
+                            <h3 class="window-title">文档窗口</h3>
+                            <span class="window-tabs-count">4 个标签页</span>
+                        </div>
+                        <div class="window-actions">
+                            <button class="toggle-btn" aria-label="展开/收起">
+                                <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <ul class="tabs-list">
+                        <li class="tab-item active" data-tab-id="9">
+                            <div class="tab-icon">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Google%20Docs%20logo%20blue%20document%20simple%20flat%20design&image_size=square_hd" alt="Google Docs" class="favicon">
+                            </div>
+                            <div class="tab-info">
+                                <h4 class="tab-title">项目计划书 - Google Docs</h4>
+                                <p class="tab-url">https://docs.google.com/document/d/...</p>
+                            </div>
+                            <div class="tab-close">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </div>
+                        </li>
+                        <li class="tab-item" data-tab-id="10">
+                            <div class="tab-icon">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Notion%20logo%20black%20white%20minimal%20simple%20flat%20design&image_size=square_hd" alt="Notion" class="favicon">
+                            </div>
+                            <div class="tab-info">
+                                <h4 class="tab-title">Notion - 学习笔记</h4>
+                                <p class="tab-url">https://www.notion.so/...</p>
+                            </div>
+                            <div class="tab-close">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </div>
+                        </li>
+                        <li class="tab-item" data-tab-id="11">
+                            <div class="tab-icon">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Evernote%20logo%20green%20elephant%20simple%20flat%20design&image_size=square_hd" alt="Evernote" class="favicon">
+                            </div>
+                            <div class="tab-info">
+                                <h4 class="tab-title">印象笔记 - 会议记录</h4>
+                                <p class="tab-url">https://www.evernote.com/...</p>
+                            </div>
+                            <div class="tab-close">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </div>
+                        </li>
+                        <li class="tab-item" data-tab-id="12">
+                            <div class="tab-icon">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=PDF%20document%20icon%20red%20color%20simple%20flat%20design&image_size=square_hd" alt="PDF" class="favicon">
+                            </div>
+                            <div class="tab-info">
+                                <h4 class="tab-title">技术规范文档.pdf</h4>
+                                <p class="tab-url">file:///Users/.../docs/spec.pdf</p>
+                            </div>
+                            <div class="tab-close">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number">3</span>
+                <span class="stat-label">个窗口</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">12</span>
+                <span class="stat-label">个标签页</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
