@@ -10,7 +10,7 @@ export const products: Product[] = [
     reviews: 2341,
     tag: "热卖",
     category: "vinyl",
-    image: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=vinyl%20record%20cover%20jazz%20album%20blue%20background%20classic%20design&image_size=square_hd"
+    image: "https://picsum.photos/seed/vinyl1/400/400"
   },
   {
     id: 2,
@@ -21,7 +21,7 @@ export const products: Product[] = [
     reviews: 1876,
     tag: "经典",
     category: "vinyl",
-    image: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=vinyl%20record%20cover%20the%20beatles%20abbey%20road%20crosswalk&image_size=square_hd"
+    image: "https://picsum.photos/seed/vinyl2/400/400"
   },
   {
     id: 3,
@@ -32,7 +32,7 @@ export const products: Product[] = [
     reviews: 987,
     tag: "新品",
     category: "headphone",
-    image: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=premium%20wireless%20noise%20cancelling%20headphones%20sleek%20modern%20design&image_size=square_hd"
+    image: "https://picsum.photos/seed/headphone1/400/400"
   },
   {
     id: 4,
@@ -43,7 +43,7 @@ export const products: Product[] = [
     reviews: 3125,
     tag: "限量",
     category: "vinyl",
-    image: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=vinyl%20record%20cover%20pink%20floyd%20dark%20side%20of%20the%20moon%20prism&image_size=square_hd"
+    image: "https://picsum.photos/seed/vinyl3/400/400"
   },
   {
     id: 5,
@@ -54,7 +54,7 @@ export const products: Product[] = [
     reviews: 356,
     tag: "旗舰",
     category: "player",
-    image: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=premium%20digital%20audio%20player%20hi%20res%20music%20sleek%20metal%20design&image_size=square_hd"
+    image: "https://picsum.photos/seed/player1/400/400"
   },
   {
     id: 6,
@@ -65,7 +65,7 @@ export const products: Product[] = [
     reviews: 5678,
     tag: "传奇",
     category: "vinyl",
-    image: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=vinyl%20record%20cover%20michael%20jackson%20thriller%20iconic%20design&image_size=square_hd"
+    image: "https://picsum.photos/seed/vinyl4/400/400"
   },
   {
     id: 7,
@@ -76,7 +76,7 @@ export const products: Product[] = [
     reviews: 12345,
     tag: "畅销",
     category: "headphone",
-    image: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=apple%20airpods%20pro%20wireless%20earbuds%20white%20minimal%20design&image_size=square_hd"
+    image: "https://picsum.photos/seed/headphone2/400/400"
   },
   {
     id: 8,
@@ -87,7 +87,7 @@ export const products: Product[] = [
     reviews: 4321,
     tag: "经典",
     category: "vinyl",
-    image: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=vinyl%20record%20cover%20nirvana%20nevermind%20baby%20swimming%20pool&image_size=square_hd"
+    image: "https://picsum.photos/seed/vinyl5/400/400"
   }
 ];
 

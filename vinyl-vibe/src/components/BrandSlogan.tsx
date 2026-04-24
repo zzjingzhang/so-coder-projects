@@ -11,7 +11,7 @@ const BrandSlogan: React.FC = () => {
 
       <div className="absolute inset-0">
         <img
-          src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=concert%20stage%20lights%20music%20festival%20dark%20atmospheric%20purple%20pink%20neon&image_size=landscape_16_9"
+          src="https://picsum.photos/seed/concert/1920/1080"
           alt="Music background"
           className="w-full h-full object-cover opacity-20"
         />

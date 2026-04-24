@@ -52,7 +52,7 @@ const AboutUs: React.FC = () => {
             <div className="aspect-square rounded-3xl overflow-hidden bg-gradient-to-br from-purple-600/20 to-pink-600/20 p-8">
               <div className="w-full h-full rounded-2xl overflow-hidden relative">
                 <img
-                  src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=vinyl%20records%20collection%20on%20shelf%20music%20store%20interior%20warm%20lighting%20aesthetic&image_size=square_hd"
+                  src="https://picsum.photos/seed/vinylstore/500/500"
                   alt="Vinyl records collection"
                   className="w-full h-full object-cover"
                 />

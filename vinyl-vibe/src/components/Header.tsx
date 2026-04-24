@@ -163,28 +163,26 @@ const Header: React.FC = () => {
           </div>
         </div>
 
-        <div
-          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-            mobileMenuOpen ? 'max-h-96 pb-4 opacity-100' : 'max-h-0 opacity-0'
-          }`}
-        >
-          <div className="pt-2 border-t border-gray-800">
-            {navItems.map((item) => {
-              const Icon = iconMap[item.icon];
-              return (
-                <Link
-                  key={item.id}
-                  to={item.href}
-                  className="flex items-center space-x-3 px-2 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition-all"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <Icon size={20} />
-                  <span className="font-medium">{item.label}</span>
-                </Link>
-              );
-            })}
+        {mobileMenuOpen && (
+          <div className="md:hidden overflow-hidden transition-all duration-300 ease-in-out max-h-96 pb-4 opacity-100">
+            <div className="pt-2 border-t border-gray-800">
+              {navItems.map((item) => {
+                const Icon = iconMap[item.icon];
+                return (
+                  <Link
+                    key={item.id}
+                    to={item.href}
+                    className="flex items-center space-x-3 px-2 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition-all"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <Icon size={20} />
+                    <span className="font-medium">{item.label}</span>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </header>
   );
