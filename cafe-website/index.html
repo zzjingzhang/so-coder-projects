@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brew & Bean - 精品咖啡馆</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-coffee"></i>
+                <span>Brew & Bean</span>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="#home" class="active">首页</a></li>
+                <li><a href="#about">关于我们</a></li>
+                <li><a href="#menu">菜单</a></li>
+                <li><a href="#products">产品</a></li>
+                <li><a href="#testimonials">客户评价</a></li>
+                <li><a href="#contact">联系我们</a></li>
+                <li><a href="#locations">分店信息</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <button class="search-btn" aria-label="搜索">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="cart-btn" aria-label="购物车">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">3</span>
+                </button>
+                <button class="menu-toggle" aria-label="菜单">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 移动端菜单 -->
+        <div class="mobile-menu">
+            <ul>
+                <li><a href="#home">首页</a></li>
+                <li><a href="#about">关于我们</a></li>
+                <li><a href="#menu">菜单</a></li>
+                <li><a href="#products">产品</a></li>
+                <li><a href="#testimonials">客户评价</a></li>
+                <li><a href="#contact">联系我们</a></li>
+                <li><a href="#locations">分店信息</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- 搜索面板 -->
+    <div class="search-panel">
+        <div class="search-container">
+            <button class="search-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="search-input-wrapper">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="搜索咖啡、甜点或产品..." class="search-input">
+            </div>
+            <div class="search-results">
+                <div class="search-category">
+                    <h3>热门搜索</h3>
+                    <div class="search-tags">
+                        <span class="search-tag">拿铁咖啡</span>
+                        <span class="search-tag">卡布奇诺</span>
+                        <span class="search-tag">提拉米苏</span>
+                        <span class="search-tag">埃塞俄比亚</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 购物车面板 -->
+    <div class="cart-panel">
+        <div class="cart-header">
+            <h2>购物车</h2>
+            <button class="cart-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cart-items">
+            <div class="cart-item">
+                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=espresso%20coffee%20in%20a%20ceramic%20cup%20on%20saucer%20with%20steam%20rising&image_size=square" alt="浓缩咖啡">
+                <div class="cart-item-info">
+                    <h4>经典浓缩咖啡</h4>
+                    <p class="cart-item-price">¥32</p>
+                    <div class="cart-item-quantity">
+                        <button><i class="fas fa-minus"></i></button>
+                        <span>1</span>
+                        <button><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+                <button class="cart-item-remove">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+            <div class="cart-item">
+                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=vanilla%20latte%20coffee%20with%20milk%20foam%20art&image_size=square" alt="香草拿铁">
+                <div class="cart-item-info">
+                    <h4>香草风味拿铁</h4>
+                    <p class="cart-item-price">¥38</p>
+                    <div class="cart-item-quantity">
+                        <button><i class="fas fa-minus"></i></button>
+                        <span>2</span>
+                        <button><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+                <button class="cart-item-remove">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>总计</span>
+                <span class="total-price">¥108</span>
+            </div>
+            <button class="checkout-btn">结算</button>
+        </div>
+    </div>
+    
+    <!-- 首页英雄区域 -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>品味生活的<br>美好时刻</h1>
+            <p>在 Brew & Bean，我们用心烘焙每一颗咖啡豆，为您带来最纯粹的咖啡体验</p>
+            <div class="hero-buttons">
+                <a href="#menu" class="btn btn-primary">探索菜单</a>
+                <a href="#about" class="btn btn-secondary">了解更多</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=premium%20coffee%20beans%20with%20steam%20and%20coffee%20cup%20dark%20moody%20atmosphere&image_size=landscape_16_9" alt="精品咖啡">
+        </div>
+    </section>
+    
+    <!-- 特色服务 -->
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mug-hot"></i>
+                    </div>
+                    <h3>精选咖啡豆</h3>
+                    <p>从全球优质咖啡产区精选高品质咖啡豆</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3>专业烘焙</h3>
+                    <p>大师级烘焙工艺，精准把控每一次烘焙</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>有机认证</h3>
+                    <p>部分产品获得有机认证，健康环保</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h3>全国配送</h3>
+                    <p>提供全国范围的咖啡豆和周边产品配送</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 关于我们 -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cozy%20coffee%20shop%20interior%20with%20barista%20making%20latte%20art&image_size=landscape_4_3" alt="咖啡馆内部">
+                </div>
+                <div class="about-text">
+                    <h2>关于我们</h2>
+                    <p>Brew & Bean 创立于2015年，始终坚持为咖啡爱好者提供最纯正的咖啡体验。我们相信，一杯好咖啡不仅仅是一种饮品，更是一种生活态度。</p>
+                    <p>我们的咖啡豆来自世界各地的优质产区，经过严格筛选和专业烘焙，确保每一口都能带给您独特的风味体验。</p>
+                    <div class="about-stats">
+                        <div class="stat">
+                            <span class="stat-number">8+</span>
+                            <span class="stat-label">年品牌历史</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">25+</span>
+                            <span class="stat-label">家分店</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">50K+</span>
+                            <span class="stat-label">忠实顾客</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 菜单 -->
+    <section id="menu" class="menu">
+        <div class="container">
+            <div class="section-header">
+                <h2>精选菜单</h2>
+                <p>探索我们精心准备的咖啡与甜点</p>
+            </div>
+            
+            <div class="menu-tabs">
+                <button class="menu-tab active" data-category="coffee">咖啡饮品</button>
+                <button class="menu-tab" data-category="tea">茶类</button>
+                <button class="menu-tab" data-category="dessert">甜点</button>
+                <button class="menu-tab" data-category="special">特调</button>
+            </div>
+            
+            <div class="menu-items" id="coffee-items">
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=espresso%20coffee%20in%20ceramic%20cup%20dark%20background&image_size=square" alt="浓缩咖啡">
+                    </div>
+                    <div class="menu-item-info">
+                        <h3>经典浓缩咖啡</h3>
+                        <p>纯粹的意式浓缩，醇厚浓郁</p>
+                        <div class="menu-item-footer">
+                            <span class="price">¥32</span>
+                            <button class="add-to-cart">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cappuccino%20coffee%20with%20milk%20foam%20art%20heart&image_size=square" alt="卡布奇诺">
+                    </div>
+                    <div class="menu-item-info">
+                        <h3>卡布奇诺</h3>
+                        <p>浓缩咖啡与奶泡的完美结合</p>
+                        <div class="menu-item-footer">
+                            <span class="price">¥36</span>
+                            <button class="add-to-cart">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=latte%20coffee%20with%20latte%20art%20swirl%20pattern&image_size=square" alt="拿铁">
+                    </div>
+                    <div class="menu-item-info">
+                        <h3>拿铁咖啡</h3>
+                        <p>丝滑牛奶与醇厚咖啡的经典搭配</p>
+                        <div class="menu-item-footer">
+                            <span class="price">¥34</span>
+                            <button class="add-to-cart">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=americano%20black%20coffee%20in%20tall%20glass&image_size=square" alt="美式咖啡">
+                    </div>
+                    <div class="menu-item-info">
+                        <h3>美式咖啡</h3>
+                        <p>清爽纯粹，适合喜欢淡咖啡的您</p>
+                        <div class="menu-item-footer">
+                            <span class="price">¥28</span>
+                            <button class="add-to-cart">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=mocha%20coffee%20with%20chocolate%20syrup%20and%20whipped%20cream&image_size=square" alt="摩卡">
+                    </div>
+                    <div class="menu-item-info">
+                        <h3>摩卡咖啡</h3>
+                        <p>巧克力与咖啡的甜蜜邂逅</p>
+                        <div class="menu-item-footer">
+                            <span class="price">¥38</span>
+                            <button class="add-to-cart">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=flat%20white%20coffee%20with%20delicate%20latte%20art&image_size=square" alt="白咖啡">
+                    </div>
+                    <div class="menu-item-info">
+                        <h3>白咖啡</h3>
+                        <p>顺滑细腻，口感醇厚</p>
+                        <div class="menu-item-footer">
+                            <span class="price">¥36</span>
+                            <button class="add-to-cart">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 产品 -->
+    <section id="products" class="products">
+        <div class="container">
+            <div class="section-header">
+                <h2>咖啡豆与周边产品</h2>
+                <p>将咖啡体验带回家</p>
+            </div>
+            
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=ethiopian%20single%20origin%20coffee%20beans%20in%20premium%20packaging&image_size=square" alt="埃塞俄比亚咖啡豆">
+                        <span class="product-tag">新品</span>
+                    </div>
+                    <div class="product-info">
+                        <h3>埃塞俄比亚 耶加雪菲</h3>
+                        <p class="product-description">花香果酸，口感清爽明亮</p>
+                        <div class="product-footer">
+                            <span class="product-price">¥128</span>
+                            <button class="add-to-cart-btn">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=colombian%20coffee%20beans%20premium%20packaging%20dark%20bag&image_size=square" alt="哥伦比亚咖啡豆">
+                        <span class="product-tag sale">促销</span>
+                    </div>
+                    <div class="product-info">
+                        <h3>哥伦比亚 苏普雷莫</h3>
+                        <p class="product-description">平衡醇厚，坚果巧克力风味</p>
+                        <div class="product-footer">
+                            <span class="product-price">¥98</span>
+                            <span class="original-price">¥118</span>
+                            <button class="add-to-cart-btn">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=brazilian%20coffee%20beans%20premium%20packaging&image_size=square" alt="巴西咖啡豆">
+                    </div>
+                    <div class="product-info">
+                        <h3>巴西 桑托斯</h3>
+                        <p class="product-description">顺滑低酸，可可焦糖香气</p>
+                        <div class="product-footer">
+                            <span class="product-price">¥108</span>
+                            <button class="add-to-cart-btn">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=hand%20pour%20coffee%20dripper%20ceramic%20brown&image_size=square" alt="手冲咖啡壶">
+                    </div>
+                    <div class="product-info">
+                        <h3>手工陶瓷手冲壶</h3>
+                        <p class="product-description">优雅设计，精准控制水流</p>
+                        <div class="product-footer">
+                            <span class="product-price">¥268</span>
+                            <button class="add-to-cart-btn">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=burr%20coffee%20grinder%20stainless%20steel&image_size=square" alt="咖啡磨豆机">
+                        <span class="product-tag">热销</span>
+                    </div>
+                    <div class="product-info">
+                        <h3>专业级磨豆机</h3>
+                        <p class="product-description">均匀研磨，保留咖啡香气</p>
+                        <div class="product-footer">
+                            <span class="product-price">¥499</span>
+                            <button class="add-to-cart-btn">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=double%20wall%20glass%20coffee%20cups%20set&image_size=square" alt="双层玻璃杯">
+                    </div>
+                    <div class="product-info">
+                        <h3>双层玻璃咖啡杯套装</h3>
+                        <p class="product-description">隔热设计，美观实用</p>
+                        <div class="product-footer">
+                            <span class="product-price">¥198</span>
+                            <button class="add-to-cart-btn">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 客户评价 -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>客户评价</h2>
+                <p>听听顾客们怎么说</p>
+            </div>
+            
+            <div class="testimonials-slider">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"这里的咖啡真的太棒了！我每天早上都会来一杯拿铁，口感丝滑，香气浓郁。店员的服务态度也非常好，值得推荐！"</p>
+                    <div class="testimonial-author">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=young%20chinese%20woman%20professional%20portrait%20smiling&image_size=square" alt="张女士">
+                        <div class="author-info">
+                            <h4>张女士</h4>
+                            <p>忠实顾客 · 3年</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"作为咖啡爱好者，我尝试过很多咖啡馆，但 Brew & Bean 的咖啡豆真的是顶级的。耶加雪菲的花香和果酸让我回味无穷。"</p>
+                    <div class="testimonial-author">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=middle%20aged%20chinese%20man%20professional%20portrait&image_size=square" alt="李先生">
+                        <div class="author-info">
+                            <h4>李先生</h4>
+                            <p>咖啡爱好者 · 5年</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="testimonial-text">"环境非常舒适，很适合工作或学习。甜点也很美味，提拉米苏和摩卡是我的最爱。强烈推荐给大家！"</p>
+                    <div class="testimonial-author">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=young%20chinese%20student%20portrait%20casual&image_size=square" alt="王同学">
+                        <div class="author-info">
+                            <h4>王同学</h4>
+                            <p>常客 · 2年</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-nav">
+                <button class="testimonial-prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="testimonial-next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 联系我们 -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h2>联系我们</h2>
+                    <p>有任何问题或建议？我们很乐意听到您的声音。请填写表单或通过以下方式联系我们。</p>
+                    
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>地址</h4>
+                                <p>北京市朝阳区建国路88号</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>电话</h4>
+                                <p>400-888-8888</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>邮箱</h4>
+                                <p>info@brewandbean.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>营业时间</h4>
+                                <p>周一至周日: 8:00 - 22:00</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <a href="#" aria-label="微信">
+                            <i class="fab fa-weixin"></i>
+                        </a>
+                        <a href="#" aria-label="微博">
+                            <i class="fab fa-weibo"></i>
+                        </a>
+                        <a href="#" aria-label="抖音">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <a href="#" aria-label="小红书">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="contact-form-wrapper">
+                    <form class="contact-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">姓名</label>
+                                <input type="text" id="name" name="name" placeholder="您的姓名" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">邮箱</label>
+                                <input type="email" id="email" name="email" placeholder="您的邮箱" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">电话</label>
+                            <input type="tel" id="phone" name="phone" placeholder="您的电话号码">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">主题</label>
+                            <select id="subject" name="subject">
+                                <option value="">请选择主题</option>
+                                <option value="general">一般咨询</option>
+                                <option value="order">订单问题</option>
+                                <option value="reservation">座位预订</option>
+                                <option value="feedback">意见反馈</option>
+                                <option value="partnership">合作洽谈</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">留言</label>
+                            <textarea id="message" name="message" rows="5" placeholder="请输入您的留言..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-full">发送消息</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 分店信息 -->
+    <section id="locations" class="locations">
+        <div class="container">
+            <div class="section-header">
+                <h2>分店信息</h2>
+                <p>在您附近找到我们</p>
+            </div>
+            
+            <div class="locations-grid">
+                <div class="location-card">
+                    <div class="location-image">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20coffee%20shop%20exterior%20beijing%20street&image_size=landscape_4_3" alt="北京国贸店">
+                    </div>
+                    <div class="location-info">
+                        <h3>北京国贸店</h3>
+                        <p class="location-address">
+                            <i class="fas fa-map-marker-alt"></i>
+                            北京市朝阳区建国门外大街1号
+                        </p>
+                        <p class="location-phone">
+                            <i class="fas fa-phone-alt"></i>
+                            010-6505-8888
+                        </p>
+                        <p class="location-hours">
+                            <i class="fas fa-clock"></i>
+                            周一至周日: 7:30 - 21:30
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="location-card">
+                    <div class="location-image">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cozy%20coffee%20shop%20interior%20shanghai%20bund&image_size=landscape_4_3" alt="上海外滩店">
+                    </div>
+                    <div class="location-info">
+                        <h3>上海外滩店</h3>
+                        <p class="location-address">
+                            <i class="fas fa-map-marker-alt"></i>
+                            上海市黄浦区中山东一路12号
+                        </p>
+                        <p class="location-phone">
+                            <i class="fas fa-phone-alt"></i>
+                            021-6321-8888
+                        </p>
+                        <p class="location-hours">
+                            <i class="fas fa-clock"></i>
+                            周一至周日: 8:00 - 22:00
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="location-card">
+                    <div class="location-image">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=stylish%20coffee%20shop%20guangzhou%20tianhe&image_size=landscape_4_3" alt="广州天河店">
+                    </div>
+                    <div class="location-info">
+                        <h3>广州天河店</h3>
+                        <p class="location-address">
+                            <i class="fas fa-map-marker-alt"></i>
+                            广州市天河区天河路385号
+                        </p>
+                        <p class="location-phone">
+                            <i class="fas fa-phone-alt"></i>
+                            020-8550-8888
+                        </p>
+                        <p class="location-hours">
+                            <i class="fas fa-clock"></i>
+                            周一至周日: 7:30 - 22:00
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="location-card">
+                    <div class="location-image">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=elegant%20coffee%20shop%20shenzhen%20nanshan&image_size=landscape_4_3" alt="深圳南山店">
+                    </div>
+                    <div class="location-info">
+                        <h3>深圳南山店</h3>
+                        <p class="location-address">
+                            <i class="fas fa-map-marker-alt"></i>
+                            深圳市南山区科技园南路8号
+                        </p>
+                        <p class="location-phone">
+                            <i class="fas fa-phone-alt"></i>
+                            0755-2665-8888
+                        </p>
+                        <p class="location-hours">
+                            <i class="fas fa-clock"></i>
+                            周一至周日: 7:00 - 22:30
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section brand">
+                    <div class="footer-logo">
+                        <i class="fas fa-coffee"></i>
+                        <span>Brew & Bean</span>
+                    </div>
+                    <p>用心烘焙每一颗咖啡豆，为您带来最纯粹的咖啡体验。品味生活的美好时刻，从一杯好咖啡开始。</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="微信">
+                            <i class="fab fa-weixin"></i>
+                        </a>
+                        <a href="#" aria-label="微博">
+                            <i class="fab fa-weibo"></i>
+                        </a>
+                        <a href="#" aria-label="抖音">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <a href="#" aria-label="小红书">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section links">
+                    <h3>快速链接</h3>
+                    <ul>
+                        <li><a href="#home">首页</a></li>
+                        <li><a href="#about">关于我们</a></li>
+                        <li><a href="#menu">菜单</a></li>
+                        <li><a href="#products">产品</a></li>
+                        <li><a href="#contact">联系我们</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section links">
+                    <h3>服务支持</h3>
+                    <ul>
+                        <li><a href="#">常见问题</a></li>
+                        <li><a href="#">配送政策</a></li>
+                        <li><a href="#">退换货政策</a></li>
+                        <li><a href="#">隐私政策</a></li>
+                        <li><a href="#">使用条款</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section newsletter">
+                    <h3>订阅我们</h3>
+                    <p>订阅我们的通讯，获取最新产品信息和优惠活动。</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="输入您的邮箱">
+                        <button type="submit">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Brew & Bean 精品咖啡馆. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="script.js"></script>
+</body>
+</html>
