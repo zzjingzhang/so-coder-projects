@@ -14,6 +14,23 @@ document.addEventListener('DOMContentLoaded', function() {
         filteredData: []
     };
     
+    // 缓存DOM元素引用
+    const elements = {
+        tableBody: document.getElementById('table-body'),
+        totalCount: document.getElementById('total-count'),
+        currentPage: document.getElementById('current-page'),
+        firstPage: document.getElementById('first-page'),
+        prevPage: document.getElementById('prev-page'),
+        nextPage: document.getElementById('next-page'),
+        lastPage: document.getElementById('last-page'),
+        pageNumbers: document.getElementById('page-numbers'),
+        pageSize: document.getElementById('page-size'),
+        dateFrom: document.getElementById('date-from'),
+        dateTo: document.getElementById('date-to'),
+        applyFilter: document.getElementById('apply-filter'),
+        resetFilter: document.getElementById('reset-filter')
+    };
+    
     // 数据类型和状态选项
     const dataTypes = ['类型A', '类型B', '类型C', '类型D', '类型E'];
     const statuses = ['active', 'pending', 'inactive'];
@@ -83,8 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         state.filteredData = filtered;
         state.currentPage = 1; // 重置到第一页
-        updateTable();
-        updatePagination();
+        updateUI();
     }
     
     // 获取当前页数据
@@ -99,86 +115,88 @@ document.addEventListener('DOMContentLoaded', function() {
         return Math.ceil(state.filteredData.length / state.pageSize);
     }
     
-    // 更新表格
-    function updateTable() {
-        const tableBody = document.getElementById('table-body');
+    // 生成表格行HTML
+    function generateTableRows() {
         const currentPageData = getCurrentPageData();
         
-        const fragment = document.createDocumentFragment();
-        
         if (currentPageData.length === 0) {
-            const emptyRow = document.createElement('tr');
-            emptyRow.innerHTML = `
-                <td colspan="6" style="text-align: center; padding: 40px; color: #6c757d;">
-                    暂无数据
-                </td>
+            return `
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 40px; color: #6c757d;">
+                        暂无数据
+                    </td>
+                </tr>
             `;
-            fragment.appendChild(emptyRow);
-        } else {
-            currentPageData.forEach(item => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${item.id}</td>
-                    <td>${item.name}</td>
-                    <td>${item.type}</td>
-                    <td>${item.createTime}</td>
-                    <td>
-                        <span class="status status-${item.status}">
-                            ${statusLabels[item.status]}
-                        </span>
-                    </td>
-                    <td>
-                        <button class="action-btn view-btn" data-id="${item.id}">查看</button>
-                        <button class="action-btn edit-btn" data-id="${item.id}">编辑</button>
-                    </td>
-                `;
-                fragment.appendChild(row);
-            });
         }
         
-        tableBody.innerHTML = '';
-        tableBody.appendChild(fragment);
+        return currentPageData.map(item => `
+            <tr>
+                <td>${item.id}</td>
+                <td>${item.name}</td>
+                <td>${item.type}</td>
+                <td>${item.createTime}</td>
+                <td>
+                    <span class="status status-${item.status}">
+                        ${statusLabels[item.status]}
+                    </span>
+                </td>
+                <td>
+                    <button class="action-btn view-btn" data-id="${item.id}">查看</button>
+                    <button class="action-btn edit-btn" data-id="${item.id}">编辑</button>
+                </td>
+            </tr>
+        `).join('');
     }
     
-    // 更新分页控件
-    function updatePagination() {
-        const totalCount = state.filteredData.length;
+    // 生成分页按钮HTML
+    function generatePageNumbers() {
         const totalPages = getTotalPages();
         
-        // 更新页码信息
-        document.getElementById('total-count').textContent = totalCount;
-        document.getElementById('current-page').textContent = state.currentPage;
+        if (totalPages <= 0) return '';
         
-        // 更新按钮状态
-        document.getElementById('first-page').disabled = state.currentPage === 1;
-        document.getElementById('prev-page').disabled = state.currentPage === 1;
-        document.getElementById('next-page').disabled = state.currentPage === totalPages || totalPages === 0;
-        document.getElementById('last-page').disabled = state.currentPage === totalPages || totalPages === 0;
+        const maxVisiblePages = 5;
+        let startPage = Math.max(1, state.currentPage - Math.floor(maxVisiblePages / 2));
+        let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
         
-        // 更新页码按钮
-        const pageNumbers = document.getElementById('page-numbers');
-        const fragment = document.createDocumentFragment();
-        
-        if (totalPages > 0) {
-            const maxVisiblePages = 5;
-            let startPage = Math.max(1, state.currentPage - Math.floor(maxVisiblePages / 2));
-            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-            
-            if (endPage - startPage + 1 < maxVisiblePages) {
-                startPage = Math.max(1, endPage - maxVisiblePages + 1);
-            }
-            
-            for (let i = startPage; i <= endPage; i++) {
-                const pageBtn = document.createElement('button');
-                pageBtn.className = `page-number-btn ${i === state.currentPage ? 'active' : ''}`;
-                pageBtn.textContent = i;
-                pageBtn.dataset.page = i;
-                fragment.appendChild(pageBtn);
-            }
+        if (endPage - startPage + 1 < maxVisiblePages) {
+            startPage = Math.max(1, endPage - maxVisiblePages + 1);
         }
         
-        pageNumbers.innerHTML = '';
-        pageNumbers.appendChild(fragment);
+        let html = '';
+        for (let i = startPage; i <= endPage; i++) {
+            html += `
+                <button class="page-number-btn ${i === state.currentPage ? 'active' : ''}" data-page="${i}">
+                    ${i}
+                </button>
+            `;
+        }
+        
+        return html;
+    }
+    
+    // 更新整个UI
+    function updateUI() {
+        // 使用requestAnimationFrame确保所有DOM更新在同一帧中完成
+        requestAnimationFrame(function() {
+            const totalCount = state.filteredData.length;
+            const totalPages = getTotalPages();
+            
+            // 更新表格
+            elements.tableBody.innerHTML = generateTableRows();
+            
+            // 更新页码信息
+            elements.totalCount.textContent = totalCount;
+            elements.currentPage.textContent = state.currentPage;
+            
+            // 更新按钮状态
+            elements.firstPage.disabled = state.currentPage === 1;
+            elements.prevPage.disabled = state.currentPage === 1;
+            elements.nextPage.disabled = state.currentPage === totalPages || totalPages === 0;
+            elements.lastPage.disabled = state.currentPage === totalPages || totalPages === 0;
+            
+            // 更新页码按钮
+            elements.pageNumbers.innerHTML = generatePageNumbers();
+        });
     }
     
     // 跳转到指定页
@@ -187,8 +205,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (page < 1 || page > totalPages) return;
         
         state.currentPage = page;
-        updateTable();
-        updatePagination();
+        updateUI();
     }
     
     // 首页
@@ -242,30 +259,29 @@ document.addEventListener('DOMContentLoaded', function() {
     // 初始化事件监听
     function initEventListeners() {
         // 分页按钮
-        document.getElementById('first-page').addEventListener('click', goToFirstPage);
-        document.getElementById('prev-page').addEventListener('click', goToPrevPage);
-        document.getElementById('next-page').addEventListener('click', goToNextPage);
-        document.getElementById('last-page').addEventListener('click', goToLastPage);
+        elements.firstPage.addEventListener('click', goToFirstPage);
+        elements.prevPage.addEventListener('click', goToPrevPage);
+        elements.nextPage.addEventListener('click', goToNextPage);
+        elements.lastPage.addEventListener('click', goToLastPage);
         
         // 每页显示数量
-        document.getElementById('page-size').addEventListener('change', function() {
+        elements.pageSize.addEventListener('change', function() {
             state.pageSize = parseInt(this.value);
             state.currentPage = 1;
-            updateTable();
-            updatePagination();
+            updateUI();
         });
         
         // 筛选按钮
-        document.getElementById('apply-filter').addEventListener('click', function() {
-            state.dateFrom = document.getElementById('date-from').value || null;
-            state.dateTo = document.getElementById('date-to').value || null;
+        elements.applyFilter.addEventListener('click', function() {
+            state.dateFrom = elements.dateFrom.value || null;
+            state.dateTo = elements.dateTo.value || null;
             filterData();
         });
         
         // 重置按钮
-        document.getElementById('reset-filter').addEventListener('click', function() {
-            document.getElementById('date-from').value = '';
-            document.getElementById('date-to').value = '';
+        elements.resetFilter.addEventListener('click', function() {
+            elements.dateFrom.value = '';
+            elements.dateTo.value = '';
             state.dateFrom = null;
             state.dateTo = null;
             filterData();
@@ -284,9 +300,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // 初始化事件监听
         initEventListeners();
         
-        // 更新表格和分页
-        updateTable();
-        updatePagination();
+        // 更新UI
+        updateUI();
     }
     
     // 启动应用
