@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --color-primary: #8B5CF6;
+  --color-secondary: #EC4899;
+  --color-dark-950: #0f0f1a;
+  --color-dark-900: #1a1a2e;
+  --color-dark-800: #16213e;
+  --color-dark-700: #1f2949;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-gray-900 text-gray-100 min-h-screen;
+    font-family: var(--font-sans);
+  }
+
+  * {
+    @apply border-gray-800;
+  }
+
+  ::selection {
+    @apply bg-purple-500/30 text-white;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-900;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-700 rounded-full hover:bg-gray-600 transition-colors;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .glass {
+    @apply bg-gray-800/50 backdrop-blur-md border border-gray-700/50;
+  }
+
+  .glass-hover {
+    @apply hover:bg-gray-700/50 hover:border-gray-600/50;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10 hover:-translate-y-1;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-xl transition-all duration-300 hover:from-purple-500 hover:to-pink-500 hover:shadow-lg hover:shadow-purple-500/25;
+  }
+
+  .btn-secondary {
+    @apply border-2 border-gray-700 text-gray-300 font-semibold rounded-xl transition-all duration-300 hover:border-purple-500 hover:text-white hover:bg-gray-800/50;
+  }
+
+  .input-base {
+    @apply bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all;
+  }
+}
