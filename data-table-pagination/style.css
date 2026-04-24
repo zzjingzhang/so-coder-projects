@@ -56,6 +56,10 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+    height: 38px;
+    min-height: 38px;
+    max-height: 38px;
+    box-sizing: border-box;
 }
 
 .filter-group label {
@@ -70,6 +74,14 @@ body {
     border-radius: 4px;
     font-size: 14px;
     transition: border-color 0.3s ease;
+    height: 38px;
+    min-height: 38px;
+    max-height: 38px;
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+    box-sizing: border-box;
+    line-height: 1.5;
 }
 
 .date-input:focus {
@@ -86,6 +98,11 @@ body {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
+    height: 38px;
+    min-height: 38px;
+    max-height: 38px;
+    box-sizing: border-box;
+    line-height: 1.5;
 }
 
 .filter-btn {
