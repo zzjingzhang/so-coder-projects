@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import Papa from 'papaparse';
+import { Select } from 'antd';
 import {
   LineChart,
   Line,
@@ -42,9 +43,15 @@ function App() {
       skipEmptyLines: true,
       complete: (results) => {
         const parsedData = results.data as DataPoint[];
-        const allColumns = Object.keys(parsedData[0] || {});
         
-        setData(parsedData);
+        const validData = parsedData.filter((row) => {
+          const values = Object.values(row);
+          return values.some((value) => value !== null && value !== undefined && value !== '');
+        });
+        
+        const allColumns = validData.length > 0 ? Object.keys(validData[0] || {}) : [];
+        
+        setData(validData);
         setColumns(allColumns);
         setXAxis(allColumns[0] || '');
         setYAxis(allColumns.length > 1 ? [allColumns[1]] : []);
@@ -74,11 +81,34 @@ function App() {
       );
     }
 
+    const filteredData = data.filter((row) => {
+      const xValue = row[xAxis];
+      if (xValue === null || xValue === undefined || xValue === '') {
+        return false;
+      }
+      
+      const hasValidYValue = yAxis.some((y) => {
+        const yValue = row[y];
+        return yValue !== null && yValue !== undefined && yValue !== '';
+      });
+      
+      return hasValidYValue;
+    });
+
+    if (!filteredData.length) {
+      return (
+        <div className="chart-placeholder">
+          <h3>没有有效的数据可以显示</h3>
+          <p>请检查您的 CSV 文件是否包含有效的数据点</p>
+        </div>
+      );
+    }
+
     switch (chartType) {
       case 'line':
         return (
           <ResponsiveContainer width="100%" height={500}>
-            <LineChart data={data}>
+            <LineChart data={filteredData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey={xAxis} />
               <YAxis />
@@ -93,6 +123,7 @@ function App() {
                   strokeWidth={2}
                   dot={{ r: 4 }}
                   activeDot={{ r: 6 }}
+                  connectNulls={false}
                 />
               ))}
             </LineChart>
@@ -101,7 +132,7 @@ function App() {
       case 'bar':
         return (
           <ResponsiveContainer width="100%" height={500}>
-            <BarChart data={data}>
+            <BarChart data={filteredData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey={xAxis} />
               <YAxis />
@@ -120,17 +151,31 @@ function App() {
       case 'scatter':
         if (yAxis.length === 0) return null;
         const yValue = yAxis[0];
+        const scatterData = filteredData.filter((row) => {
+          const yVal = row[yValue];
+          return yVal !== null && yVal !== undefined && yVal !== '';
+        });
+        
+        if (!scatterData.length) {
+          return (
+            <div className="chart-placeholder">
+              <h3>没有有效的散点图数据</h3>
+              <p>请确保 X 轴和 Y 轴数据都包含有效值</p>
+            </div>
+          );
+        }
+        
         return (
           <ResponsiveContainer width="100%" height={500}>
             <ScatterChart>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey={xAxis} name={xAxis} />
               <YAxis dataKey={yValue} name={yValue} />
-              <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+              <Tooltip cursor={{ strokeDasharray: "3 3" }} />
               <Legend />
               <Scatter
                 name={`${xAxis} vs ${yValue}`}
-                data={data}
+                data={scatterData}
                 fill={colors[0]}
               />
             </ScatterChart>
@@ -171,68 +216,58 @@ function App() {
           <section className="controls-section">
             <div className="control-group">
               <label className="control-label">图表类型:</label>
-              <div className="chart-type-buttons">
-                <button
-                  className={`chart-type-btn ${chartType === 'line' ? 'active' : ''}`}
-                  onClick={() => setChartType('line')}
-                >
-                  📈 折线图
-                </button>
-                <button
-                  className={`chart-type-btn ${chartType === 'bar' ? 'active' : ''}`}
-                  onClick={() => setChartType('bar')}
-                >
-                  📊 柱状图
-                </button>
-                <button
-                  className={`chart-type-btn ${chartType === 'scatter' ? 'active' : ''}`}
-                  onClick={() => setChartType('scatter')}
-                >
-                  ⚬ 散点图
-                </button>
-              </div>
+              <Select
+                value={chartType}
+                onChange={(value) => {
+                  setChartType(value as ChartType);
+                  if (value === 'scatter' && yAxis.length > 1) {
+                    setYAxis([yAxis[0]]);
+                  }
+                }}
+                style={{ width: '100%' }}
+                size="large"
+                options={[
+                  { value: 'line', label: '📈 折线图' },
+                  { value: 'bar', label: '📊 柱状图' },
+                  { value: 'scatter', label: '⚬ 散点图' },
+                ]}
+              />
             </div>
 
             <div className="control-group">
               <label className="control-label">X 轴数据:</label>
-              <select
+              <Select
                 value={xAxis}
-                onChange={(e) => setXAxis(e.target.value)}
-                className="axis-select"
-              >
-                {columns.map((col) => (
-                  <option key={col} value={col}>
-                    {col}
-                  </option>
-                ))}
-              </select>
+                onChange={(value) => setXAxis(value)}
+                style={{ width: '100%' }}
+                size="large"
+                options={columns.map((col) => ({ value: col, label: col }))}
+              />
             </div>
 
             <div className="control-group">
               <label className="control-label">
                 Y 轴数据 {chartType === 'scatter' ? '(单选)' : '(可多选)'}:
               </label>
-              <div className="y-axis-options">
-                {columns
+              <Select
+                value={chartType === 'scatter' ? (yAxis[0] || undefined) : yAxis}
+                onChange={(value) => {
+                  if (chartType === 'scatter') {
+                    setYAxis(value ? [value as string] : []);
+                  } else {
+                    setYAxis(value as string[]);
+                  }
+                }}
+                mode={chartType === 'scatter' ? undefined : 'multiple'}
+                placeholder="请选择 Y 轴数据"
+                style={{ width: '100%' }}
+                size="large"
+                maxTagCount="responsive"
+                allowClear
+                options={columns
                   .filter((col) => col !== xAxis)
-                  .map((col) => (
-                    <label key={col} className="y-axis-option">
-                      <input
-                        type={chartType === 'scatter' ? 'radio' : 'checkbox'}
-                        checked={yAxis.includes(col)}
-                        onChange={() => {
-                          if (chartType === 'scatter') {
-                            setYAxis([col]);
-                          } else {
-                            handleYAxisChange(col);
-                          }
-                        }}
-                        className="axis-checkbox"
-                      />
-                      <span className="axis-label">{col}</span>
-                    </label>
-                  ))}
-              </div>
+                  .map((col) => ({ value: col, label: col }))}
+              />
             </div>
           </section>
         )}
