@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>石头剪子布游戏</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- 顶部区域：Logo和得分 -->
+        <header class="game-header">
+            <div class="logo">
+                <img src="assets/svg/logo.svg" alt="Rock Paper Scissors Logo">
+            </div>
+            <div class="score-board">
+                <div class="score">
+                    <div class="score-label">玩家</div>
+                    <div class="score-value" id="player-score">0</div>
+                </div>
+                <div class="score">
+                    <div class="score-label">电脑</div>
+                    <div class="score-value" id="computer-score">0</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 游戏画布区域 -->
+        <main class="game-main">
+            <canvas id="game-canvas" width="400" height="400"></canvas>
+
+            <!-- 游戏选择区域 -->
+            <div class="game-choices" id="choices-section">
+                <div class="triangle-bg">
+                    <img src="assets/svg/triangle-bg.svg" alt="Triangle Background">
+                </div>
+                <button class="choice-btn" data-choice="rock">
+                    <img src="assets/svg/rock.svg" alt="Rock">
+                </button>
+                <button class="choice-btn" data-choice="paper">
+                    <img src="assets/svg/paper.svg" alt="Paper">
+                </button>
+                <button class="choice-btn" data-choice="scissors">
+                    <img src="assets/svg/scissors.svg" alt="Scissors">
+                </button>
+            </div>
+
+            <!-- 结果展示区域 -->
+            <div class="game-result" id="result-section" style="display: none;">
+                <div class="result-choice">
+                    <div class="choice-label">你的选择</div>
+                    <div class="choice-icon" id="player-choice">
+                        <img src="" alt="Player Choice">
+                    </div>
+                </div>
+                <div class="result-info">
+                    <div class="result-text" id="result-text"></div>
+                    <button class="play-again-btn" id="play-again-btn">Play again</button>
+                </div>
+                <div class="result-choice">
+                    <div class="choice-label">电脑选择</div>
+                    <div class="choice-icon" id="computer-choice">
+                        <img src="" alt="Computer Choice">
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="game-footer">
+            <p>点击石头、剪刀或布开始游戏</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
