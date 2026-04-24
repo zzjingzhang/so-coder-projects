@@ -132,7 +132,15 @@ class SpaceShooter {
         
         document.getElementById('startBtn').addEventListener('click', () => this.startGame());
         document.getElementById('restartBtn').addEventListener('click', () => this.startGame());
+        document.getElementById('restartFromPauseBtn').addEventListener('click', () => this.startGame());
         document.getElementById('resumeBtn').addEventListener('click', () => this.resumeGame());
+        document.getElementById('pauseBtn').addEventListener('click', () => {
+            if (this.gameState === 'playing') {
+                this.pauseGame();
+            } else if (this.gameState === 'paused') {
+                this.resumeGame();
+            }
+        });
         
         this.setupMobileControls();
     }
@@ -466,10 +474,17 @@ class SpaceShooter {
     }
     
     checkCollisions() {
-        this.bullets.forEach((bullet, bulletIndex) => {
-            this.enemies.forEach((enemy, enemyIndex) => {
+        const bulletsToRemove = new Set();
+        const enemiesToRemove = new Set();
+        
+        for (let i = 0; i < this.bullets.length; i++) {
+            const bullet = this.bullets[i];
+            
+            for (let j = 0; j < this.enemies.length; j++) {
+                const enemy = this.enemies[j];
+                
                 if (this.isColliding(bullet, enemy)) {
-                    this.bullets.splice(bulletIndex, 1);
+                    bulletsToRemove.add(i);
                     enemy.hp--;
                     
                     if (enemy.hp <= 0) {
@@ -478,17 +493,26 @@ class SpaceShooter {
                             enemy.y + enemy.height / 2,
                             enemy.color
                         );
-                        this.enemies.splice(enemyIndex, 1);
+                        enemiesToRemove.add(j);
                         this.score += enemy.score;
                         this.updateUI();
                     }
                 }
-            });
-        });
+            }
+        }
+        
+        this.bullets = this.bullets.filter((_, index) => !bulletsToRemove.has(index));
+        this.enemies = this.enemies.filter((_, index) => !enemiesToRemove.has(index));
         
         if (!this.player.invincible) {
-            this.enemies.forEach((enemy, index) => {
+            const enemiesToRemove2 = new Set();
+            
+            for (let i = 0; i < this.enemies.length; i++) {
+                const enemy = this.enemies[i];
+                
                 if (this.isColliding(this.player, enemy)) {
+                    enemiesToRemove2.add(i);
+                    
                     if (this.powerUpActive.shield) {
                         this.powerUpActive.shield = false;
                         this.createExplosion(
@@ -496,31 +520,45 @@ class SpaceShooter {
                             enemy.y + enemy.height / 2,
                             enemy.color
                         );
-                        this.enemies.splice(index, 1);
                     } else {
                         this.hitPlayer();
                     }
                 }
-            });
+            }
             
-            this.enemyBullets.forEach((bullet, index) => {
+            this.enemies = this.enemies.filter((_, index) => !enemiesToRemove2.has(index));
+            
+            const enemyBulletsToRemove = new Set();
+            
+            for (let i = 0; i < this.enemyBullets.length; i++) {
+                const bullet = this.enemyBullets[i];
+                
                 if (this.isColliding(this.player, bullet)) {
-                    this.enemyBullets.splice(index, 1);
+                    enemyBulletsToRemove.add(i);
+                    
                     if (this.powerUpActive.shield) {
                         this.powerUpActive.shield = false;
                     } else {
                         this.hitPlayer();
                     }
                 }
-            });
+            }
+            
+            this.enemyBullets = this.enemyBullets.filter((_, index) => !enemyBulletsToRemove.has(index));
         }
         
-        this.powerUps.forEach((powerUp, index) => {
+        const powerUpsToRemove = new Set();
+        
+        for (let i = 0; i < this.powerUps.length; i++) {
+            const powerUp = this.powerUps[i];
+            
             if (this.isColliding(this.player, powerUp)) {
+                powerUpsToRemove.add(i);
                 this.activatePowerUp(powerUp.type);
-                this.powerUps.splice(index, 1);
             }
-        });
+        }
+        
+        this.powerUps = this.powerUps.filter((_, index) => !powerUpsToRemove.has(index));
     }
     
     hitPlayer() {
