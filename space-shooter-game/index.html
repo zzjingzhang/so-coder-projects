@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>太空战机 - Space Shooter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <div class="score">得分: <span id="score">0</span></div>
+            <div class="lives">生命: <span id="lives">❤❤❤</span></div>
+            <div class="level">等级: <span id="level">1</span></div>
+        </div>
+        
+        <canvas id="gameCanvas"></canvas>
+        
+        <div class="game-overlay" id="startScreen">
+            <h1>太空战机</h1>
+            <p class="subtitle">Space Shooter</p>
+            <div class="controls-info">
+                <p><strong>操作方式：</strong></p>
+                <p>🖱️ 鼠标移动控制飞机</p>
+                <p>⬆️⬇️⬅️➡️ 键盘方向键移动</p>
+                <p>自动发射子弹</p>
+            </div>
+            <button class="game-btn" id="startBtn">开始游戏</button>
+        </div>
+        
+        <div class="game-overlay" id="gameOverScreen" style="display: none;">
+            <h1>游戏结束</h1>
+            <p class="final-score">最终得分: <span id="finalScore">0</span></p>
+            <p class="final-level">到达等级: <span id="finalLevel">1</span></p>
+            <button class="game-btn" id="restartBtn">重新开始</button>
+        </div>
+        
+        <div class="game-overlay" id="pauseScreen" style="display: none;">
+            <h1>游戏暂停</h1>
+            <button class="game-btn" id="resumeBtn">继续游戏</button>
+        </div>
+    </div>
+    
+    <div class="mobile-controls" id="mobileControls">
+        <div class="control-btn up" id="upBtn">▲</div>
+        <div class="control-btn left" id="leftBtn">◀</div>
+        <div class="control-btn down" id="downBtn">▼</div>
+        <div class="control-btn right" id="rightBtn">▶</div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
