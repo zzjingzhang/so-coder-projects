@@ -6,7 +6,7 @@ export const mockTracks: Track[] = [
     title: 'Midnight Dreams',
     artist: 'Alex Nova',
     album: 'Echoes of Night',
-    cover: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20electronic%20music%20album%20cover%20with%20neon%20lights%20and%20abstract%20shapes&image_size=square',
+    cover: 'https://picsum.photos/seed/music1/300/300',
     audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
     duration: 234,
     likes: 12540,
@@ -18,7 +18,7 @@ export const mockTracks: Track[] = [
     title: 'Summer Breeze',
     artist: 'Luna Wave',
     album: 'Tropical Vibes',
-    cover: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=tropical%20beach%20music%20album%20cover%20with%20palm%20trees%20and%20sunset&image_size=square',
+    cover: 'https://picsum.photos/seed/music2/300/300',
     audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
     duration: 198,
     likes: 8920,
@@ -30,7 +30,7 @@ export const mockTracks: Track[] = [
     title: 'Urban Rhythm',
     artist: 'Street Beats',
     album: 'City Lights',
-    cover: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=urban%20hip%20hop%20music%20album%20cover%20with%20city%20skyline%20and%20graffiti&image_size=square',
+    cover: 'https://picsum.photos/seed/music3/300/300',
     audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
     duration: 215,
     likes: 15670,
@@ -42,7 +42,7 @@ export const mockTracks: Track[] = [
     title: 'Acoustic Morning',
     artist: 'Sarah Johnson',
     album: 'Folk Tales',
-    cover: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=acoustic%20folk%20music%20album%20cover%20with%20guitar%20and%20nature%20scenery&image_size=square',
+    cover: 'https://picsum.photos/seed/music4/300/300',
     audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
     duration: 187,
     likes: 6540,
@@ -54,7 +54,7 @@ export const mockTracks: Track[] = [
     title: 'Neon Pulse',
     artist: 'Synth Master',
     album: 'Retro Future',
-    cover: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=synthwave%20retro%20music%20album%20cover%20with%20neon%20colors%20and%2080s%20aesthetic&image_size=square',
+    cover: 'https://picsum.photos/seed/music5/300/300',
     audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3',
     duration: 245,
     likes: 21340,
@@ -66,7 +66,7 @@ export const mockTracks: Track[] = [
     title: 'Deep Ocean',
     artist: 'Blue Waves',
     album: 'Underwater World',
-    cover: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=deep%20house%20music%20album%20cover%20with%20ocean%20waves%20and%20bubbles&image_size=square',
+    cover: 'https://picsum.photos/seed/music6/300/300',
     audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3',
     duration: 209,
     likes: 9870,
@@ -78,7 +78,7 @@ export const mockTracks: Track[] = [
     title: 'Rock Revolution',
     artist: 'Thunder Band',
     album: 'Electric Soul',
-    cover: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=rock%20music%20album%20cover%20with%20electric%20guitar%20and%20stage%20lights&image_size=square',
+    cover: 'https://picsum.photos/seed/music7/300/300',
     audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3',
     duration: 228,
     likes: 18760,
@@ -90,7 +90,7 @@ export const mockTracks: Track[] = [
     title: 'Jazz Evening',
     artist: 'Moonlight Trio',
     album: 'Night Sessions',
-    cover: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=jazz%20music%20album%20cover%20with%20saxophone%20and%20dim%20cafe%20lights&image_size=square',
+    cover: 'https://picsum.photos/seed/music8/300/300',
     audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3',
     duration: 256,
     likes: 11230,
@@ -103,7 +103,7 @@ export const mockPlaylists: Playlist[] = [
   {
     id: '1',
     title: 'Chill Vibes',
-    cover: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chill%20music%20playlist%20cover%20with%20cozy%20cafe%20atmosphere&image_size=square',
+    cover: 'https://picsum.photos/seed/playlist1/300/300',
     tracks: mockTracks.slice(0, 4),
     description: 'Perfect tunes for relaxation and focus',
     owner: 'SoundWave'
@@ -111,7 +111,7 @@ export const mockPlaylists: Playlist[] = [
   {
     id: '2',
     title: 'Workout Energy',
-    cover: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=workout%20music%20playlist%20cover%20with%20energetic%20gym%20scenery&image_size=square',
+    cover: 'https://picsum.photos/seed/playlist2/300/300',
     tracks: mockTracks.slice(2, 6),
     description: 'High energy beats to power your workout',
     owner: 'SoundWave'
@@ -119,7 +119,7 @@ export const mockPlaylists: Playlist[] = [
   {
     id: '3',
     title: 'Night Drive',
-    cover: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=night%20drive%20music%20playlist%20cover%20with%20city%20lights%20and%20car&image_size=square',
+    cover: 'https://picsum.photos/seed/playlist3/300/300',
     tracks: mockTracks.slice(4, 8),
     description: 'Soundtrack for your late night adventures',
     owner: 'SoundWave'
@@ -129,7 +129,7 @@ export const mockPlaylists: Playlist[] = [
 export const mockUser: User = {
   id: '1',
   name: 'Music Lover',
-  avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20user%20avatar%20with%20headphones%20and%20music%20theme&image_size=square',
+  avatar: 'https://picsum.photos/seed/useravatar/200/200',
   followers: 1234,
   following: 567
 }

@@ -29,7 +29,7 @@
         
         <RouterLink to="/profile" class="profile-btn">
           <img 
-            src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20user%20avatar%20with%20headphones%20and%20music%20theme&image_size=square" 
+            src="https://picsum.photos/seed/useravatar/200/200" 
             alt="Profile" 
             class="profile-avatar"
           />
