@@ -54,10 +54,11 @@ body {
 
 .score-label {
     font-size: 14px;
-    color: #a0a0a0;
+    color: #e0e0e0;
     margin-bottom: 5px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    font-weight: 600;
 }
 
 .score-value {
@@ -286,8 +287,9 @@ body {
 .game-footer {
     text-align: center;
     margin-top: 40px;
-    color: #a0a0a0;
+    color: #e0e0e0;
     font-size: 14px;
+    font-weight: 500;
 }
 
 /* 动画效果 */

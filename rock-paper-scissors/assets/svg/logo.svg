@@ -1,10 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80">
   <defs>
     <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#4a69bd;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#6a89cc;stop-opacity:1" />
     </linearGradient>
   </defs>
-  <rect width="200" height="80" rx="10" fill="url(#logoGradient)" />
-  <text x="100" y="50" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">ROCK PAPER SCISSORS</text>
+  
+  <!-- 背景矩形：从x=0开始，宽度320，完全覆盖整个SVG区域 -->
+  <rect x="0" y="0" width="320" height="80" rx="10" fill="url(#logoGradient)" />
+  
+  <!-- 文字：位于中心x=160，左右与背景边缘各有足够的间隙 -->
+  <!-- 文字左右留白计算：320 - 文字宽度 ≈ 320 - 260 = 60px，左右各30px间隙 -->
+  <text x="160" y="50" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="white" text-anchor="middle">ROCK PAPER SCISSORS</text>
 </svg>
