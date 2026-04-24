@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   HomeIcon,
   CategoryIcon,
@@ -28,6 +28,7 @@ const Header: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (searchOpen && searchInputRef.current) {
@@ -63,31 +64,39 @@ const Header: React.FC = () => {
     }
   };
 
+  const handleNavigation = (href: string) => {
+    setMobileMenuOpen(false);
+    navigate(href);
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-md border-b border-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
-          <Link to="/" className="flex items-center space-x-2 group">
+          <button
+            onClick={() => handleNavigation('/')}
+            className="flex items-center space-x-2 group"
+          >
             <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
               <MusicIcon size={24} className="text-white" />
             </div>
             <span className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
               VinylVibe
             </span>
-          </Link>
+          </button>
 
           <nav className="hidden md:flex items-center space-x-1">
             {navItems.slice(0, 4).map((item) => {
               const Icon = iconMap[item.icon];
               return (
-                <Link
+                <button
                   key={item.id}
-                  to={item.href}
-                  className="flex items-center space-x-2 px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition-all duration-200 group"
+                  onClick={() => handleNavigation(item.href)}
+                  className="flex items-center space-x-2 px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition-all duration-200 group cursor-pointer"
                 >
                   <Icon size={20} className="text-gray-400 group-hover:text-purple-400 transition-colors" />
                   <span className="text-sm font-medium hidden lg:inline">{item.label}</span>
-                </Link>
+                </button>
               );
             })}
           </nav>
@@ -153,31 +162,30 @@ const Header: React.FC = () => {
             </button>
 
             <div className="hidden md:flex items-center">
-              <Link
-                to="/profile"
-                className="p-2 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition-all"
+              <button
+                onClick={() => handleNavigation('/profile')}
+                className="p-2 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition-all cursor-pointer"
               >
                 <UserIcon size={20} />
-              </Link>
+              </button>
             </div>
           </div>
         </div>
 
         {mobileMenuOpen && (
-          <div className="md:hidden overflow-hidden transition-all duration-300 ease-in-out max-h-96 pb-4 opacity-100">
+          <div className="md:hidden">
             <div className="pt-2 border-t border-gray-800">
               {navItems.map((item) => {
                 const Icon = iconMap[item.icon];
                 return (
-                  <Link
+                  <button
                     key={item.id}
-                    to={item.href}
-                    className="flex items-center space-x-3 px-2 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition-all"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={() => handleNavigation(item.href)}
+                    className="flex items-center space-x-3 px-2 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition-all w-full text-left cursor-pointer"
                   >
                     <Icon size={20} />
                     <span className="font-medium">{item.label}</span>
-                  </Link>
+                  </button>
                 );
               })}
             </div>

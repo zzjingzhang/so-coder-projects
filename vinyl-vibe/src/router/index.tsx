@@ -2,6 +2,10 @@ import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import type { RouteObject } from 'react-router-dom';
 import Home from '../pages/Home';
+import Category from '../pages/Category';
+import Wishlist from '../pages/Wishlist';
+import Cart from '../pages/Cart';
+import Profile from '../pages/Profile';
 
 const routes: RouteObject[] = [
   {
@@ -10,19 +14,19 @@ const routes: RouteObject[] = [
   },
   {
     path: '/category',
-    element: <Home />,
+    element: <Category />,
   },
   {
     path: '/wishlist',
-    element: <Home />,
+    element: <Wishlist />,
   },
   {
     path: '/cart',
-    element: <Home />,
+    element: <Cart />,
   },
   {
     path: '/profile',
-    element: <Home />,
+    element: <Profile />,
   },
   {
     path: '*',
