@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据表格 - 分页与筛选</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>数据管理系统</h1>
+        </header>
+        
+        <main class="main-content">
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label for="date-from">开始日期：</label>
+                    <input type="date" id="date-from" class="date-input">
+                </div>
+                <div class="filter-group">
+                    <label for="date-to">结束日期：</label>
+                    <input type="date" id="date-to" class="date-input">
+                </div>
+                <div class="filter-group">
+                    <button id="apply-filter" class="filter-btn">应用筛选</button>
+                </div>
+                <div class="filter-group">
+                    <button id="reset-filter" class="reset-btn">重置</button>
+                </div>
+            </div>
+            
+            <div class="table-section">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>名称</th>
+                            <th>类型</th>
+                            <th>创建时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="pagination-section">
+                <div class="pagination-info">
+                    共 <span id="total-count">0</span> 条数据，当前第 <span id="current-page">1</span> 页
+                </div>
+                <div class="pagination-controls">
+                    <button id="first-page" class="page-btn">首页</button>
+                    <button id="prev-page" class="page-btn">上一页</button>
+                    <div class="page-numbers" id="page-numbers">
+                    </div>
+                    <button id="next-page" class="page-btn">下一页</button>
+                    <button id="last-page" class="page-btn">末页</button>
+                    <div class="page-size-selector">
+                        <label for="page-size">每页显示：</label>
+                        <select id="page-size" class="page-size">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
