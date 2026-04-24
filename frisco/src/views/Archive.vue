@@ -57,7 +57,7 @@
           </aside>
           
           <main class="archive-main">
-            <div v-if="groupedPosts.size === 0" class="no-posts">
+            <div v-if="groupedPosts.length === 0" class="no-posts">
               <p>没有找到符合条件的文章</p>
               <button class="btn btn-secondary" @click="clearFilters">
                 清除筛选
@@ -66,14 +66,14 @@
             
             <div v-else class="archive-groups">
               <div 
-                v-for="(posts, yearMonth) in groupedPosts" 
-                :key="yearMonth" 
+                v-for="group in groupedPosts" 
+                :key="group.yearMonth" 
                 class="archive-group"
               >
-                <h2 class="group-title">{{ formatYearMonth(yearMonth) }}</h2>
+                <h2 class="group-title">{{ formatYearMonth(group.yearMonth) }}</h2>
                 <div class="group-posts">
                   <RouterLink
-                    v-for="post in posts"
+                    v-for="post in group.posts"
                     :key="post.id"
                     :to="`/blog/${post.id}`"
                     class="post-item"
@@ -117,20 +117,26 @@ const filteredPosts = computed(() => {
 })
 
 const groupedPosts = computed(() => {
-  const groups = new Map<string, BlogPost[]>()
+  const groupsMap = new Map<string, BlogPost[]>()
   
   filteredPosts.value.forEach(post => {
     const date = new Date(post.publishDate)
     const yearMonth = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
     
-    if (!groups.has(yearMonth)) {
-      groups.set(yearMonth, [])
+    if (!groupsMap.has(yearMonth)) {
+      groupsMap.set(yearMonth, [])
     }
-    groups.get(yearMonth)!.push(post)
+    groupsMap.get(yearMonth)!.push(post)
   })
   
-  const sortedEntries = Array.from(groups.entries()).sort((a, b) => b[0].localeCompare(a[0]))
-  return new Map(sortedEntries)
+  const sortedEntries = Array.from(groupsMap.entries())
+    .sort((a, b) => b[0].localeCompare(a[0]))
+    .map(([yearMonth, posts]) => ({
+      yearMonth,
+      posts
+    }))
+  
+  return sortedEntries
 })
 
 const formatYearMonth = (yearMonth: string) => {

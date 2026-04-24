@@ -27,7 +27,7 @@
           </div>
           <div class="story-image">
             <img 
-              src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20startup%20team%20working%20in%20collaborative%20office%20space%20minimalist%20design&image_size=landscape_16_9" 
+              src="https://picsum.photos/seed/frisco-team/800/500" 
               alt="Frisco 团队" 
             />
           </div>

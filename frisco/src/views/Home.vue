@@ -38,7 +38,7 @@
         </div>
         <div class="hero-image">
           <img 
-            src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20SaaS%20dashboard%20interface%20with%20clean%20minimalist%20design%20dark%20theme&image_size=landscape_16_9" 
+            src="https://picsum.photos/seed/frisco-hero/800/500" 
             alt="Frisco Dashboard" 
           />
         </div>

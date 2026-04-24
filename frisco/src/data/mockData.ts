@@ -27,10 +27,10 @@ export const blogPosts: BlogPost[] = [
     
     <h2>总结</h2>
     <p>成功的 SaaS 营销是一个持续迭代的过程。保持对市场的敏锐洞察，不断学习和优化，才能在竞争中脱颖而出。</p>`,
-    coverImage: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20SaaS%20dashboard%20interface%20with%20charts%20and%20analytics%20minimalist%20design&image_size=landscape_16_9',
+    coverImage: 'https://picsum.photos/seed/frisco-blog-1/800/500',
     author: {
       name: '张明远',
-      avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20asian%20male%20business%20portrait%20minimalist&image_size=square',
+      avatar: 'https://picsum.photos/seed/frisco-avatar-1/100/100',
       role: '产品营销总监'
     },
     publishDate: '2024-03-15',
@@ -56,10 +56,10 @@ export const blogPosts: BlogPost[] = [
     
     <h2>4. 组件之间的状态共享</h2>
     <p>使用组合式函数是在组件之间共享状态的好方法。你可以创建可复用的状态管理逻辑。</p>`,
-    coverImage: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=vuejs%20logo%20with%20modern%20code%20editor%20background%20tech%20design&image_size=landscape_16_9',
+    coverImage: 'https://picsum.photos/seed/frisco-blog-2/800/500',
     author: {
       name: '李晓华',
-      avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20asian%20female%20developer%20portrait%20minimalist&image_size=square',
+      avatar: 'https://picsum.photos/seed/frisco-avatar-2/100/100',
       role: '前端架构师'
     },
     publishDate: '2024-03-10',
@@ -85,10 +85,10 @@ export const blogPosts: BlogPost[] = [
     
     <h2>4. 微交互的精细化</h2>
     <p>好的微交互能够大幅提升用户体验。关注细节，让每一次交互都有意义。</p>`,
-    coverImage: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20UI%20UX%20design%20interface%20with%20color%20palette%20and%20wireframes&image_size=landscape_16_9',
+    coverImage: 'https://picsum.photos/seed/frisco-blog-3/800/500',
     author: {
       name: '王美琪',
-      avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=creative%20designer%20woman%20portrait%20artistic%20minimalist&image_size=square',
+      avatar: 'https://picsum.photos/seed/frisco-avatar-3/100/100',
       role: 'UX 设计主管'
     },
     publishDate: '2024-03-05',
@@ -114,10 +114,10 @@ export const blogPosts: BlogPost[] = [
     
     <h2>4. 递归类型</h2>
     <p>递归类型对于表示嵌套数据结构非常有用。</p>`,
-    coverImage: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=typescript%20logo%20with%20code%20syntax%20highlight%20dark%20theme&image_size=landscape_16_9',
+    coverImage: 'https://picsum.photos/seed/frisco-blog-4/800/500',
     author: {
       name: '陈志远',
-      avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=senior%20developer%20man%20portrait%20professional%20minimalist&image_size=square',
+      avatar: 'https://picsum.photos/seed/frisco-avatar-4/100/100',
       role: '技术负责人'
     },
     publishDate: '2024-02-28',
@@ -143,10 +143,10 @@ export const blogPosts: BlogPost[] = [
     
     <h2>4. 数据分析与洞察提取</h2>
     <p>收集数据只是第一步。真正的价值在于从数据中提取出可执行的洞察。</p>`,
-    coverImage: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=product%20manager%20doing%20user%20research%20with%20data%20charts%20modern%20office&image_size=landscape_16_9',
+    coverImage: 'https://picsum.photos/seed/frisco-blog-5/800/500',
     author: {
       name: '林小燕',
-      avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=product%20manager%20woman%20portrait%20confident%20professional&image_size=square',
+      avatar: 'https://picsum.photos/seed/frisco-avatar-5/100/100',
       role: '资深产品经理'
     },
     publishDate: '2024-02-20',
@@ -172,10 +172,10 @@ export const blogPosts: BlogPost[] = [
     
     <h2>4. 感知性能</h2>
     <p>有时候，让用户感觉快比实际上快更重要。骨架屏、加载动画等都是提升感知性能的方法。</p>`,
-    coverImage: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=web%20performance%20speed%20meter%20with%20fast%20loading%20graph%20tech%20design&image_size=landscape_16_9',
+    coverImage: 'https://picsum.photos/seed/frisco-blog-6/800/500',
     author: {
       name: '周宇轩',
-      avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=performance%20engineer%20man%20portrait%20focused%20professional&image_size=square',
+      avatar: 'https://picsum.photos/seed/frisco-avatar-6/100/100',
       role: '性能优化专家'
     },
     publishDate: '2024-02-15',
@@ -258,7 +258,7 @@ export const testimonials: Testimonial[] = [
     name: '刘建国',
     role: 'CEO',
     company: '云启科技',
-    avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=asian%20businessman%20ceo%20portrait%20confident%20professional&image_size=square',
+    avatar: 'https://picsum.photos/seed/frisco-testimonial-1/100/100',
     content: '使用 Frisco 后，我们的网站转化率提升了 35%。专业的设计和流畅的用户体验，让我们的品牌形象焕然一新。强烈推荐给所有追求品质的 SaaS 企业。',
     rating: 5
   },
@@ -267,7 +267,7 @@ export const testimonials: Testimonial[] = [
     name: '陈雪梅',
     role: '市场总监',
     company: '数智未来',
-    avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=asian%20marketing%20director%20woman%20portrait%20professional&image_size=square',
+    avatar: 'https://picsum.photos/seed/frisco-testimonial-2/100/100',
     content: 'Frisco 的 SEO 优化做得非常出色。上线三个月后，我们的自然搜索流量增长了 180%。技术支持团队也非常专业，响应速度快，解决问题及时。',
     rating: 5
   },
@@ -276,7 +276,7 @@ export const testimonials: Testimonial[] = [
     name: '张伟',
     role: 'CTO',
     company: '新维科技',
-    avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=asian%20cto%20tech%20leader%20man%20portrait%20professional&image_size=square',
+    avatar: 'https://picsum.photos/seed/frisco-testimonial-3/100/100',
     content: '作为技术负责人，我非常欣赏 Frisco 的代码质量。架构清晰、文档完善，二次开发成本很低。组件化设计让我们的前端团队效率提升明显。',
     rating: 5
   }
@@ -318,7 +318,7 @@ export const teamMembers: TeamMember[] = [
     id: 1,
     name: '张明远',
     role: 'CEO & 创始人',
-    avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=asian%20founder%20ceo%20man%20portrait%20visionary%20professional&image_size=square',
+    avatar: 'https://picsum.photos/seed/frisco-team-1/100/100',
     bio: '拥有 12 年互联网行业经验，曾在多家知名科技公司担任产品和市场负责人。2019 年创立 Frisco，致力于帮助 SaaS 企业打造专业的数字化品牌形象。',
     social: {
       twitter: 'https://twitter.com',
@@ -330,7 +330,7 @@ export const teamMembers: TeamMember[] = [
     id: 2,
     name: '李晓华',
     role: 'CTO',
-    avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=asian%20female%20cto%20tech%20expert%20portrait%20professional&image_size=square',
+    avatar: 'https://picsum.photos/seed/frisco-team-2/100/100',
     bio: '全栈开发专家，Vue 生态核心贡献者。曾负责多个大型 SaaS 产品的技术架构设计。加入 Frisco 后，主导产品技术路线规划和核心功能开发。',
     social: {
       twitter: 'https://twitter.com',
@@ -342,7 +342,7 @@ export const teamMembers: TeamMember[] = [
     id: 3,
     name: '王美琪',
     role: '设计总监',
-    avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=asian%20designer%20creative%20director%20woman%20portrait%20artistic&image_size=square',
+    avatar: 'https://picsum.photos/seed/frisco-team-3/100/100',
     bio: '资深 UX/UI 设计师，曾获多项国际设计大奖。擅长将复杂的技术概念转化为优雅的用户体验。她领导的设计团队始终追求极致的视觉体验和交互细节。',
     social: {
       twitter: 'https://twitter.com',
@@ -354,7 +354,7 @@ export const teamMembers: TeamMember[] = [
     id: 4,
     name: '陈志远',
     role: '产品负责人',
-    avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=asian%20product%20manager%20man%20portrait%20thoughtful%20professional&image_size=square',
+    avatar: 'https://picsum.photos/seed/frisco-team-4/100/100',
     bio: '前 Google 产品经理，拥有丰富的 B2B SaaS 产品经验。以用户为中心的产品思维，带领团队持续迭代优化产品功能，确保 Frisco 始终满足市场需求。',
     social: {
       twitter: 'https://twitter.com',
