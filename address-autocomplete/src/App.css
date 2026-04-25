@@ -13,13 +13,13 @@
   top: 0;
   z-index: 100;
   transition: background-color 0.3s ease;
+  padding: 16px 0;
 }
 
 .header-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
 }
 
 .header-left {
@@ -270,7 +270,7 @@
 }
 
 @media (max-width: 768px) {
-  .header-content {
+  .app-header {
     padding: 12px 0;
   }
 
