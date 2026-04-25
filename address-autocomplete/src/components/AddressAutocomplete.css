@@ -34,6 +34,7 @@
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(64, 158, 255, 0.15);
   outline: none;
+  outline-offset: 0;
 }
 
 .loading-spinner {
