@@ -78,7 +78,6 @@ defineEmits<{
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border: 2px solid transparent;
   position: relative;
-  overflow: hidden;
   transition: all 0.2s ease;
 }
 

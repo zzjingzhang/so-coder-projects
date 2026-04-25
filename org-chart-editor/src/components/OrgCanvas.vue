@@ -184,6 +184,9 @@ function updateCanvasOffset() {
 function handleCanvasClick(e: MouseEvent) {
   if (e.target === canvasRef.value || (e.target as HTMLElement).classList.contains('org-canvas')) {
     emit('select-node', null)
+    isConnecting.value = false
+    connectionStartNodeId.value = null
+    tempConnection.value = null
     showConnectPoints.value = false
   }
 }
@@ -235,13 +238,6 @@ function handleMouseUp() {
   if (isDragging.value) {
     isDragging.value = false
     dragNodeId.value = null
-  }
-  
-  if (isConnecting.value) {
-    isConnecting.value = false
-    connectionStartNodeId.value = null
-    tempConnection.value = null
-    showConnectPoints.value = false
   }
 }
 

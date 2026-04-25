@@ -114,6 +114,11 @@ async function handleFileChange(file: any) {
   gap: 8px;
 }
 
+.button-group :deep(.el-button + .el-button),
+.file-actions :deep(.el-button + .el-button) {
+  margin-left: 0;
+}
+
 .file-actions :deep(.el-upload) {
   width: 100%;
 }
