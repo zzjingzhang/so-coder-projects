@@ -105,7 +105,7 @@ const addNewDataPoint = () => {
   networkOutData.value.push(Math.floor(Math.random() * 80) + 30);
   
   updateLastUpdateTime();
-  updateCharts();
+  initCharts();
 };
 
 const createChart = (canvas, datasets, chartTitle, yAxisLabel) => {
@@ -116,8 +116,11 @@ const createChart = (canvas, datasets, chartTitle, yAxisLabel) => {
   return new Chart(ctx, {
     type: 'line',
     data: {
-      labels: labels.value,
-      datasets: datasets
+      labels: [...labels.value],
+      datasets: datasets.map(ds => ({
+        ...ds,
+        data: [...ds.data]
+      }))
     },
     options: {
       responsive: true,
@@ -181,31 +184,10 @@ const createChart = (canvas, datasets, chartTitle, yAxisLabel) => {
         }
       },
       animation: {
-        duration: 500
+        duration: 300
       }
     }
   });
-};
-
-const updateCharts = () => {
-  if (cpuChartInstance.value) {
-    cpuChartInstance.value.data.labels = labels.value;
-    cpuChartInstance.value.data.datasets[0].data = cpuData.value;
-    cpuChartInstance.value.update('none');
-  }
-  
-  if (memoryChartInstance.value) {
-    memoryChartInstance.value.data.labels = labels.value;
-    memoryChartInstance.value.data.datasets[0].data = memoryData.value;
-    memoryChartInstance.value.update('none');
-  }
-  
-  if (networkChartInstance.value) {
-    networkChartInstance.value.data.labels = labels.value;
-    networkChartInstance.value.data.datasets[0].data = networkInData.value;
-    networkChartInstance.value.data.datasets[1].data = networkOutData.value;
-    networkChartInstance.value.update('none');
-  }
 };
 
 const initCharts = () => {
@@ -283,7 +265,7 @@ const handleRefresh = () => {
   
   setTimeout(() => {
     generateRandomData();
-    updateCharts();
+    initCharts();
     isRefreshing.value = false;
   }, 500);
 };
