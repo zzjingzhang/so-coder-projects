@@ -82,6 +82,9 @@ export function useFluidSimulation(
   const updateSimulation = () => {
     const { viscosity, gravity } = params.value
     
+    const dampingFactor = 1 - (viscosity / 100) * 0.95
+    const gravityFactor = (gravity / 100) * 0.95
+    
     for (let y = 1; y < rows - 1; y++) {
       for (let x = 1; x < cols - 1; x++) {
         const idx = getIndex(x, y)
@@ -96,8 +99,8 @@ export function useFluidSimulation(
         previous[idx] = current[idx]
         current[idx] = avg
         
-        current[idx] *= 1 - viscosity * 0.001
-        current[idx] -= gravity * 0.01
+        current[idx] *= dampingFactor
+        current[idx] -= current[idx] * gravityFactor
       }
     }
   }
