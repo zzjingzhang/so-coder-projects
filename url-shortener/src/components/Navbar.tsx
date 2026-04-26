@@ -40,9 +40,9 @@ const Navbar = () => {
               Features
             </a>
             <a 
-              href="#" 
+              href="#pricing" 
               className="navbar-link"
-              onClick={(e) => handleLinkClick(e)}
+              onClick={(e) => handleLinkClick(e, 'pricing')}
             >
               Pricing
             </a>
