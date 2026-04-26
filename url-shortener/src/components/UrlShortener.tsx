@@ -76,6 +76,7 @@ const UrlShortener = () => {
     <section className="url-shortener">
       <div className="url-shortener-container">
         <form 
+          id="url-shortener-form"
           className={`url-shortener-form ${error ? 'has-error' : ''}`} 
           onSubmit={handleSubmit}
         >

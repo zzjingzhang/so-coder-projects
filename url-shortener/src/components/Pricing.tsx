@@ -1,6 +1,13 @@
 import './Pricing.css';
 
 const Pricing = () => {
+  const handleGetStarted = () => {
+    const urlShortenerSection = document.getElementById('url-shortener-form');
+    if (urlShortenerSection) {
+      urlShortenerSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
   const plans = [
     {
       id: '1',
@@ -79,7 +86,10 @@ const Pricing = () => {
                 ))}
               </ul>
               
-              <button className={`plan-cta-btn ${plan.isPopular ? 'popular' : ''}`}>
+              <button 
+                className={`plan-cta-btn ${plan.isPopular ? 'popular' : ''}`}
+                onClick={handleGetStarted}
+              >
                 Get Started
               </button>
             </div>
