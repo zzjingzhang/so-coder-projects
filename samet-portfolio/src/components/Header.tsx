@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { Sun, Moon, Menu, X, Globe } from 'lucide-react';
@@ -10,51 +10,58 @@ const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('about');
-  const sectionsRef = useRef<Map<string, HTMLElement | null>>(new Map());
+
+  const navItems = [
+    { id: 'about', label: t.nav.about },
+    { id: 'experience', label: t.nav.experience },
+    { id: 'projects', label: t.nav.projects },
+    { id: 'skills', label: t.nav.skills },
+    { id: 'contact', label: t.nav.contact },
+  ];
 
   useEffect(() => {
-    const navItems = [
-      { id: 'about', label: t.nav.about },
-      { id: 'experience', label: t.nav.experience },
-      { id: 'projects', label: t.nav.projects },
-      { id: 'skills', label: t.nav.skills },
-      { id: 'contact', label: t.nav.contact },
-    ];
+    const getVisibleSection = () => {
+      const scrollPosition = window.scrollY + 150;
+      
+      let visibleSection = 'about';
+      let maxVisibleRatio = 0;
 
-    navItems.forEach(item => {
-      sectionsRef.current.set(item.id, document.getElementById(item.id));
-    });
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
+      navItems.forEach((item) => {
+        const element = document.getElementById(item.id);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          const elementTop = rect.top + window.scrollY;
+          const elementBottom = elementTop + rect.height;
+          
+          if (scrollPosition >= elementTop && scrollPosition < elementBottom) {
+            const visibleStart = Math.max(scrollPosition, elementTop);
+            const visibleEnd = Math.min(scrollPosition + window.innerHeight, elementBottom);
+            const visibleHeight = visibleEnd - visibleStart;
+            const visibleRatio = visibleHeight / rect.height;
+            
+            if (visibleRatio > maxVisibleRatio) {
+              maxVisibleRatio = visibleRatio;
+              visibleSection = item.id;
+            }
           }
-        });
-      },
-      {
-        threshold: 0.3,
-        rootMargin: '-100px 0px -50% 0px'
-      }
-    );
+        }
+      });
 
-    navItems.forEach(item => {
-      const element = document.getElementById(item.id);
-      if (element) {
-        observer.observe(element);
-      }
-    });
+      return visibleSection;
+    };
 
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+      const newSection = getVisibleSection();
+      setActiveSection(newSection);
     };
 
+    handleScroll();
+    
     window.addEventListener('scroll', handleScroll);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      observer.disconnect();
     };
   }, [t]);
 
@@ -72,14 +79,6 @@ const Header: React.FC = () => {
     }
     setIsMobileMenuOpen(false);
   };
-
-  const navItems = [
-    { id: 'about', label: t.nav.about },
-    { id: 'experience', label: t.nav.experience },
-    { id: 'projects', label: t.nav.projects },
-    { id: 'skills', label: t.nav.skills },
-    { id: 'contact', label: t.nav.contact },
-  ];
 
   return (
     <header
