@@ -47,7 +47,7 @@ const SkillsSection: React.FC = () => {
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                 activeCategory === category
                   ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg shadow-blue-500/25'
-                  : 'bg-white/5 text-gray-300 border border-white/10 hover:bg-white/10'
+                  : 'bg-white/50 dark:bg-white/5 text-gray-700 dark:text-gray-300 border border-black/10 dark:border-white/10 hover:bg-white/70 dark:hover:bg-white/10'
               }`}
             >
               {category}
@@ -60,16 +60,16 @@ const SkillsSection: React.FC = () => {
           {filteredSkills.map((skill, index) => (
             <div
               key={skill.name}
-              className="group p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+              className="group p-6 bg-white/70 dark:bg-white/5 backdrop-blur-xl border border-black/10 dark:border-white/10 rounded-2xl hover:bg-white/90 dark:hover:bg-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all duration-300"
               style={{ animationDelay: `${index * 50}ms` }}
             >
               <div className="flex items-center justify-between mb-4">
-                <span className="text-white font-medium">{skill.name}</span>
-                <span className="text-sm text-gray-400">{skill.level}%</span>
+                <span className="text-gray-900 dark:text-white font-medium">{skill.name}</span>
+                <span className="text-sm text-gray-600 dark:text-gray-400">{skill.level}%</span>
               </div>
               
               {/* Progress Bar */}
-              <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+              <div className="h-2 bg-black/10 dark:bg-white/10 rounded-full overflow-hidden">
                 <div
                   className={`h-full bg-gradient-to-r ${getCategoryColor(skill.category)} rounded-full transition-all duration-1000 ease-out`}
                   style={{ width: `${skill.level}%` }}
@@ -78,7 +78,7 @@ const SkillsSection: React.FC = () => {
 
               {/* Category Badge */}
               <div className="mt-4">
-                <span className="text-xs text-gray-500 uppercase tracking-wider">
+                <span className="text-xs text-gray-500 dark:text-gray-500 uppercase tracking-wider">
                   {skill.category}
                 </span>
               </div>

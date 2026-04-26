@@ -33,19 +33,19 @@ const ExperienceSection: React.FC = () => {
                 }`}
               >
                 {/* Timeline Dot */}
-                <div className="absolute left-8 md:left-1/2 w-4 h-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transform -translate-x-1/2 md:-translate-x-1/2 z-10 ring-4 ring-black/50"></div>
+                <div className="absolute left-8 md:left-1/2 w-4 h-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transform -translate-x-1/2 md:-translate-x-1/2 z-10 ring-4 ring-black/10 dark:ring-black/50"></div>
 
                 {/* Content */}
                 <div className={`flex-1 ml-16 md:ml-0 ${index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'}`}>
-                  <div className="group p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl hover:bg-white/10 hover:border-white/20 transition-all duration-300">
+                  <div className="group p-6 bg-white/70 dark:bg-white/5 backdrop-blur-xl border border-black/10 dark:border-white/10 rounded-2xl hover:bg-white/90 dark:hover:bg-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all duration-300">
                     {/* Header */}
                     <div className={`flex flex-col gap-2 mb-4 ${index % 2 === 0 ? 'md:items-end' : ''}`}>
                       <div className="flex items-center gap-2">
-                        <Briefcase size={20} className="text-blue-400" />
-                        <h3 className="text-xl font-semibold text-white">{item.position}</h3>
+                        <Briefcase size={20} className="text-blue-500" />
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{item.position}</h3>
                       </div>
-                      <p className="text-purple-400 font-medium">{item.company}</p>
-                      <div className="flex items-center gap-4 text-sm text-gray-400">
+                      <p className="text-purple-500 font-medium">{item.company}</p>
+                      <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
                         <div className="flex items-center gap-1">
                           <Calendar size={14} />
                           <span>{item.period}</span>
@@ -58,7 +58,7 @@ const ExperienceSection: React.FC = () => {
                     </div>
 
                     {/* Description */}
-                    <p className="text-gray-400 leading-relaxed">{item.description}</p>
+                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{item.description}</p>
                   </div>
                 </div>
 

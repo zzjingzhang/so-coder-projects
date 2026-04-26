@@ -28,7 +28,7 @@ const HeroSection: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Left side - Text content */}
           <div className="text-center md:text-left order-2 md:order-1">
-            <p className="text-blue-400 text-lg mb-2 font-medium">
+            <p className="text-blue-500 text-lg mb-2 font-medium">
               {t.hero.greeting}
             </p>
             <h1 className="text-5xl md:text-7xl font-bold mb-4">
@@ -36,10 +36,10 @@ const HeroSection: React.FC = () => {
                 {t.hero.name}
               </span>
             </h1>
-            <h2 className="text-2xl md:text-3xl text-gray-300 mb-6 font-light">
+            <h2 className="text-2xl md:text-3xl text-gray-700 dark:text-gray-300 mb-6 font-light">
               {t.hero.title}
             </h2>
-            <p className="text-gray-400 text-lg mb-8 leading-relaxed">
+            <p className="text-gray-600 dark:text-gray-400 text-lg mb-8 leading-relaxed">
               {t.hero.description}
             </p>
 
@@ -57,11 +57,11 @@ const HeroSection: React.FC = () => {
               </button>
               <button
                 onClick={handleDownloadResume}
-                className="group flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-medium hover:bg-white/20 transition-all duration-300"
+                className="group flex items-center gap-2 px-6 py-3 bg-white/70 dark:bg-white/10 backdrop-blur-md border border-black/20 dark:border-white/20 rounded-full text-gray-900 dark:text-white font-medium hover:bg-white/90 dark:hover:bg-white/20 transition-all duration-300"
               >
                 <Download size={20} />
                 {t.hero.downloadResume}
-                <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full">
+                <span className="text-xs bg-black/10 dark:bg-white/20 px-2 py-0.5 rounded-full">
                   {stats.resumeDownloads[language]} {t.resume.downloads}
                 </span>
               </button>
@@ -75,7 +75,7 @@ const HeroSection: React.FC = () => {
               <div className="absolute -inset-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full blur-3xl opacity-30"></div>
               
               {/* Main profile card */}
-              <div className="relative w-72 h-72 md:w-96 md:h-96 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center overflow-hidden">
+              <div className="relative w-72 h-72 md:w-96 md:h-96 rounded-3xl bg-white/70 dark:bg-white/5 backdrop-blur-xl border border-black/10 dark:border-white/10 flex items-center justify-center overflow-hidden">
                 {/* Gradient circle background */}
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20"></div>
                 
@@ -99,20 +99,20 @@ const HeroSection: React.FC = () => {
       {/* Resume Modal */}
       {showResume && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="relative w-full max-w-4xl max-h-[90vh] bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl overflow-hidden">
+          <div className="relative w-full max-w-4xl max-h-[90vh] bg-white/90 dark:bg-white/10 backdrop-blur-xl border border-black/20 dark:border-white/20 rounded-3xl overflow-hidden">
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-white/10">
+            <div className="flex items-center justify-between p-6 border-b border-black/10 dark:border-white/10">
               <div className="flex items-center gap-3">
-                <FileText className="text-blue-400" size={24} />
-                <h3 className="text-xl font-semibold text-white">
+                <FileText className="text-blue-500" size={24} />
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                   {language === 'en' ? 'Resume - Samet Soysal' : 'Özgeçmiş - Samet Soysal'}
                 </h3>
               </div>
               <button
                 onClick={() => setShowResume(false)}
-                className="p-2 rounded-full hover:bg-white/10 transition-colors"
+                className="p-2 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
               >
-                <svg className="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -120,12 +120,12 @@ const HeroSection: React.FC = () => {
 
             {/* Content */}
             <div className="p-6 overflow-y-auto max-h-[calc(90vh-100px)]">
-              <div className="text-white space-y-8">
+              <div className="text-gray-900 dark:text-white space-y-8">
                 {/* Personal Info */}
                 <div>
-                  <h4 className="text-2xl font-bold text-blue-400 mb-2">Samet Soysal</h4>
-                  <p className="text-gray-300">Full Stack Developer</p>
-                  <p className="text-gray-400 text-sm mt-1">
+                  <h4 className="text-2xl font-bold text-blue-500 mb-2">Samet Soysal</h4>
+                  <p className="text-gray-700 dark:text-gray-300">Full Stack Developer</p>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">
                     {language === 'en' 
                       ? 'Istanbul, Turkey | contact@sametsoysal.com | +90 555 123 4567'
                       : 'İstanbul, Türkiye | contact@sametsoysal.com | +90 555 123 4567'}
@@ -134,10 +134,10 @@ const HeroSection: React.FC = () => {
 
                 {/* Summary */}
                 <div>
-                  <h5 className="text-lg font-semibold text-purple-400 mb-2">
+                  <h5 className="text-lg font-semibold text-purple-500 mb-2">
                     {language === 'en' ? 'Professional Summary' : 'Profesyonel Özet'}
                   </h5>
-                  <p className="text-gray-300">
+                  <p className="text-gray-700 dark:text-gray-300">
                     {language === 'en'
                       ? 'Experienced Full Stack Developer with 5+ years of expertise in building modern web applications. Proficient in React, TypeScript, Node.js, and cloud technologies. Passionate about creating elegant solutions to complex problems.'
                       : 'Modern web uygulamaları geliştirmede 5+ yıllık deneyime sahip deneyimli Full Stack Geliştirici. React, TypeScript, Node.js ve bulut teknolojilerinde uzman. Karmaşık sorunlara zarif çözümler üretmek için tutkulu.'}
@@ -146,15 +146,15 @@ const HeroSection: React.FC = () => {
 
                 {/* Experience */}
                 <div>
-                  <h5 className="text-lg font-semibold text-purple-400 mb-3">
+                  <h5 className="text-lg font-semibold text-purple-500 mb-3">
                     {language === 'en' ? 'Experience' : 'Deneyim'}
                   </h5>
                   <div className="space-y-4">
                     {t.experience.items.map((item, index) => (
                       <div key={index} className="pl-4 border-l-2 border-blue-500/50">
-                        <h6 className="font-semibold text-white">{item.position}</h6>
-                        <p className="text-blue-400 text-sm">{item.company} | {item.period}</p>
-                        <p className="text-gray-400 text-sm mt-1">{item.description}</p>
+                        <h6 className="font-semibold text-gray-900 dark:text-white">{item.position}</h6>
+                        <p className="text-blue-500 text-sm">{item.company} | {item.period}</p>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">{item.description}</p>
                       </div>
                     ))}
                   </div>
@@ -162,14 +162,14 @@ const HeroSection: React.FC = () => {
 
                 {/* Skills */}
                 <div>
-                  <h5 className="text-lg font-semibold text-purple-400 mb-3">
+                  <h5 className="text-lg font-semibold text-purple-500 mb-3">
                     {language === 'en' ? 'Skills' : 'Yetenekler'}
                   </h5>
                   <div className="flex flex-wrap gap-2">
                     {['React', 'TypeScript', 'Node.js', 'Python', 'Vue.js', 'Next.js', 'MongoDB', 'PostgreSQL', 'AWS', 'Docker', 'Git'].map((skill) => (
                       <span
                         key={skill}
-                        className="px-3 py-1 bg-white/10 rounded-full text-sm text-gray-300"
+                        className="px-3 py-1 bg-black/10 dark:bg-white/10 rounded-full text-sm text-gray-700 dark:text-gray-300"
                       >
                         {skill}
                       </span>

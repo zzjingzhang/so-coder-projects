@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="py-12 px-4 border-t border-white/10">
+    <footer className="py-12 px-4 border-t border-black/10 dark:border-white/10">
       <div className="max-w-6xl mx-auto">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           {/* Brand */}
@@ -22,7 +22,7 @@ const Footer: React.FC = () => {
             <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent mb-4">
               Samet Soysal
             </h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
               {language === 'en'
                 ? 'Full Stack Developer passionate about creating beautiful and functional web applications.'
                 : 'Güzel ve işlevsel web uygulamaları oluşturmak için tutkulu Full Stack Geliştirici.'}
@@ -31,7 +31,7 @@ const Footer: React.FC = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-white font-semibold mb-4">
+            <h4 className="text-gray-900 dark:text-white font-semibold mb-4">
               {language === 'en' ? 'Quick Links' : 'Hızlı Bağlantılar'}
             </h4>
             <ul className="space-y-2">
@@ -39,7 +39,7 @@ const Footer: React.FC = () => {
                 <li key={section}>
                   <a
                     href={`#${section}`}
-                    className="text-gray-400 hover:text-white transition-colors text-sm"
+                    className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-white transition-colors text-sm"
                   >
                     {section.charAt(0).toUpperCase() + section.slice(1)}
                   </a>
@@ -50,7 +50,7 @@ const Footer: React.FC = () => {
 
           {/* Social Links */}
           <div>
-            <h4 className="text-white font-semibold mb-4">
+            <h4 className="text-gray-900 dark:text-white font-semibold mb-4">
               {language === 'en' ? 'Connect' : 'Bağlantı'}
             </h4>
             <div className="flex gap-3">
@@ -60,7 +60,7 @@ const Footer: React.FC = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 bg-white/5 border border-white/10 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                  className="p-2.5 bg-white/70 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-lg text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-white hover:bg-white/90 dark:hover:bg-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all duration-300"
                   aria-label={social.label}
                 >
                   {social.icon}
@@ -71,7 +71,7 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="pt-8 border-t border-black/10 dark:border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-sm">
             © {currentYear} Samet Soysal. All rights reserved.
           </p>

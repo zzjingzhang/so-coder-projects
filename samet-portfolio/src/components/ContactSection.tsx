@@ -28,17 +28,17 @@ const ContactSection: React.FC = () => {
 
   const contactInfo = [
     {
-      icon: <Mail size={24} className="text-blue-400" />,
+      icon: <Mail size={24} className="text-blue-500" />,
       title: language === 'en' ? 'Email' : 'E-posta',
       value: 'contact@sametsoysal.com'
     },
     {
-      icon: <Phone size={24} className="text-purple-400" />,
+      icon: <Phone size={24} className="text-purple-500" />,
       title: language === 'en' ? 'Phone' : 'Telefon',
       value: '+90 555 123 4567'
     },
     {
-      icon: <MapPin size={24} className="text-pink-400" />,
+      icon: <MapPin size={24} className="text-pink-500" />,
       title: language === 'en' ? 'Location' : 'Konum',
       value: language === 'en' ? 'Istanbul, Turkey' : 'İstanbul, Türkiye'
     }
@@ -67,7 +67,7 @@ const ContactSection: React.FC = () => {
           {/* Contact Info */}
           <div className="space-y-8">
             <div>
-              <p className="text-gray-400 text-lg leading-relaxed mb-8">
+              <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-8">
                 {language === 'en'
                   ? 'Feel free to reach out to me for any inquiries, collaboration opportunities, or just to say hello. I\'m always excited to connect with fellow developers and potential clients.'
                   : 'Herhangi bir soru, işbirliği fırsatı veya sadece merhaba demek için benimle iletişime geçmekten çekinmeyin. Diğer geliştiriciler ve potansiyel müşterilerle bağlantı kurmak her zaman heyecan verici.'}
@@ -79,14 +79,14 @@ const ContactSection: React.FC = () => {
               {contactInfo.map((info, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-4 p-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl hover:bg-white/10 transition-all duration-300"
+                  className="flex items-center gap-4 p-4 bg-white/70 dark:bg-white/5 backdrop-blur-xl border border-black/10 dark:border-white/10 rounded-xl hover:bg-white/90 dark:hover:bg-white/10 transition-all duration-300"
                 >
-                  <div className="p-3 bg-white/5 rounded-lg">
+                  <div className="p-3 bg-black/5 dark:bg-white/5 rounded-lg">
                     {info.icon}
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">{info.title}</p>
-                    <p className="text-white font-medium">{info.value}</p>
+                    <p className="text-gray-900 dark:text-white font-medium">{info.value}</p>
                   </div>
                 </div>
               ))}
@@ -104,7 +104,7 @@ const ContactSection: React.FC = () => {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-3 bg-white/5 border border-white/10 rounded-xl text-gray-400 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                    className="p-3 bg-white/70 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-white hover:bg-white/90 dark:hover:bg-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all duration-300"
                     aria-label={social.label}
                   >
                     {social.icon}
@@ -117,25 +117,25 @@ const ContactSection: React.FC = () => {
           {/* Contact Form */}
           <div className="relative">
             <div className="absolute -inset-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-3xl blur-3xl opacity-10"></div>
-            <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8">
+            <div className="relative bg-white/70 dark:bg-white/5 backdrop-blur-xl border border-black/10 dark:border-white/10 rounded-3xl p-8">
               {submitSuccess ? (
                 <div className="text-center py-12">
                   <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                     {language === 'en' ? 'Message Sent!' : 'Mesaj Gönderildi!'}
                   </h3>
-                  <p className="text-gray-400">
+                  <p className="text-gray-600 dark:text-gray-400">
                     {language === 'en' ? 'Thank you for reaching out. I\'ll get back to you soon.' : 'İletişime geçtiğiniz için teşekkürler. En kısa sürede size döneceğim.'}
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t.contact.name}
                     </label>
                     <input
@@ -144,13 +144,13 @@ const ContactSection: React.FC = () => {
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                      className="w-full px-4 py-3 bg-white/50 dark:bg-white/5 border border-black/20 dark:border-white/10 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                       placeholder={language === 'en' ? 'Your name' : 'Adınız'}
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t.contact.email}
                     </label>
                     <input
@@ -159,13 +159,13 @@ const ContactSection: React.FC = () => {
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                      className="w-full px-4 py-3 bg-white/50 dark:bg-white/5 border border-black/20 dark:border-white/10 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                       placeholder={language === 'en' ? 'your@email.com' : 'sizin@email.com'}
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t.contact.message}
                     </label>
                     <textarea
@@ -174,7 +174,7 @@ const ContactSection: React.FC = () => {
                       rows={5}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none"
+                      className="w-full px-4 py-3 bg-white/50 dark:bg-white/5 border border-black/20 dark:border-white/10 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none"
                       placeholder={language === 'en' ? 'Your message...' : 'Mesajınız...'}
                     ></textarea>
                   </div>
