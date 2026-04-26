@@ -38,7 +38,7 @@ const Header: React.FC = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-black/30 backdrop-blur-lg border-b border-white/10'
+          ? 'bg-white/70 dark:bg-black/30 backdrop-blur-lg border-b border-black/10 dark:border-white/10'
           : 'bg-transparent'
       }`}
     >
@@ -57,7 +57,7 @@ const Header: React.FC = () => {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium"
+                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white transition-colors duration-200 text-sm font-medium"
               >
                 {item.label}
               </button>
@@ -71,7 +71,7 @@ const Header: React.FC = () => {
             {/* Language Toggle */}
             <button
               onClick={() => setLanguage(language === 'en' ? 'tr' : 'en')}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-gray-200 hover:text-white hover:bg-white/20 transition-all duration-200"
+              className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/50 dark:bg-white/10 backdrop-blur-md border border-black/20 dark:border-white/20 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-white hover:bg-white/70 dark:hover:bg-white/20 transition-all duration-200"
             >
               <Globe size={16} />
               <span className="text-sm font-medium">{language.toUpperCase()}</span>
@@ -80,7 +80,7 @@ const Header: React.FC = () => {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-gray-200 hover:text-white hover:bg-white/20 transition-all duration-200"
+              className="p-2 rounded-full bg-white/50 dark:bg-white/10 backdrop-blur-md border border-black/20 dark:border-white/20 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-white hover:bg-white/70 dark:hover:bg-white/20 transition-all duration-200"
             >
               {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
             </button>
@@ -89,7 +89,7 @@ const Header: React.FC = () => {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg text-gray-300 hover:text-white"
+            className="md:hidden p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white"
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -98,33 +98,33 @@ const Header: React.FC = () => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-black/80 backdrop-blur-lg border-t border-white/10">
+        <div className="md:hidden bg-white/90 dark:bg-black/80 backdrop-blur-lg border-t border-black/10 dark:border-white/10">
           <div className="px-4 py-4 space-y-3">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="block w-full text-left px-4 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                className="block w-full text-left px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 rounded-lg transition-colors"
               >
                 {item.label}
               </button>
             ))}
             
-            <div className="pt-4 border-t border-white/10">
+            <div className="pt-4 border-t border-black/10 dark:border-white/10">
               <div className="flex items-center justify-between mb-4">
                 <VisitorCounter />
               </div>
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setLanguage(language === 'en' ? 'tr' : 'en')}
-                  className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-gray-200"
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/50 dark:bg-white/10 backdrop-blur-md border border-black/20 dark:border-white/20 text-gray-700 dark:text-gray-200"
                 >
                   <Globe size={16} />
                   <span className="text-sm">{language.toUpperCase()}</span>
                 </button>
                 <button
                   onClick={toggleTheme}
-                  className="p-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-gray-200"
+                  className="p-2 rounded-full bg-white/50 dark:bg-white/10 backdrop-blur-md border border-black/20 dark:border-white/20 text-gray-700 dark:text-gray-200"
                 >
                   {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
                 </button>

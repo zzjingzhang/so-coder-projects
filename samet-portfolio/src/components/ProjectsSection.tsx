@@ -31,7 +31,7 @@ const ProjectsSection: React.FC = () => {
           {projects.map((project) => (
             <div
               key={project.id}
-              className="group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+              className="group relative bg-white/70 dark:bg-white/5 backdrop-blur-xl border border-black/10 dark:border-white/10 rounded-2xl overflow-hidden hover:bg-white/90 dark:hover:bg-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all duration-300"
             >
               {/* Project Image Placeholder */}
               <div className="h-48 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 flex items-center justify-center">
@@ -42,10 +42,10 @@ const ProjectsSection: React.FC = () => {
 
               {/* Content */}
               <div className="p-6">
-                <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-blue-400 transition-colors">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-400 transition-colors">
                   {project.title}
                 </h3>
-                <p className="text-gray-400 text-sm mb-4 line-clamp-3">
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">
                   {project.description}
                 </p>
 
@@ -54,7 +54,7 @@ const ProjectsSection: React.FC = () => {
                   {project.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300"
+                      className="inline-flex items-center gap-1 px-2.5 py-1 bg-white/50 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-full text-xs text-gray-600 dark:text-gray-300"
                     >
                       <Tag size={10} />
                       {tag}
