@@ -1,0 +1,57 @@
+.boost-cta {
+  background-color: #3b3054;
+  background-image: url('/assets/bg-boost-desktop.svg');
+  background-size: cover;
+  background-position: center;
+  padding: 4rem 0;
+}
+
+.boost-cta-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.boost-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.boost-btn {
+  background-color: #2acfcf;
+  color: white;
+  border: none;
+  padding: 1rem 2.5rem;
+  border-radius: 2rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.boost-btn:hover {
+  background-color: #9be3e3;
+}
+
+@media (max-width: 768px) {
+  .boost-cta {
+    background-image: url('/assets/bg-boost-mobile.svg');
+    padding: 3rem 0;
+  }
+
+  .boost-title {
+    font-size: 1.75rem;
+  }
+
+  .boost-btn {
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+  }
+}
