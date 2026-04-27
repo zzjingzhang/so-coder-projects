@@ -1,0 +1,39 @@
+:host {
+  display: block;
+}
+
+::ng-deep .p-button-text.p-button-plain {
+  background: transparent !important;
+  border: none !important;
+  padding: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+::ng-deep .p-button-text.p-button-plain:hover {
+  background: rgba(0, 243, 255, 0.1) !important;
+  color: #00f3ff !important;
+}
+
+::ng-deep .p-inputtext {
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #f1f5f9;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+::ng-deep .p-inputtext::placeholder {
+  color: #64748b;
+}
+
+::ng-deep .p-inputtext:focus {
+  border-color: #00f3ff;
+  box-shadow: 0 0 0 2px rgba(0, 243, 255, 0.2);
+  outline: none;
+}
+
+::ng-deep .p-avatar {
+  border: 2px solid rgba(0, 243, 255, 0.3);
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+}

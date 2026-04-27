@@ -1,0 +1,113 @@
+# This file is used to ignore files which are generated
+# ----------------------------------------------------------------------------
+
+*~
+*.autosave
+*.a
+*.core
+*.mp3
+*.o
+*.orig
+*.rej
+*.so
+*.so.*
+*_pch.h.cpp
+*_pch.h.pch
+*.pdb
+*.stackdump
+*.swp
+*.nb
+*.out
+*.tmp
+*.tsbuildinfo
+*.pid
+*.seed
+*.log
+*.dat
+*.dump
+*.cache
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.lock
+
+# Editor directories and files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variable files
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Angular build output
+dist/
+out-tsc/
+
+# Angular Ivy
+.angular/
+
+# Angular CLI cache
+.angular/cache/
+
+# Angular Universal
+server.ts
+server.ts.map
+dist-server/
+
+# Test results
+coverage/
+.nyc_output/
+
+# Misc
+*.orig
+*.rej
+*.bak
