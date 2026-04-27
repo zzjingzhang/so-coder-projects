@@ -250,47 +250,76 @@
 
     <v-dialog
       v-model="showCreateDialog"
-      max-width="600px"
+      max-width="700px"
+      persistent
     >
       <v-card>
-        <v-card-title class="flex items-center justify-between">
-          <span class="font-bold">发布新动态</span>
+        <v-card-title class="flex items-center justify-between py-4">
+          <span class="font-bold text-lg">发布新动态</span>
           <v-btn
             variant="text"
             icon="mdi-close"
-            @click="showCreateDialog = false"
+            size="large"
+            @click="closeCreateDialog"
           ></v-btn>
         </v-card-title>
+        <v-divider></v-divider>
 
-        <v-card-text>
+        <v-card-text class="py-4">
           <v-textarea
             v-model="newPostContent"
             variant="outlined"
             placeholder="分享你的游戏趣事、攻略、心情..."
-            rows="4"
+            rows="5"
+            auto-grow
+            no-resize
             hide-details
+            class="w-full"
+            :rules="[
+              (v) => v.trim().length <= 500 || '内容不能超过500字'
+            ]"
           ></v-textarea>
 
-          <div class="mt-4">
-            <v-btn
-              variant="outlined"
-              prepend-icon="mdi-image"
-              class="mr-2"
-            >
-              添加图片
-            </v-btn>
-            <v-btn
-              variant="outlined"
-              prepend-icon="mdi-tag"
-            >
-              添加标签
-            </v-btn>
+          <div class="flex justify-between items-center mt-4">
+            <div class="flex gap-2">
+              <v-btn
+                variant="outlined"
+                prepend-icon="mdi-image"
+                class="text-gray-600"
+              >
+                添加图片
+              </v-btn>
+              <v-btn
+                variant="outlined"
+                prepend-icon="mdi-tag"
+                class="text-gray-600"
+              >
+                添加标签
+              </v-btn>
+              <v-btn
+                variant="outlined"
+                prepend-icon="mdi-emoticon-happy-outline"
+                class="text-gray-600"
+              >
+                表情
+              </v-btn>
+            </div>
+            <span class="text-sm text-gray-400">
+              {{ newPostContent.length }}/500
+            </span>
           </div>
         </v-card-text>
 
-        <v-card-actions class="justify-end px-4 pb-4">
-          <v-btn variant="text" @click="showCreateDialog = false">取消</v-btn>
-          <v-btn color="primary" :disabled="!newPostContent.trim()">发布</v-btn>
+        <v-divider></v-divider>
+        <v-card-actions class="justify-end px-4 py-3">
+          <v-btn variant="text" @click="closeCreateDialog">取消</v-btn>
+          <v-btn
+            color="primary"
+            :disabled="!newPostContent.trim()"
+            @click="submitPost"
+          >
+            发布
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -433,5 +462,19 @@ function clearMessages() {
 function openChat(message) {
   console.log('打开聊天:', message)
   showMessagesMenu.value = false
+}
+
+function closeCreateDialog() {
+  showCreateDialog.value = false
+  newPostContent.value = ''
+}
+
+function submitPost() {
+  if (!newPostContent.value.trim()) return
+  
+  console.log('发布动态:', newPostContent.value)
+  
+  showCreateDialog.value = false
+  newPostContent.value = ''
 }
 </script>
