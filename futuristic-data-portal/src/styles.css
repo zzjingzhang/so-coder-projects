@@ -336,3 +336,93 @@ body {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* PrimeNG Dialog Overrides */
+.p-dialog-mask {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+.p-dialog {
+  border-radius: 16px !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 243, 255, 0.2), 0 0 0 1px rgba(0, 243, 255, 0.1) !important;
+}
+
+.p-dialog .p-dialog-header {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95)) !important;
+  border-bottom: 1px solid rgba(0, 243, 255, 0.2) !important;
+  border-radius: 16px 16px 0 0 !important;
+  padding: 1.25rem 1.5rem !important;
+}
+
+.p-dialog .p-dialog-header .p-dialog-title {
+  color: #fff !important;
+  font-size: 1.125rem !important;
+  font-weight: 600 !important;
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon {
+  color: #94a3b8 !important;
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon:hover {
+  color: #00f3ff !important;
+  background-color: rgba(0, 243, 255, 0.1) !important;
+}
+
+.p-dialog .p-dialog-content {
+  background: rgba(15, 23, 42, 0.98) !important;
+  padding: 1.5rem !important;
+  color: #e2e8f0 !important;
+}
+
+.p-dialog .p-dialog-footer {
+  background: rgba(15, 23, 42, 0.95) !important;
+  border-top: 1px solid rgba(0, 243, 255, 0.1) !important;
+  border-radius: 0 0 16px 16px !important;
+  padding: 1rem 1.5rem !important;
+}
+
+/* Dialog Input Overrides */
+.p-dialog .p-inputtext {
+  background-color: rgba(30, 41, 59, 0.8) !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+.p-dialog .p-inputtext:focus {
+  border-color: #00f3ff !important;
+  box-shadow: 0 0 0 2px rgba(0, 243, 255, 0.2) !important;
+}
+
+.p-dialog .p-dropdown {
+  background-color: rgba(30, 41, 59, 0.8) !important;
+  border-color: #334155 !important;
+}
+
+.p-dialog .p-dropdown-label {
+  color: #e2e8f0 !important;
+}
+
+.p-dialog .p-dropdown-trigger {
+  color: #94a3b8 !important;
+}
+
+.p-dialog .p-calendar .p-inputtext {
+  background-color: rgba(30, 41, 59, 0.8) !important;
+  border-color: #334155 !important;
+}
+
+.p-dialog .p-checkbox-box {
+  background-color: rgba(30, 41, 59, 0.8) !important;
+  border-color: #334155 !important;
+}
+
+.p-dialog .p-checkbox-box.p-highlight {
+  background-color: #00f3ff !important;
+  border-color: #00f3ff !important;
+}
+
+.p-dialog .p-checkbox-icon {
+  color: #0f172a !important;
+}
