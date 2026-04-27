@@ -59,13 +59,14 @@ const currentMenuKey = computed(() => route.name)
 
 <template>
   <n-config-provider>
-    <n-layout style="min-height: 100vh">
+    <div class="flex h-screen">
       <n-layout-sider
         :collapsed="collapsed"
         :collapsed-width="64"
         :width="240"
+        collapse-mode="width"
         :bordered="false"
-        style="background: #1a1a2e; color: white"
+        style="background: #1a1a2e; color: white; min-height: 100vh"
       >
         <div class="flex items-center justify-center h-16 border-b border-gray-700">
           <n-icon size="28" color="#4ade80">
@@ -104,13 +105,13 @@ const currentMenuKey = computed(() => route.name)
         </div>
       </n-layout-sider>
       
-      <n-layout>
+      <div class="flex flex-col flex-1 overflow-hidden">
         <n-layout-header
-          style="background: white; border-bottom: 1px solid #e5e7eb; padding: 0 24px"
-          class="flex items-center justify-between"
+          style="background: white; border-bottom: 1px solid #e5e7eb; padding: 0 24px; flex-shrink: 0"
+          class="flex items-center justify-between h-16"
         >
           <div class="flex items-center">
-            <h1 class="text-xl font-semibold text-gray-800">
+            <h1 class="text-xl font-semibold" style="color: #1f2937">
               {{ route.meta.title }}
             </h1>
           </div>
@@ -134,11 +135,13 @@ const currentMenuKey = computed(() => route.name)
           </div>
         </n-layout-header>
         
-        <n-layout-content style="background: #f3f4f6; padding: 24px">
+        <n-layout-content 
+          style="background: #f3f4f6; padding: 24px; overflow-y: auto; flex: 1"
+        >
           <router-view />
         </n-layout-content>
-      </n-layout>
-    </n-layout>
+      </div>
+    </div>
   </n-config-provider>
 </template>
 
