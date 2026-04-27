@@ -25,7 +25,7 @@
             <a-button type="primary" size="large" class="bg-white text-primary hover:bg-blue-50 border-none text-lg px-8 py-6 h-auto">
               免费试用 7 天
             </a-button>
-            <a-button size="large" class="border-2 border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-6 h-auto">
+            <a-button size="large" class="border-none bg-white/20 backdrop-blur-sm text-white hover:bg-white hover:text-primary text-lg px-8 py-6 h-auto font-semibold">
               了解更多
             </a-button>
           </div>
