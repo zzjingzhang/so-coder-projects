@@ -18,17 +18,19 @@ const LevelSelectPage = () => {
   };
 
   return (
-    <div className="min-h-screen p-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-8">
-          <button
-            className="pixel-button pixel-button-secondary pixel-font mb-4"
-            onClick={() => navigate('/')}
-          >
-            ← 返回主页
-          </button>
+    <div className="min-h-screen p-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <div className="mb-6">
+            <button
+              className="pixel-button pixel-button-secondary pixel-font"
+              onClick={() => navigate('/')}
+            >
+              ← 返回主页
+            </button>
+          </div>
           <h1 
-            className="text-5xl font-bold mb-2 pixel-font"
+            className="text-5xl font-bold mb-4 pixel-font"
             style={{ color: 'var(--pixel-color-primary)', textShadow: '3px 3px 0px var(--pixel-color-border)' }}
           >
             选择关卡
@@ -41,7 +43,7 @@ const LevelSelectPage = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {levels.map((level) => (
             <div
               key={level.id}
@@ -49,14 +51,14 @@ const LevelSelectPage = () => {
               onClick={() => navigate(`/game/${level.id}`)}
             >
               <div 
-                className="p-6 rounded-lg h-full"
+                className="p-8 rounded-lg h-full"
                 style={{ 
                   backgroundColor: 'var(--pixel-color-bg-light)',
                   border: '4px solid var(--pixel-color-border)',
                   boxShadow: '4px 4px 0px var(--pixel-color-border)'
                 }}
               >
-                <div className="flex justify-between items-start mb-4">
+                <div className="flex justify-between items-start mb-6">
                   <div 
                     className="text-4xl font-bold pixel-font"
                     style={{ color: 'var(--pixel-color-primary)' }}
@@ -64,7 +66,7 @@ const LevelSelectPage = () => {
                     {level.id}
                   </div>
                   <div 
-                    className="px-3 py-1 rounded pixel-font text-sm font-bold"
+                    className="px-4 py-2 rounded pixel-font text-sm font-bold"
                     style={{ 
                       backgroundColor: getDifficultyColor(level),
                       color: 'var(--pixel-color-bg)'
@@ -75,21 +77,21 @@ const LevelSelectPage = () => {
                 </div>
 
                 <h2 
-                  className="text-2xl font-bold mb-2 pixel-font"
+                  className="text-2xl font-bold mb-4 pixel-font"
                   style={{ color: 'var(--pixel-color-accent)' }}
                 >
                   {level.name}
                 </h2>
 
                 <p 
-                  className="mb-4 pixel-font text-sm"
+                  className="mb-6 pixel-font text-sm"
                   style={{ color: 'var(--pixel-color-text)' }}
                 >
                   {level.description}
                 </p>
 
-                <div className="space-y-2">
-                  <div className="flex items-center space-x-4 pixel-font text-sm">
+                <div className="space-y-4 mb-6">
+                  <div className="flex items-center space-x-6 pixel-font text-sm">
                     <div className="flex items-center">
                       <span className="mr-2">📐</span>
                       <span style={{ color: 'var(--pixel-color-text)' }}>
@@ -104,7 +106,7 @@ const LevelSelectPage = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-4 pixel-font text-sm">
+                  <div className="flex items-center space-x-6 pixel-font text-sm">
                     <div className="flex items-center">
                       <span className="mr-2">➡️</span>
                       <span style={{ color: 'var(--pixel-color-text)' }}>
@@ -121,8 +123,11 @@ const LevelSelectPage = () => {
                 </div>
 
                 <div 
-                  className="mt-4 text-center pixel-font font-bold"
-                  style={{ color: 'var(--pixel-color-primary)' }}
+                  className="mt-4 text-center pixel-font font-bold p-3 rounded"
+                  style={{ 
+                    color: 'var(--pixel-color-primary)',
+                    backgroundColor: 'rgba(0, 212, 255, 0.1)'
+                  }}
                 >
                   点击开始 →
                 </div>
@@ -131,8 +136,8 @@ const LevelSelectPage = () => {
           ))}
         </div>
 
-        <div className="text-center mt-8">
-          <div className="flex justify-center space-x-4 text-3xl">
+        <div className="text-center mt-12">
+          <div className="flex justify-center space-x-6 text-3xl">
             <span className="robot-animation">🤖</span>
             <span className="coin-animation">💰</span>
             <span className="robot-animation" style={{ animationDelay: '0.3s' }}>🤖</span>

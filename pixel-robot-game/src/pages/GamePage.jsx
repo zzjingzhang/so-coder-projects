@@ -164,19 +164,21 @@ const GamePage = () => {
   };
 
   return (
-    <div className="min-h-screen p-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <button
-            className="pixel-button pixel-button-secondary pixel-font"
-            onClick={() => navigate('/levels')}
-          >
-            ← 返回关卡选择
-          </button>
+    <div className="min-h-screen p-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row justify-between items-center mb-12 gap-6">
+          <div className="order-2 lg:order-1">
+            <button
+              className="pixel-button pixel-button-secondary pixel-font"
+              onClick={() => navigate('/levels')}
+            >
+              ← 返回关卡选择
+            </button>
+          </div>
           
-          <div className="text-center">
+          <div className="text-center order-1 lg:order-2">
             <h1 
-              className="text-3xl font-bold pixel-font"
+              className="text-3xl font-bold mb-2 pixel-font"
               style={{ color: 'var(--pixel-color-primary)' }}
             >
               关卡 {currentLevel.id}: {currentLevel.name}
@@ -189,15 +191,15 @@ const GamePage = () => {
             </p>
           </div>
           
-          <div className="text-right pixel-font" style={{ color: 'var(--pixel-color-text)' }}>
-            <div>💰 金币: {collectedCoins.length}/{totalCoins}</div>
+          <div className="text-right pixel-font order-3" style={{ color: 'var(--pixel-color-text)' }}>
+            <div className="mb-2">💰 金币: {collectedCoins.length}/{totalCoins}</div>
             <div>📍 箭头: {usedArrowCount}/{currentLevel.maxArrows || '∞'}</div>
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex flex-col lg:flex-row gap-8">
           <div 
-            className="p-4 rounded-lg flex-shrink-0"
+            className="p-6 rounded-lg flex-shrink-0"
             style={{ 
               backgroundColor: 'var(--pixel-color-bg-light)',
               border: '4px solid var(--pixel-color-border)',
@@ -227,9 +229,9 @@ const GamePage = () => {
             </div>
           </div>
 
-          <div className="flex-1 space-y-6">
+          <div className="flex-1 space-y-8">
             <div 
-              className="p-4 rounded-lg"
+              className="p-6 rounded-lg"
               style={{ 
                 backgroundColor: 'var(--pixel-color-bg-light)',
                 border: '4px solid var(--pixel-color-border)',
@@ -237,22 +239,22 @@ const GamePage = () => {
               }}
             >
               <h3 
-                className="text-xl font-bold mb-4 pixel-font"
+                className="text-xl font-bold mb-6 pixel-font"
                 style={{ color: 'var(--pixel-color-accent)' }}
               >
                 选择箭头方向
               </h3>
               <p 
-                className="text-sm mb-4 pixel-font"
+                className="text-sm mb-6 pixel-font"
                 style={{ color: 'var(--pixel-color-text)' }}
               >
                 选择方向后点击地图放置箭头，右键点击移除箭头
               </p>
               
-              <div className="grid grid-cols-3 gap-2 max-w-xs">
+              <div className="grid grid-cols-3 gap-3 max-w-xs">
                 <div></div>
                 <button
-                  className={`pixel-button pixel-font text-2xl py-3 ${selectedArrow === Direction.UP ? 'pixel-button-accent' : ''}`}
+                  className={`pixel-button pixel-font text-2xl py-4 ${selectedArrow === Direction.UP ? 'pixel-button-accent' : ''}`}
                   onClick={() => setSelectedArrow(selectedArrow === Direction.UP ? null : Direction.UP)}
                   disabled={gameStatus !== GameStatus.READY}
                 >
@@ -261,21 +263,21 @@ const GamePage = () => {
                 <div></div>
                 
                 <button
-                  className={`pixel-button pixel-font text-2xl py-3 ${selectedArrow === Direction.LEFT ? 'pixel-button-accent' : ''}`}
+                  className={`pixel-button pixel-font text-2xl py-4 ${selectedArrow === Direction.LEFT ? 'pixel-button-accent' : ''}`}
                   onClick={() => setSelectedArrow(selectedArrow === Direction.LEFT ? null : Direction.LEFT)}
                   disabled={gameStatus !== GameStatus.READY}
                 >
                   ←
                 </button>
                 <button
-                  className={`pixel-button pixel-font text-2xl py-3 ${selectedArrow === Direction.DOWN ? 'pixel-button-accent' : ''}`}
+                  className={`pixel-button pixel-font text-2xl py-4 ${selectedArrow === Direction.DOWN ? 'pixel-button-accent' : ''}`}
                   onClick={() => setSelectedArrow(selectedArrow === Direction.DOWN ? null : Direction.DOWN)}
                   disabled={gameStatus !== GameStatus.READY}
                 >
                   ↓
                 </button>
                 <button
-                  className={`pixel-button pixel-font text-2xl py-3 ${selectedArrow === Direction.RIGHT ? 'pixel-button-accent' : ''}`}
+                  className={`pixel-button pixel-font text-2xl py-4 ${selectedArrow === Direction.RIGHT ? 'pixel-button-accent' : ''}`}
                   onClick={() => setSelectedArrow(selectedArrow === Direction.RIGHT ? null : Direction.RIGHT)}
                   disabled={gameStatus !== GameStatus.READY}
                 >
@@ -285,8 +287,11 @@ const GamePage = () => {
               
               {selectedArrow && (
                 <div 
-                  className="mt-4 text-center pixel-font font-bold"
-                  style={{ color: 'var(--pixel-color-accent)' }}
+                  className="mt-6 text-center pixel-font font-bold p-3 rounded"
+                  style={{ 
+                    color: 'var(--pixel-color-accent)',
+                    backgroundColor: 'rgba(255, 217, 61, 0.1)'
+                  }}
                 >
                   已选择: {getDirectionArrow(selectedArrow)}
                 </div>
@@ -294,7 +299,7 @@ const GamePage = () => {
             </div>
 
             <div 
-              className="p-4 rounded-lg"
+              className="p-6 rounded-lg"
               style={{ 
                 backgroundColor: 'var(--pixel-color-bg-light)',
                 border: '4px solid var(--pixel-color-border)',
@@ -302,16 +307,16 @@ const GamePage = () => {
               }}
             >
               <h3 
-                className="text-xl font-bold mb-4 pixel-font"
+                className="text-xl font-bold mb-6 pixel-font"
                 style={{ color: 'var(--pixel-color-accent)' }}
               >
                 游戏控制
               </h3>
               
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-4 mb-6">
                 {gameStatus === GameStatus.READY && (
                   <button
-                    className="pixel-button pixel-button-success pixel-font text-lg px-6 py-3"
+                    className="pixel-button pixel-button-success pixel-font text-lg px-8 py-4"
                     onClick={startGame}
                   >
                     🚀 开始游戏
@@ -320,7 +325,7 @@ const GamePage = () => {
                 
                 {gameStatus === GameStatus.RUNNING && (
                   <div 
-                    className="pixel-font text-lg px-6 py-3 rounded"
+                    className="pixel-font text-lg px-8 py-4 rounded"
                     style={{ 
                       backgroundColor: 'var(--pixel-color-primary)',
                       color: 'var(--pixel-color-bg)',
@@ -332,7 +337,7 @@ const GamePage = () => {
                 )}
                 
                 <button
-                  className="pixel-button pixel-button-secondary pixel-font text-lg px-6 py-3"
+                  className="pixel-button pixel-button-secondary pixel-font text-lg px-8 py-4"
                   onClick={resetGame}
                 >
                   🔄 重置
@@ -340,12 +345,15 @@ const GamePage = () => {
               </div>
               
               <div 
-                className="mt-4 pixel-font"
-                style={{ color: 'var(--pixel-color-text)' }}
+                className="pixel-font p-4 rounded"
+                style={{ 
+                  color: 'var(--pixel-color-text)',
+                  backgroundColor: 'rgba(255,255,255,0.05)'
+                }}
               >
                 <div>当前状态: 
                   <span 
-                    className="ml-2 font-bold"
+                    className="ml-3 font-bold text-lg"
                     style={{ 
                       color: gameStatus === GameStatus.WON 
                         ? 'var(--pixel-color-success)' 
@@ -365,36 +373,36 @@ const GamePage = () => {
 
             {gameStatus === GameStatus.WON && (
               <div 
-                className="p-6 rounded-lg text-center"
+                className="p-8 rounded-lg text-center"
                 style={{ 
                   backgroundColor: 'var(--pixel-color-success)',
                   border: '4px solid var(--pixel-color-success)',
                   boxShadow: '0 0 30px var(--pixel-color-success)'
                 }}
               >
-                <div className="text-5xl mb-4">🎉</div>
+                <div className="text-6xl mb-6">🎉</div>
                 <h3 
-                  className="text-3xl font-bold mb-2 pixel-font"
+                  className="text-3xl font-bold mb-4 pixel-font"
                   style={{ color: 'var(--pixel-color-bg)' }}
                 >
                   恭喜通关！
                 </h3>
                 <p 
-                  className="mb-4 pixel-font"
+                  className="mb-6 pixel-font text-lg"
                   style={{ color: 'var(--pixel-color-bg)' }}
                 >
                   收集金币: {collectedCoins.length}/{totalCoins}
                 </p>
-                <div className="flex justify-center gap-4">
+                <div className="flex flex-col sm:flex-row justify-center gap-4">
                   <button
-                    className="pixel-button pixel-font"
+                    className="pixel-button pixel-font text-lg px-6 py-3"
                     style={{ backgroundColor: 'var(--pixel-color-bg)', color: 'var(--pixel-color-primary)' }}
                     onClick={resetGame}
                   >
                     🔄 再玩一次
                   </button>
                   <button
-                    className="pixel-button pixel-font"
+                    className="pixel-button pixel-font text-lg px-6 py-3"
                     style={{ backgroundColor: 'var(--pixel-color-bg)', color: 'var(--pixel-color-primary)' }}
                     onClick={nextLevel}
                   >
@@ -406,28 +414,28 @@ const GamePage = () => {
 
             {gameStatus === GameStatus.LOST && (
               <div 
-                className="p-6 rounded-lg text-center"
+                className="p-8 rounded-lg text-center"
                 style={{ 
                   backgroundColor: 'var(--pixel-color-danger)',
                   border: '4px solid var(--pixel-color-danger)',
                   boxShadow: '0 0 30px var(--pixel-color-danger)'
                 }}
               >
-                <div className="text-5xl mb-4">💀</div>
+                <div className="text-6xl mb-6">💀</div>
                 <h3 
-                  className="text-3xl font-bold mb-2 pixel-font"
+                  className="text-3xl font-bold mb-4 pixel-font"
                   style={{ color: 'var(--pixel-color-bg)' }}
                 >
                   游戏失败
                 </h3>
                 <p 
-                  className="mb-4 pixel-font"
+                  className="mb-6 pixel-font text-lg"
                   style={{ color: 'var(--pixel-color-bg)' }}
                 >
                   机器人碰到了障碍物或掉出了地图
                 </p>
                 <button
-                  className="pixel-button pixel-font"
+                  className="pixel-button pixel-font text-lg px-8 py-4"
                   style={{ backgroundColor: 'var(--pixel-color-bg)', color: 'var(--pixel-color-danger)' }}
                   onClick={resetGame}
                 >
@@ -437,7 +445,7 @@ const GamePage = () => {
             )}
 
             <div 
-              className="p-4 rounded-lg"
+              className="p-6 rounded-lg"
               style={{ 
                 backgroundColor: 'var(--pixel-color-bg-light)',
                 border: '4px solid var(--pixel-color-border)',
@@ -445,37 +453,37 @@ const GamePage = () => {
               }}
             >
               <h3 
-                className="text-xl font-bold mb-3 pixel-font"
+                className="text-xl font-bold mb-6 pixel-font"
                 style={{ color: 'var(--pixel-color-accent)' }}
               >
                 图例
               </h3>
-              <div className="grid grid-cols-2 gap-2 pixel-font text-sm" style={{ color: 'var(--pixel-color-text)' }}>
-                <div className="flex items-center">
-                  <span className="text-xl mr-2">🤖</span>
+              <div className="grid grid-cols-2 gap-4 pixel-font text-sm" style={{ color: 'var(--pixel-color-text)' }}>
+                <div className="flex items-center p-2 rounded" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                  <span className="text-2xl mr-3">🤖</span>
                   <span>机器人</span>
                 </div>
-                <div className="flex items-center">
-                  <span className="text-xl mr-2">🏁</span>
+                <div className="flex items-center p-2 rounded" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                  <span className="text-2xl mr-3">🏁</span>
                   <span>终点</span>
                 </div>
-                <div className="flex items-center">
-                  <span className="text-xl mr-2">💰</span>
+                <div className="flex items-center p-2 rounded" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                  <span className="text-2xl mr-3">💰</span>
                   <span>金币</span>
                 </div>
-                <div className="flex items-center">
-                  <span className="text-xl mr-2">🧱</span>
+                <div className="flex items-center p-2 rounded" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                  <span className="text-2xl mr-3">🧱</span>
                   <span>障碍物</span>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center p-2 rounded" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
                   <div 
-                    className="w-6 h-6 mr-2 rounded"
+                    className="w-8 h-8 mr-3 rounded"
                     style={{ backgroundColor: 'var(--pixel-color-success)' }}
                   ></div>
                   <span>起点</span>
                 </div>
-                <div className="flex items-center">
-                  <span className="text-xl mr-2">↑↓←→</span>
+                <div className="flex items-center p-2 rounded" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                  <span className="text-2xl mr-3">↑↓←→</span>
                   <span>方向箭头</span>
                 </div>
               </div>
