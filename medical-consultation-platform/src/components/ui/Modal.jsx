@@ -9,6 +9,7 @@ export const Modal = ({
   children,
   size = 'md',
   className = '',
+  maxHeight = 'max-h-[85vh]',
   ...props
 }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -54,7 +55,8 @@ export const Modal = ({
       />
       <div
         className={cn(
-          'relative bg-white rounded-xl shadow-xl w-full transform transition-all duration-200',
+          'relative bg-white rounded-xl shadow-xl w-full transform transition-all duration-200 flex flex-col',
+          maxHeight,
           sizes[size],
           isOpen ? 'scale-100 translate-y-0' : 'scale-95 translate-y-4',
           className
@@ -70,7 +72,10 @@ export const Modal = ({
 export const ModalHeader = ({ children, className = '', ...props }) => {
   return (
     <div
-      className={cn('px-6 py-4 border-b border-border-light', className)}
+      className={cn(
+        'px-6 py-4 border-b border-border-light flex-shrink-0',
+        className
+      )}
       {...props}
     >
       {children}
@@ -91,7 +96,13 @@ export const ModalTitle = ({ children, className = '', ...props }) => {
 
 export const ModalContent = ({ children, className = '', ...props }) => {
   return (
-    <div className={cn('px-6 py-4', className)} {...props}>
+    <div
+      className={cn(
+        'px-6 py-4 overflow-y-auto flex-1',
+        className
+      )}
+      {...props}
+    >
       {children}
     </div>
   );
@@ -101,7 +112,7 @@ export const ModalFooter = ({ children, className = '', ...props }) => {
   return (
     <div
       className={cn(
-        'px-6 py-4 border-t border-border-light flex justify-end gap-3',
+        'px-6 py-4 border-t border-border-light flex justify-end gap-3 flex-shrink-0',
         className
       )}
       {...props}
@@ -116,7 +127,7 @@ export const ModalCloseButton = ({ onClose, className = '', ...props }) => {
     <button
       onClick={onClose}
       className={cn(
-        'absolute top-4 right-4 p-1 rounded-lg text-text-secondary hover:bg-background hover:text-text transition-colors',
+        'absolute top-4 right-4 p-1 rounded-lg text-text-secondary hover:bg-background hover:text-text transition-colors z-10',
         className
       )}
       {...props}
