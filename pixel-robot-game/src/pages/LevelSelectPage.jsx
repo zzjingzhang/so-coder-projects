@@ -18,10 +18,16 @@ const LevelSelectPage = () => {
   };
 
   return (
-    <div className="min-h-screen p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <div className="mb-6">
+    <div 
+      className="min-h-screen"
+      style={{ padding: '32px' }}
+    >
+      <div style={{ maxWidth: '1200px', marginLeft: 'auto', marginRight: 'auto' }}>
+        <div 
+          className="text-center"
+          style={{ marginBottom: '48px' }}
+        >
+          <div style={{ marginBottom: '24px' }}>
             <button
               className="pixel-button pixel-button-secondary pixel-font"
               onClick={() => navigate('/')}
@@ -30,44 +36,89 @@ const LevelSelectPage = () => {
             </button>
           </div>
           <h1 
-            className="text-5xl font-bold mb-4 pixel-font"
-            style={{ color: 'var(--pixel-color-primary)', textShadow: '3px 3px 0px var(--pixel-color-border)' }}
+            className="pixel-font"
+            style={{ 
+              fontSize: '48px',
+              fontWeight: 'bold',
+              marginBottom: '16px',
+              color: 'var(--pixel-color-primary)', 
+              textShadow: '3px 3px 0px var(--pixel-color-border)'
+            }}
           >
             选择关卡
           </h1>
           <p 
-            className="text-lg pixel-font"
-            style={{ color: 'var(--pixel-color-text)' }}
+            className="pixel-font"
+            style={{ 
+              fontSize: '18px',
+              color: 'var(--pixel-color-text)'
+            }}
           >
             选择一个关卡开始游戏
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        <div 
+          style={{ 
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+            gap: '32px',
+            marginBottom: '48px'
+          }}
+        >
           {levels.map((level) => (
             <div
               key={level.id}
-              className="cursor-pointer transition-transform hover:scale-105"
+              style={{ 
+                cursor: 'pointer',
+                transition: 'transform 0.2s ease'
+              }}
               onClick={() => navigate(`/game/${level.id}`)}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.05)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
             >
               <div 
-                className="p-8 rounded-lg h-full"
                 style={{ 
+                  padding: '32px',
+                  height: '100%',
                   backgroundColor: 'var(--pixel-color-bg-light)',
                   border: '4px solid var(--pixel-color-border)',
-                  boxShadow: '4px 4px 0px var(--pixel-color-border)'
+                  boxShadow: '4px 4px 0px var(--pixel-color-border)',
+                  borderRadius: '8px'
                 }}
               >
-                <div className="flex justify-between items-start mb-6">
+                <div 
+                  style={{ 
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                    marginBottom: '24px'
+                  }}
+                >
                   <div 
-                    className="text-4xl font-bold pixel-font"
-                    style={{ color: 'var(--pixel-color-primary)' }}
+                    className="pixel-font"
+                    style={{ 
+                      fontSize: '36px',
+                      fontWeight: 'bold',
+                      color: 'var(--pixel-color-primary)'
+                    }}
                   >
                     {level.id}
                   </div>
                   <div 
-                    className="px-4 py-2 rounded pixel-font text-sm font-bold"
+                    className="pixel-font"
                     style={{ 
+                      paddingLeft: '16px',
+                      paddingRight: '16px',
+                      paddingTop: '8px',
+                      paddingBottom: '8px',
+                      borderRadius: '4px',
+                      fontSize: '14px',
+                      fontWeight: 'bold',
                       backgroundColor: getDifficultyColor(level),
                       color: 'var(--pixel-color-bg)'
                     }}
@@ -77,56 +128,89 @@ const LevelSelectPage = () => {
                 </div>
 
                 <h2 
-                  className="text-2xl font-bold mb-4 pixel-font"
-                  style={{ color: 'var(--pixel-color-accent)' }}
+                  className="pixel-font"
+                  style={{ 
+                    fontSize: '24px',
+                    fontWeight: 'bold',
+                    marginBottom: '16px',
+                    color: 'var(--pixel-color-accent)',
+                    textDecoration: 'none'
+                  }}
                 >
                   {level.name}
                 </h2>
 
                 <p 
-                  className="mb-6 pixel-font text-sm"
-                  style={{ color: 'var(--pixel-color-text)' }}
+                  className="pixel-font"
+                  style={{ 
+                    fontSize: '14px',
+                    marginBottom: '24px',
+                    color: 'var(--pixel-color-text)',
+                    textDecoration: 'none'
+                  }}
                 >
                   {level.description}
                 </p>
 
-                <div className="space-y-4 mb-6">
-                  <div className="flex items-center space-x-6 pixel-font text-sm">
-                    <div className="flex items-center">
-                      <span className="mr-2">📐</span>
-                      <span style={{ color: 'var(--pixel-color-text)' }}>
-                        {level.gridSize.rows} x {level.gridSize.cols}
-                      </span>
+                <div style={{ marginBottom: '24px' }}>
+                  <div 
+                    className="pixel-font"
+                    style={{ 
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '24px',
+                      marginBottom: '16px',
+                      fontSize: '14px',
+                      color: 'var(--pixel-color-text)',
+                      textDecoration: 'none'
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <span style={{ marginRight: '8px' }}>📐</span>
+                      <span>{level.gridSize.rows} x {level.gridSize.cols}</span>
                     </div>
-                    <div className="flex items-center">
-                      <span className="mr-2">💰</span>
-                      <span style={{ color: 'var(--pixel-color-text)' }}>
-                        {level.coins.length} 金币
-                      </span>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <span style={{ marginRight: '8px' }}>💰</span>
+                      <span>{level.coins.length} 金币</span>
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-6 pixel-font text-sm">
-                    <div className="flex items-center">
-                      <span className="mr-2">➡️</span>
-                      <span style={{ color: 'var(--pixel-color-text)' }}>
-                        初始方向: {getDirectionArrow(level.startDirection)}
-                      </span>
+                  <div 
+                    className="pixel-font"
+                    style={{ 
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '24px',
+                      fontSize: '14px',
+                      color: 'var(--pixel-color-text)',
+                      textDecoration: 'none'
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <span style={{ marginRight: '8px' }}>➡️</span>
+                      <span>初始方向: {getDirectionArrow(level.startDirection)}</span>
                     </div>
-                    <div className="flex items-center">
-                      <span className="mr-2">📍</span>
-                      <span style={{ color: 'var(--pixel-color-text)' }}>
-                        最多 {level.maxArrows || '∞'} 个箭头
-                      </span>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <span style={{ marginRight: '8px' }}>📍</span>
+                      <span>最多 {level.maxArrows || '∞'} 个箭头</span>
                     </div>
                   </div>
                 </div>
 
                 <div 
-                  className="mt-4 text-center pixel-font font-bold p-3 rounded"
+                  className="pixel-font"
                   style={{ 
+                    marginTop: '16px',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    paddingTop: '12px',
+                    paddingBottom: '12px',
+                    paddingLeft: '16px',
+                    paddingRight: '16px',
+                    borderRadius: '4px',
                     color: 'var(--pixel-color-primary)',
-                    backgroundColor: 'rgba(0, 212, 255, 0.1)'
+                    backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                    textDecoration: 'none'
                   }}
                 >
                   点击开始 →
@@ -136,13 +220,38 @@ const LevelSelectPage = () => {
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <div className="flex justify-center space-x-6 text-3xl">
+        <div 
+          className="text-center"
+          style={{ marginTop: '48px' }}
+        >
+          <div 
+            style={{ 
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '24px',
+              fontSize: '36px'
+            }}
+          >
             <span className="robot-animation">🤖</span>
             <span className="coin-animation">💰</span>
-            <span className="robot-animation" style={{ animationDelay: '0.3s' }}>🤖</span>
-            <span className="coin-animation" style={{ animationDelay: '0.5s' }}>💰</span>
-            <span className="robot-animation" style={{ animationDelay: '0.6s' }}>🤖</span>
+            <span 
+              className="robot-animation"
+              style={{ animationDelay: '0.3s' }}
+            >
+              🤖
+            </span>
+            <span 
+              className="coin-animation"
+              style={{ animationDelay: '0.5s' }}
+            >
+              💰
+            </span>
+            <span 
+              className="robot-animation"
+              style={{ animationDelay: '0.6s' }}
+            >
+              🤖
+            </span>
           </div>
         </div>
       </div>

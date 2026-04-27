@@ -18,7 +18,7 @@
   box-sizing: border-box;
 }
 
-body {
+html, body {
   font-family: 'Courier New', monospace;
   background-color: var(--pixel-color-bg);
   color: var(--pixel-color-text);
@@ -28,6 +28,17 @@ body {
 #root {
   width: 100%;
   min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
 }
 
 .pixel-font {
@@ -43,38 +54,47 @@ body {
 }
 
 .pixel-button {
-  background-color: var(--pixel-color-primary);
-  color: var(--pixel-color-bg);
-  border: none;
-  padding: 12px 24px;
-  font-family: 'Courier New', monospace;
-  font-weight: bold;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.1s ease;
-  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3);
+  display: inline-block;
+  background-color: var(--pixel-color-primary) !important;
+  color: var(--pixel-color-bg) !important;
+  border: none !important;
+  padding: 12px 24px !important;
+  font-family: 'Courier New', monospace !important;
+  font-weight: bold !important;
+  font-size: 16px !important;
+  cursor: pointer !important;
+  transition: all 0.1s ease !important;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3) !important;
+  text-decoration: none !important;
+  border-radius: 0 !important;
 }
 
 .pixel-button:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+  transform: translate(2px, 2px) !important;
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3) !important;
+  text-decoration: none !important;
 }
 
 .pixel-button:active {
-  transform: translate(4px, 4px);
-  box-shadow: none;
+  transform: translate(4px, 4px) !important;
+  box-shadow: none !important;
+}
+
+.pixel-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .pixel-button-secondary {
-  background-color: var(--pixel-color-secondary);
+  background-color: var(--pixel-color-secondary) !important;
 }
 
 .pixel-button-success {
-  background-color: var(--pixel-color-success);
+  background-color: var(--pixel-color-success) !important;
 }
 
 .pixel-button-accent {
-  background-color: var(--pixel-color-accent);
+  background-color: var(--pixel-color-accent) !important;
 }
 
 @keyframes coin-spin {

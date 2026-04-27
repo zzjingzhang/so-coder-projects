@@ -4,35 +4,58 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-8">
-      <div className="text-center max-w-4xl">
-        <div className="mb-12">
+    <div 
+      className="min-h-screen flex flex-col items-center justify-center"
+      style={{ padding: '32px' }}
+    >
+      <div 
+        className="text-center"
+        style={{ maxWidth: '800px', width: '100%' }}
+      >
+        <div style={{ marginBottom: '48px' }}>
           <h1 
-            className="text-6xl font-bold pixel-font"
+            className="pixel-font"
             style={{ 
+              fontSize: '48px',
+              fontWeight: 'bold',
               color: 'var(--pixel-color-primary)', 
               textShadow: '4px 4px 0px var(--pixel-color-border)',
-              marginBottom: '12px'
+              marginBottom: '12px',
+              textAlign: 'center'
             }}
           >
             像素机器人
           </h1>
+          
           <div 
-            className="w-32 h-32 mx-auto flex items-center justify-center rounded-lg"
+            className="flex items-center justify-center"
             style={{ 
+              width: '128px',
+              height: '128px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginBottom: '12px',
               backgroundColor: 'var(--pixel-color-bg-light)',
               border: '4px solid var(--pixel-color-primary)',
               boxShadow: '0 0 20px var(--pixel-color-primary)',
-              marginBottom: '12px'
+              borderRadius: '8px'
             }}
           >
-            <div className="text-6xl robot-animation">🤖</div>
+            <div 
+              className="robot-animation"
+              style={{ fontSize: '48px' }}
+            >
+              🤖
+            </div>
           </div>
+          
           <p 
-            className="text-xl pixel-font"
+            className="pixel-font"
             style={{ 
+              fontSize: '20px',
               color: 'var(--pixel-color-text)',
-              marginBottom: '12px'
+              marginBottom: '12px',
+              textAlign: 'center'
             }}
           >
             引导机器人避开障碍物，收集金币，到达终点！
@@ -40,105 +63,139 @@ const HomePage = () => {
         </div>
 
         <div 
-          className="p-8 mb-12 rounded-lg"
           style={{ 
+            padding: '32px',
+            marginBottom: '24px',
             backgroundColor: 'var(--pixel-color-bg-light)',
-            border: '4px solid var(--pixel-color-border)'
+            border: '4px solid var(--pixel-color-border)',
+            borderRadius: '8px'
           }}
         >
           <h2 
-            className="text-2xl font-bold mb-6 pixel-font"
-            style={{ color: 'var(--pixel-color-accent)' }}
+            className="pixel-font"
+            style={{ 
+              fontSize: '24px',
+              fontWeight: 'bold',
+              color: 'var(--pixel-color-accent)',
+              marginBottom: '20px',
+              textAlign: 'left'
+            }}
           >
             游戏说明
           </h2>
-          <ul className="text-left pixel-font" style={{ color: 'var(--pixel-color-text)' }}>
+          <ul style={{ 
+            textAlign: 'left',
+            listStyle: 'none',
+            padding: 0,
+            margin: 0
+          }}>
             <li 
-              className="rounded"
+              className="pixel-font"
               style={{ 
                 backgroundColor: 'rgba(255,255,255,0.05)',
                 paddingLeft: '16px',
                 paddingRight: '16px',
-                paddingTop: '8px',
-                paddingBottom: '8px',
-                marginBottom: '12px'
+                paddingTop: '12px',
+                paddingBottom: '12px',
+                marginBottom: '12px',
+                borderRadius: '4px',
+                color: 'var(--pixel-color-text)',
+                fontSize: '16px'
               }}
             >
               🎯 选择关卡后，观察地图布局
             </li>
             <li 
-              className="rounded"
+              className="pixel-font"
               style={{ 
                 backgroundColor: 'rgba(255,255,255,0.05)',
                 paddingLeft: '16px',
                 paddingRight: '16px',
-                paddingTop: '8px',
-                paddingBottom: '8px',
-                marginBottom: '12px'
+                paddingTop: '12px',
+                paddingBottom: '12px',
+                marginBottom: '12px',
+                borderRadius: '4px',
+                color: 'var(--pixel-color-text)',
+                fontSize: '16px'
               }}
             >
               ➡️ 点击方向箭头按钮选择要放置的方向
             </li>
             <li 
-              className="rounded"
+              className="pixel-font"
               style={{ 
                 backgroundColor: 'rgba(255,255,255,0.05)',
                 paddingLeft: '16px',
                 paddingRight: '16px',
-                paddingTop: '8px',
-                paddingBottom: '8px',
-                marginBottom: '12px'
+                paddingTop: '12px',
+                paddingBottom: '12px',
+                marginBottom: '12px',
+                borderRadius: '4px',
+                color: 'var(--pixel-color-text)',
+                fontSize: '16px'
               }}
             >
               📍 在地图格子上点击放置箭头
             </li>
             <li 
-              className="rounded"
+              className="pixel-font"
               style={{ 
                 backgroundColor: 'rgba(255,255,255,0.05)',
                 paddingLeft: '16px',
                 paddingRight: '16px',
-                paddingTop: '8px',
-                paddingBottom: '8px',
-                marginBottom: '12px'
+                paddingTop: '12px',
+                paddingBottom: '12px',
+                marginBottom: '12px',
+                borderRadius: '4px',
+                color: 'var(--pixel-color-text)',
+                fontSize: '16px'
               }}
             >
               🚀 点击开始按钮，机器人将自动移动
             </li>
             <li 
-              className="rounded"
+              className="pixel-font"
               style={{ 
                 backgroundColor: 'rgba(255,255,255,0.05)',
                 paddingLeft: '16px',
                 paddingRight: '16px',
-                paddingTop: '8px',
-                paddingBottom: '8px',
-                marginBottom: '12px'
+                paddingTop: '12px',
+                paddingBottom: '12px',
+                marginBottom: '12px',
+                borderRadius: '4px',
+                color: 'var(--pixel-color-text)',
+                fontSize: '16px'
               }}
             >
               💰 收集金币获得额外分数
             </li>
             <li 
-              className="rounded"
+              className="pixel-font"
               style={{ 
                 backgroundColor: 'rgba(255,255,255,0.05)',
                 paddingLeft: '16px',
                 paddingRight: '16px',
-                paddingTop: '8px',
-                paddingBottom: '8px',
-                marginBottom: '12px'
+                paddingTop: '12px',
+                paddingBottom: '12px',
+                marginBottom: '12px',
+                borderRadius: '4px',
+                color: 'var(--pixel-color-text)',
+                fontSize: '16px'
               }}
             >
               🏁 引导机器人到达终点即可过关
             </li>
             <li 
-              className="rounded"
+              className="pixel-font"
               style={{ 
                 backgroundColor: 'rgba(255,255,255,0.05)',
                 paddingLeft: '16px',
                 paddingRight: '16px',
-                paddingTop: '8px',
-                paddingBottom: '8px'
+                paddingTop: '12px',
+                paddingBottom: '12px',
+                borderRadius: '4px',
+                color: 'var(--pixel-color-text)',
+                fontSize: '16px'
               }}
             >
               ⚠️ 碰到障碍物或掉出地图则失败
@@ -146,19 +203,37 @@ const HomePage = () => {
           </ul>
         </div>
 
-        <div className="mb-12">
+        <div style={{ marginBottom: '32px' }}>
           <button
-            className="pixel-button pixel-font text-xl px-8 py-4 hover:scale-105 transition-transform"
+            className="pixel-button pixel-font"
+            style={{ 
+              fontSize: '20px',
+              paddingTop: '16px',
+              paddingBottom: '16px',
+              paddingLeft: '32px',
+              paddingRight: '32px'
+            }}
             onClick={() => navigate('/levels')}
           >
             开始游戏 🎮
           </button>
         </div>
 
-        <div className="mt-8 flex justify-center space-x-8 text-4xl">
+        <div 
+          className="flex justify-center"
+          style={{ 
+            gap: '32px',
+            fontSize: '36px'
+          }}
+        >
           <span className="coin-animation">💰</span>
           <span className="robot-animation">🤖</span>
-          <span className="coin-animation" style={{ animationDelay: '0.5s' }}>💰</span>
+          <span 
+            className="coin-animation"
+            style={{ animationDelay: '0.5s' }}
+          >
+            💰
+          </span>
         </div>
       </div>
     </div>
