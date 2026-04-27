@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameLogicService } from '../../services/game-logic.service';
 import { GameState } from '../../types';
@@ -19,12 +19,12 @@ export class LevelCompleteComponent {
   activatedNodesCount = this.gameLogicService.gameNodes;
 
   // 是否显示关卡完成界面
-  shouldShow = inject(() => {
+  shouldShow = computed(() => {
     return this.gameState() === GameState.LevelComplete;
   });
 
   // 是否是最后一关
-  isLastLevel = inject(() => {
+  isLastLevel = computed(() => {
     return this.currentLevel() >= this.totalLevels();
   });
 

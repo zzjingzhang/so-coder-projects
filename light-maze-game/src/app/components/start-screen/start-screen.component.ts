@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameLogicService } from '../../services/game-logic.service';
 import { GameState } from '../../types';
@@ -15,12 +15,12 @@ export class StartScreenComponent {
   gameState = this.gameLogicService.gameState;
 
   // 显示开始界面的条件
-  shouldShow = inject(() => {
+  shouldShow = computed(() => {
     const state = this.gameState();
     return state === GameState.Start || state === GameState.GameOver;
   });
 
-  isGameOver = inject(() => {
+  isGameOver = computed(() => {
     return this.gameState() === GameState.GameOver;
   });
 

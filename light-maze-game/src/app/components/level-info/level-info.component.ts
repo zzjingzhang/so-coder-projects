@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameLogicService } from '../../services/game-logic.service';
 import { GameState } from '../../types';
@@ -20,18 +20,18 @@ export class LevelInfoComponent {
   exitUnlocked = this.gameLogicService.exitUnlocked;
 
   // 计算已激活的节点数
-  activatedNodesCount = inject(() => {
+  activatedNodesCount = computed(() => {
     const nodes = this.gameNodes();
     return nodes.filter(n => n.activated).length;
   });
 
   // 计算总节点数
-  totalNodesCount = inject(() => {
+  totalNodesCount = computed(() => {
     return this.gameNodes().length;
   });
 
   // 是否显示关卡信息
-  shouldShow = inject(() => {
+  shouldShow = computed(() => {
     const state = this.gameState();
     return state === GameState.Playing || state === GameState.LevelComplete;
   });
