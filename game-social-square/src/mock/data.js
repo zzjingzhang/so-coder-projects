@@ -379,3 +379,40 @@ export function getPostsByTag(tagName) {
 export function getPostsByUserId(userId) {
   return posts.filter(p => p.userId === parseInt(userId))
 }
+
+export function searchPosts(keyword) {
+  if (!keyword || !keyword.trim()) return posts
+  
+  const lowerKeyword = keyword.toLowerCase().trim()
+  
+  return posts.filter(post => {
+    if (post.content.toLowerCase().includes(lowerKeyword)) return true
+    if (post.tags.some(tag => tag.toLowerCase().includes(lowerKeyword))) return true
+    if (post.user.name.toLowerCase().includes(lowerKeyword)) return true
+    if (post.user.bio && post.user.bio.toLowerCase().includes(lowerKeyword)) return true
+    return false
+  })
+}
+
+export function searchUsers(keyword) {
+  if (!keyword || !keyword.trim()) return users
+  
+  const lowerKeyword = keyword.toLowerCase().trim()
+  
+  return users.filter(user => {
+    if (user.name.toLowerCase().includes(lowerKeyword)) return true
+    if (user.bio && user.bio.toLowerCase().includes(lowerKeyword)) return true
+    if (user.tags.some(tag => tag.toLowerCase().includes(lowerKeyword))) return true
+    return false
+  })
+}
+
+export function searchTags(keyword) {
+  if (!keyword || !keyword.trim()) return tags
+  
+  const lowerKeyword = keyword.toLowerCase().trim()
+  
+  return tags.filter(tag => 
+    tag.name.toLowerCase().includes(lowerKeyword)
+  )
+}

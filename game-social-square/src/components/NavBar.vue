@@ -298,10 +298,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
+const route = useRoute()
 
 const searchQuery = ref('')
 const showCreateDialog = ref(false)
@@ -310,6 +311,10 @@ const notifications = ref(3)
 const messages = ref(12)
 const showNotificationsMenu = ref(false)
 const showMessagesMenu = ref(false)
+
+watch(() => route.query.search, (newSearch) => {
+  searchQuery.value = newSearch || ''
+}, { immediate: true })
 
 const currentUser = ref({
   id: 99,
@@ -383,12 +388,28 @@ function goToProfile() {
 }
 
 function handleSearch() {
-  if (!searchQuery.value.trim()) return
-  console.log('搜索:', searchQuery.value)
+  const keyword = searchQuery.value.trim()
+  if (route.path !== '/') {
+    router.push({
+      path: '/',
+      query: { search: keyword || undefined }
+    })
+  } else {
+    router.replace({
+      query: { ...route.query, search: keyword || undefined }
+    })
+  }
 }
 
 function handleClearSearch() {
   searchQuery.value = ''
+  if (route.path !== '/') {
+    router.push('/')
+  } else {
+    const newQuery = { ...route.query }
+    delete newQuery.search
+    router.replace({ query: newQuery })
+  }
 }
 
 function toggleNotifications() {
