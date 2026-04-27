@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import type { 
   GameState, 
   Line, 
@@ -524,19 +524,19 @@ export function useGameLogic() {
     });
   }, []);
 
-  const startGameLoop = useCallback(() => {
-    if (!gameLoopRef.current) {
-      lastTimeRef.current = performance.now();
-      gameLoopRef.current = requestAnimationFrame(gameLoop);
+  useEffect(() => {
+    if (gameState.status === 'playing') {
+      if (!gameLoopRef.current) {
+        lastTimeRef.current = performance.now();
+        gameLoopRef.current = requestAnimationFrame(gameLoop);
+      }
+    } else {
+      if (gameLoopRef.current) {
+        cancelAnimationFrame(gameLoopRef.current);
+        gameLoopRef.current = null;
+      }
     }
-  }, [gameLoop]);
-
-  const stopGameLoop = useCallback(() => {
-    if (gameLoopRef.current) {
-      cancelAnimationFrame(gameLoopRef.current);
-      gameLoopRef.current = null;
-    }
-  }, []);
+  }, [gameState.status, gameLoop]);
 
   return {
     gameState,
@@ -545,8 +545,6 @@ export function useGameLogic() {
     stopGame,
     setSelectedLineType,
     addLine,
-    startGameLoop,
-    stopGameLoop,
     getEnemyPath: getEnemyPathForLevel,
     canvasWidth: CANVAS_WIDTH,
     canvasHeight: CANVAS_HEIGHT,
