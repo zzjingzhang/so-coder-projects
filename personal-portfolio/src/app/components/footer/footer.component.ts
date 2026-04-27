@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SocialLink } from '../../types';
+import { getSocialIcon } from '../../utils/icon-mapping';
 
 @Component({
   selector: 'app-footer',
@@ -56,7 +57,7 @@ import { SocialLink } from '../../types';
                     class="social-icon"
                     [title]="link.name"
                   >
-                    <i [class]="link.icon" class="text-xl"></i>
+                    <i [class]="getSocialIcon(link.name)" class="text-xl"></i>
                   </a>
                 }
               </div>
@@ -91,13 +92,14 @@ import { SocialLink } from '../../types';
 export class FooterComponent implements OnInit {
   currentYear = new Date().getFullYear();
   email = 'hello@example.com';
+  getSocialIcon = getSocialIcon;
   
   socialLinks: SocialLink[] = [
-    { name: 'GitHub', icon: 'pi pi-github', url: 'https://github.com' },
-    { name: 'LinkedIn', icon: 'pi pi-linkedin', url: 'https://linkedin.com' },
-    { name: 'Twitter', icon: 'pi pi-twitter', url: 'https://twitter.com' },
-    { name: 'Dribbble', icon: 'pi pi-palette', url: 'https://dribbble.com' },
-    { name: 'Instagram', icon: 'pi pi-instagram', url: 'https://instagram.com' }
+    { name: 'GitHub', icon: '', url: 'https://github.com' },
+    { name: 'LinkedIn', icon: '', url: 'https://linkedin.com' },
+    { name: 'Twitter', icon: '', url: 'https://twitter.com' },
+    { name: 'Dribbble', icon: '', url: 'https://dribbble.com' },
+    { name: 'Instagram', icon: '', url: 'https://instagram.com' }
   ];
 
   ngOnInit(): void {}

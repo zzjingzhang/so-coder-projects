@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SocialLink } from '../../types';
+import { getSocialIcon } from '../../utils/icon-mapping';
 
 @Component({
   selector: 'app-hero',
@@ -92,7 +93,7 @@ import { SocialLink } from '../../types';
                 class="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white hover:text-primary-600 transition-all duration-300 transform hover:scale-110 hover:-translate-y-1"
                 [title]="link.name"
               >
-                <i [class]="link.icon" class="text-xl"></i>
+                <i [class]="getSocialIcon(link.name)" class="text-xl"></i>
               </a>
             }
           </div>
@@ -114,11 +115,13 @@ import { SocialLink } from '../../types';
   styles: []
 })
 export class HeroComponent implements OnInit {
+  getSocialIcon = getSocialIcon;
+  
   socialLinks: SocialLink[] = [
-    { name: 'GitHub', icon: 'pi pi-github', url: 'https://github.com' },
-    { name: 'LinkedIn', icon: 'pi pi-linkedin', url: 'https://linkedin.com' },
-    { name: 'Twitter', icon: 'pi pi-twitter', url: 'https://twitter.com' },
-    { name: 'Email', icon: 'pi pi-envelope', url: 'mailto:hello@example.com' }
+    { name: 'GitHub', icon: '', url: 'https://github.com' },
+    { name: 'LinkedIn', icon: '', url: 'https://linkedin.com' },
+    { name: 'Twitter', icon: '', url: 'https://twitter.com' },
+    { name: 'Email', icon: '', url: 'mailto:hello@example.com' }
   ];
 
   ngOnInit(): void {}
