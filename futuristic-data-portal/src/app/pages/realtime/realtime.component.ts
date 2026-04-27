@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
 import { CardModule } from 'primeng/card';
@@ -7,7 +7,6 @@ import { TagModule } from 'primeng/tag';
 import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { PanelModule } from 'primeng/panel';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { interval, Subscription } from 'rxjs';
 
@@ -49,12 +48,10 @@ interface ActivityLog {
     BadgeModule,
     ButtonModule,
     ProgressBarModule,
-    PanelModule,
     ScrollPanelModule
   ],
   template: `
     <div class="space-y-6">
-      <!-- Page Header -->
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 class="text-2xl font-bold text-white flex items-center gap-3">
@@ -68,53 +65,32 @@ interface ActivityLog {
         </div>
         <div class="flex items-center gap-3">
           <span class="text-sm text-cyber-400">Auto-refresh: {{ refreshInterval }}s</span>
-          <button 
-            pButton 
-            [icon]="isAutoRefresh ? 'pi-pause' : 'pi-play'" 
-            (click)="toggleAutoRefresh()"
-            class="p-button-outlined"
-            styleClass="border-cyber-700 text-cyber-400"
-          ></button>
+          <button pButton [icon]="isAutoRefresh ? 'pi-pause' : 'pi-play'" (click)="toggleAutoRefresh()" class="p-button-outlined" styleClass="border-cyber-700 text-cyber-400"></button>
           <button pButton icon="pi pi-refresh" (click)="manualRefresh()" class="bg-gradient-to-r from-neon-blue to-neon-purple border-none"></button>
         </div>
       </div>
 
-      <!-- Live Metrics -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         @for (metric of liveMetrics; track metric.name; let i = $index) {
           <div class="glass-panel glass-panel-hover rounded-xl p-6 stats-card">
             <div class="flex items-start justify-between">
               <div>
                 <p class="text-cyber-400 text-sm font-medium">{{ metric.name }}</p>
-                <h3 class="text-3xl font-bold text-white mt-2 counter-number">
-                  {{ metric.value.toLocaleString() }}<span class="text-lg text-cyber-400">{{ metric.unit }}</span>
-                </h3>
+                <h3 class="text-3xl font-bold text-white mt-2 counter-number">{{ formatMetricValue(metric.value) }}<span class="text-lg text-cyber-400">{{ metric.unit }}</span></h3>
                 <div class="flex items-center gap-1 mt-2">
-                  <span 
-                    class="flex items-center gap-1 text-sm font-medium"
-                    [class.text-green-400]="metric.trend >= 0"
-                    [class.text-red-400]="metric.trend < 0"
-                  >
-                    <i class="pi" 
-                      [class.pi-arrow-up]="metric.trend >= 0"
-                      [class.pi-arrow-down]="metric.trend < 0"
-                    ></i>
-                    {{ Math.abs(metric.trend).toFixed(1) }}%
+                  <span class="flex items-center gap-1 text-sm font-medium" [class.text-green-400]="metric.trend >= 0" [class.text-red-400]="metric.trend < 0">
+                    <i class="pi" [class.pi-arrow-up]="metric.trend >= 0" [class.pi-arrow-down]="metric.trend < 0"></i>
+                    {{ formatTrend(metric.trend) }}%
                   </span>
                 </div>
               </div>
-              <div 
-                class="w-12 h-12 rounded-xl flex items-center justify-center pulse-glow"
-                [style.background]="'linear-gradient(135deg, ' + metric.color + ')'">
-              </div>
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center pulse-glow" [style.background]="'linear-gradient(135deg, ' + metric.color + ')'"></div>
             </div>
           </div>
         }
       </div>
 
-      <!-- Main Content Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Real-time Chart -->
         <div class="lg:col-span-2 glass-panel glass-panel-hover rounded-xl p-6">
           <div class="flex items-center justify-between mb-6">
             <div>
@@ -127,46 +103,22 @@ interface ActivityLog {
             </div>
           </div>
           <div class="chart-container h-80">
-            <p-chart 
-              type="line" 
-              [data]="realtimeChartData" 
-              [options]="realtimeChartOptions"
-            ></p-chart>
+            <p-chart type="line" [data]="realtimeChartData" [options]="realtimeChartOptions"></p-chart>
           </div>
         </div>
 
-        <!-- Activity Logs -->
         <div class="glass-panel glass-panel-hover rounded-xl p-6">
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold text-white">Activity Log</h3>
-            <p-tag value="New: {{ newLogsCount }}" severity="info" styleClass="text-xs"></p-tag>
+            <p-tag [value]="'New: ' + newLogsCount" severity="info" styleClass="text-xs"></p-tag>
           </div>
           <p-scrollPanel [style]="{ height: '380px' }">
             <div class="space-y-3">
               @for (log of activityLogs; track log.id) {
-                <div 
-                  class="p-3 rounded-lg border transition-all duration-300 hover:scale-[1.02]"
-                  [class.border-cyber-700]="true"
-                  [class.bg-cyber-800/50]="true"
-                >
+                <div class="p-3 rounded-lg border border-cyber-700 bg-cyber-800/50 transition-all duration-300 hover:scale-[1.02]">
                   <div class="flex items-start gap-3">
-                    <div 
-                      class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                      [class.bg-blue-500/20]="log.type === 'info'"
-                      [class.bg-yellow-500/20]="log.type === 'warning'"
-                      [class.bg-green-500/20]="log.type === 'success'"
-                      [class.bg-red-500/20]="log.type === 'error'"
-                    >
-                      <i class="pi text-sm"
-                        [class.pi-info-circle]="log.type === 'info'"
-                        [class.pi-exclamation-triangle]="log.type === 'warning'"
-                        [class.pi-check-circle]="log.type === 'success'"
-                        [class.pi-times-circle]="log.type === 'error'"
-                        [class.text-blue-400]="log.type === 'info'"
-                        [class.text-yellow-400]="log.type === 'warning'"
-                        [class.text-green-400]="log.type === 'success'"
-                        [class.text-red-400]="log.type === 'error'"
-                      ></i>
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" [ngClass]="getLogIconBgClass(log.type)">
+                      <i class="pi text-sm" [ngClass]="getLogIconClass(log.type)"></i>
                     </div>
                     <div class="flex-1 min-w-0">
                       <p class="text-sm text-white truncate">{{ log.message }}</p>
@@ -184,7 +136,6 @@ interface ActivityLog {
         </div>
       </div>
 
-      <!-- System Nodes Table -->
       <div class="glass-panel glass-panel-hover rounded-xl p-6">
         <div class="flex items-center justify-between mb-6">
           <div>
@@ -207,11 +158,7 @@ interface ActivityLog {
           </div>
         </div>
 
-        <p-table 
-          [value]="systemNodes" 
-          [tableStyle]="{'min-width': '50rem'}"
-          styleClass="p-datatable-gridless"
-        >
+        <p-table [value]="systemNodes" [tableStyle]="{'min-width': '50rem'}" styleClass="p-datatable-gridless">
           <ng-template pTemplate="header">
             <tr class="border-b border-cyber-700">
               <th class="text-cyber-400 font-semibold py-3">Node</th>
@@ -227,17 +174,8 @@ interface ActivityLog {
             <tr class="border-b border-cyber-800 hover:bg-cyber-800/30 transition-colors">
               <td class="py-4">
                 <div class="flex items-center gap-3">
-                  <div 
-                    class="w-10 h-10 rounded-lg flex items-center justify-center"
-                    [class.bg-green-500/20]="node.status === 'online'"
-                    [class.bg-yellow-500/20]="node.status === 'warning'"
-                    [class.bg-red-500/20]="node.status === 'offline'"
-                  >
-                    <i class="pi pi-server text-lg"
-                      [class.text-green-400]="node.status === 'online'"
-                      [class.text-yellow-400]="node.status === 'warning'"
-                      [class.text-red-400]="node.status === 'offline'"
-                    ></i>
+                  <div class="w-10 h-10 rounded-lg flex items-center justify-center" [ngClass]="getNodeIconBgClass(node.status)">
+                    <i class="pi pi-server text-lg" [ngClass]="getNodeIconClass(node.status)"></i>
                   </div>
                   <div>
                     <p class="text-white font-medium">{{ node.name }}</p>
@@ -246,46 +184,22 @@ interface ActivityLog {
                 </div>
               </td>
               <td class="py-4">
-                <p-tag 
-                  [value]="node.status | titlecase"
-                  [severity]="getNodeSeverity(node.status)"
-                  styleClass="uppercase text-xs"
-                ></p-tag>
+                <p-tag [value]="node.status | titlecase" [severity]="getNodeSeverity(node.status)" styleClass="uppercase text-xs"></p-tag>
               </td>
               <td class="py-4">
                 <div class="flex items-center gap-3">
                   <div class="w-24">
-                    <p-progressBar 
-                      [value]="node.cpu" 
-                      [showValue]="false"
-                      class="h-2"
-                      styleClass="bg-cyber-800"
-                    ></p-progressBar>
+                    <p-progressBar [value]="node.cpu" [showValue]="false" class="h-2" styleClass="bg-cyber-800"></p-progressBar>
                   </div>
-                  <span 
-                    class="text-sm font-medium"
-                    [class.text-green-400]="node.cpu < 70"
-                    [class.text-yellow-400]="node.cpu >= 70 && node.cpu < 90"
-                    [class.text-red-400]="node.cpu >= 90"
-                  >{{ node.cpu }}%</span>
+                  <span class="text-sm font-medium" [class.text-green-400]="node.cpu < 70" [class.text-yellow-400]="node.cpu >= 70 && node.cpu < 90" [class.text-red-400]="node.cpu >= 90">{{ node.cpu }}%</span>
                 </div>
               </td>
               <td class="py-4">
                 <div class="flex items-center gap-3">
                   <div class="w-24">
-                    <p-progressBar 
-                      [value]="node.memory" 
-                      [showValue]="false"
-                      class="h-2"
-                      styleClass="bg-cyber-800"
-                    ></p-progressBar>
+                    <p-progressBar [value]="node.memory" [showValue]="false" class="h-2" styleClass="bg-cyber-800"></p-progressBar>
                   </div>
-                  <span 
-                    class="text-sm font-medium"
-                    [class.text-green-400]="node.memory < 70"
-                    [class.text-yellow-400]="node.memory >= 70 && node.memory < 90"
-                    [class.text-red-400]="node.memory >= 90"
-                  >{{ node.memory }}%</span>
+                  <span class="text-sm font-medium" [class.text-green-400]="node.memory < 70" [class.text-yellow-400]="node.memory >= 70 && node.memory < 90" [class.text-red-400]="node.memory >= 90">{{ node.memory }}%</span>
                 </div>
               </td>
               <td class="py-4">
@@ -340,8 +254,6 @@ export class RealtimeComponent implements OnInit, OnDestroy {
   private chartData1: number[] = [];
   private chartData2: number[] = [];
 
-  Math = Math;
-
   constructor() {}
 
   ngOnInit(): void {
@@ -365,6 +277,64 @@ export class RealtimeComponent implements OnInit, OnDestroy {
 
   get offlineNodes(): number {
     return this.systemNodes.filter(n => n.status === 'offline').length;
+  }
+
+  formatMetricValue(value: number): string {
+    if (value >= 1000) {
+      return Math.round(value).toLocaleString();
+    }
+    return value.toFixed(2);
+  }
+
+  formatTrend(trend: number): string {
+    return Math.abs(trend).toFixed(1);
+  }
+
+  getLogIconBgClass(type: string): string {
+    switch (type) {
+      case 'info': return 'bg-blue-500/20';
+      case 'warning': return 'bg-yellow-500/20';
+      case 'success': return 'bg-green-500/20';
+      case 'error': return 'bg-red-500/20';
+      default: return 'bg-cyber-700/20';
+    }
+  }
+
+  getLogIconClass(type: string): string {
+    const classes: string[] = [];
+    switch (type) {
+      case 'info':
+        classes.push('pi-info-circle', 'text-blue-400');
+        break;
+      case 'warning':
+        classes.push('pi-exclamation-triangle', 'text-yellow-400');
+        break;
+      case 'success':
+        classes.push('pi-check-circle', 'text-green-400');
+        break;
+      case 'error':
+        classes.push('pi-times-circle', 'text-red-400');
+        break;
+    }
+    return classes.join(' ');
+  }
+
+  getNodeIconBgClass(status: string): string {
+    switch (status) {
+      case 'online': return 'bg-green-500/20';
+      case 'warning': return 'bg-yellow-500/20';
+      case 'offline': return 'bg-red-500/20';
+      default: return 'bg-cyber-700/20';
+    }
+  }
+
+  getNodeIconClass(status: string): string {
+    switch (status) {
+      case 'online': return 'text-green-400';
+      case 'warning': return 'text-yellow-400';
+      case 'offline': return 'text-red-400';
+      default: return 'text-cyber-400';
+    }
   }
 
   private initRealtimeChart(): void {
