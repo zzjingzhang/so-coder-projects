@@ -24,26 +24,8 @@ export const useSecurity = () => {
       }
     };
 
-    const protectCopyright = () => {
-      const copyrightElements = document.querySelectorAll('[data-protected="true"]');
-      copyrightElements.forEach((element) => {
-        const parent = element.parentElement;
-        if (parent) {
-          const config = {
-            get: function () {
-              return element;
-            },
-            configurable: false,
-          };
-          Object.defineProperty(parent, 'lastElementChild', config);
-        }
-      });
-    };
-
     document.addEventListener('contextmenu', handleContextMenu);
     document.addEventListener('keydown', handleKeyDown);
-
-    protectCopyright();
 
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
