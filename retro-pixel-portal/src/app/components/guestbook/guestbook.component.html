@@ -1,0 +1,236 @@
+<div class="space-y-6">
+  <!-- 页面标题 -->
+  <div class="pixel-border bg-retro-light-gray p-4 text-center">
+    <h1 class="font-pixel text-retro-blue text-xl md:text-2xl mb-2">
+      📝 GUESTBOOK 📝
+    </h1>
+    <p class="font-dos text-retro-dark-gray text-sm">
+      Leave a message and let us know what you think!
+    </p>
+    <div class="mt-2">
+      <span class="inline-block bg-retro-black px-4 py-1">
+        <span class="font-mono text-retro-light-green text-sm">
+          Total Entries: {{ entryCount }}
+        </span>
+      </span>
+    </div>
+  </div>
+
+  <!-- 成功提示 -->
+  @if (submitSuccess) {
+    <div class="pixel-border bg-retro-light-green p-4 text-center animate-pulse-slow">
+      <span class="text-3xl mb-2 block">✅</span>
+      <p class="font-pixel text-retro-green text-lg">MESSAGE SENT!</p>
+      <p class="font-dos text-retro-dark-gray text-sm mt-1">
+        Thank you for signing our guestbook!
+      </p>
+    </div>
+  }
+
+  <!-- 留言表单 -->
+  <div class="pixel-border bg-retro-light-gray">
+    <div class="bg-retro-red px-4 py-2 flex items-center gap-2">
+      <span class="text-retro-white">✏️</span>
+      <h2 class="font-pixel text-retro-white text-xs">SIGN THE GUESTBOOK</h2>
+    </div>
+    <div class="p-4">
+      <form (ngSubmit)="submitEntry()" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- 姓名 -->
+          <div>
+            <label class="font-dos text-retro-dark-gray text-xs block mb-1">
+              Your Name <span class="text-retro-red">*</span>
+            </label>
+            <input 
+              type="text" 
+              [(ngModel)]="formData.name"
+              name="name"
+              placeholder="Enter your name..."
+              class="w-full pixel-border-inset bg-retro-white px-4 py-2 font-dos text-sm focus:outline-none focus:ring-2 focus:ring-retro-blue"
+              required
+            />
+          </div>
+          
+          <!-- 邮箱 -->
+          <div>
+            <label class="font-dos text-retro-dark-gray text-xs block mb-1">
+              Email (optional)
+            </label>
+            <input 
+              type="email" 
+              [(ngModel)]="formData.email"
+              name="email"
+              placeholder="your@email.com"
+              class="w-full pixel-border-inset bg-retro-white px-4 py-2 font-dos text-sm focus:outline-none focus:ring-2 focus:ring-retro-blue"
+            />
+          </div>
+        </div>
+        
+        <!-- 网站 -->
+        <div>
+          <label class="font-dos text-retro-dark-gray text-xs block mb-1">
+            Your Website (optional)
+          </label>
+          <input 
+            type="url" 
+            [(ngModel)]="formData.website"
+            name="website"
+            placeholder="http://www.example.com"
+            class="w-full pixel-border-inset bg-retro-white px-4 py-2 font-dos text-sm focus:outline-none focus:ring-2 focus:ring-retro-blue"
+          />
+        </div>
+        
+        <!-- 留言 -->
+        <div>
+          <label class="font-dos text-retro-dark-gray text-xs block mb-1">
+            Your Message <span class="text-retro-red">*</span>
+          </label>
+          <textarea 
+            [(ngModel)]="formData.message"
+            name="message"
+            placeholder="Write something nice..."
+            rows="5"
+            class="w-full pixel-border-inset bg-retro-white px-4 py-2 font-dos text-sm focus:outline-none focus:ring-2 focus:ring-retro-blue resize-none"
+            required
+          ></textarea>
+          <p class="font-dos text-retro-gray text-xs mt-1">
+            <span class="text-retro-orange">★</span> 
+            HTML is allowed! Use &lt;b&gt; for bold, &lt;i&gt; for italic, etc.
+            <span class="text-retro-orange">★</span>
+          </p>
+        </div>
+        
+        <!-- 提交按钮 -->
+        <div class="text-center">
+          <button 
+            type="submit"
+            [disabled]="submitting"
+            class="pixel-button bg-retro-light-green text-retro-black font-pixel text-sm px-8 py-3 border-2 border-retro-green shadow-retro hover:bg-retro-green transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            @if (submitting) {
+              <span class="animate-spin-slow inline-block">⏳</span> SENDING...
+            } @else {
+              📤 SUBMIT MESSAGE
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 留言列表 -->
+  <div class="space-y-4">
+    <div class="pixel-border bg-retro-light-gray">
+      <div class="bg-retro-blue px-4 py-2 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="text-retro-white">📜</span>
+          <h2 class="font-pixel text-retro-white text-xs">RECENT MESSAGES</h2>
+        </div>
+        <span class="font-dos text-retro-cyan text-xs">
+          Showing {{ entries.length }} of {{ entryCount }}
+        </span>
+      </div>
+    </div>
+
+    <!-- 留言条目 -->
+    @for (entry of entries; track entry.id; let i = $index) {
+      <div 
+        class="pixel-border bg-retro-light-gray transition-all hover:shadow-lg"
+        [ngClass]="{
+          'bg-retro-cyan/10': i === 0
+        }"
+      >
+        <!-- 留言头部 -->
+        <div 
+          class="px-4 py-2 flex items-center justify-between"
+          [ngClass]="i % 2 === 0 ? 'bg-retro-blue' : 'bg-retro-green'"
+        >
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">{{ getAvatarEmoji(entry.name) }}</span>
+            <div>
+              <h3 class="font-pixel text-retro-white text-xs">
+                {{ entry.name }}
+                @if (entry.website) {
+                  <span class="text-retro-cyan ml-2">
+                    <a [href]="entry.website" target="_blank" class="hover:underline">
+                      [Website]
+                    </a>
+                  </span>
+                }
+              </h3>
+              <p class="font-dos text-retro-gray text-xs">
+                Entry #{{ entry.id }} | {{ formatDate(entry.timestamp) }}
+              </p>
+            </div>
+          </div>
+          
+          <!-- 管理员标识 -->
+          @if (entry.name === 'CoolDude2001') {
+            <span class="pixel-border bg-retro-yellow px-2 py-1 font-pixel text-retro-black text-xs">
+              ADMIN
+            </span>
+          }
+        </div>
+        
+        <!-- 留言内容 -->
+        <div class="p-4">
+          <p class="font-dos text-retro-black text-sm leading-relaxed whitespace-pre-wrap">
+            {{ entry.message }}
+          </p>
+        </div>
+        
+        <!-- 留言底部 -->
+        <div class="px-4 py-2 bg-retro-dark-gray/20 flex items-center justify-between text-xs">
+          <div class="flex items-center gap-4">
+            @if (entry.email) {
+              <span class="font-dos text-retro-gray">
+                📧 {{ entry.email }}
+              </span>
+            }
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="font-dos text-retro-gray">
+              IP: ***.***.***.***
+            </span>
+            <span class="text-retro-gray">|</span>
+            <button class="font-dos text-retro-blue hover:text-retro-red">
+              ⚠️ Report
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- 分页提示 -->
+  <div class="text-center">
+    <div class="inline-block pixel-border bg-retro-light-gray px-6 py-3">
+      <span class="font-dos text-retro-dark-gray text-sm">
+        <span class="text-retro-blue font-bold">1</span> 2 3 4 5 ... 
+        <button class="text-retro-blue hover:text-retro-red font-bold ml-2">
+          Next →
+        </button>
+      </span>
+    </div>
+  </div>
+
+  <!-- 底部提示 -->
+  <div class="pixel-border bg-retro-yellow p-4 text-center">
+    <p class="font-pixel text-retro-black text-sm">
+      💬 REMEMBER: Be nice! No spam or offensive messages!
+    </p>
+    <p class="font-dos text-retro-dark-gray text-xs mt-2">
+      All messages are reviewed by the webmaster before being displayed.
+    </p>
+  </div>
+
+  <!-- 返回按钮 -->
+  <div class="text-center">
+    <a 
+      routerLink="/home"
+      class="retro-link font-pixel text-retro-blue text-sm hover:text-retro-red"
+    >
+      << BACK TO HOME >>
+    </a>
+  </div>
+</div>

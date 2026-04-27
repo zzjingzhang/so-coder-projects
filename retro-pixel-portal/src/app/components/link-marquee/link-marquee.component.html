@@ -1,0 +1,61 @@
+<div 
+  class="overflow-hidden"
+  [ngClass]="{
+    'bg-retro-black border-y-4 border-retro-gray': position === 'top',
+    'bg-retro-dark-gray border-y-4 border-retro-black': position === 'bottom'
+  }"
+>
+  <div 
+    class="flex whitespace-nowrap py-2 marquee-container"
+    [ngStyle]="{
+      '--animation-duration': getAnimationDuration()
+    }"
+  >
+    <!-- 第一组链接 -->
+    <div class="flex items-center gap-6 marquee-content">
+      @for (item of getMarqueeLinks; track $index) {
+        @if (item.isLink) {
+          <a 
+            [href]="item.url" 
+            target="_blank"
+            rel="noopener noreferrer"
+            class="marquee-link font-dos text-sm hover:underline"
+            [ngClass]="getCategoryColor(item.category || 'personal')"
+          >
+            {{ item.text }}
+          </a>
+        } @else {
+          <span class="font-pixel text-retro-yellow text-sm blink">
+            {{ item.text }}
+          </span>
+        }
+      }
+    </div>
+    
+    <!-- 第二组链接（重复以实现无缝环绕 -->
+    <div class="flex items-center gap-6 marquee-content">
+      @for (item of getMarqueeLinks; track $index) {
+        @if (item.isLink) {
+          <a 
+            [href]="item.url" 
+            target="_blank"
+            rel="noopener noreferrer"
+            class="marquee-link font-dos text-sm hover:underline"
+            [ngClass]="getCategoryColor(item.category || 'personal')"
+          >
+            {{ item.text }}
+          </a>
+        } @else {
+          <span class="font-pixel text-retro-yellow text-sm blink">
+            {{ item.text }}
+          </span>
+        }
+      }
+    </div>
+  </div>
+</div>
+
+<!-- 装饰性分隔线 -->
+@if (position === 'top') {
+  <div class="h-1 bg-gradient-to-r from-retro-red via-retro-yellow to-retro-cyan"></div>
+}

@@ -1,0 +1,31 @@
+.marquee-container {
+  animation: marquee var(--animation-duration) linear infinite;
+}
+
+.marquee-content {
+  display: inline-flex;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-link {
+  transition: all 0.1s ease;
+  text-decoration: none;
+}
+
+.marquee-link:hover {
+  filter: brightness(1.3);
+  text-shadow: 0 0 10px currentColor;
+}
+
+/* 暂停动画当悬停时 */
+.marquee-container:hover {
+  animation-play-state: paused;
+}

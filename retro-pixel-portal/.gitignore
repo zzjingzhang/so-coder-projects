@@ -1,0 +1,137 @@
+# This file is used to ignore files which are generated
+# ----------------------------------------------------------------------------
+
+*~
+*.autosave
+*.core
+*.mp
+*.log
+*.rej
+*.orig
+*.rej
+*.so
+*.swp
+*.swo
+*.vi
+*~
+
+# editor folders and files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.c9/
+*.launch
+*.sublime-settings
+
+# ============================================================================
+# Python
+# ============================================================================
+*.py[cod]
+__pycache__/
+
+# ============================================================================
+# JavaScript / TypeScript
+# ============================================================================
+bower_components/
+node_modules/
+jspm_packages/
+
+# npm package files
+# Uncomment if npm is used as a package manager
+# !npm-shrinkwrap.json
+# !package-lock.json
+
+# typescript
+*.tsbuildinfo
+
+# webpack
+webpack/
+dist/
+.cache/
+
+# testing
+coverage/
+.nyc_output/
+
+# ============================================================================
+# Java
+# ============================================================================
+*.class
+*.jar
+*.war
+*.ear
+target/
+build/
+
+# ============================================================================
+# C / C++
+# ============================================================================
+*.o
+*.lo
+*.la
+*.al
+.libs/
+so_locations
+
+# ============================================================================
+# Visual Studio
+# ============================================================================
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+
+# ============================================================================
+# Objective-C / Swift
+# ============================================================================
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata/
+*.xccheckout
+*.moved-aside
+DerivedData/
+*.hmap
+*.ipa
+*.xcscmblueprint
+
+# ============================================================================
+# OS generated files
+# ============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# ============================================================================
+# Docker
+# ============================================================================
+.dockerignore
+Dockerfile
+
+# ============================================================================
+# Other
+# ============================================================================
+*.bak
+*.tmp
+*.pid
+*.seed
+*.pid.lock

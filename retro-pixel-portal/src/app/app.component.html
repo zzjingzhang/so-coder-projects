@@ -1,0 +1,24 @@
+<div class="min-h-screen bg-retro-black relative overflow-hidden">
+  <!-- CRT 扫描线效果 -->
+  <div class="crt-effect fixed inset-0 pointer-events-none z-50"></div>
+  
+  <!-- 背景网格 -->
+  <div class="pixel-grid fixed inset-0 pointer-events-none"></div>
+  
+  <!-- 顶部导航 -->
+  <app-navbar></app-navbar>
+  
+  <!-- 链接跑马灯 - 顶部 -->
+  <app-link-marquee position="top"></app-link-marquee>
+  
+  <!-- 主要内容区域 -->
+  <main class="container mx-auto px-4 py-8 relative z-10">
+    <router-outlet></router-outlet>
+  </main>
+  
+  <!-- 链接跑马灯 - 底部 -->
+  <app-link-marquee position="bottom"></app-link-marquee>
+  
+  <!-- 底部 -->
+  <app-footer></app-footer>
+</div>

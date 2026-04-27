@@ -1,0 +1,112 @@
+<div class="min-h-[60vh] flex items-center justify-center">
+  <div class="pixel-border bg-retro-light-gray max-w-2xl w-full mx-4">
+    <!-- 错误标题栏 -->
+    <div class="bg-retro-red px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-retro-white text-xl">⚠️</span>
+        <h1 class="font-pixel text-retro-white text-xs">ERROR - PAGE NOT FOUND</h1>
+      </div>
+      <button class="text-retro-white hover:text-retro-yellow">
+        <span class="pi pi-times"></span>
+      </button>
+    </div>
+
+    <!-- 错误内容 -->
+    <div class="p-6">
+      <!-- 大错误码 -->
+      <div class="text-center mb-6">
+        <div class="inline-block">
+          <span class="font-pixel text-8xl md:text-9xl text-retro-red animate-pulse-slow">
+            {{ errorCode }}
+          </span>
+        </div>
+        <h2 class="font-pixel text-2xl md:text-3xl text-retro-blue mt-2">
+          {{ errorTitle }}
+        </h2>
+      </div>
+
+      <!-- 图标和消息 -->
+      <div class="text-center mb-8">
+        <span class="text-6xl block mb-4 animate-float">
+          {{ getRandomErrorEmoji() }}
+        </span>
+        <p class="font-dos text-retro-dark-gray text-lg">
+          {{ getFunnyMessage() }}
+        </p>
+      </div>
+
+      <!-- 技术细节 -->
+      <div class="pixel-border-inset bg-retro-white p-4 mb-6">
+        <h3 class="font-pixel text-retro-red text-xs mb-3">TECHNICAL DETAILS</h3>
+        <div class="font-dos text-retro-black text-xs space-y-1">
+          <p><span class="text-retro-blue">Error Code:</span> HTTP 404 - Not Found</p>
+          <p><span class="text-retro-blue">Time:</span> {{ currentTime | date: 'full' }}</p>
+          <p><span class="text-retro-blue">Browser:</span> Retro Browser 1.0</p>
+          <p><span class="text-retro-blue">Resolution:</span> 800x600 (Recommended)</p>
+          <p><span class="text-retro-blue">Status:</span> <span class="text-retro-red">PAGE MISSING</span></p>
+        </div>
+      </div>
+
+      <!-- 帮助信息 -->
+      <div class="pixel-border bg-retro-cyan p-4 mb-6">
+        <h3 class="font-pixel text-retro-black text-xs mb-3 flex items-center gap-2">
+          <span>💡</span> WHAT YOU CAN DO
+        </h3>
+        <ul class="font-dos text-retro-black text-sm space-y-2">
+          <li class="flex items-start gap-2">
+            <span class="text-retro-orange">•</span>
+            <span>Check the URL for typos (case sensitive!)</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-retro-orange">•</span>
+            <span>Go back to the <a routerLink="/home" class="retro-link">Home Page</a></span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-retro-orange">•</span>
+            <span>Use the navigation menu above</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-retro-orange">•</span>
+            <span><a routerLink="/guestbook" class="retro-link">Report this error</a> to the webmaster</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 有用的链接 -->
+      <div class="text-center mb-6">
+        <h3 class="font-pixel text-retro-blue text-xs mb-4">QUICK LINKS</h3>
+        <div class="flex flex-wrap justify-center gap-3">
+          @for (link of helpfulLinks; track link.path) {
+            <a 
+              routerLink="{{ link.path }}"
+              class="pixel-button bg-retro-light-gray px-4 py-2 font-dos text-sm text-retro-black border-2 border-retro-gray shadow-retro hover:bg-retro-cyan transition-colors"
+            >
+              {{ link.label }}
+            </a>
+          }
+        </div>
+      </div>
+
+      <!-- 复古装饰 -->
+      <div class="text-center">
+        <div class="inline-block pixel-border bg-retro-yellow px-6 py-3">
+          <p class="font-pixel text-retro-black text-xs blink">
+            🚧 UNDER CONSTRUCTION 🚧
+          </p>
+          <p class="font-dos text-retro-dark-gray text-xs mt-1">
+            This page may be coming soon!
+          </p>
+        </div>
+      </div>
+
+      <!-- 装饰性星星 -->
+      <div class="flex justify-center items-center gap-4 mt-6">
+        <span class="text-retro-yellow text-2xl animate-spin-slow">★</span>
+        <span class="text-retro-cyan text-3xl animate-spin-slow" style="animation-direction: reverse;">★</span>
+        <span class="text-retro-magenta text-2xl animate-spin-slow">★</span>
+        <span class="text-retro-green text-3xl animate-spin-slow" style="animation-direction: reverse;">★</span>
+        <span class="text-retro-orange text-2xl animate-spin-slow">★</span>
+      </div>
+    </div>
+  </div>
+</div>

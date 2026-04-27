@@ -1,0 +1,238 @@
+<div class="space-y-8">
+  <!-- Hero Section - 复古风格 -->
+  <div class="pixel-border bg-retro-light-gray p-6 text-center relative overflow-hidden">
+    <!-- 装饰性边框 -->
+    <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-retro-red via-retro-yellow to-retro-cyan"></div>
+    <div class="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-retro-cyan via-retro-yellow to-retro-red"></div>
+    
+    <div class="relative z-10">
+      <!-- 标题 -->
+      <h1 class="font-pixel text-2xl md:text-4xl text-retro-blue mb-4 animate-pulse-slow">
+        WELCOME TO
+      </h1>
+      <h2 class="font-pixel text-3xl md:text-5xl text-retro-red mb-6 neon-glow">
+        RETRO PIXEL PORTAL
+      </h2>
+      
+      <!-- 副标题 -->
+      <p class="font-dos text-retro-dark-gray text-lg mb-4">
+        <span class="text-retro-orange">★</span> 
+        Your Gateway to the 2000s Internet 
+        <span class="text-retro-orange">★</span>
+      </p>
+      
+      <!-- 闪烁文字 -->
+      <p class="font-pixel text-retro-light-green text-sm blink-text mb-6">
+        ★ CLICK HERE FOR AWESOME LINKS! ★
+      </p>
+      
+      <!-- 装饰性星星 -->
+      <div class="flex justify-center items-center gap-4 mb-6">
+        <span class="text-retro-yellow text-2xl animate-spin-slow">★</span>
+        <span class="text-retro-cyan text-3xl animate-spin-slow" style="animation-direction: reverse;">★</span>
+        <span class="text-retro-magenta text-2xl animate-spin-slow">★</span>
+      </div>
+      
+      <!-- CTA 按钮 -->
+      <div class="flex flex-wrap justify-center gap-4">
+        <a 
+          routerLink="/links" 
+          class="pixel-button bg-retro-light-cyan text-retro-black font-pixel text-sm px-6 py-3 border-4 border-retro-cyan shadow-retro hover:bg-retro-cyan transition-colors"
+        >
+          🚀 EXPLORE LINKS
+        </a>
+        <a 
+          routerLink="/guestbook" 
+          class="pixel-button bg-retro-light-yellow text-retro-black font-pixel text-sm px-6 py-3 border-4 border-retro-yellow shadow-retro hover:bg-retro-yellow transition-colors"
+        >
+          📝 SIGN GUESTBOOK
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 统计信息栏 -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <!-- 访问计数器 -->
+    <div class="pixel-border-inset bg-retro-black p-4 text-center">
+      <p class="font-dos text-retro-gray text-xs mb-2">TOTAL VISITORS</p>
+      <div class="inline-block bg-retro-dark-gray px-4 py-2 border-2 border-retro-gray">
+        <span class="font-mono text-retro-light-green text-2xl tracking-widest">
+          {{ formatNumber(hitCount) }}
+        </span>
+      </div>
+    </div>
+    
+    <!-- 在线访客 -->
+    <div class="pixel-border-inset bg-retro-black p-4 text-center">
+      <p class="font-dos text-retro-gray text-xs mb-2">USERS ONLINE NOW</p>
+      <div class="inline-block bg-retro-dark-gray px-4 py-2 border-2 border-retro-gray">
+        <span class="font-mono text-retro-light-cyan text-2xl tracking-widest">
+          {{ onlineVisitors }}
+        </span>
+      </div>
+    </div>
+    
+    <!-- 当前时间 -->
+    <div class="pixel-border-inset bg-retro-black p-4 text-center">
+      <p class="font-dos text-retro-gray text-xs mb-2">CURRENT TIME</p>
+      <div class="inline-block bg-retro-dark-gray px-4 py-2 border-2 border-retro-gray">
+        <span class="font-mono text-retro-light-magenta text-lg tracking-widest">
+          {{ currentTime | date: 'shortTime' }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 主要内容区域 -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- 热门链接 -->
+    <div class="lg:col-span-2">
+      <div class="pixel-border bg-retro-light-gray">
+        <!-- 标题栏 -->
+        <div class="bg-retro-blue px-4 py-2 flex items-center justify-between">
+          <h3 class="font-pixel text-retro-white text-xs">
+            🔥 HOT LINKS - CHECK THESE OUT!
+          </h3>
+          <span class="text-retro-yellow blink">★ NEW ★</span>
+        </div>
+        
+        <div class="p-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @for (link of featuredLinks; track link.id) {
+              <a 
+                [href]="link.url" 
+                target="_blank"
+                rel="noopener noreferrer"
+                class="pixel-border-inset bg-retro-white p-3 hover:bg-retro-light-cyan transition-colors group"
+              >
+                <div class="flex items-start gap-3">
+                  <span class="text-2xl">{{ getCategoryIcon(link.category) }}</span>
+                  <div class="flex-1 min-w-0">
+                    <h4 class="font-dos text-retro-blue text-sm font-bold underline group-hover:text-retro-red truncate">
+                      {{ link.title }}
+                    </h4>
+                    <p class="font-dos text-retro-dark-gray text-xs mt-1 line-clamp-2">
+                      {{ link.description }}
+                    </p>
+                    <div class="flex items-center gap-2 mt-2">
+                      <span class="font-dos text-retro-orange text-xs">
+                        👁 {{ formatNumber(link.visits) }} visits
+                      </span>
+                      <span class="text-retro-gray">|</span>
+                      <span class="font-dos text-retro-cyan text-xs">
+                        est. {{ link.createdYear }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            }
+          </div>
+          
+          <div class="text-center mt-4">
+            <a 
+              routerLink="/links"
+              class="retro-link font-pixel text-retro-blue text-xs hover:text-retro-red"
+            >
+              >> CLICK HERE FOR MORE LINKS <<
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 侧边栏 -->
+    <div class="space-y-6">
+      <!-- 分类导航 -->
+      <div class="pixel-border bg-retro-light-gray">
+        <div class="bg-retro-green px-4 py-2">
+          <h3 class="font-pixel text-retro-white text-xs">
+            📂 CATEGORIES
+          </h3>
+        </div>
+        <div class="p-3">
+          <ul class="space-y-2">
+            @for (cat of categories; track cat.category) {
+              <li>
+                <a 
+                  routerLink="/links"
+                  [queryParams]="{ category: cat.category }"
+                  class="flex items-center justify-between p-2 hover:bg-retro-cyan transition-colors pixel-border-inset"
+                >
+                  <span class="font-dos text-sm">
+                    {{ getCategoryIcon(cat.category) }} {{ cat.label }}
+                  </span>
+                  <span class="bg-retro-black text-retro-light-green px-2 py-0.5 font-mono text-xs">
+                    {{ cat.count }}
+                  </span>
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+
+      <!-- 最受欢迎 -->
+      <div class="pixel-border bg-retro-light-gray">
+        <div class="bg-retro-red px-4 py-2">
+          <h3 class="font-pixel text-retro-white text-xs">
+            🏆 MOST POPULAR
+          </h3>
+        </div>
+        <div class="p-3">
+          <ol class="space-y-2">
+            @for (link of popularLinks; track link.id; let i = $index) {
+              <li class="flex items-start gap-2">
+                <span class="font-pixel text-retro-orange text-sm">
+                  {{ i + 1 }}.
+                </span>
+                <a 
+                  [href]="link.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="retro-link font-dos text-xs hover:text-retro-red flex-1"
+                >
+                  {{ link.title }}
+                  <span class="block text-retro-gray text-xs">
+                    ({{ formatNumber(link.visits) }} hits)
+                  </span>
+                </a>
+              </li>
+            }
+          </ol>
+        </div>
+      </div>
+
+      <!-- 复古徽章 -->
+      <div class="pixel-border bg-retro-light-gray p-3 text-center">
+        <p class="font-dos text-retro-dark-gray text-xs mb-3">PROUD MEMBER OF:</p>
+        <div class="grid grid-cols-2 gap-2">
+          <div class="pixel-border bg-retro-yellow p-2">
+            <span class="font-dos text-retro-black text-xs">WEB RING</span>
+          </div>
+          <div class="pixel-border bg-retro-cyan p-2">
+            <span class="font-dos text-retro-black text-xs">LINK EXCHANGE</span>
+          </div>
+          <div class="pixel-border bg-retro-light-magenta p-2">
+            <span class="font-dos text-retro-black text-xs">AWARD WINNER</span>
+          </div>
+          <div class="pixel-border bg-retro-light-green p-2">
+            <span class="font-dos text-retro-black text-xs">COOL SITE</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部公告 -->
+  <div class="pixel-border bg-retro-yellow p-4 text-center">
+    <p class="font-pixel text-retro-black text-sm blink-text">
+      🚧 THIS SITE IS BEST VIEWED IN 800x600 RESOLUTION 🚧
+    </p>
+    <p class="font-dos text-retro-dark-gray text-xs mt-2">
+      Last updated: {{ currentTime | date: 'fullDate' }} | 
+      Built with <span class="text-retro-red">♥</span> and lots of nostalgia
+    </p>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+.active {
+  background-color: #000080 !important;
+  color: #ffffff !important;
+  transform: translate(4px, 4px) !important;
+  box-shadow: 0px 0px 0px #000000 !important;
+}
+
+.visitorCount {
+  font-family: 'Courier New', monospace;
+  background-color: #000000;
+  color: #00ff00;
+  padding: 2px 8px;
+  border: 2px inset #808080;
+}

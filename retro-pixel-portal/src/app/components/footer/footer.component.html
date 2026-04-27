@@ -1,0 +1,115 @@
+<footer class="bg-retro-light-gray pixel-border mt-8">
+  <!-- 页脚顶部装饰 -->
+  <div class="bg-retro-blue py-1">
+    <div class="container mx-auto px-4 flex justify-center items-center gap-2">
+      <span class="text-retro-white font-dos text-xs">★</span>
+      <span class="text-retro-yellow font-dos text-xs blink">SIGN MY GUESTBOOK!</span>
+      <span class="text-retro-white font-dos text-xs">★</span>
+      <span class="text-retro-light-cyan font-dos text-xs blink">VISIT MY FRIENDS!</span>
+      <span class="text-retro-white font-dos text-xs">★</span>
+    </div>
+  </div>
+
+  <div class="container mx-auto px-4 py-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- 关于部分 -->
+      <div class="pixel-border-inset bg-retro-light-gray p-4">
+        <h3 class="font-pixel text-retro-blue text-xs mb-3 border-b-2 border-retro-gray pb-2">
+          🏠 ABOUT THIS SITE
+        </h3>
+        <p class="font-dos text-retro-black text-xs leading-relaxed mb-3">
+          Welcome to my personal homepage! I made this site to share my favorite links from the golden age of the internet. 
+          <span class="text-retro-red">Remember the good old days?</span>
+        </p>
+        <div class="text-center">
+          <span class="font-dos text-xs text-retro-dark-gray">
+            <span class="text-retro-red">❤</span> Best viewed in 800x600 <span class="text-retro-red">❤</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- 快速链接 -->
+      <div class="pixel-border-inset bg-retro-light-gray p-4">
+        <h3 class="font-pixel text-retro-green text-xs mb-3 border-b-2 border-retro-gray pb-2">
+          🔗 QUICK LINKS
+        </h3>
+        <ul class="space-y-2">
+          <li>
+            <a routerLink="/home" class="retro-link font-dos text-xs hover:text-retro-red">
+              <span class="text-retro-orange">»</span> Back to Home
+            </a>
+          </li>
+          <li>
+            <a routerLink="/links" class="retro-link font-dos text-xs hover:text-retro-red">
+              <span class="text-retro-orange">»</span> Cool Links
+            </a>
+          </li>
+          <li>
+            <a routerLink="/guestbook" class="retro-link font-dos text-xs hover:text-retro-red">
+              <span class="text-retro-orange">»</span> Sign Guestbook
+            </a>
+          </li>
+          <li>
+            <a routerLink="/about" class="retro-link font-dos text-xs hover:text-retro-red">
+              <span class="text-retro-orange">»</span> About Me
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 访问计数器 -->
+      <div class="pixel-border-inset bg-retro-light-gray p-4">
+        <h3 class="font-pixel text-retro-red text-xs mb-3 border-b-2 border-retro-gray pb-2">
+          📊 STATS
+        </h3>
+        
+        <!-- 访客计数器 -->
+        <div class="text-center mb-4">
+          <p class="font-dos text-xs text-retro-dark-gray mb-1">VISITORS:</p>
+          <div class="inline-block bg-retro-black px-4 py-2 border-4 border-retro-gray">
+            <span class="font-mono text-retro-light-green text-lg tracking-widest">
+              {{ hitCount.toString().padStart(7, '0') }}
+            </span>
+          </div>
+        </div>
+
+        <!-- 建设中 -->
+        <div class="text-center">
+          <div class="inline-block bg-retro-yellow px-3 py-1 border-2 border-retro-orange">
+            <span class="font-pixel text-retro-black text-xs blink">
+              🚧 UNDER CONSTRUCTION 🚧
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部版权 -->
+    <div class="mt-6 pt-4 border-t-4 border-retro-gray text-center">
+      <p class="font-dos text-xs text-retro-dark-gray mb-2">
+        © {{ currentYear }} Retro Pixel Portal. All Rights Reserved.
+      </p>
+      <p class="font-dos text-xs text-retro-gray">
+        Made with <span class="text-retro-red">♥</span> in the 2000s | 
+        Powered by <span class="text-retro-blue">Angular</span> & 
+        <span class="text-retro-cyan">Tailwind CSS</span>
+      </p>
+      
+      <!-- 复古徽章 -->
+      <div class="flex justify-center items-center gap-4 mt-3 flex-wrap">
+        <div class="pixel-border bg-retro-light-gray px-2 py-1">
+          <span class="font-dos text-xs text-retro-dark-gray">NETSCAPE NOW!</span>
+        </div>
+        <div class="pixel-border bg-retro-light-gray px-2 py-1">
+          <span class="font-dos text-xs text-retro-dark-gray">IE 5.5 READY</span>
+        </div>
+        <div class="pixel-border bg-retro-light-gray px-2 py-1">
+          <span class="font-dos text-xs text-retro-dark-gray">Y2K COMPLIANT</span>
+        </div>
+        <div class="pixel-border bg-retro-light-gray px-2 py-1">
+          <span class="font-dos text-xs text-retro-dark-gray">GUESTBOOK</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

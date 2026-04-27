@@ -1,0 +1,198 @@
+<div class="space-y-6">
+  <!-- 页面标题 -->
+  <div class="pixel-border bg-retro-light-gray p-4 text-center">
+    <h1 class="font-pixel text-retro-blue text-xl md:text-2xl mb-2">
+      🔗 COOL LINKS PAGE 🔗
+    </h1>
+    <p class="font-dos text-retro-dark-gray text-sm">
+      Browse all the awesome links from the golden age of the internet!
+    </p>
+  </div>
+
+  <!-- 分类导航 -->
+  <div class="pixel-border bg-retro-light-gray">
+    <div class="bg-retro-green px-4 py-2 flex items-center gap-2">
+      <span class="text-retro-white">📂</span>
+      <h2 class="font-pixel text-retro-white text-xs">QUICK NAVIGATION</h2>
+    </div>
+    <div class="p-4">
+      <div class="flex flex-wrap gap-2">
+        <button 
+          (click)="selectedCategory = 'all'; filterLinks()"
+          class="pixel-button px-3 py-2 font-dos text-xs transition-colors"
+          [ngClass]="{
+            'bg-retro-blue text-retro-white': selectedCategory === 'all',
+            'bg-retro-white text-retro-black hover:bg-retro-cyan': selectedCategory !== 'all'
+          }"
+        >
+          🌐 All ({{ allLinks.length }})
+        </button>
+        @for (cat of categories; track cat.category) {
+          <button 
+            (click)="selectedCategory = cat.category; filterLinks()"
+            class="pixel-button px-3 py-2 font-dos text-xs transition-colors"
+            [ngClass]="{
+              'bg-retro-blue text-retro-white': selectedCategory === cat.category,
+              'bg-retro-white text-retro-black hover:bg-retro-cyan': selectedCategory !== cat.category
+            }"
+          >
+            {{ getCategoryIcon(cat.category) }} {{ cat.label }} ({{ cat.count }})
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- 搜索和过滤栏 -->
+  <div class="pixel-border bg-retro-light-gray">
+    <div class="bg-retro-blue px-4 py-2 flex items-center gap-2">
+      <span class="text-retro-white">🔍</span>
+      <h2 class="font-pixel text-retro-white text-xs">SEARCH & FILTER</h2>
+    </div>
+    <div class="p-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <!-- 搜索框 -->
+        <div class="md:col-span-2">
+          <label class="font-dos text-retro-dark-gray text-xs block mb-1">Search Links:</label>
+          <div class="relative">
+            <input 
+              type="text" 
+              [(ngModel)]="searchQuery"
+              (input)="filterLinks()"
+              placeholder="Type to search..."
+              class="w-full pixel-border-inset bg-retro-white px-4 py-2 font-dos text-sm focus:outline-none focus:ring-2 focus:ring-retro-blue"
+            />
+            @if (searchQuery) {
+              <button 
+                (click)="searchQuery = ''; filterLinks()"
+                class="absolute right-2 top-1/2 -translate-y-1/2 text-retro-gray hover:text-retro-red"
+              >
+                ✕
+              </button>
+            }
+          </div>
+        </div>
+        
+        <!-- 排序 -->
+        <div>
+          <label class="font-dos text-retro-dark-gray text-xs block mb-1">Sort By:</label>
+          <select 
+            [(ngModel)]="sortBy"
+            (change)="filterLinks()"
+            class="w-full pixel-border-inset bg-retro-white px-4 py-2 font-dos text-sm cursor-pointer"
+          >
+            @for (option of sortOptions; track option.value) {
+              <option [value]="option.value">{{ option.label }}</option>
+            }
+          </select>
+        </div>
+        
+        <!-- 清除按钮 -->
+        <div class="flex items-end">
+          <button 
+            (click)="clearFilters()"
+            class="w-full pixel-button bg-retro-red text-retro-white font-dos text-xs px-4 py-2 border-2 border-retro-dark-gray shadow-retro hover:bg-retro-dark-red transition-colors"
+          >
+            ✕ Clear Filters
+          </button>
+        </div>
+      </div>
+      
+      <!-- 结果信息 -->
+      <div class="mt-3 text-center">
+        <span class="font-dos text-retro-dark-gray text-xs">
+          Showing <span class="text-retro-blue font-bold">{{ filteredLinks.length }}</span> of 
+          <span class="text-retro-blue font-bold">{{ allLinks.length }}</span> links
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 链接列表 -->
+  <div class="space-y-4">
+    @if (filteredLinks.length > 0) {
+      <!-- 链接卡片网格 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        @for (link of filteredLinks; track link.id) {
+          <a 
+            [href]="link.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="pixel-border bg-retro-light-gray hover:bg-retro-white transition-colors group"
+          >
+            <!-- 链接卡片头部 -->
+            <div class="px-4 py-2 flex items-center justify-between" [ngClass]="getCategoryColor(link.category)">
+              <span class="font-dos text-retro-white text-xs flex items-center gap-1">
+                {{ getCategoryIcon(link.category) }}
+                {{ getCategoryLabel(link.category) }}
+              </span>
+              <span class="pi pi-external-link text-retro-white text-xs opacity-0 group-hover:opacity-100 transition-opacity"></span>
+            </div>
+            
+            <!-- 链接内容 -->
+            <div class="p-4">
+              <h3 class="font-dos text-retro-blue text-sm font-bold underline group-hover:text-retro-red mb-2">
+                {{ link.title }}
+              </h3>
+              <p class="font-dos text-retro-dark-gray text-xs leading-relaxed mb-3 line-clamp-3">
+                {{ link.description }}
+              </p>
+              
+              <!-- 链接统计 -->
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-dos text-retro-gray">
+                  👁 <span class="text-retro-green">{{ formatNumber(link.visits) }}</span> visits
+                </span>
+                <span class="font-dos text-retro-gray">
+                  est. <span class="text-retro-cyan">{{ link.createdYear }}</span>
+                </span>
+              </div>
+            </div>
+            
+            <!-- 链接卡片底部 -->
+            <div class="px-4 py-2 bg-retro-dark-gray text-center">
+              <span class="font-pixel text-retro-cyan text-xs blink">
+                >> CLICK TO VISIT <<
+              </span>
+            </div>
+          </a>
+        }
+      </div>
+    } @else {
+      <!-- 无结果状态 -->
+      <div class="pixel-border bg-retro-light-gray p-8 text-center">
+        <span class="text-6xl mb-4 block">😕</span>
+        <h3 class="font-pixel text-retro-red text-lg mb-2">NO LINKS FOUND!</h3>
+        <p class="font-dos text-retro-dark-gray text-sm mb-4">
+          Sorry, no links match your search criteria.
+        </p>
+        <button 
+          (click)="clearFilters()"
+          class="pixel-button bg-retro-cyan text-retro-black font-dos text-sm px-6 py-3 border-2 border-retro-gray shadow-retro hover:bg-retro-light-cyan transition-colors"
+        >
+          🔄 Try Again
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- 底部提示 -->
+  <div class="pixel-border bg-retro-yellow p-4 text-center">
+    <p class="font-pixel text-retro-black text-sm">
+      💡 TIP: Links open in a new window/tab!
+    </p>
+    <p class="font-dos text-retro-dark-gray text-xs mt-2">
+      Remember to sign our <a routerLink="/guestbook" class="retro-link">guestbook</a> before you leave!
+    </p>
+  </div>
+
+  <!-- 返回按钮 -->
+  <div class="text-center">
+    <a 
+      routerLink="/home"
+      class="retro-link font-pixel text-retro-blue text-sm hover:text-retro-red"
+    >
+      << BACK TO HOME >>
+    </a>
+  </div>
+</div>

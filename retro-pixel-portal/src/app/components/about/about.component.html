@@ -1,0 +1,235 @@
+<div class="space-y-6">
+  <!-- 页面标题 -->
+  <div class="pixel-border bg-retro-light-gray p-4 text-center">
+    <h1 class="font-pixel text-retro-blue text-xl md:text-2xl mb-2">
+      👋 ABOUT THE WEBMASTER 👋
+    </h1>
+    <p class="font-dos text-retro-dark-gray text-sm">
+      Learn all about the person behind this awesome website!
+    </p>
+  </div>
+
+  <!-- 主要内容网格 -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- 左侧：个人信息 -->
+    <div class="lg:col-span-2 space-y-6">
+      <!-- 自我介绍 -->
+      <div class="pixel-border bg-retro-light-gray">
+        <div class="bg-retro-blue px-4 py-2 flex items-center gap-2">
+          <span class="text-retro-white">📝</span>
+          <h2 class="font-pixel text-retro-white text-xs">ABOUT ME</h2>
+        </div>
+        <div class="p-4">
+          <div class="flex flex-col md:flex-row gap-4">
+            <!-- 头像占位 -->
+            <div class="flex-shrink-0">
+              <div class="w-32 h-32 bg-retro-cyan border-4 border-retro-gray shadow-retro flex items-center justify-center">
+                <span class="text-6xl animate-float">😎</span>
+              </div>
+              <p class="font-dos text-retro-dark-gray text-xs text-center mt-2">
+                "CoolDude2001"
+              </p>
+            </div>
+            
+            <div class="flex-1">
+              <p class="font-dos text-retro-black text-sm leading-relaxed mb-4">
+                <span class="text-retro-red font-bold">HELLO AND WELCOME!</span> 
+                My name is CoolDude2001 and this is my personal homepage. 
+                I've been making websites since 1999 and I love everything about the World Wide Web!
+              </p>
+              <p class="font-dos text-retro-black text-sm leading-relaxed mb-4">
+                I started this site back in <span class="text-retro-blue font-bold">2001</span> 
+                to share my favorite links and memories from the good old days of the internet. 
+                Remember GeoCities? Tripod? Angelfire? Those were the days!
+              </p>
+              <p class="font-dos text-retro-black text-sm leading-relaxed">
+                When I'm not surfing the web, you can find me playing 
+                <span class="text-retro-green font-bold">RuneScape</span>, 
+                chatting on <span class="text-retro-cyan font-bold">AIM</span>, 
+                or downloading the latest MP3s! 🎵
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 技能展示 -->
+      <div class="pixel-border bg-retro-light-gray">
+        <div class="bg-retro-green px-4 py-2 flex items-center gap-2">
+          <span class="text-retro-white">💻</span>
+          <h2 class="font-pixel text-retro-white text-xs">MY SKILLS</h2>
+        </div>
+        <div class="p-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @for (skill of skills; track skill.name) {
+              <div class="pixel-border-inset bg-retro-white p-3">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="font-dos text-sm flex items-center gap-2">
+                    <span>{{ skill.icon }}</span>
+                    <span class="text-retro-black font-bold">{{ skill.name }}</span>
+                  </span>
+                  <span class="font-mono text-retro-green text-xs bg-retro-black px-2 py-0.5">
+                    {{ skill.level }}%
+                  </span>
+                </div>
+                <!-- 进度条 -->
+                <div class="h-4 bg-retro-gray pixel-border-inset overflow-hidden">
+                  <div 
+                    class="h-full bg-gradient-to-r from-retro-green to-retro-light-green transition-all duration-500"
+                    [style.width.%]="skill.level"
+                  ></div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- 兴趣爱好 -->
+      <div class="pixel-border bg-retro-light-gray">
+        <div class="bg-retro-magenta px-4 py-2 flex items-center gap-2">
+          <span class="text-retro-white">🎯</span>
+          <h2 class="font-pixel text-retro-white text-xs">THINGS I LIKE</h2>
+        </div>
+        <div class="p-4">
+          <div class="flex flex-wrap gap-2">
+            @for (interest of interests; track interest) {
+              <span class="pixel-border bg-retro-cyan px-3 py-1 font-dos text-xs text-retro-black hover:bg-retro-light-cyan transition-colors">
+                {{ interest }}
+              </span>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右侧边栏 -->
+    <div class="space-y-6">
+      <!-- 统计信息 -->
+      <div class="pixel-border bg-retro-light-gray">
+        <div class="bg-retro-red px-4 py-2 flex items-center gap-2">
+          <span class="text-retro-white">📊</span>
+          <h2 class="font-pixel text-retro-white text-xs">SITE STATS</h2>
+        </div>
+        <div class="p-4 space-y-3">
+          <div class="pixel-border-inset bg-retro-black p-3 text-center">
+            <p class="font-dos text-retro-gray text-xs mb-1">ONLINE SINCE</p>
+            <p class="font-mono text-retro-light-green text-lg">{{ onlineSince }}</p>
+          </div>
+          <div class="pixel-border-inset bg-retro-black p-3 text-center">
+            <p class="font-dos text-retro-gray text-xs mb-1">TOTAL HITS</p>
+            <p class="font-mono text-retro-light-cyan text-lg">{{ hitCount.toLocaleString() }}</p>
+          </div>
+          <div class="pixel-border-inset bg-retro-black p-3 text-center">
+            <p class="font-dos text-retro-gray text-xs mb-1">GUESTBOOK ENTRIES</p>
+            <p class="font-mono text-retro-light-magenta text-lg">{{ guestbookCount }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 收藏列表 -->
+      <div class="pixel-border bg-retro-light-gray">
+        <div class="bg-retro-orange px-4 py-2 flex items-center gap-2">
+          <span class="text-retro-white">⭐</span>
+          <h2 class="font-pixel text-retro-white text-xs">MY FAVORITES</h2>
+        </div>
+        <div class="p-4 space-y-4">
+          <!-- 音乐 -->
+          <div>
+            <h3 class="font-pixel text-retro-red text-xs mb-2">🎵 MUSIC</h3>
+            <ul class="space-y-1">
+              @for (item of favorites.music; track item) {
+                <li class="font-dos text-xs text-retro-black flex items-center gap-1">
+                  <span class="text-retro-orange">»</span> {{ item }}
+                </li>
+              }
+            </ul>
+          </div>
+          
+          <!-- 电影 -->
+          <div>
+            <h3 class="font-pixel text-retro-blue text-xs mb-2">🎬 MOVIES</h3>
+            <ul class="space-y-1">
+              @for (item of favorites.movies; track item) {
+                <li class="font-dos text-xs text-retro-black flex items-center gap-1">
+                  <span class="text-retro-cyan">»</span> {{ item }}
+                </li>
+              }
+            </ul>
+          </div>
+          
+          <!-- 游戏 -->
+          <div>
+            <h3 class="font-pixel text-retro-green text-xs mb-2">🎮 GAMES</h3>
+            <ul class="space-y-1">
+              @for (item of favorites.games; track item) {
+                <li class="font-dos text-xs text-retro-black flex items-center gap-1">
+                  <span class="text-retro-green">»</span> {{ item }}
+                </li>
+              }
+            </ul>
+          </div>
+          
+          <!-- 网站 -->
+          <div>
+            <h3 class="font-pixel text-retro-magenta text-xs mb-2">🌐 WEBSITES</h3>
+            <ul class="space-y-1">
+              @for (item of favorites.websites; track item) {
+                <li class="font-dos text-xs text-retro-black flex items-center gap-1">
+                  <span class="text-retro-magenta">»</span> {{ item }}
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 联系我 -->
+      <div class="pixel-border bg-retro-light-gray">
+        <div class="bg-retro-cyan px-4 py-2 flex items-center gap-2">
+          <span class="text-retro-black">📧</span>
+          <h2 class="font-pixel text-retro-black text-xs">CONTACT ME</h2>
+        </div>
+        <div class="p-4 text-center">
+          <div class="pixel-border bg-retro-white p-3 mb-3">
+            <p class="font-dos text-retro-dark-gray text-xs mb-1">AIM Screen Name:</p>
+            <p class="font-pixel text-retro-blue text-sm">CoolDude2001</p>
+          </div>
+          <div class="pixel-border bg-retro-white p-3 mb-3">
+            <p class="font-dos text-retro-dark-gray text-xs mb-1">Email (Hotmail):</p>
+            <p class="font-pixel text-retro-red text-xs">cooldude2001&#64;hotmail.com</p>
+          </div>
+          <div class="pixel-border bg-retro-white p-3">
+            <p class="font-dos text-retro-dark-gray text-xs mb-1">ICQ UIN:</p>
+            <p class="font-mono text-retro-green text-sm">12345678</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 建设中 -->
+      <div class="pixel-border bg-retro-yellow p-4 text-center">
+        <p class="font-pixel text-retro-black text-sm blink">
+          🚧 UNDER CONSTRUCTION 🚧
+        </p>
+        <p class="font-dos text-retro-dark-gray text-xs mt-2">
+          More cool stuff coming soon!
+        </p>
+        <div class="mt-3 flex justify-center gap-2">
+          <span class="text-2xl animate-spin-slow">🔨</span>
+          <span class="text-2xl animate-spin-slow" style="animation-direction: reverse;">🔧</span>
+          <span class="text-2xl animate-spin-slow">⚒️</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部返回链接 -->
+  <div class="text-center">
+    <a 
+      routerLink="/home"
+      class="retro-link font-pixel text-retro-blue text-sm hover:text-retro-red"
+    >
+      << BACK TO HOME >>
+    </a>
+  </div>
+</div>

@@ -1,0 +1,162 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 全局像素化样式 */
+* {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* CRT 扫描线效果 */
+.crt-effect::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0),
+    rgba(255,255,255,0) 50%,
+    rgba(0,0,0,0.1) 50%,
+    rgba(0,0,0,0.1)
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* 像素边框样式 */
+.pixel-border {
+  border: 4px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  box-shadow: 4px 4px 0px #000000;
+}
+
+.pixel-border-inset {
+  border: 4px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+}
+
+/* 闪烁动画 */
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* 链接悬停效果 - 复古风格 */
+.retro-link {
+  color: #0000ff;
+  text-decoration: underline;
+}
+
+.retro-link:visited {
+  color: #800080;
+}
+
+.retro-link:hover {
+  color: #ff0000;
+  text-decoration: none;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+::-webkit-scrollbar-track {
+  background: #c0c0c0;
+  border-left: 1px solid #ffffff;
+  border-top: 1px solid #ffffff;
+  border-right: 1px solid #808080;
+  border-bottom: 1px solid #808080;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border-left: 1px solid #ffffff;
+  border-top: 1px solid #ffffff;
+  border-right: 1px solid #808080;
+  border-bottom: 1px solid #808080;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0;
+}
+
+/* 背景网格 */
+.pixel-grid {
+  background-image: 
+    linear-gradient(rgba(0,255,0,0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,0,0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* 霓虹发光效果 */
+.neon-glow {
+  text-shadow: 
+    0 0 5px currentColor,
+    0 0 10px currentColor,
+    0 0 20px currentColor;
+}
+
+/* 打字机效果 */
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid;
+  white-space: nowrap;
+  animation: typing 2s steps(20, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: currentColor }
+}
+
+/* 按钮悬停效果 */
+.pixel-button {
+  transition: all 0.1s ease;
+}
+
+.pixel-button:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #000000 !important;
+}
+
+.pixel-button:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px #000000 !important;
+}
+
+/* 加载动画 */
+.loading-bar {
+  animation: loading 2s linear infinite;
+}
+
+@keyframes loading {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* 闪烁文字 */
+.blink-text {
+  animation: blinkText 0.5s alternate infinite;
+}
+
+@keyframes blinkText {
+  from { opacity: 1; }
+  to { opacity: 0.3; }
+}
