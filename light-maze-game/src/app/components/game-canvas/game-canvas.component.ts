@@ -189,6 +189,8 @@ export class GameCanvasComponent
     const canvas = this.canvasRef.nativeElement;
     const mazeWidth = this.gameLogicService.getMazeWidth();
     const mazeHeight = this.gameLogicService.getMazeHeight();
+    const player = this.playerState();
+    const levelConfig = this.levelConfig();
 
     // 计算缩放比例
     const scaleX = canvas.width / mazeWidth;
@@ -198,32 +200,89 @@ export class GameCanvasComponent
     // 保存上下文状态
     this.ctx.save();
 
-    // 清除画布
+    // 清除画布为黑色（迷雾效果）
     this.ctx.fillStyle = GAME_CONFIG.COLORS.BACKGROUND;
     this.ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // 应用缩放
     this.ctx.scale(scale, scale);
 
-    // 绘制迷宫背景
-    this.drawMazeBackground();
+    // 检查是否有游戏数据
+    if (levelConfig && mazeWidth > 0 && mazeHeight > 0) {
+      // 保存状态，准备使用clip
+      this.ctx.save();
+      
+      // 创建剪贴路径（光照区域）- 只在这个区域内绘制
+      this.ctx.beginPath();
+      this.ctx.arc(
+        player.x,
+        player.y,
+        levelConfig.lightRadius,
+        0,
+        Math.PI * 2
+      );
+      this.ctx.clip();
 
-    // 绘制迷宫墙壁
-    this.drawMazeWalls();
+      // 在光照区域内绘制所有游戏元素
+      // 绘制迷宫背景
+      this.drawMazeBackground();
 
-    // 绘制节点
-    this.drawNodes();
+      // 绘制迷宫墙壁
+      this.drawMazeWalls();
 
-    // 绘制出口
-    this.drawExit();
+      // 绘制节点
+      this.drawNodes();
 
-    // 绘制玩家
-    this.drawPlayer();
+      // 绘制出口
+      this.drawExit();
 
-    // 应用光照效果（使用裁剪蒙版）
-    this.applyLightEffect();
+      // 绘制玩家
+      this.drawPlayer();
+
+      // 恢复状态（移除clip）
+      this.ctx.restore();
+
+      // 绘制光照边缘的柔和过渡效果
+      this.drawLightEdge(player, levelConfig.lightRadius, mazeWidth, mazeHeight);
+    }
 
     // 恢复上下文状态
+    this.ctx.restore();
+  }
+
+  // 绘制光照边缘的柔和过渡
+  private drawLightEdge(
+    player: PlayerState,
+    lightRadius: number,
+    mazeWidth: number,
+    mazeHeight: number
+  ): void {
+    // 保存状态
+    this.ctx.save();
+
+    // 使用 'source-over' 复合操作，在现有内容上绘制
+    this.ctx.globalCompositeOperation = 'source-over';
+
+    // 创建径向渐变，只在光照边缘绘制半透明黑色
+    // 内部：透明（保持已绘制的内容可见）
+    // 外部：黑色（与背景融合）
+    const edgeGradient = this.ctx.createRadialGradient(
+      player.x,
+      player.y,
+      lightRadius * 0.7,
+      player.x,
+      player.y,
+      lightRadius
+    );
+
+    edgeGradient.addColorStop(0, 'rgba(0, 0, 0, 0)');  // 完全透明
+    edgeGradient.addColorStop(1, 'rgba(0, 0, 0, 1)');  // 完全不透明（黑色）
+
+    // 绘制渐变遮罩
+    this.ctx.fillStyle = edgeGradient;
+    this.ctx.fillRect(0, 0, mazeWidth, mazeHeight);
+
+    // 恢复状态
     this.ctx.restore();
   }
 
@@ -461,78 +520,5 @@ export class GameCanvasComponent
     this.ctx.beginPath();
     this.ctx.arc(player.x, player.y, GAME_CONFIG.PLAYER_RADIUS / 2, 0, Math.PI * 2);
     this.ctx.fill();
-  }
-
-  // 应用光照效果
-  private applyLightEffect(): void {
-    const player = this.playerState();
-    const levelConfig = this.levelConfig();
-
-    if (!levelConfig) return;
-
-    const mazeWidth = this.gameLogicService.getMazeWidth();
-    const mazeHeight = this.gameLogicService.getMazeHeight();
-
-    // 创建光源渐变
-    const lightGradient = this.ctx.createRadialGradient(
-      player.x,
-      player.y,
-      0,
-      player.x,
-      player.y,
-      levelConfig.lightRadius
-    );
-
-    lightGradient.addColorStop(0, 'rgba(0, 0, 0, 0)'); // 完全透明
-    lightGradient.addColorStop(0.7, 'rgba(0, 0, 0, 0.5)'); // 半透明
-    lightGradient.addColorStop(1, 'rgba(0, 0, 0, 1)'); // 完全不透明
-
-    // 保存当前画布内容到临时画布
-    const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = mazeWidth;
-    tempCanvas.height = mazeHeight;
-    const tempCtx = tempCanvas.getContext('2d')!;
-    tempCtx.drawImage(this.ctx.canvas, 0, 0);
-
-    // 清除主画布
-    this.ctx.fillStyle = 'rgba(0, 0, 0, 1)';
-    this.ctx.fillRect(0, 0, mazeWidth, mazeHeight);
-
-    // 创建剪贴路径（光照区域）
-    this.ctx.save();
-    this.ctx.beginPath();
-    this.ctx.arc(
-      player.x,
-      player.y,
-      levelConfig.lightRadius,
-      0,
-      Math.PI * 2
-    );
-    this.ctx.clip();
-
-    // 在剪贴区域内绘制游戏内容
-    this.ctx.drawImage(tempCanvas, 0, 0);
-    this.ctx.restore();
-
-    // 绘制光照边缘的柔和过渡
-    this.ctx.save();
-    this.ctx.globalCompositeOperation = 'source-over';
-    
-    // 创建一个从透明到黑色的渐变，用于边缘过渡
-    const edgeGradient = this.ctx.createRadialGradient(
-      player.x,
-      player.y,
-      levelConfig.lightRadius * 0.8,
-      player.x,
-      player.y,
-      levelConfig.lightRadius
-    );
-    
-    edgeGradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
-    edgeGradient.addColorStop(1, 'rgba(0, 0, 0, 0.8)');
-    
-    this.ctx.fillStyle = edgeGradient;
-    this.ctx.fillRect(0, 0, mazeWidth, mazeHeight);
-    this.ctx.restore();
   }
 }
