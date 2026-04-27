@@ -63,15 +63,11 @@ export const HomePage = () => {
               今天是 {formatDate(new Date())}，祝您身体健康！
             </p>
             <div className="flex flex-wrap gap-3">
-              <Button variant="secondary" size="sm" asChild>
-                <Link to="/appointment">
-                  预约医生 <ChevronRight className="w-4 h-4 ml-1" />
-                </Link>
+              <Button variant="secondary" size="sm" to="/appointment">
+                预约医生 <ChevronRight className="w-4 h-4" />
               </Button>
-              <Button variant="outline" size="sm" className="border-white text-white hover:bg-white/20" asChild>
-                <Link to="/consultation">
-                  在线问诊 <MessageCircle className="w-4 h-4 ml-1" />
-                </Link>
+              <Button variant="outline" size="sm" className="border-white text-white hover:bg-white/20" to="/consultation">
+                在线问诊 <MessageCircle className="w-4 h-4" />
               </Button>
             </div>
           </div>
@@ -127,10 +123,8 @@ export const HomePage = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-lg font-semibold">待处理预约</CardTitle>
-            <Button variant="ghost" size="sm" asChild>
-              <Link to="/appointment">
-                查看全部 <ChevronRight className="w-4 h-4 ml-1" />
-              </Link>
+            <Button variant="ghost" size="sm" to="/appointment">
+              查看全部 <ChevronRight className="w-4 h-4" />
             </Button>
           </CardHeader>
           <CardContent>
@@ -162,9 +156,7 @@ export const HomePage = () => {
               <div className="text-center py-8">
                 <Calendar className="w-12 h-12 text-text-secondary mx-auto mb-3" />
                 <p className="text-text-secondary">暂无待处理预约</p>
-                <Button variant="primary" size="sm" className="mt-3" asChild>
-                  <Link to="/appointment">立即预约</Link>
-                </Button>
+                <Button variant="primary" size="sm" className="mt-3" to="/appointment">立即预约</Button>
               </div>
             )}
           </CardContent>
@@ -173,10 +165,8 @@ export const HomePage = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-lg font-semibold">健康趋势</CardTitle>
-            <Button variant="ghost" size="sm" asChild>
-              <Link to="/health-records">
-                查看详情 <ChevronRight className="w-4 h-4 ml-1" />
-              </Link>
+            <Button variant="ghost" size="sm" to="/health-records">
+              查看详情 <ChevronRight className="w-4 h-4" />
             </Button>
           </CardHeader>
           <CardContent>
@@ -216,10 +206,8 @@ export const HomePage = () => {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
           <CardTitle className="text-lg font-semibold">推荐医生</CardTitle>
-          <Button variant="ghost" size="sm" asChild>
-            <Link to="/appointment">
-              更多医生 <ChevronRight className="w-4 h-4 ml-1" />
-            </Link>
+          <Button variant="ghost" size="sm" to="/appointment">
+            更多医生 <ChevronRight className="w-4 h-4" />
           </Button>
         </CardHeader>
         <CardContent>
@@ -252,12 +240,8 @@ export const HomePage = () => {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="primary" size="sm" className="flex-1" asChild>
-                    <Link to={`/appointment?doctor=${doctor.id}`}>预约</Link>
-                  </Button>
-                  <Button variant="secondary" size="sm" asChild>
-                    <Link to={`/consultation?doctor=${doctor.id}`}>问诊</Link>
-                  </Button>
+                  <Button variant="primary" size="sm" className="flex-1" to={`/appointment?doctor=${doctor.id}`}>预约</Button>
+                  <Button variant="secondary" size="sm" to={`/consultation?doctor=${doctor.id}`}>问诊</Button>
                 </div>
               </div>
             ))}
@@ -269,10 +253,8 @@ export const HomePage = () => {
         <Card className="lg:col-span-2">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-lg font-semibold">附近医院</CardTitle>
-            <Button variant="ghost" size="sm" asChild>
-              <Link to="/emergency">
-                查看全部 <ChevronRight className="w-4 h-4 ml-1" />
-              </Link>
+            <Button variant="ghost" size="sm" to="/emergency">
+              查看全部 <ChevronRight className="w-4 h-4" />
             </Button>
           </CardHeader>
           <CardContent>
@@ -362,10 +344,8 @@ export const HomePage = () => {
                 <Badge variant="warning" size="sm">偏高</Badge>
               </div>
 
-              <Button variant="primary" className="w-full" asChild>
-                <Link to="/health-records">
-                  <Plus className="w-4 h-4 mr-2" /> 记录健康数据
-                </Link>
+              <Button variant="primary" className="w-full" to="/health-records">
+                <Plus className="w-4 h-4" /> 记录健康数据
               </Button>
             </div>
           </CardContent>

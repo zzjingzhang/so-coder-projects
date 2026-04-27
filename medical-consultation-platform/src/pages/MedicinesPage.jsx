@@ -95,13 +95,11 @@ export const MedicinesPage = () => {
           <h1 className="text-2xl font-bold text-text">药品信息</h1>
           <p className="text-text-secondary mt-1">药品查询和用药指导服务</p>
         </div>
-        <Button variant="primary" asChild>
-          <a href="#">
-            <ShoppingCart className="w-4 h-4 mr-2" /> 我的药箱
-            {totalCartItems > 0 && (
-              <Badge variant="danger" size="sm" className="ml-2">{totalCartItems}</Badge>
-            )}
-          </a>
+        <Button variant="primary" href="#">
+          <ShoppingCart className="w-4 h-4" /> 我的药箱
+          {totalCartItems > 0 && (
+            <Badge variant="danger" size="sm">{totalCartItems}</Badge>
+          )}
         </Button>
       </div>
 

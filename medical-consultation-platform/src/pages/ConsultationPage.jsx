@@ -469,9 +469,7 @@ export const ConsultationPage = () => {
                   <p className="text-text-secondary">
                     请从左侧选择一个问诊，或预约医生开始新的问诊
                   </p>
-                  <Button variant="primary" className="mt-4" asChild>
-                    <a href="/appointment">预约医生</a>
-                  </Button>
+                  <Button variant="primary" className="mt-4" to="/appointment">预约医生</Button>
                 </div>
               </CardContent>
             )}
