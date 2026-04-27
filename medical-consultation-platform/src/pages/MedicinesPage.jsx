@@ -214,24 +214,24 @@ export const MedicinesPage = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-4 border-t border-border-light">
+                <div className="flex items-baseline justify-between pt-4 px-2 border-t border-border-light">
                   <div>
                     <span className="text-2xl font-bold text-primary">{formatCurrency(medicine.price)}</span>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex items-center gap-2">
                     <Button
                       variant="secondary"
                       size="sm"
                       onClick={() => handleViewMedicine(medicine)}
                     >
-                      <Eye className="w-4 h-4 mr-1" /> 详情
+                      <Eye className="w-4 h-4" /> 详情
                     </Button>
                     <Button
                       variant="primary"
                       size="sm"
                       onClick={() => handleAddToCart(medicine)}
                     >
-                      <ShoppingCart className="w-4 h-4 mr-1" /> 加入
+                      <ShoppingCart className="w-4 h-4" /> 加入
                     </Button>
                   </div>
                 </div>
