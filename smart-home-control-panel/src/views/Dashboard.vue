@@ -1,11 +1,54 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, h } from 'vue'
+import { NIcon } from 'naive-ui'
+import {
+  SettingsOutline,
+  LayersOutline,
+  FlashOutline,
+  BatteryHalfOutline,
+  HomeOutline,
+  LogOutOutline,
+  MoonOutline,
+  FilmOutline
+} from '@vicons/ionicons5'
+
+const renderIcon = (icon) => {
+  return () => h(NIcon, null, { default: () => h(icon) })
+}
 
 const stats = ref([
-  { title: '在线设备', value: 12, icon: 'settings-outline', color: '#4ade80' },
-  { title: '活跃场景', value: 5, icon: 'layers-outline', color: '#60a5fa' },
-  { title: '自动化规则', value: 8, icon: 'flash-outline', color: '#f472b6' },
-  { title: '今日能耗', value: '15.2 kWh', icon: 'battery-half-outline', color: '#fbbf24' }
+  { 
+    title: '在线设备', 
+    value: 12, 
+    icon: SettingsOutline, 
+    iconName: 'settings-outline',
+    color: '#10b981',
+    bgColor: '#d1fae5'
+  },
+  { 
+    title: '活跃场景', 
+    value: 5, 
+    icon: LayersOutline, 
+    iconName: 'layers-outline',
+    color: '#3b82f6',
+    bgColor: '#dbeafe'
+  },
+  { 
+    title: '自动化规则', 
+    value: 8, 
+    icon: FlashOutline, 
+    iconName: 'flash-outline',
+    color: '#ec4899',
+    bgColor: '#fce7f3'
+  },
+  { 
+    title: '今日能耗', 
+    value: '15.2 kWh', 
+    icon: BatteryHalfOutline, 
+    iconName: 'battery-half-outline',
+    color: '#f59e0b',
+    bgColor: '#fef3c7'
+  }
 ])
 
 const recentActivities = ref([
@@ -16,30 +59,30 @@ const recentActivities = ref([
 ])
 
 const quickActions = ref([
-  { name: '回家模式', icon: 'home-outline', color: '#4ade80' },
-  { name: '离家模式', icon: 'log-out-outline', color: '#f87171' },
-  { name: '睡眠模式', icon: 'moon-outline', color: '#a78bfa' },
-  { name: '观影模式', icon: 'film-outline', color: '#60a5fa' }
+  { name: '回家模式', icon: HomeOutline, iconName: 'home-outline', color: '#10b981', bgColor: '#d1fae5' },
+  { name: '离家模式', icon: LogOutOutline, iconName: 'log-out-outline', color: '#ef4444', bgColor: '#fee2e2' },
+  { name: '睡眠模式', icon: MoonOutline, iconName: 'moon-outline', color: '#8b5cf6', bgColor: '#ede9fe' },
+  { name: '观影模式', icon: FilmOutline, iconName: 'film-outline', color: '#3b82f6', bgColor: '#dbeafe' }
 ])
 </script>
 
 <template>
   <div class="space-y-6">
     <n-row :gutter="[16, 16]">
-      <n-col :span="6" v-for="stat in stats" :key="stat.title">
+      <n-col :xs="24" :sm="12" :md="6" v-for="stat in stats" :key="stat.title">
         <n-card hoverable>
           <div class="flex items-center">
             <div 
               class="w-12 h-12 rounded-full flex items-center justify-center mr-4"
-              :style="{ backgroundColor: stat.color + '20' }"
+              :style="{ backgroundColor: stat.bgColor }"
             >
               <n-icon :size="24" :color="stat.color">
                 <component :is="stat.icon" />
               </n-icon>
             </div>
             <div>
-              <div class="text-2xl font-bold text-gray-800">{{ stat.value }}</div>
-              <div class="text-sm text-gray-500">{{ stat.title }}</div>
+              <div class="text-2xl font-bold" style="color: #1f2937">{{ stat.value }}</div>
+              <div class="text-sm" style="color: #6b7280">{{ stat.title }}</div>
             </div>
           </div>
         </n-card>
@@ -50,17 +93,17 @@ const quickActions = ref([
       <n-col :span="16">
         <n-card title="快捷场景">
           <n-row :gutter="[16, 16]">
-            <n-col :span="6" v-for="action in quickActions" :key="action.name">
+            <n-col :xs="24" :sm="12" :md="6" v-for="action in quickActions" :key="action.name">
               <n-card hoverable class="text-center cursor-pointer">
                 <div 
                   class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3"
-                  :style="{ backgroundColor: action.color + '20' }"
+                  :style="{ backgroundColor: action.bgColor }"
                 >
                   <n-icon :size="28" :color="action.color">
                     <component :is="action.icon" />
                   </n-icon>
                 </div>
-                <div class="font-medium text-gray-800">{{ action.name }}</div>
+                <div class="font-medium" style="color: #1f2937">{{ action.name }}</div>
               </n-card>
             </n-col>
           </n-row>
@@ -78,8 +121,8 @@ const quickActions = ref([
               <template #time>
                 {{ activity.time }}
               </template>
-              <div class="font-medium">{{ activity.device }}</div>
-              <div class="text-sm text-gray-500">{{ activity.action }}</div>
+              <div class="font-medium" style="color: #1f2937">{{ activity.device }}</div>
+              <div class="text-sm" style="color: #6b7280">{{ activity.action }}</div>
             </n-timeline-item>
           </n-timeline>
         </n-card>
@@ -87,29 +130,3 @@ const quickActions = ref([
     </n-row>
   </div>
 </template>
-
-<script>
-import {
-  SettingsOutline,
-  LayersOutline,
-  FlashOutline,
-  BatteryHalfOutline,
-  HomeOutline,
-  LogOutOutline,
-  MoonOutline,
-  FilmOutline
-} from '@vicons/ionicons5'
-
-export default {
-  components: {
-    SettingsOutline,
-    LayersOutline,
-    FlashOutline,
-    BatteryHalfOutline,
-    HomeOutline,
-    LogOutOutline,
-    MoonOutline,
-    FilmOutline
-  }
-}
-</script>

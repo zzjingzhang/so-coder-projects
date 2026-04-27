@@ -1,5 +1,25 @@
 <script setup>
 import { ref, computed } from 'vue'
+import {
+  BulbOutline,
+  SnowOutline,
+  ContractOutline,
+  LockClosedOutline,
+  CloudOutline,
+  PowerOutline,
+  TvOutline,
+  EllipseOutline
+} from '@vicons/ionicons5'
+
+const iconMap = {
+  'bulb-outline': BulbOutline,
+  'snow-outline': SnowOutline,
+  'contract-outline': ContractOutline,
+  'lock-closed-outline': LockClosedOutline,
+  'cloud-outline': CloudOutline,
+  'power-outline': PowerOutline,
+  'tv-outline': TvOutline
+}
 
 const devices = ref([
   {
@@ -10,7 +30,8 @@ const devices = ref([
     status: true,
     brightness: 80,
     color: '#ffffff',
-    icon: 'bulb-outline'
+    icon: BulbOutline,
+    iconName: 'bulb-outline'
   },
   {
     id: 2,
@@ -20,7 +41,8 @@ const devices = ref([
     status: false,
     brightness: 50,
     color: '#ffeb3b',
-    icon: 'bulb-outline'
+    icon: BulbOutline,
+    iconName: 'bulb-outline'
   },
   {
     id: 3,
@@ -30,7 +52,8 @@ const devices = ref([
     status: true,
     temperature: 24,
     mode: 'cool',
-    icon: 'snow-outline'
+    icon: SnowOutline,
+    iconName: 'snow-outline'
   },
   {
     id: 4,
@@ -39,7 +62,8 @@ const devices = ref([
     type: 'curtain',
     status: true,
     position: 70,
-    icon: 'contract-outline'
+    icon: ContractOutline,
+    iconName: 'contract-outline'
   },
   {
     id: 5,
@@ -47,7 +71,8 @@ const devices = ref([
     room: '门口',
     type: 'lock',
     status: true,
-    icon: 'lock-closed-outline'
+    icon: LockClosedOutline,
+    iconName: 'lock-closed-outline'
   },
   {
     id: 6,
@@ -56,7 +81,8 @@ const devices = ref([
     type: 'purifier',
     status: false,
     speed: 2,
-    icon: 'cloud-outline'
+    icon: CloudOutline,
+    iconName: 'cloud-outline'
   },
   {
     id: 7,
@@ -64,7 +90,8 @@ const devices = ref([
     room: '书房',
     type: 'socket',
     status: true,
-    icon: 'power-outline'
+    icon: PowerOutline,
+    iconName: 'power-outline'
   },
   {
     id: 8,
@@ -72,7 +99,8 @@ const devices = ref([
     room: '客厅',
     type: 'tv',
     status: false,
-    icon: 'tv-outline'
+    icon: TvOutline,
+    iconName: 'tv-outline'
   }
 ])
 
@@ -94,7 +122,11 @@ const toggleDevice = (device) => {
 }
 
 const getStatusColor = (status) => {
-  return status ? '#4ade80' : '#9ca3af'
+  return status ? '#10b981' : '#9ca3af'
+}
+
+const getStatusBgColor = (status) => {
+  return status ? '#d1fae5' : '#f3f4f6'
 }
 
 const getStatusText = (status) => {
@@ -124,7 +156,7 @@ const getStatusText = (status) => {
             <div class="flex items-center justify-between">
               <div 
                 class="w-12 h-12 rounded-full flex items-center justify-center"
-                :style="{ backgroundColor: device.status ? getStatusColor(device.status) + '20' : '#f3f4f6' }"
+                :style="{ backgroundColor: getStatusBgColor(device.status) }"
               >
                 <n-icon :size="24" :color="getStatusColor(device.status)">
                   <component :is="device.icon" />
@@ -137,15 +169,15 @@ const getStatusText = (status) => {
             </div>
             
             <div>
-              <div class="font-medium text-gray-800">{{ device.name }}</div>
-              <div class="text-sm text-gray-500">{{ device.room }}</div>
+              <div class="font-medium" style="color: #1f2937">{{ device.name }}</div>
+              <div class="text-sm" style="color: #6b7280">{{ device.room }}</div>
             </div>
             
             <div 
               class="inline-flex items-center px-2 py-1 rounded-full text-xs"
               :style="{ 
-                backgroundColor: device.status ? '#dcfce7' : '#f3f4f6',
-                color: device.status ? '#166534' : '#6b7280'
+                backgroundColor: getStatusBgColor(device.status),
+                color: getStatusColor(device.status)
               }"
             >
               <n-icon :size="12" class="mr-1">
@@ -156,22 +188,22 @@ const getStatusText = (status) => {
             
             <div v-if="device.status" class="space-y-2">
               <div v-if="device.type === 'light'">
-                <div class="text-xs text-gray-500 mb-1">亮度: {{ device.brightness }}%</div>
+                <div class="text-xs mb-1" style="color: #6b7280">亮度: {{ device.brightness }}%</div>
                 <n-slider v-model:value="device.brightness" :min="0" :max="100" />
               </div>
               
               <div v-if="device.type === 'ac'">
-                <div class="text-xs text-gray-500 mb-1">温度: {{ device.temperature }}°C</div>
+                <div class="text-xs mb-1" style="color: #6b7280">温度: {{ device.temperature }}°C</div>
                 <n-slider v-model:value="device.temperature" :min="16" :max="30" :step="1" />
               </div>
               
               <div v-if="device.type === 'curtain'">
-                <div class="text-xs text-gray-500 mb-1">开合度: {{ device.position }}%</div>
+                <div class="text-xs mb-1" style="color: #6b7280">开合度: {{ device.position }}%</div>
                 <n-slider v-model:value="device.position" :min="0" :max="100" />
               </div>
               
               <div v-if="device.type === 'purifier'">
-                <div class="text-xs text-gray-500 mb-1">风速</div>
+                <div class="text-xs mb-1" style="color: #6b7280">风速</div>
                 <n-radio-group v-model:value="device.speed" size="small">
                   <n-radio :value="1">低</n-radio>
                   <n-radio :value="2">中</n-radio>

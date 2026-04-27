@@ -1,5 +1,22 @@
 <script setup>
 import { ref } from 'vue'
+import {
+  AddOutline,
+  ThermometerOutline,
+  MoonOutline,
+  EyeOutline,
+  AlarmOutline,
+  CloudOutline,
+  HelpCircleOutline
+} from '@vicons/ionicons5'
+
+const iconMap = {
+  temperature: ThermometerOutline,
+  sunset: MoonOutline,
+  motion: EyeOutline,
+  schedule: AlarmOutline,
+  pm25: CloudOutline
+}
 
 const rules = ref([
   {
@@ -7,6 +24,7 @@ const rules = ref([
     name: '温度过高自动开空调',
     description: '当室内温度超过28°C时，自动开启空调',
     enabled: true,
+    icon: ThermometerOutline,
     trigger: {
       type: 'temperature',
       condition: '>',
@@ -23,6 +41,7 @@ const rules = ref([
     name: '日落自动关窗帘',
     description: '根据日落时间自动关闭窗帘',
     enabled: true,
+    icon: MoonOutline,
     trigger: {
       type: 'sunset',
       time: '18:30'
@@ -37,6 +56,7 @@ const rules = ref([
     name: '有人进入自动开灯',
     description: '检测到有人进入房间时自动开启灯光',
     enabled: true,
+    icon: EyeOutline,
     trigger: {
       type: 'motion',
       location: '客厅'
@@ -46,11 +66,12 @@ const rules = ref([
     ],
     lastTriggered: '今天 09:15'
   },
-  {
+    {
     id: 4,
     name: '早上7点唤醒模式',
     description: '工作日早上7点自动开启唤醒场景',
     enabled: false,
+    icon: AlarmOutline,
     trigger: {
       type: 'schedule',
       time: '07:00',
@@ -67,6 +88,7 @@ const rules = ref([
     name: 'PM2.5超标自动净化',
     description: '当PM2.5指数超过100时自动开启空气净化器',
     enabled: true,
+    icon: CloudOutline,
     trigger: {
       type: 'pm25',
       condition: '>',
@@ -117,14 +139,7 @@ const getTriggerText = (trigger) => {
 }
 
 const getTriggerIcon = (type) => {
-  const icons = {
-    temperature: 'thermometer-outline',
-    sunset: 'moon-outline',
-    motion: 'eye-outline',
-    schedule: 'alarm-outline',
-    pm25: 'cloud-outline'
-  }
-  return icons[type] || 'help-circle-outline'
+  return iconMap[type] || HelpCircleOutline
 }
 </script>
 
@@ -154,25 +169,25 @@ const getTriggerIcon = (type) => {
           <div class="flex items-center">
             <div 
               class="w-10 h-10 rounded-full flex items-center justify-center mr-3"
-              :style="{ backgroundColor: row.enabled ? '#dcfce7' : '#f3f4f6' }"
+              :style="{ backgroundColor: row.enabled ? '#d1fae5' : '#f3f4f6' }"
             >
-              <n-icon :size="18" :color="row.enabled ? '#166534' : '#6b7280'">
+              <n-icon :size="18" :color="row.enabled ? '#10b981' : '#9ca3af'">
                 <component :is="getTriggerIcon(row.trigger.type)" />
               </n-icon>
             </div>
             <div>
-              <div class="font-medium text-gray-800">{{ row.name }}</div>
-              <div class="text-xs text-gray-500">{{ row.description }}</div>
+              <div class="font-medium" style="color: #1f2937">{{ row.name }}</div>
+              <div class="text-xs" style="color: #6b7280">{{ row.description }}</div>
             </div>
           </div>
         </template>
         
         <template #trigger="{ row }">
           <div class="text-sm">
-            <span class="text-gray-600">触发条件：</span>
-            <span class="text-gray-800 font-medium">{{ getTriggerText(row.trigger) }}</span>
+            <span style="color: #4b5563">触发条件：</span>
+            <span class="font-medium" style="color: #1f2937">{{ getTriggerText(row.trigger) }}</span>
           </div>
-          <div class="text-xs text-gray-500 mt-1">
+          <div class="text-xs mt-1" style="color: #6b7280">
             执行动作：{{ row.actions.length }} 个设备
           </div>
         </template>
@@ -290,14 +305,12 @@ export default {
       {
         title: '规则名称',
         key: 'name',
-        width: 250,
-        render: (row) => h('div', { style: 'white-space: nowrap' }, row.name)
+        width: 250
       },
       {
         title: '触发条件',
         key: 'trigger',
-        width: 250,
-        render: (row) => h('div', { style: 'white-space: nowrap' }, row.trigger)
+        width: 250
       },
       {
         title: '状态',

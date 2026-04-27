@@ -1,13 +1,27 @@
 <script setup>
 import { ref } from 'vue'
+import {
+  HomeOutline,
+  LogOutOutline,
+  MoonOutline,
+  FilmOutline,
+  SunnyOutline,
+  BriefcaseOutline,
+  AddOutline,
+  CheckmarkCircleOutline,
+  AlarmOutline,
+  EllipsisHorizontalOutline
+} from '@vicons/ionicons5'
 
 const scenes = ref([
   {
     id: 1,
     name: '回家模式',
     description: '打开客厅灯光，调整空调温度',
-    icon: 'home-outline',
-    color: '#4ade80',
+    icon: HomeOutline,
+    iconName: 'home-outline',
+    color: '#10b981',
+    bgColor: '#d1fae5',
     active: true,
     devices: [
       { name: '客厅灯光', action: '开启' },
@@ -19,8 +33,10 @@ const scenes = ref([
     id: 2,
     name: '离家模式',
     description: '关闭所有灯光，开启安全系统',
-    icon: 'log-out-outline',
-    color: '#f87171',
+    icon: LogOutOutline,
+    iconName: 'log-out-outline',
+    color: '#ef4444',
+    bgColor: '#fee2e2',
     active: false,
     devices: [
       { name: '所有灯光', action: '关闭' },
@@ -33,8 +49,10 @@ const scenes = ref([
     id: 3,
     name: '睡眠模式',
     description: '调暗灯光，设置舒适温度',
-    icon: 'moon-outline',
-    color: '#a78bfa',
+    icon: MoonOutline,
+    iconName: 'moon-outline',
+    color: '#8b5cf6',
+    bgColor: '#ede9fe',
     active: false,
     devices: [
       { name: '卧室灯光', action: '调暗至30%' },
@@ -46,8 +64,10 @@ const scenes = ref([
     id: 4,
     name: '观影模式',
     description: '关闭灯光，打开电视',
-    icon: 'film-outline',
-    color: '#60a5fa',
+    icon: FilmOutline,
+    iconName: 'film-outline',
+    color: '#3b82f6',
+    bgColor: '#dbeafe',
     active: false,
     devices: [
       { name: '客厅灯光', action: '调暗至20%' },
@@ -60,8 +80,10 @@ const scenes = ref([
     id: 5,
     name: '早晨模式',
     description: '定时开启，迎接新的一天',
-    icon: 'sunny-outline',
-    color: '#fbbf24',
+    icon: SunnyOutline,
+    iconName: 'sunny-outline',
+    color: '#f59e0b',
+    bgColor: '#fef3c7',
     active: false,
     devices: [
       { name: '卧室灯光', action: '逐渐亮起' },
@@ -75,8 +97,10 @@ const scenes = ref([
     id: 6,
     name: '工作模式',
     description: '开启书房设备，专注工作',
-    icon: 'briefcase-outline',
-    color: '#fb923c',
+    icon: BriefcaseOutline,
+    iconName: 'briefcase-outline',
+    color: '#f97316',
+    bgColor: '#ffedd5',
     active: false,
     devices: [
       { name: '书房灯光', action: '开启' },
@@ -135,45 +159,46 @@ const deleteScene = (scene) => {
               <div class="flex items-center">
                 <div 
                   class="w-12 h-12 rounded-full flex items-center justify-center mr-3"
-                  :style="{ backgroundColor: scene.color + '20' }"
+                  :style="{ backgroundColor: scene.bgColor }"
                 >
                   <n-icon :size="24" :color="scene.color">
                     <component :is="scene.icon" />
                   </n-icon>
                 </div>
                 <div>
-                  <div class="font-medium text-gray-800">{{ scene.name }}</div>
-                  <div class="text-xs text-gray-500">{{ scene.description }}</div>
+                  <div class="font-medium" style="color: #1f2937">{{ scene.name }}</div>
+                  <div class="text-xs" style="color: #6b7280">{{ scene.description }}</div>
                 </div>
               </div>
             </div>
             
             <div class="space-y-2">
-              <div class="text-xs font-medium text-gray-600">关联设备：</div>
+              <div class="text-xs font-medium" style="color: #4b5563">关联设备：</div>
               <div 
                 v-for="device in scene.devices.slice(0, 3)" 
                 :key="device.name"
-                class="text-xs text-gray-500 flex items-center"
+                class="text-xs flex items-center"
+                style="color: #6b7280"
               >
-                <n-icon size="12" class="mr-1">
+                <n-icon size="12" class="mr-1" color="#10b981">
                   <checkmark-circle-outline />
                 </n-icon>
                 {{ device.name }} - {{ device.action }}
               </div>
-              <div v-if="scene.devices.length > 3" class="text-xs text-gray-400">
+              <div v-if="scene.devices.length > 3" class="text-xs" style="color: #9ca3af">
                 还有 {{ scene.devices.length - 3 }} 个设备...
               </div>
             </div>
             
-            <div class="flex items-center justify-between pt-2 border-t border-gray-100">
+            <div class="flex items-center justify-between pt-2 border-t" style="border-color: #f3f4f6">
               <div class="flex items-center space-x-2">
                 <n-switch 
                   :value="scene.active" 
                   @update:value="activateScene(scene)"
                 />
-                <n-text :tag="scene.active" type="success" v-if="scene.active">
+                <n-tag v-if="scene.active" type="success" :bordered="false" size="small">
                   已激活
-                </n-text>
+                </n-tag>
               </div>
               
               <n-space>
