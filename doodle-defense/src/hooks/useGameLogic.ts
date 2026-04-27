@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import type { 
   GameState, 
   Line, 
@@ -145,98 +145,15 @@ export function useGameLogic() {
   const gameLoopRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(0);
   const spawnTimersRef = useRef<Map<string, number>>(new Map());
+  const levelIndexRef = useRef<number>(0);
 
-  const currentLevel = LEVELS[gameState.currentLevel];
-
-  const startGame = useCallback((levelIndex: number) => {
+  const getEnemyPathForLevel = useCallback((
+    levelIndex: number,
+    obstacles: Obstacle[], 
+    existingLines: Line[]
+  ): Point[] => {
     const level = LEVELS[levelIndex];
-    if (!level) return;
-
-    spawnTimersRef.current.clear();
-    
-    setGameState({
-      status: 'playing',
-      currentLevel: levelIndex,
-      paint: level.initialPaint,
-      maxPaint: level.initialPaint,
-      lives: 5,
-      maxLives: 5,
-      score: 0,
-      waveIndex: 0,
-      selectedLineType: 'fire',
-      lines: [],
-      enemies: [],
-      particles: [],
-      currentWaveTime: 0,
-      spawnedEnemyCount: 0,
-    });
-    
-    lastTimeRef.current = performance.now();
-  }, []);
-
-  const pauseGame = useCallback(() => {
-    setGameState(prev => ({
-      ...prev,
-      status: prev.status === 'playing' ? 'paused' : 'playing',
-    }));
-  }, []);
-
-  const stopGame = useCallback(() => {
-    if (gameLoopRef.current) {
-      cancelAnimationFrame(gameLoopRef.current);
-      gameLoopRef.current = null;
-    }
-    setGameState(prev => ({
-      ...prev,
-      status: 'idle',
-    }));
-  }, []);
-
-  const setSelectedLineType = useCallback((type: LineType) => {
-    setGameState(prev => ({
-      ...prev,
-      selectedLineType: type,
-    }));
-  }, []);
-
-  const addLine = useCallback((points: Point[], type: LineType) => {
-    if (points.length < 2) return;
-
-    const config = LINE_CONFIG[type];
-    
-    let totalLength = 0;
-    for (let i = 1; i < points.length; i++) {
-      const dx = points[i].x - points[i - 1].x;
-      const dy = points[i].y - points[i - 1].y;
-      totalLength += Math.sqrt(dx * dx + dy * dy);
-    }
-
-    const cost = totalLength * config.paintCostPerPixel;
-
-    setGameState(prev => {
-      if (prev.paint < cost) return prev;
-
-      const newLine: Line = {
-        id: generateId(),
-        type,
-        points,
-        thickness: 8,
-        createdAt: performance.now(),
-        duration: config.duration,
-        durability: config.baseDurability,
-        maxDurability: config.baseDurability,
-      };
-
-      return {
-        ...prev,
-        paint: prev.paint - cost,
-        lines: [...prev.lines, newLine],
-      };
-    });
-  }, []);
-
-  const getEnemyPath = useCallback((obstacles: Obstacle[], existingLines: Line[]): Point[] => {
-    if (!currentLevel) return [];
+    if (!level) return [];
 
     const allObstacles: Obstacle[] = [...obstacles];
     
@@ -262,8 +179,8 @@ export function useGameLogic() {
     }
 
     const path = findPath(
-      currentLevel.startPoint,
-      currentLevel.endPoint,
+      level.startPoint,
+      level.endPoint,
       allObstacles,
       CANVAS_WIDTH,
       CANVAS_HEIGHT,
@@ -271,84 +188,84 @@ export function useGameLogic() {
     );
 
     return simplifyPath(path, 15);
-  }, [currentLevel]);
+  }, []);
 
-  const gameLoop = useCallback((currentTime: number) => {
+  const gameLoop = useCallback(() => {
+    const currentTime = performance.now();
     const deltaTime = currentTime - lastTimeRef.current;
     lastTimeRef.current = currentTime;
 
+    const levelIndex = levelIndexRef.current;
+    const level = LEVELS[levelIndex];
+
     setGameState(prev => {
-      if (prev.status !== 'playing') return prev;
+      if (prev.status !== 'playing' || !level) return prev;
 
       let newState = { ...prev };
       const now = performance.now();
 
-      if (currentLevel) {
-        newState.currentWaveTime += deltaTime;
+      newState.currentWaveTime += deltaTime;
 
-        const currentWave = currentLevel.enemyWaves[prev.waveIndex];
-        
-        if (currentWave) {
-          let totalEnemiesInWave = 0;
+      const currentWave = level.enemyWaves[prev.waveIndex];
+      
+      if (currentWave) {
+        let totalEnemiesInWave = 0;
+        for (const spawn of currentWave.enemies) {
+          totalEnemiesInWave += spawn.count;
+        }
+
+        if (prev.currentWaveTime >= currentWave.delay) {
+          const spawnTime = prev.currentWaveTime - currentWave.delay;
+          
           for (const spawn of currentWave.enemies) {
-            totalEnemiesInWave += spawn.count;
-          }
-
-          if (prev.currentWaveTime >= currentWave.delay) {
-            let spawnTime = prev.currentWaveTime - currentWave.delay;
-            
-            let spawnedSoFar = 0;
-            for (const spawn of currentWave.enemies) {
-              for (let i = 0; i < spawn.count; i++) {
-                const enemySpawnTime = i * spawn.interval;
-                const spawnKey = `${prev.waveIndex}-${spawn.type}-${i}`;
+            for (let i = 0; i < spawn.count; i++) {
+              const enemySpawnTime = i * spawn.interval;
+              const spawnKey = `${prev.waveIndex}-${spawn.type}-${i}`;
+              
+              if (spawnTime >= enemySpawnTime && !spawnTimersRef.current.has(spawnKey)) {
+                spawnTimersRef.current.set(spawnKey, now);
                 
-                if (spawnTime >= enemySpawnTime && !spawnTimersRef.current.has(spawnKey)) {
-                  spawnTimersRef.current.set(spawnKey, now);
+                const path = getEnemyPathForLevel(levelIndex, level.obstacles, prev.lines);
+                if (path.length > 0) {
+                  const config = ENEMY_CONFIG[spawn.type];
+                  const startPoint = path[0];
                   
-                  const path = getEnemyPath(currentLevel.obstacles, prev.lines);
-                  if (path.length > 0) {
-                    const config = ENEMY_CONFIG[spawn.type];
-                    const startPoint = path[0];
-                    
-                    const enemy: Enemy = {
-                      id: generateId(),
-                      type: spawn.type,
-                      x: startPoint.x,
-                      y: startPoint.y,
-                      health: config.health,
-                      maxHealth: config.health,
-                      speed: config.speed,
-                      baseSpeed: config.speed,
-                      pathIndex: 0,
-                      path,
-                      slowedUntil: 0,
-                      burningUntil: 0,
-                      burnDamage: 0,
-                      attractedTo: null,
-                      size: config.size,
-                    };
-                    
-                    newState.enemies = [...newState.enemies, enemy];
-                  }
+                  const enemy: Enemy = {
+                    id: generateId(),
+                    type: spawn.type,
+                    x: startPoint.x,
+                    y: startPoint.y,
+                    health: config.health,
+                    maxHealth: config.health,
+                    speed: config.speed,
+                    baseSpeed: config.speed,
+                    pathIndex: 0,
+                    path,
+                    slowedUntil: 0,
+                    burningUntil: 0,
+                    burnDamage: 0,
+                    attractedTo: null,
+                    size: config.size,
+                  };
+                  
+                  newState.enemies = [...newState.enemies, enemy];
                 }
               }
-              spawnedSoFar += spawn.count;
             }
           }
+        }
 
-          const allSpawned = Array.from(spawnTimersRef.current.keys()).filter(k => 
-            k.startsWith(`${prev.waveIndex}-`)
-          ).length >= totalEnemiesInWave;
+        const allSpawned = Array.from(spawnTimersRef.current.keys()).filter(k => 
+          k.startsWith(`${prev.waveIndex}-`)
+        ).length >= totalEnemiesInWave;
 
-          if (allSpawned && prev.enemies.length === 0) {
-            if (prev.waveIndex < currentLevel.enemyWaves.length - 1) {
-              newState.waveIndex = prev.waveIndex + 1;
-              newState.currentWaveTime = 0;
-              spawnTimersRef.current.clear();
-            } else {
-              newState.status = 'won';
-            }
+        if (allSpawned && prev.enemies.length === 0) {
+          if (prev.waveIndex < level.enemyWaves.length - 1) {
+            newState.waveIndex = prev.waveIndex + 1;
+            newState.currentWaveTime = 0;
+            spawnTimersRef.current.clear();
+          } else {
+            newState.status = 'won';
           }
         }
       }
@@ -432,12 +349,9 @@ export function useGameLogic() {
 
         updatedEnemy.attractedTo = attractedTo;
 
-        let targetX: number;
-        let targetY: number;
-
         if (attractedTo) {
-          targetX = attractedTo.x;
-          targetY = attractedTo.y;
+          const targetX = attractedTo.x;
+          const targetY = attractedTo.y;
           
           const dx = targetX - enemy.x;
           const dy = targetY - enemy.y;
@@ -450,8 +364,8 @@ export function useGameLogic() {
           }
         } else if (enemy.path.length > 0 && enemy.pathIndex < enemy.path.length) {
           const target = enemy.path[enemy.pathIndex];
-          targetX = target.x;
-          targetY = target.y;
+          const targetX = target.x;
+          const targetY = target.y;
 
           const dx = targetX - enemy.x;
           const dy = targetY - enemy.y;
@@ -482,10 +396,10 @@ export function useGameLogic() {
           ];
         }
 
-        if (currentLevel) {
+        if (level) {
           const distToEnd = Math.sqrt(
-            (enemy.x - currentLevel.endPoint.x) ** 2 +
-            (enemy.y - currentLevel.endPoint.y) ** 2
+            (enemy.x - level.endPoint.x) ** 2 +
+            (enemy.y - level.endPoint.y) ** 2
           );
           if (distToEnd < 30) {
             enemiesToRemove.push(enemy.id);
@@ -520,7 +434,95 @@ export function useGameLogic() {
     });
 
     gameLoopRef.current = requestAnimationFrame(gameLoop);
-  }, [currentLevel, getEnemyPath]);
+  }, [getEnemyPathForLevel]);
+
+  const startGame = useCallback((levelIndex: number) => {
+    const level = LEVELS[levelIndex];
+    if (!level) return;
+
+    levelIndexRef.current = levelIndex;
+    spawnTimersRef.current.clear();
+    
+    setGameState({
+      status: 'playing',
+      currentLevel: levelIndex,
+      paint: level.initialPaint,
+      maxPaint: level.initialPaint,
+      lives: 5,
+      maxLives: 5,
+      score: 0,
+      waveIndex: 0,
+      selectedLineType: 'fire',
+      lines: [],
+      enemies: [],
+      particles: [],
+      currentWaveTime: 0,
+      spawnedEnemyCount: 0,
+    });
+    
+    lastTimeRef.current = performance.now();
+  }, []);
+
+  const pauseGame = useCallback(() => {
+    setGameState(prev => ({
+      ...prev,
+      status: prev.status === 'playing' ? 'paused' : 'playing',
+    }));
+  }, []);
+
+  const stopGame = useCallback(() => {
+    if (gameLoopRef.current) {
+      cancelAnimationFrame(gameLoopRef.current);
+      gameLoopRef.current = null;
+    }
+    setGameState(prev => ({
+      ...prev,
+      status: 'idle',
+    }));
+  }, []);
+
+  const setSelectedLineType = useCallback((type: LineType) => {
+    setGameState(prev => ({
+      ...prev,
+      selectedLineType: type,
+    }));
+  }, []);
+
+  const addLine = useCallback((points: Point[], type: LineType) => {
+    if (points.length < 2) return;
+
+    const config = LINE_CONFIG[type];
+    
+    let totalLength = 0;
+    for (let i = 1; i < points.length; i++) {
+      const dx = points[i].x - points[i - 1].x;
+      const dy = points[i].y - points[i - 1].y;
+      totalLength += Math.sqrt(dx * dx + dy * dy);
+    }
+
+    const cost = totalLength * config.paintCostPerPixel;
+
+    setGameState(prev => {
+      if (prev.paint < cost) return prev;
+
+      const newLine: Line = {
+        id: generateId(),
+        type,
+        points,
+        thickness: 8,
+        createdAt: performance.now(),
+        duration: config.duration,
+        durability: config.baseDurability,
+        maxDurability: config.baseDurability,
+      };
+
+      return {
+        ...prev,
+        paint: prev.paint - cost,
+        lines: [...prev.lines, newLine],
+      };
+    });
+  }, []);
 
   const startGameLoop = useCallback(() => {
     if (!gameLoopRef.current) {
@@ -536,6 +538,18 @@ export function useGameLogic() {
     }
   }, []);
 
+  useEffect(() => {
+    if (gameState.status === 'paused' || gameState.status === 'idle') {
+      if (gameLoopRef.current) {
+        cancelAnimationFrame(gameLoopRef.current);
+        gameLoopRef.current = null;
+      }
+    } else if (gameState.status === 'playing' && !gameLoopRef.current) {
+      lastTimeRef.current = performance.now();
+      gameLoopRef.current = requestAnimationFrame(gameLoop);
+    }
+  }, [gameState.status, gameLoop]);
+
   return {
     gameState,
     startGame,
@@ -545,7 +559,7 @@ export function useGameLogic() {
     addLine,
     startGameLoop,
     stopGameLoop,
-    getEnemyPath,
+    getEnemyPath: getEnemyPathForLevel,
     canvasWidth: CANVAS_WIDTH,
     canvasHeight: CANVAS_HEIGHT,
   };
