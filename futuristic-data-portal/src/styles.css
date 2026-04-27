@@ -426,3 +426,121 @@ body {
 .p-dialog .p-checkbox-icon {
   color: #0f172a !important;
 }
+
+/* Dropdown Panel Overrides */
+.p-dropdown-panel {
+  background-color: rgba(30, 41, 59, 0.98) !important;
+  border: 1px solid rgba(0, 243, 255, 0.2) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+.p-dropdown-panel .p-dropdown-items {
+  padding: 0.5rem 0 !important;
+}
+
+.p-dropdown-panel .p-dropdown-item {
+  color: #e2e8f0 !important;
+  padding: 0.75rem 1rem !important;
+  margin: 0 0.25rem !important;
+  border-radius: 6px !important;
+}
+
+.p-dropdown-panel .p-dropdown-item:hover {
+  background-color: rgba(0, 243, 255, 0.1) !important;
+  color: #00f3ff !important;
+}
+
+.p-dropdown-panel .p-dropdown-item.p-highlight {
+  background-color: rgba(0, 243, 255, 0.15) !important;
+  color: #00f3ff !important;
+}
+
+/* Calendar Panel Overrides */
+.p-datepicker {
+  background-color: rgba(30, 41, 59, 0.98) !important;
+  border: 1px solid rgba(0, 243, 255, 0.2) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+  padding: 1rem !important;
+}
+
+.p-datepicker table td {
+  padding: 0.25rem !important;
+}
+
+.p-datepicker table td > span {
+  width: 2.25rem !important;
+  height: 2.25rem !important;
+  color: #e2e8f0 !important;
+  border-radius: 6px !important;
+}
+
+.p-datepicker table td > span:hover {
+  background-color: rgba(0, 243, 255, 0.1) !important;
+  color: #00f3ff !important;
+}
+
+.p-datepicker table td.p-datepicker-today > span {
+  background-color: rgba(0, 243, 255, 0.2) !important;
+  color: #00f3ff !important;
+  font-weight: 600 !important;
+}
+
+.p-datepicker table td.p-datepicker-selected > span,
+.p-datepicker table td.p-datepicker-highlight > span {
+  background-color: #00f3ff !important;
+  color: #0f172a !important;
+}
+
+.p-datepicker .p-datepicker-header {
+  background-color: transparent !important;
+  border-bottom: 1px solid rgba(0, 243, 255, 0.1) !important;
+  padding-bottom: 0.75rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.p-datepicker .p-datepicker-title {
+  color: #e2e8f0 !important;
+  font-weight: 600 !important;
+}
+
+.p-datepicker .p-datepicker-prev,
+.p-datepicker .p-datepicker-next {
+  color: #94a3b8 !important;
+}
+
+.p-datepicker .p-datepicker-prev:hover,
+.p-datepicker .p-datepicker-next:hover {
+  color: #00f3ff !important;
+  background-color: rgba(0, 243, 255, 0.1) !important;
+}
+
+.p-datepicker table th {
+  color: #94a3b8 !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+}
+
+/* Time Picker Overrides */
+.p-timepicker {
+  background-color: rgba(30, 41, 59, 0.98) !important;
+  border: 1px solid rgba(0, 243, 255, 0.2) !important;
+  border-radius: 8px !important;
+}
+
+.p-timepicker .p-timepicker-hour,
+.p-timepicker .p-timepicker-minute,
+.p-timepicker .p-timepicker-second {
+  color: #e2e8f0 !important;
+}
+
+.p-timepicker .p-button {
+  color: #94a3b8 !important;
+}
+
+.p-timepicker .p-button:hover {
+  color: #00f3ff !important;
+  background-color: rgba(0, 243, 255, 0.1) !important;
+}
