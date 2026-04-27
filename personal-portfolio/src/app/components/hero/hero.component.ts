@@ -93,7 +93,7 @@ import { getSocialIcon } from '../../utils/icon-mapping';
                 class="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white hover:text-primary-600 transition-all duration-300 transform hover:scale-110 hover:-translate-y-1"
                 [title]="link.name"
               >
-                <i [class]="getSocialIcon(link.name)" class="text-xl"></i>
+                <i [ngClass]="[getSocialIcon(link.name), 'text-xl']"></i>
               </a>
             }
           </div>

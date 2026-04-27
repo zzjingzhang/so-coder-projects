@@ -89,7 +89,7 @@ import { getTechIcon } from '../../utils/icon-mapping';
                       [style.backgroundColor]="getTechIcon(tech).bgColor"
                       [style.color]="getTechIcon(tech).color"
                     >
-                      <i [class]="getTechIcon(tech).icon" class="text-base"></i>
+                      <i [ngClass]="[getTechIcon(tech).icon, 'text-base']"></i>
                       <span>{{ tech }}</span>
                     </span>
                   }

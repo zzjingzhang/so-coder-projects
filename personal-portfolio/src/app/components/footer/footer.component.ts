@@ -57,7 +57,7 @@ import { getSocialIcon } from '../../utils/icon-mapping';
                     class="social-icon"
                     [title]="link.name"
                   >
-                    <i [class]="getSocialIcon(link.name)" class="text-xl"></i>
+                    <i [ngClass]="[getSocialIcon(link.name), 'text-xl']"></i>
                   </a>
                 }
               </div>
