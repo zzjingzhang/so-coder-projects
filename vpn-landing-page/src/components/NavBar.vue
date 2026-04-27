@@ -19,10 +19,19 @@
             v-for="item in navItems" 
             :key="item.name"
             :href="item.href"
-            class="font-medium transition-colors duration-200"
-            :class="scrolled ? 'text-dark hover:text-primary' : 'text-white hover:text-primary/80'"
+            class="font-medium transition-colors duration-200 relative"
+            :class="[
+              scrolled ? 'text-dark hover:text-primary' : 'text-white hover:text-primary/80',
+              isActive(item.id) ? (scrolled ? 'text-primary' : 'text-blue-300') : ''
+            ]"
           >
             {{ item.name }}
+            <!-- 高亮指示器 -->
+            <span 
+              v-if="isActive(item.id)"
+              class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary"
+              :class="scrolled ? 'bg-primary' : 'bg-blue-300'"
+            ></span>
           </a>
           <a-button type="primary" size="large" class="bg-primary hover:bg-secondary border-none">
             开始使用
@@ -66,8 +75,11 @@
             v-for="item in navItems" 
             :key="item.name"
             :href="item.href"
-            class="font-medium py-2"
-            :class="scrolled ? 'text-dark hover:text-primary' : 'text-white hover:text-primary/80'"
+            class="font-medium py-2 px-3 rounded-lg transition-colors duration-200"
+            :class="[
+              scrolled ? 'text-dark hover:text-primary hover:bg-blue-50' : 'text-white hover:text-primary/80 hover:bg-white/10',
+              isActive(item.id) ? (scrolled ? 'bg-blue-50 text-primary' : 'bg-white/20 text-blue-300') : ''
+            ]"
             @click="mobileMenuOpen = false"
           >
             {{ item.name }}
@@ -87,21 +99,50 @@ import { Button as AButton } from 'ant-design-vue'
 
 const scrolled = ref(false)
 const mobileMenuOpen = ref(false)
+const activeSection = ref('hero')
 
 const navItems = [
-  { name: '首页', href: '#hero' },
-  { name: '功能', href: '#features' },
-  { name: '价格', href: '#pricing' },
-  { name: '评价', href: '#testimonials' },
-  { name: '联系我们', href: '#footer' }
+  { name: '首页', href: '#hero', id: 'hero' },
+  { name: '功能', href: '#features', id: 'features' },
+  { name: '价格', href: '#pricing', id: 'pricing' },
+  { name: '评价', href: '#testimonials', id: 'testimonials' },
+  { name: '联系我们', href: '#footer', id: 'footer' }
 ]
+
+const isActive = (itemId) => {
+  return activeSection.value === itemId
+}
 
 const handleScroll = () => {
   scrolled.value = window.scrollY > 50
+  
+  // 检测当前激活的section
+  const sections = ['hero', 'features', 'pricing', 'testimonials', 'footer']
+  let currentActive = 'hero'
+  
+  for (const section of sections) {
+    const element = document.getElementById(section)
+    if (element) {
+      const rect = element.getBoundingClientRect()
+      // 当section的顶部进入视口的1/3时，认为是当前激活的section
+      if (rect.top <= window.innerHeight / 3 && rect.bottom >= window.innerHeight / 3) {
+        currentActive = section
+        break
+      }
+      // 当section的顶部在视口上方，但底部还在视口中时
+      if (rect.top < 0 && rect.bottom > 0) {
+        currentActive = section
+      }
+    }
+  }
+  
+  activeSection.value = currentActive
 }
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
+  // 初始调用一次，确保页面加载时也能正确高亮
+  handleScroll()
 })
 
 onUnmounted(() => {
