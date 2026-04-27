@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+:root {
+  --pixel-color-primary: #00d4ff;
+  --pixel-color-secondary: #ff6b6b;
+  --pixel-color-accent: #ffd93d;
+  --pixel-color-success: #6bcf7f;
+  --pixel-color-danger: #ff4757;
+  --pixel-color-bg: #1a1a2e;
+  --pixel-color-bg-light: #16213e;
+  --pixel-color-text: #eaeaea;
+  --pixel-color-border: #0f3460;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Courier New', monospace;
+  background-color: var(--pixel-color-bg);
+  color: var(--pixel-color-text);
+  min-height: 100vh;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.pixel-font {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+}
+
+.pixel-border {
+  border: 4px solid var(--pixel-color-border);
+  box-shadow: 
+    4px 4px 0px var(--pixel-color-border),
+    inset 0 0 0 2px var(--pixel-color-bg-light);
+}
+
+.pixel-button {
+  background-color: var(--pixel-color-primary);
+  color: var(--pixel-color-bg);
+  border: none;
+  padding: 12px 24px;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3);
+}
+
+.pixel-button:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+}
+
+.pixel-button:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+.pixel-button-secondary {
+  background-color: var(--pixel-color-secondary);
+}
+
+.pixel-button-success {
+  background-color: var(--pixel-color-success);
+}
+
+.pixel-button-accent {
+  background-color: var(--pixel-color-accent);
+}
+
+@keyframes coin-spin {
+  0%, 100% { transform: scaleX(1); }
+  50% { transform: scaleX(0.2); }
+}
+
+@keyframes robot-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.coin-animation {
+  animation: coin-spin 1s ease-in-out infinite;
+}
+
+.robot-animation {
+  animation: robot-bounce 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 5px var(--pixel-color-primary); }
+  50% { box-shadow: 0 0 20px var(--pixel-color-primary), 0 0 30px var(--pixel-color-primary); }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
