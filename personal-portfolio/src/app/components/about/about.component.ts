@@ -19,17 +19,18 @@ import { CommonModule } from '@angular/common';
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <!-- Left Side - Image -->
-          <div class="relative animate-fade-in">
-            <div class="relative z-10">
+          <div class="relative animate-fade-in inline-block">
+            <!-- Image Container -->
+            <div class="relative">
               <img 
                 src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600&h=700" 
                 alt="About Me" 
-                class="rounded-2xl shadow-2xl w-full h-auto object-cover"
+                class="rounded-2xl shadow-2xl w-full max-w-full h-auto object-cover relative z-20"
               >
+              <!-- Decorative Elements -->
+              <div class="absolute -top-4 -left-4 w-full h-full border-4 border-blue-500 rounded-2xl z-0"></div>
+              <div class="absolute -bottom-4 -right-4 w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl z-0 opacity-20"></div>
             </div>
-            <!-- Decorative Elements -->
-            <div class="absolute -top-4 -left-4 w-full h-full border-4 border-blue-500 rounded-2xl -z-10"></div>
-            <div class="absolute -bottom-4 -right-4 w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl -z-10 opacity-20"></div>
           </div>
 
           <!-- Right Side - Content -->

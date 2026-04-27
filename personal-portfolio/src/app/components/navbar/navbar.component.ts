@@ -18,7 +18,11 @@ import { ThemeService } from '../../services/theme.service';
           <!-- Logo -->
           <a 
             routerLink="/" 
-            class="text-2xl font-bold gradient-text cursor-pointer"
+            class="text-2xl font-bold cursor-pointer transition-colors duration-300"
+            [ngClass]="{
+              'text-white': !isScrolled && !themeService.isDark(),
+              'gradient-text': isScrolled || themeService.isDark()
+            }"
           >
             Portfolio
           </a>
@@ -28,29 +32,36 @@ import { ThemeService } from '../../services/theme.service';
             @for (item of navItems; track item.fragment) {
               <a 
                 [href]="'#' + item.fragment"
-                class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-300 relative group"
+                class="font-medium transition-colors duration-300 relative group"
+                [ngClass]="getNavLinkClasses()"
                 (click)="scrollToSection($event, item.fragment)"
               >
                 {{ item.label }}
-                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 transition-all duration-300 group-hover:w-full"></span>
+                <span 
+                  class="absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full"
+                  [ngClass]="{
+                    'bg-white': !isScrolled && !themeService.isDark(),
+                    'bg-primary-500': isScrolled || themeService.isDark()
+                  }"
+                ></span>
               </a>
             }
             
             <!-- Theme Toggle Button -->
             <button 
-              class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300"
+              class="p-2 rounded-lg transition-all duration-300"
+              [ngClass]="getThemeToggleClasses()"
               (click)="toggleTheme()"
               [attr.aria-label]="themeService.isDark() ? 'Switch to light mode' : 'Switch to dark mode'"
             >
-              @if (themeService.isDark()) {
-                <i class="pi pi-sun text-yellow-500 text-xl"></i>
-              } @else {
-                <i class="pi pi-moon text-gray-600 text-xl"></i>
-              }
+              <i 
+                [class]="themeService.isDark() ? 'pi pi-sun text-yellow-500 text-xl' : getMoonIconClass()"
+              ></i>
             </button>
             
             <button 
-              class="btn-primary text-sm"
+              class="text-sm transition-all duration-300"
+              [ngClass]="getDownloadCVClasses()"
               (click)="downloadCV()"
             >
               <i class="pi pi-download mr-2"></i>Download CV
@@ -61,18 +72,18 @@ import { ThemeService } from '../../services/theme.service';
           <div class="md:hidden flex items-center space-x-2">
             <!-- Theme Toggle Button for Mobile -->
             <button 
-              class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300"
+              class="p-2 rounded-lg transition-all duration-300"
+              [ngClass]="getThemeToggleClasses()"
               (click)="toggleTheme()"
             >
-              @if (themeService.isDark()) {
-                <i class="pi pi-sun text-yellow-500 text-xl"></i>
-              } @else {
-                <i class="pi pi-moon text-gray-600 text-xl"></i>
-              }
+              <i 
+                [class]="themeService.isDark() ? 'pi pi-sun text-yellow-500 text-xl' : getMoonIconClass()"
+              ></i>
             </button>
             
             <button 
-              class="p-2 text-gray-700 dark:text-gray-300"
+              class="p-2 transition-colors duration-300"
+              [ngClass]="getMobileMenuButtonClasses()"
               (click)="toggleMobileMenu()"
             >
               <i [class]="isMobileMenuOpen ? 'pi pi-times text-2xl' : 'pi pi-bars text-2xl'"></i>
@@ -155,5 +166,42 @@ export class NavbarComponent implements OnInit {
       detail: { message: 'CV download started!' }
     });
     window.dispatchEvent(cvDownloadEvent);
+  }
+
+  getNavLinkClasses(): Record<string, boolean> {
+    return {
+      'text-white': !this.isScrolled && !this.themeService.isDark(),
+      'text-gray-700': this.isScrolled && !this.themeService.isDark(),
+      'text-gray-300': this.themeService.isDark(),
+      'hover:text-primary-400': (!this.isScrolled && !this.themeService.isDark()) || this.themeService.isDark(),
+      'hover:text-primary-600': this.isScrolled && !this.themeService.isDark()
+    };
+  }
+
+  getThemeToggleClasses(): Record<string, boolean> {
+    return {
+      'bg-white/20 hover:bg-white/30': !this.isScrolled && !this.themeService.isDark(),
+      'bg-gray-100 hover:bg-gray-200': this.isScrolled && !this.themeService.isDark(),
+      'bg-gray-800 hover:bg-gray-700': this.themeService.isDark()
+    };
+  }
+
+  getMoonIconClass(): string {
+    return this.isScrolled ? 'pi pi-moon text-gray-600 text-xl' : 'pi pi-moon text-white text-xl';
+  }
+
+  getDownloadCVClasses(): Record<string, boolean> {
+    return {
+      'btn-primary': this.isScrolled || this.themeService.isDark(),
+      'bg-white/20 hover:bg-white/30 text-white': !this.isScrolled && !this.themeService.isDark()
+    };
+  }
+
+  getMobileMenuButtonClasses(): Record<string, boolean> {
+    return {
+      'text-white': !this.isScrolled && !this.themeService.isDark(),
+      'text-gray-700': this.isScrolled && !this.themeService.isDark(),
+      'text-gray-300': this.themeService.isDark()
+    };
   }
 }
