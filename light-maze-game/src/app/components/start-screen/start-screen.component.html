@@ -1,0 +1,61 @@
+<div class="start-screen" *ngIf="shouldShow()">
+  <div class="content animate-fade-in">
+    <!-- 游戏标题 -->
+    <div class="title-section">
+      <h1 class="game-title">
+        <span class="glow-cyan">光点</span>
+        <span class="glow-yellow">迷阵</span>
+      </h1>
+      <p class="subtitle" *ngIf="!isGameOver()">探索未知迷宫，激活关键节点，找到出口</p>
+      <p class="subtitle game-over" *ngIf="isGameOver()">恭喜！你已完成所有关卡！</p>
+    </div>
+
+    <!-- 游戏说明 -->
+    <div class="instructions" *ngIf="!isGameOver()">
+      <div class="instruction-item">
+        <div class="icon player-icon"></div>
+        <span>控制青色光点移动</span>
+      </div>
+      <div class="instruction-item">
+        <div class="icon node-icon"></div>
+        <span>触碰黄色节点激活</span>
+      </div>
+      <div class="instruction-item">
+        <div class="icon exit-icon"></div>
+        <span>找到紫色出口通关</span>
+      </div>
+    </div>
+
+    <!-- 操作说明 -->
+    <div class="controls" *ngIf="!isGameOver()">
+      <p class="controls-title">操作方式</p>
+      <div class="control-methods">
+        <div class="control-method">
+          <span class="key">↑ ↓ ← →</span>
+          <span class="key">W A S D</span>
+          <span>键盘控制</span>
+        </div>
+        <div class="control-method">
+          <span class="key">点击</span>
+          <span>鼠标点击移动</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 开始按钮 -->
+    <button 
+      class="start-button animate-pulse-slow"
+      (click)="isGameOver() ? restartGame() : startGame()"
+    >
+      {{ isGameOver() ? '重新开始' : '开始游戏' }}
+    </button>
+
+    <!-- 装饰性光点 -->
+    <div class="decorative-dots">
+      <div class="dot dot-1"></div>
+      <div class="dot dot-2"></div>
+      <div class="dot dot-3"></div>
+      <div class="dot dot-4"></div>
+    </div>
+  </div>
+</div>

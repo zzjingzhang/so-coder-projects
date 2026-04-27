@@ -1,0 +1,35 @@
+<div class="level-info" *ngIf="shouldShow()">
+  <!-- 关卡编号 -->
+  <div class="level-number">
+    <span class="label">第</span>
+    <span class="number">{{ currentLevel() }}</span>
+    <span class="label">关</span>
+  </div>
+
+  <!-- 关卡进度 -->
+  <div class="progress">
+    <div class="progress-bar">
+      <div 
+        class="progress-fill"
+        [style.width.%]="(currentLevel() / totalLevels()) * 100"
+      ></div>
+    </div>
+    <div class="progress-text">
+      {{ currentLevel() }} / {{ totalLevels() }}
+    </div>
+  </div>
+
+  <!-- 节点状态 -->
+  <div class="node-status" *ngIf="totalNodesCount() > 0">
+    <div class="node-dot"></div>
+    <span class="node-text">
+      节点: {{ activatedNodesCount() }} / {{ totalNodesCount() }}
+    </span>
+  </div>
+
+  <!-- 出口状态 -->
+  <div class="exit-status" *ngIf="exitUnlocked()">
+    <div class="exit-glow"></div>
+    <span class="exit-text">出口已解锁！</span>
+  </div>
+</div>

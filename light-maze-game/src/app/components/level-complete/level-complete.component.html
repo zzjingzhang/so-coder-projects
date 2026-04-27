@@ -1,0 +1,46 @@
+<div class="level-complete" *ngIf="shouldShow()">
+  <div class="overlay"></div>
+  <div class="content animate-fade-in">
+    <!-- 关卡完成标题 -->
+    <div class="title-section">
+      <div class="success-icon">
+        <div class="circle"></div>
+        <span class="checkmark">✓</span>
+      </div>
+      <h2 class="title">关卡完成</h2>
+      <p class="subtitle">第 {{ currentLevel() }} 关已通过</p>
+    </div>
+
+    <!-- 统计信息 -->
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-icon node-icon"></div>
+        <div class="stat-info">
+          <span class="stat-value">{{ getActivatedCount() }} / {{ getTotalNodes() }}</span>
+          <span class="stat-label">激活节点</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 按钮区域 -->
+    <div class="buttons">
+      <button 
+        class="btn btn-secondary"
+        (click)="restartLevel()"
+      >
+        重玩本关
+      </button>
+      <button 
+        class="btn btn-primary"
+        (click)="nextLevel()"
+      >
+        {{ isLastLevel() ? '完成游戏' : '下一关' }}
+      </button>
+    </div>
+
+    <!-- 进度提示 -->
+    <div class="progress-info" *ngIf="!isLastLevel()">
+      <p>还剩 <span class="highlight">{{ totalLevels() - currentLevel() }}</span> 关</p>
+    </div>
+  </div>
+</div>
