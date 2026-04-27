@@ -49,6 +49,15 @@ export class GameCanvasComponent
   constructor() {
     // 使用effect监听状态变化
     effect(() => {
+      // 先读取所有信号，建立依赖关系
+      // 这样即使 ctx 还没有初始化，effect 也能正确追踪依赖
+      const player = this.playerState();
+      const levelConfig = this.levelConfig();
+      const mazeGrid = this.mazeGrid();
+      const gameNodes = this.gameNodes();
+      const exitState = this.exitState();
+      
+      // 然后调用 render
       this.render();
     });
   }
@@ -88,6 +97,22 @@ export class GameCanvasComponent
 
     const mazeWidth = this.gameLogicService.getMazeWidth();
     const mazeHeight = this.gameLogicService.getMazeHeight();
+
+    // 如果迷宫大小无效（游戏未开始），直接返回
+    if (mazeWidth <= 0 || mazeHeight <= 0) {
+      // 设置一个默认大小，避免画布完全不可见
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight;
+      canvas.style.width = `${canvas.width}px`;
+      canvas.style.height = `${canvas.height}px`;
+      
+      // 清除画布为黑色
+      if (this.ctx) {
+        this.ctx.fillStyle = GAME_CONFIG.COLORS.BACKGROUND;
+        this.ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+      return;
+    }
 
     // 计算缩放比例，保持迷宫比例
     const containerWidth = container.clientWidth;
@@ -170,9 +195,13 @@ export class GameCanvasComponent
     const clickX = event.clientX - rect.left;
     const clickY = event.clientY - rect.top;
 
-    // 转换为迷宫坐标
+    // 检查是否有有效游戏数据
     const mazeWidth = this.gameLogicService.getMazeWidth();
     const mazeHeight = this.gameLogicService.getMazeHeight();
+    
+    if (mazeWidth <= 0 || mazeHeight <= 0) return;
+
+    // 转换为迷宫坐标
     const scaleX = canvas.width / mazeWidth;
     const scaleY = canvas.height / mazeHeight;
 
@@ -192,10 +221,8 @@ export class GameCanvasComponent
     const player = this.playerState();
     const levelConfig = this.levelConfig();
 
-    // 计算缩放比例
-    const scaleX = canvas.width / mazeWidth;
-    const scaleY = canvas.height / mazeHeight;
-    const scale = Math.min(scaleX, scaleY);
+    // 首先检查是否有有效游戏数据
+    const hasValidData = levelConfig && mazeWidth > 0 && mazeHeight > 0;
 
     // 保存上下文状态
     this.ctx.save();
@@ -204,47 +231,55 @@ export class GameCanvasComponent
     this.ctx.fillStyle = GAME_CONFIG.COLORS.BACKGROUND;
     this.ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    // 如果没有有效数据，直接返回（保持黑色）
+    if (!hasValidData) {
+      this.ctx.restore();
+      return;
+    }
+
+    // 计算缩放比例
+    const scaleX = canvas.width / mazeWidth;
+    const scaleY = canvas.height / mazeHeight;
+    const scale = Math.min(scaleX, scaleY);
+
     // 应用缩放
     this.ctx.scale(scale, scale);
 
-    // 检查是否有游戏数据
-    if (levelConfig && mazeWidth > 0 && mazeHeight > 0) {
-      // 保存状态，准备使用clip
-      this.ctx.save();
-      
-      // 创建剪贴路径（光照区域）- 只在这个区域内绘制
-      this.ctx.beginPath();
-      this.ctx.arc(
-        player.x,
-        player.y,
-        levelConfig.lightRadius,
-        0,
-        Math.PI * 2
-      );
-      this.ctx.clip();
+    // 保存状态，准备使用clip
+    this.ctx.save();
+    
+    // 创建剪贴路径（光照区域）- 只在这个区域内绘制
+    this.ctx.beginPath();
+    this.ctx.arc(
+      player.x,
+      player.y,
+      levelConfig.lightRadius,
+      0,
+      Math.PI * 2
+    );
+    this.ctx.clip();
 
-      // 在光照区域内绘制所有游戏元素
-      // 绘制迷宫背景
-      this.drawMazeBackground();
+    // 在光照区域内绘制所有游戏元素
+    // 绘制迷宫背景
+    this.drawMazeBackground();
 
-      // 绘制迷宫墙壁
-      this.drawMazeWalls();
+    // 绘制迷宫墙壁
+    this.drawMazeWalls();
 
-      // 绘制节点
-      this.drawNodes();
+    // 绘制节点
+    this.drawNodes();
 
-      // 绘制出口
-      this.drawExit();
+    // 绘制出口
+    this.drawExit();
 
-      // 绘制玩家
-      this.drawPlayer();
+    // 绘制玩家
+    this.drawPlayer();
 
-      // 恢复状态（移除clip）
-      this.ctx.restore();
+    // 恢复状态（移除clip）
+    this.ctx.restore();
 
-      // 绘制光照边缘的柔和过渡效果
-      this.drawLightEdge(player, levelConfig.lightRadius, mazeWidth, mazeHeight);
-    }
+    // 绘制光照边缘的柔和过渡效果
+    this.drawLightEdge(player, levelConfig.lightRadius, mazeWidth, mazeHeight);
 
     // 恢复上下文状态
     this.ctx.restore();
