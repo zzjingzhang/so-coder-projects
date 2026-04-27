@@ -124,6 +124,49 @@ function createParticles(x: number, y: number, color: string, count: number): Pa
   return particles;
 }
 
+function getEnemyPathForLevel(
+  levelIndex: number,
+  obstacles: Obstacle[], 
+  existingLines: Line[]
+): Point[] {
+  const level = LEVELS[levelIndex];
+  if (!level) return [];
+
+  const allObstacles: Obstacle[] = [...obstacles];
+  
+  for (const line of existingLines) {
+    if (line.type === 'wall') {
+      for (let i = 0; i < line.points.length - 1; i++) {
+        const p1 = line.points[i];
+        const p2 = line.points[i + 1];
+        
+        const minX = Math.min(p1.x, p2.x) - line.thickness;
+        const maxX = Math.max(p1.x, p2.x) + line.thickness;
+        const minY = Math.min(p1.y, p2.y) - line.thickness;
+        const maxY = Math.max(p1.y, p2.y) + line.thickness;
+        
+        allObstacles.push({
+          x: minX,
+          y: minY,
+          width: maxX - minX,
+          height: maxY - minY,
+        });
+      }
+    }
+  }
+
+  const path = findPath(
+    level.startPoint,
+    level.endPoint,
+    allObstacles,
+    CANVAS_WIDTH,
+    CANVAS_HEIGHT,
+    20
+  );
+
+  return simplifyPath(path, 15);
+}
+
 export function useGameLogic() {
   const [gameState, setGameState] = useState<GameState>({
     status: 'idle',
@@ -146,51 +189,11 @@ export function useGameLogic() {
   const lastTimeRef = useRef<number>(0);
   const spawnTimersRef = useRef<Map<string, number>>(new Map());
   const levelIndexRef = useRef<number>(0);
+  const isGameLoopRunningRef = useRef<boolean>(false);
 
-  const getEnemyPathForLevel = useCallback((
-    levelIndex: number,
-    obstacles: Obstacle[], 
-    existingLines: Line[]
-  ): Point[] => {
-    const level = LEVELS[levelIndex];
-    if (!level) return [];
+  const runGameLoop = useCallback(() => {
+    if (!isGameLoopRunningRef.current) return;
 
-    const allObstacles: Obstacle[] = [...obstacles];
-    
-    for (const line of existingLines) {
-      if (line.type === 'wall') {
-        for (let i = 0; i < line.points.length - 1; i++) {
-          const p1 = line.points[i];
-          const p2 = line.points[i + 1];
-          
-          const minX = Math.min(p1.x, p2.x) - line.thickness;
-          const maxX = Math.max(p1.x, p2.x) + line.thickness;
-          const minY = Math.min(p1.y, p2.y) - line.thickness;
-          const maxY = Math.max(p1.y, p2.y) + line.thickness;
-          
-          allObstacles.push({
-            x: minX,
-            y: minY,
-            width: maxX - minX,
-            height: maxY - minY,
-          });
-        }
-      }
-    }
-
-    const path = findPath(
-      level.startPoint,
-      level.endPoint,
-      allObstacles,
-      CANVAS_WIDTH,
-      CANVAS_HEIGHT,
-      20
-    );
-
-    return simplifyPath(path, 15);
-  }, []);
-
-  const gameLoop = useCallback(() => {
     const currentTime = performance.now();
     const deltaTime = currentTime - lastTimeRef.current;
     lastTimeRef.current = currentTime;
@@ -199,7 +202,9 @@ export function useGameLogic() {
     const level = LEVELS[levelIndex];
 
     setGameState(prev => {
-      if (prev.status !== 'playing' || !level) return prev;
+      if (prev.status !== 'playing' || !level) {
+        return prev;
+      }
 
       let newState = { ...prev };
       const now = performance.now();
@@ -266,6 +271,7 @@ export function useGameLogic() {
             spawnTimersRef.current.clear();
           } else {
             newState.status = 'won';
+            isGameLoopRunningRef.current = false;
           }
         }
       }
@@ -416,6 +422,7 @@ export function useGameLogic() {
 
       if (newState.lives <= 0) {
         newState.status = 'lost';
+        isGameLoopRunningRef.current = false;
       }
 
       newParticles = newParticles
@@ -433,8 +440,10 @@ export function useGameLogic() {
       return newState;
     });
 
-    gameLoopRef.current = requestAnimationFrame(gameLoop);
-  }, [getEnemyPathForLevel]);
+    if (isGameLoopRunningRef.current) {
+      gameLoopRef.current = requestAnimationFrame(runGameLoop);
+    }
+  }, []);
 
   const startGame = useCallback((levelIndex: number) => {
     const level = LEVELS[levelIndex];
@@ -442,6 +451,12 @@ export function useGameLogic() {
 
     levelIndexRef.current = levelIndex;
     spawnTimersRef.current.clear();
+    isGameLoopRunningRef.current = false;
+    
+    if (gameLoopRef.current) {
+      cancelAnimationFrame(gameLoopRef.current);
+      gameLoopRef.current = null;
+    }
     
     setGameState({
       status: 'playing',
@@ -460,17 +475,40 @@ export function useGameLogic() {
       spawnedEnemyCount: 0,
     });
     
-    lastTimeRef.current = performance.now();
-  }, []);
+    setTimeout(() => {
+      lastTimeRef.current = performance.now();
+      isGameLoopRunningRef.current = true;
+      gameLoopRef.current = requestAnimationFrame(runGameLoop);
+    }, 100);
+  }, [runGameLoop]);
 
   const pauseGame = useCallback(() => {
-    setGameState(prev => ({
-      ...prev,
-      status: prev.status === 'playing' ? 'paused' : 'playing',
-    }));
-  }, []);
+    setGameState(prev => {
+      if (prev.status === 'playing') {
+        isGameLoopRunningRef.current = false;
+        if (gameLoopRef.current) {
+          cancelAnimationFrame(gameLoopRef.current);
+          gameLoopRef.current = null;
+        }
+        return {
+          ...prev,
+          status: 'paused',
+        };
+      } else if (prev.status === 'paused') {
+        lastTimeRef.current = performance.now();
+        isGameLoopRunningRef.current = true;
+        gameLoopRef.current = requestAnimationFrame(runGameLoop);
+        return {
+          ...prev,
+          status: 'playing',
+        };
+      }
+      return prev;
+    });
+  }, [runGameLoop]);
 
   const stopGame = useCallback(() => {
+    isGameLoopRunningRef.current = false;
     if (gameLoopRef.current) {
       cancelAnimationFrame(gameLoopRef.current);
       gameLoopRef.current = null;
@@ -525,18 +563,14 @@ export function useGameLogic() {
   }, []);
 
   useEffect(() => {
-    if (gameState.status === 'playing') {
-      if (!gameLoopRef.current) {
-        lastTimeRef.current = performance.now();
-        gameLoopRef.current = requestAnimationFrame(gameLoop);
-      }
-    } else {
+    return () => {
+      isGameLoopRunningRef.current = false;
       if (gameLoopRef.current) {
         cancelAnimationFrame(gameLoopRef.current);
         gameLoopRef.current = null;
       }
-    }
-  }, [gameState.status, gameLoop]);
+    };
+  }, []);
 
   return {
     gameState,
