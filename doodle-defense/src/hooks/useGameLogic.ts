@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import type { 
   GameState, 
   Line, 
@@ -537,18 +537,6 @@ export function useGameLogic() {
       gameLoopRef.current = null;
     }
   }, []);
-
-  useEffect(() => {
-    if (gameState.status === 'paused' || gameState.status === 'idle') {
-      if (gameLoopRef.current) {
-        cancelAnimationFrame(gameLoopRef.current);
-        gameLoopRef.current = null;
-      }
-    } else if (gameState.status === 'playing' && !gameLoopRef.current) {
-      lastTimeRef.current = performance.now();
-      gameLoopRef.current = requestAnimationFrame(gameLoop);
-    }
-  }, [gameState.status, gameLoop]);
 
   return {
     gameState,

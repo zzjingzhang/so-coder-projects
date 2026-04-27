@@ -21,6 +21,8 @@ export function GamePage() {
     stopGame,
     setSelectedLineType,
     addLine,
+    startGameLoop,
+    stopGameLoop,
     canvasWidth,
     canvasHeight,
   } = useGameLogic();
@@ -29,13 +31,19 @@ export function GamePage() {
 
   useEffect(() => {
     startGame(levelIndex);
-  }, [levelIndex, startGame]);
+    startGameLoop();
+    
+    return () => {
+      stopGameLoop();
+    };
+  }, [levelIndex, startGame, startGameLoop, stopGameLoop]);
 
   useEffect(() => {
     if (gameState.status === 'won' || gameState.status === 'lost') {
       setShowModal(true);
+      stopGameLoop();
     }
-  }, [gameState.status]);
+  }, [gameState.status, stopGameLoop]);
 
   const handleDrawLine = (points: Point[], type: LineType) => {
     addLine(points, type);
@@ -44,6 +52,7 @@ export function GamePage() {
   const handleRestart = () => {
     setShowModal(false);
     startGame(levelIndex);
+    startGameLoop();
   };
 
   const handleBackToMenu = () => {
