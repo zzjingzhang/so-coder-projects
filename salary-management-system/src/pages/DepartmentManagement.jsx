@@ -77,9 +77,9 @@ const DepartmentManagement = () => {
       dataIndex: 'name',
       key: 'name',
       render: (text) => (
-        <div className="flex items-center">
-          <TeamOutlined className="text-blue-500 mr-2" />
-          <span className="font-medium">{text}</span>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <TeamOutlined style={{ color: '#3b82f6', marginRight: '8px' }} />
+          <span style={{ fontWeight: 500 }}>{text}</span>
         </div>
       ),
     },
@@ -88,8 +88,8 @@ const DepartmentManagement = () => {
       dataIndex: 'manager',
       key: 'manager',
       render: (text) => (
-        <div className="flex items-center">
-          <UserOutlined className="text-green-500 mr-2" />
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <UserOutlined style={{ color: '#22c55e', marginRight: '8px' }} />
           <span>{text}</span>
         </div>
       ),
@@ -154,23 +154,63 @@ const DepartmentManagement = () => {
   ];
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div 
+      style={{ 
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '32px',
+      }}
+    >
+      <div 
+        style={{ 
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '8px',
+        }}
+      >
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">部门管理</h1>
-          <p className="text-gray-500 mt-1">管理公司各部门信息，包括添加、编辑、删除部门</p>
+          <h1 
+            style={{ 
+              fontSize: '24px',
+              fontWeight: 700,
+              color: '#1f2937',
+              margin: 0,
+            }}
+          >
+            部门管理
+          </h1>
+          <p 
+            style={{ 
+              color: '#6b7280',
+              marginTop: '4px',
+              marginBottom: 0,
+              fontSize: '14px',
+            }}
+          >
+            管理公司各部门信息，包括添加、编辑、删除部门
+          </p>
         </div>
         <Button
           type="primary"
           icon={<PlusOutlined />}
           onClick={handleAdd}
-          className="bg-blue-600 hover:bg-blue-700"
+          style={{ 
+            backgroundColor: '#2563eb',
+            borderColor: '#2563eb',
+          }}
         >
           新增部门
         </Button>
       </div>
 
-      <Card className="shadow-sm">
+      <Card
+        bordered={false}
+        style={{ 
+          boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+          borderRadius: '8px',
+        }}
+      >
         <Table
           columns={columns}
           dataSource={departments}
@@ -196,7 +236,7 @@ const DepartmentManagement = () => {
         <Form
           form={form}
           layout="vertical"
-          className="mt-4"
+          style={{ marginTop: '16px' }}
         >
           <Form.Item
             name="name"

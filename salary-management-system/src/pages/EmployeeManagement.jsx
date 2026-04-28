@@ -1,4 +1,4 @@
-import { Card, Table, Button, Modal, Form, Input, Select, DatePicker, InputNumber, message, Space, Popconfirm, Tag, Avatar } from 'antd';
+import { Card, Table, Button, Modal, Form, Input, Select, DatePicker, InputNumber, message, Space, Popconfirm, Tag, Avatar, Row, Col } from 'antd';
 import {
   PlusOutlined,
   EditOutlined,
@@ -94,13 +94,16 @@ const EmployeeManagement = () => {
       dataIndex: 'name',
       key: 'name',
       render: (text, record) => (
-        <div className="flex items-center">
-          <Avatar size={40} className="bg-blue-500 mr-3">
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Avatar 
+            size={40} 
+            style={{ backgroundColor: '#3b82f6', marginRight: '12px' }}
+          >
             {record.avatar}
           </Avatar>
           <div>
-            <div className="font-medium text-gray-800">{text}</div>
-            <div className="text-sm text-gray-500">{record.email}</div>
+            <div style={{ fontWeight: 500, color: '#1f2937' }}>{text}</div>
+            <div style={{ fontSize: '14px', color: '#6b7280' }}>{record.email}</div>
           </div>
         </div>
       ),
@@ -128,7 +131,7 @@ const EmployeeManagement = () => {
       dataIndex: 'salary',
       key: 'salary',
       render: (salary) => (
-        <span className="font-semibold text-green-600">¥{salary?.toLocaleString()}</span>
+        <span style={{ fontWeight: 600, color: '#16a34a' }}>¥{salary?.toLocaleString()}</span>
       ),
     },
     {
@@ -180,30 +183,70 @@ const EmployeeManagement = () => {
   ];
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div 
+      style={{ 
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '32px',
+      }}
+    >
+      <div 
+        style={{ 
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '8px',
+        }}
+      >
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">员工管理</h1>
-          <p className="text-gray-500 mt-1">管理公司员工信息，包括添加、编辑、删除员工</p>
+          <h1 
+            style={{ 
+              fontSize: '24px',
+              fontWeight: 700,
+              color: '#1f2937',
+              margin: 0,
+            }}
+          >
+            员工管理
+          </h1>
+          <p 
+            style={{ 
+              color: '#6b7280',
+              marginTop: '4px',
+              marginBottom: 0,
+              fontSize: '14px',
+            }}
+          >
+            管理公司员工信息，包括添加、编辑、删除员工
+          </p>
         </div>
         <Button
           type="primary"
           icon={<PlusOutlined />}
           onClick={handleAdd}
-          className="bg-blue-600 hover:bg-blue-700"
+          style={{ 
+            backgroundColor: '#2563eb',
+            borderColor: '#2563eb',
+          }}
         >
           新增员工
         </Button>
       </div>
 
-      <Card className="shadow-sm">
-        <div className="mb-4">
+      <Card
+        bordered={false}
+        style={{ 
+          boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+          borderRadius: '8px',
+        }}
+      >
+        <div style={{ marginBottom: '16px' }}>
           <Input
             placeholder="搜索员工姓名、邮箱、部门或职位..."
-            prefix={<SearchOutlined className="text-gray-400" />}
+            prefix={<SearchOutlined style={{ color: '#9ca3af' }} />}
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            className="max-w-md"
+            style={{ maxWidth: '400px' }}
           />
         </div>
 
@@ -233,100 +276,114 @@ const EmployeeManagement = () => {
         <Form
           form={form}
           layout="vertical"
-          className="mt-4"
+          style={{ marginTop: '16px' }}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Form.Item
-              name="name"
-              label="员工姓名"
-              rules={[{ required: true, message: '请输入员工姓名' }]}
-            >
-              <Input placeholder="请输入员工姓名" />
-            </Form.Item>
+          <Row gutter={[24, 24]}>
+            <Col xs={24} md={12}>
+              <Form.Item
+                name="name"
+                label="员工姓名"
+                rules={[{ required: true, message: '请输入员工姓名' }]}
+              >
+                <Input placeholder="请输入员工姓名" />
+              </Form.Item>
+            </Col>
 
-            <Form.Item
-              name="email"
-              label="电子邮箱"
-              rules={[
-                { required: true, message: '请输入电子邮箱' },
-                { type: 'email', message: '请输入有效的邮箱地址' },
-              ]}
-            >
-              <Input placeholder="请输入电子邮箱" />
-            </Form.Item>
+            <Col xs={24} md={12}>
+              <Form.Item
+                name="email"
+                label="电子邮箱"
+                rules={[
+                  { required: true, message: '请输入电子邮箱' },
+                  { type: 'email', message: '请输入有效的邮箱地址' },
+                ]}
+              >
+                <Input placeholder="请输入电子邮箱" />
+              </Form.Item>
+            </Col>
 
-            <Form.Item
-              name="phone"
-              label="联系电话"
-              rules={[{ required: true, message: '请输入联系电话' }]}
-            >
-              <Input placeholder="请输入联系电话" />
-            </Form.Item>
+            <Col xs={24} md={12}>
+              <Form.Item
+                name="phone"
+                label="联系电话"
+                rules={[{ required: true, message: '请输入联系电话' }]}
+              >
+                <Input placeholder="请输入联系电话" />
+              </Form.Item>
+            </Col>
 
-            <Form.Item
-              name="department"
-              label="所属部门"
-              rules={[{ required: true, message: '请选择所属部门' }]}
-            >
-              <Select placeholder="请选择所属部门">
-                {departments.map(dept => (
-                  <Option key={dept} value={dept}>{dept}</Option>
-                ))}
-              </Select>
-            </Form.Item>
+            <Col xs={24} md={12}>
+              <Form.Item
+                name="department"
+                label="所属部门"
+                rules={[{ required: true, message: '请选择所属部门' }]}
+              >
+                <Select placeholder="请选择所属部门">
+                  {departments.map(dept => (
+                    <Option key={dept} value={dept}>{dept}</Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
 
-            <Form.Item
-              name="position"
-              label="职位"
-              rules={[{ required: true, message: '请输入职位' }]}
-            >
-              <Select placeholder="请选择或输入职位" allowClear>
-                {positions.map(pos => (
-                  <Option key={pos} value={pos}>{pos}</Option>
-                ))}
-              </Select>
-            </Form.Item>
+            <Col xs={24} md={12}>
+              <Form.Item
+                name="position"
+                label="职位"
+                rules={[{ required: true, message: '请输入职位' }]}
+              >
+                <Select placeholder="请选择或输入职位" allowClear>
+                  {positions.map(pos => (
+                    <Option key={pos} value={pos}>{pos}</Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
 
-            <Form.Item
-              name="salary"
-              label="薪资"
-              rules={[{ required: true, message: '请输入薪资' }]}
-            >
-              <InputNumber
-                placeholder="请输入薪资"
-                className="w-full"
-                min={0}
-                formatter={(value) => `¥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                parser={(value) => value.replace(/¥\s?|(,*)/g, '')}
-              />
-            </Form.Item>
+            <Col xs={24} md={12}>
+              <Form.Item
+                name="salary"
+                label="薪资"
+                rules={[{ required: true, message: '请输入薪资' }]}
+              >
+                <InputNumber
+                  placeholder="请输入薪资"
+                  style={{ width: '100%' }}
+                  min={0}
+                  formatter={(value) => `¥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                  parser={(value) => value.replace(/¥\s?|(,*)/g, '')}
+                />
+              </Form.Item>
+            </Col>
 
-            <Form.Item
-              name="hireDate"
-              label="入职日期"
-              rules={[{ required: true, message: '请选择入职日期' }]}
-              className="md:col-span-2"
-            >
-              <DatePicker
-                placeholder="请选择入职日期"
-                className="w-full"
-                format="YYYY-MM-DD"
-              />
-            </Form.Item>
+            <Col xs={24} md={12}>
+              <Form.Item
+                name="hireDate"
+                label="入职日期"
+                rules={[{ required: true, message: '请选择入职日期' }]}
+              >
+                <DatePicker
+                  placeholder="请选择入职日期"
+                  style={{ width: '100%' }}
+                  format="YYYY-MM-DD"
+                />
+              </Form.Item>
+            </Col>
 
-            <Form.Item
-              name="status"
-              label="状态"
-              rules={[{ required: true, message: '请选择状态' }]}
-              initialValue="active"
-              className="md:col-span-2"
-            >
-              <Select placeholder="请选择状态">
-                <Option value="active">在职</Option>
-                <Option value="inactive">已离职</Option>
-              </Select>
-            </Form.Item>
-          </div>
+            <Col xs={24} md={12}>
+              <Form.Item
+                name="status"
+                label="状态"
+                rules={[{ required: true, message: '请选择状态' }]}
+                initialValue="active"
+              >
+                <Select placeholder="请选择状态">
+                  <Option value="active">在职</Option>
+                  <Option value="inactive">已离职</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
       </Modal>
     </div>

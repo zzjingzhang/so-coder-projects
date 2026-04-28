@@ -1,9 +1,8 @@
-import { Card, Form, Input, Button, Switch, Select, Upload, message, Divider, Space, Avatar } from 'antd';
+import { Card, Form, Input, Button, Switch, Select, Upload, message, Space, Avatar, Row, Col } from 'antd';
 import {
   UserOutlined,
   LockOutlined,
   BellOutlined,
-  GlobalOutlined,
   UploadOutlined,
   SaveOutlined,
   SecurityScanOutlined,
@@ -89,31 +88,81 @@ const Settings = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-800">系统设置</h1>
-        <p className="text-gray-500 mt-1">管理账户、通知和安全设置</p>
+    <div 
+      style={{ 
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '32px',
+      }}
+    >
+      <div style={{ marginBottom: '8px' }}>
+        <h1 
+          style={{ 
+            fontSize: '24px',
+            fontWeight: 700,
+            color: '#1f2937',
+            margin: 0,
+          }}
+        >
+          系统设置
+        </h1>
+        <p 
+          style={{ 
+            color: '#6b7280',
+            marginTop: '4px',
+            marginBottom: 0,
+            fontSize: '14px',
+          }}
+        >
+          管理账户、通知和安全设置
+        </p>
       </div>
 
       <Card
         title={
-          <div className="flex items-center">
-            <UserOutlined className="mr-2 text-blue-600" />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <UserOutlined style={{ marginRight: '8px', color: '#2563eb' }} />
             个人资料
           </div>
         }
-        className="shadow-sm"
+        bordered={false}
+        style={{ 
+          boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+          borderRadius: '8px',
+        }}
       >
-        <div className="flex flex-col md:flex-row items-start gap-8">
-          <div className="flex flex-col items-center">
-            <Avatar size={120} icon={<UserOutlined />} className="bg-blue-500 mb-4" />
+        <div 
+          style={{ 
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '24px',
+          }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Avatar 
+              size={120} 
+              icon={<UserOutlined />} 
+              style={{ 
+                backgroundColor: '#3b82f6',
+                marginBottom: '16px',
+              }}
+            />
             <Upload {...uploadProps}>
               <Button icon={<UploadOutlined />}>更换头像</Button>
             </Upload>
-            <p className="text-sm text-gray-500 mt-2">支持 JPG、PNG 格式，不超过 2MB</p>
+            <p 
+              style={{ 
+                fontSize: '14px',
+                color: '#6b7280',
+                marginTop: '8px',
+                marginBottom: 0,
+              }}
+            >
+              支持 JPG、PNG 格式，不超过 2MB
+            </p>
           </div>
 
-          <div className="flex-1 w-full">
+          <div style={{ flex: 1, width: '100%' }}>
             <Form
               layout="vertical"
               initialValues={{
@@ -125,55 +174,64 @@ const Settings = () => {
               }}
               onFinish={handleProfileSave}
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Form.Item
-                  name="name"
-                  label="姓名"
-                  rules={[{ required: true, message: '请输入姓名' }]}
-                >
-                  <Input placeholder="请输入姓名" />
-                </Form.Item>
+              <Row gutter={[24, 24]}>
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    name="name"
+                    label="姓名"
+                    rules={[{ required: true, message: '请输入姓名' }]}
+                  >
+                    <Input placeholder="请输入姓名" />
+                  </Form.Item>
+                </Col>
 
-                <Form.Item
-                  name="email"
-                  label="邮箱"
-                  rules={[
-                    { required: true, message: '请输入邮箱' },
-                    { type: 'email', message: '请输入有效的邮箱地址' },
-                  ]}
-                >
-                  <Input placeholder="请输入邮箱" />
-                </Form.Item>
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    name="email"
+                    label="邮箱"
+                    rules={[
+                      { required: true, message: '请输入邮箱' },
+                      { type: 'email', message: '请输入有效的邮箱地址' },
+                    ]}
+                  >
+                    <Input placeholder="请输入邮箱" />
+                  </Form.Item>
+                </Col>
 
-                <Form.Item
-                  name="phone"
-                  label="手机号"
-                  rules={[{ required: true, message: '请输入手机号' }]}
-                >
-                  <Input placeholder="请输入手机号" />
-                </Form.Item>
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    name="phone"
+                    label="手机号"
+                    rules={[{ required: true, message: '请输入手机号' }]}
+                  >
+                    <Input placeholder="请输入手机号" />
+                  </Form.Item>
+                </Col>
 
-                <Form.Item
-                  name="department"
-                  label="部门"
-                >
-                  <Select placeholder="请选择部门">
-                    <Option value="技术部">技术部</Option>
-                    <Option value="市场部">市场部</Option>
-                    <Option value="人事部">人事部</Option>
-                    <Option value="财务部">财务部</Option>
-                    <Option value="运营部">运营部</Option>
-                  </Select>
-                </Form.Item>
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    name="department"
+                    label="部门"
+                  >
+                    <Select placeholder="请选择部门">
+                      <Option value="技术部">技术部</Option>
+                      <Option value="市场部">市场部</Option>
+                      <Option value="人事部">人事部</Option>
+                      <Option value="财务部">财务部</Option>
+                      <Option value="运营部">运营部</Option>
+                    </Select>
+                  </Form.Item>
+                </Col>
 
-                <Form.Item
-                  name="position"
-                  label="职位"
-                  className="md:col-span-2"
-                >
-                  <Input placeholder="请输入职位" />
-                </Form.Item>
-              </div>
+                <Col xs={24} md={24}>
+                  <Form.Item
+                    name="position"
+                    label="职位"
+                  >
+                    <Input placeholder="请输入职位" />
+                  </Form.Item>
+                </Col>
+              </Row>
 
               <Form.Item>
                 <Button
@@ -181,7 +239,10 @@ const Settings = () => {
                   htmlType="submit"
                   loading={loading}
                   icon={<SaveOutlined />}
-                  className="bg-blue-600 hover:bg-blue-700"
+                  style={{ 
+                    backgroundColor: '#2563eb',
+                    borderColor: '#2563eb',
+                  }}
                 >
                   保存修改
                 </Button>
@@ -193,17 +254,21 @@ const Settings = () => {
 
       <Card
         title={
-          <div className="flex items-center">
-            <LockOutlined className="mr-2 text-blue-600" />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <LockOutlined style={{ marginRight: '8px', color: '#2563eb' }} />
             密码修改
           </div>
         }
-        className="shadow-sm"
+        bordered={false}
+        style={{ 
+          boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+          borderRadius: '8px',
+        }}
       >
         <Form
           layout="vertical"
           onFinish={handlePasswordSave}
-          className="max-w-md"
+          style={{ maxWidth: '448px' }}
         >
           <Form.Item
             name="oldPassword"
@@ -222,7 +287,16 @@ const Settings = () => {
             ]}
           >
             <Input.Password placeholder="请输入新密码" />
-            <p className="text-sm text-gray-500 mt-1">密码长度至少8位，建议包含大小写字母、数字和特殊字符</p>
+            <p 
+              style={{ 
+                fontSize: '14px',
+                color: '#6b7280',
+                marginTop: '4px',
+                marginBottom: 0,
+              }}
+            >
+              密码长度至少8位，建议包含大小写字母、数字和特殊字符
+            </p>
           </Form.Item>
 
           <Form.Item
@@ -249,7 +323,10 @@ const Settings = () => {
               htmlType="submit"
               loading={loading}
               icon={<SaveOutlined />}
-              className="bg-blue-600 hover:bg-blue-700"
+              style={{ 
+                backgroundColor: '#2563eb',
+                borderColor: '#2563eb',
+              }}
             >
               修改密码
             </Button>
@@ -259,18 +336,31 @@ const Settings = () => {
 
       <Card
         title={
-          <div className="flex items-center">
-            <BellOutlined className="mr-2 text-blue-600" />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <BellOutlined style={{ marginRight: '8px', color: '#2563eb' }} />
             通知设置
           </div>
         }
-        className="shadow-sm"
+        bordered={false}
+        style={{ 
+          boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+          borderRadius: '8px',
+        }}
       >
-        <div className="space-y-4">
-          <div className="flex items-center justify-between py-3 border-b border-gray-100">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div 
+            style={{ 
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingTop: '12px',
+              paddingBottom: '12px',
+              borderBottom: '1px solid #f3f4f6',
+            }}
+          >
             <div>
-              <div className="font-medium text-gray-800">邮件通知</div>
-              <div className="text-sm text-gray-500">接收重要信息的邮件提醒</div>
+              <div style={{ fontWeight: 500, color: '#1f2937' }}>邮件通知</div>
+              <div style={{ fontSize: '14px', color: '#6b7280', marginTop: '2px' }}>接收重要信息的邮件提醒</div>
             </div>
             <Switch
               checked={notifications.email}
@@ -278,10 +368,19 @@ const Settings = () => {
             />
           </div>
 
-          <div className="flex items-center justify-between py-3 border-b border-gray-100">
+          <div 
+            style={{ 
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingTop: '12px',
+              paddingBottom: '12px',
+              borderBottom: '1px solid #f3f4f6',
+            }}
+          >
             <div>
-              <div className="font-medium text-gray-800">推送通知</div>
-              <div className="text-sm text-gray-500">接收系统推送的实时通知</div>
+              <div style={{ fontWeight: 500, color: '#1f2937' }}>推送通知</div>
+              <div style={{ fontSize: '14px', color: '#6b7280', marginTop: '2px' }}>接收系统推送的实时通知</div>
             </div>
             <Switch
               checked={notifications.push}
@@ -289,10 +388,18 @@ const Settings = () => {
             />
           </div>
 
-          <div className="flex items-center justify-between py-3">
+          <div 
+            style={{ 
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingTop: '12px',
+              paddingBottom: '12px',
+            }}
+          >
             <div>
-              <div className="font-medium text-gray-800">短信通知</div>
-              <div className="text-sm text-gray-500">接收关键事件的短信提醒</div>
+              <div style={{ fontWeight: 500, color: '#1f2937' }}>短信通知</div>
+              <div style={{ fontSize: '14px', color: '#6b7280', marginTop: '2px' }}>接收关键事件的短信提醒</div>
             </div>
             <Switch
               checked={notifications.sms}
@@ -304,18 +411,31 @@ const Settings = () => {
 
       <Card
         title={
-          <div className="flex items-center">
-            <SecurityScanOutlined className="mr-2 text-blue-600" />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <SecurityScanOutlined style={{ marginRight: '8px', color: '#2563eb' }} />
             安全设置
           </div>
         }
-        className="shadow-sm"
+        bordered={false}
+        style={{ 
+          boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+          borderRadius: '8px',
+        }}
       >
-        <div className="space-y-4">
-          <div className="flex items-center justify-between py-3 border-b border-gray-100">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div 
+            style={{ 
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingTop: '12px',
+              paddingBottom: '12px',
+              borderBottom: '1px solid #f3f4f6',
+            }}
+          >
             <div>
-              <div className="font-medium text-gray-800">双因素认证</div>
-              <div className="text-sm text-gray-500">启用后登录需要额外的验证步骤</div>
+              <div style={{ fontWeight: 500, color: '#1f2937' }}>双因素认证</div>
+              <div style={{ fontSize: '14px', color: '#6b7280', marginTop: '2px' }}>启用后登录需要额外的验证步骤</div>
             </div>
             <Switch
               checked={securitySettings.twoFactorAuth}
@@ -323,10 +443,19 @@ const Settings = () => {
             />
           </div>
 
-          <div className="flex items-center justify-between py-3 border-b border-gray-100">
+          <div 
+            style={{ 
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingTop: '12px',
+              paddingBottom: '12px',
+              borderBottom: '1px solid #f3f4f6',
+            }}
+          >
             <div>
-              <div className="font-medium text-gray-800">登录提醒</div>
-              <div className="text-sm text-gray-500">新设备登录时发送提醒</div>
+              <div style={{ fontWeight: 500, color: '#1f2937' }}>登录提醒</div>
+              <div style={{ fontSize: '14px', color: '#6b7280', marginTop: '2px' }}>新设备登录时发送提醒</div>
             </div>
             <Switch
               checked={securitySettings.loginAlerts}
@@ -334,10 +463,18 @@ const Settings = () => {
             />
           </div>
 
-          <div className="flex items-center justify-between py-3">
+          <div 
+            style={{ 
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingTop: '12px',
+              paddingBottom: '12px',
+            }}
+          >
             <div>
-              <div className="font-medium text-gray-800">会话超时</div>
-              <div className="text-sm text-gray-500">无操作后自动登出的时间</div>
+              <div style={{ fontWeight: 500, color: '#1f2937' }}>会话超时</div>
+              <div style={{ fontSize: '14px', color: '#6b7280', marginTop: '2px' }}>无操作后自动登出的时间</div>
             </div>
             <Select
               value={securitySettings.sessionTimeout}

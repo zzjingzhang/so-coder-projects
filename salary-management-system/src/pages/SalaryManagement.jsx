@@ -46,9 +46,9 @@ const SalaryManagement = () => {
       dataIndex: 'employeeName',
       key: 'employeeName',
       render: (text) => (
-        <div className="flex items-center">
-          <UserOutlined className="text-blue-500 mr-2" />
-          <span className="font-medium">{text}</span>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <UserOutlined style={{ color: '#3b82f6', marginRight: '8px' }} />
+          <span style={{ fontWeight: 500 }}>{text}</span>
         </div>
       ),
     },
@@ -65,7 +65,7 @@ const SalaryManagement = () => {
       dataIndex: 'baseSalary',
       key: 'baseSalary',
       render: (salary) => (
-        <span className="text-gray-700">¥{salary?.toLocaleString()}</span>
+        <span style={{ color: '#374151' }}>¥{salary?.toLocaleString()}</span>
       ),
     },
     {
@@ -73,7 +73,7 @@ const SalaryManagement = () => {
       dataIndex: 'bonus',
       key: 'bonus',
       render: (bonus) => (
-        <span className="text-green-600">+¥{bonus?.toLocaleString()}</span>
+        <span style={{ color: '#16a34a' }}>+¥{bonus?.toLocaleString()}</span>
       ),
     },
     {
@@ -81,7 +81,7 @@ const SalaryManagement = () => {
       dataIndex: 'allowance',
       key: 'allowance',
       render: (allowance) => (
-        <span className="text-blue-600">+¥{allowance?.toLocaleString()}</span>
+        <span style={{ color: '#2563eb' }}>+¥{allowance?.toLocaleString()}</span>
       ),
     },
     {
@@ -89,7 +89,7 @@ const SalaryManagement = () => {
       dataIndex: 'deduction',
       key: 'deduction',
       render: (deduction) => (
-        <span className="text-red-600">-¥{deduction?.toLocaleString()}</span>
+        <span style={{ color: '#dc2626' }}>-¥{deduction?.toLocaleString()}</span>
       ),
     },
     {
@@ -97,7 +97,7 @@ const SalaryManagement = () => {
       dataIndex: 'netSalary',
       key: 'netSalary',
       render: (salary) => (
-        <span className="font-bold text-green-700 text-lg">¥{salary?.toLocaleString()}</span>
+        <span style={{ fontWeight: 700, color: '#15803d', fontSize: '18px' }}>¥{salary?.toLocaleString()}</span>
       ),
     },
     {
@@ -105,8 +105,8 @@ const SalaryManagement = () => {
       dataIndex: 'month',
       key: 'month',
       render: (month) => (
-        <div className="flex items-center">
-          <CalendarOutlined className="text-gray-500 mr-2" />
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <CalendarOutlined style={{ color: '#6b7280', marginRight: '8px' }} />
           <span>{month}</span>
         </div>
       ),
@@ -124,71 +124,135 @@ const SalaryManagement = () => {
   ];
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div 
+      style={{ 
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '32px',
+      }}
+    >
+      <div 
+        style={{ 
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '8px',
+        }}
+      >
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">薪资管理</h1>
-          <p className="text-gray-500 mt-1">管理员工薪资信息，包括薪资计算、发放记录等</p>
+          <h1 
+            style={{ 
+              fontSize: '24px',
+              fontWeight: 700,
+              color: '#1f2937',
+              margin: 0,
+            }}
+          >
+            薪资管理
+          </h1>
+          <p 
+            style={{ 
+              color: '#6b7280',
+              marginTop: '4px',
+              marginBottom: 0,
+              fontSize: '14px',
+            }}
+          >
+            管理员工薪资信息，包括薪资计算、发放记录等
+          </p>
         </div>
       </div>
 
-      <Row gutter={[16, 16]}>
+      <Row gutter={[24, 24]}>
         <Col xs={24} sm={8}>
-          <Card className="shadow-sm hover:shadow-md transition-shadow">
+          <Card
+            bordered={false}
+            style={{ 
+              boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+              borderRadius: '8px',
+            }}
+          >
             <Statistic
               title="本月总薪资"
               value={totalSalary}
               precision={0}
               prefix="¥"
-              valueStyle={{ color: '#52c41a', fontWeight: 'bold' }}
-              prefix={<BankOutlined className="text-green-500 mr-2" />}
+              style={{ textAlign: 'center' }}
             />
           </Card>
         </Col>
         <Col xs={24} sm={8}>
-          <Card className="shadow-sm hover:shadow-md transition-shadow">
+          <Card
+            bordered={false}
+            style={{ 
+              boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+              borderRadius: '8px',
+            }}
+          >
             <Statistic
               title="已发放人数"
               value={paidCount}
               suffix="人"
-              valueStyle={{ color: '#52c41a' }}
+              style={{ textAlign: 'center' }}
             />
           </Card>
         </Col>
         <Col xs={24} sm={8}>
-          <Card className="shadow-sm hover:shadow-md transition-shadow">
+          <Card
+            bordered={false}
+            style={{ 
+              boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+              borderRadius: '8px',
+            }}
+          >
             <Statistic
               title="待发放人数"
               value={unpaidCount}
               suffix="人"
-              valueStyle={{ color: '#faad14' }}
+              style={{ textAlign: 'center' }}
             />
           </Card>
         </Col>
       </Row>
 
-      <Card className="shadow-sm">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
-          <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
+      <Card
+        bordered={false}
+        style={{ 
+          boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+          borderRadius: '8px',
+        }}
+      >
+        <div 
+          style={{ 
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+            marginBottom: '16px',
+          }}
+        >
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center' }}>
             <Input
               placeholder="搜索员工姓名或部门..."
-              prefix={<SearchOutlined className="text-gray-400" />}
+              prefix={<SearchOutlined style={{ color: '#9ca3af' }} />}
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
-              className="max-w-xs"
+              style={{ maxWidth: '320px' }}
             />
             <DatePicker
               placeholder="选择月份"
               picker="month"
               onChange={(_, dateString) => setSelectedMonth(dateString)}
-              className="max-w-xs"
+              style={{ maxWidth: '320px' }}
             />
           </div>
-          <Space>
+          <div style={{ display: 'flex', gap: '8px' }}>
             <Button
               type="primary"
               icon={<PlusOutlined />}
-              className="bg-blue-600 hover:bg-blue-700"
+              style={{ 
+                backgroundColor: '#2563eb',
+                borderColor: '#2563eb',
+              }}
             >
               生成薪资单
             </Button>
@@ -198,7 +262,7 @@ const SalaryManagement = () => {
             >
               导出报表
             </Button>
-          </Space>
+          </div>
         </div>
 
         <Table
@@ -215,8 +279,15 @@ const SalaryManagement = () => {
         />
       </Card>
 
-      <Card title="薪资统计" className="shadow-sm">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <Card
+        title="薪资统计"
+        bordered={false}
+        style={{ 
+          boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+          borderRadius: '8px',
+        }}
+      >
+        <Row gutter={[24, 24]}>
           {departments.slice(0, 5).map(dept => {
             const deptRecords = salaryRecords.filter(r => r.department === dept);
             const deptTotal = deptRecords.reduce((sum, r) => sum + r.netSalary, 0);
@@ -225,24 +296,30 @@ const SalaryManagement = () => {
             if (deptCount === 0) return null;
 
             return (
-              <div
-                key={dept}
-                className="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-100"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-semibold text-gray-800">{dept}</span>
-                  <Tag color="blue">{deptCount} 人</Tag>
+              <Col key={dept} xs={24} sm={12} md={8}>
+                <div
+                  style={{
+                    background: 'linear-gradient(135deg, #eff6ff 0%, #eef2ff 100%)',
+                    padding: '16px',
+                    borderRadius: '8px',
+                    border: '1px solid #dbeafe',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                    <span style={{ fontWeight: 600, color: '#1f2937' }}>{dept}</span>
+                    <Tag color="blue">{deptCount} 人</Tag>
+                  </div>
+                  <div style={{ fontSize: '24px', fontWeight: 700, color: '#16a34a' }}>
+                    ¥{deptTotal.toLocaleString()}
+                  </div>
+                  <div style={{ fontSize: '14px', color: '#6b7280', marginTop: '4px' }}>
+                    人均: ¥{Math.round(deptTotal / deptCount).toLocaleString()}
+                  </div>
                 </div>
-                <div className="text-2xl font-bold text-green-600">
-                  ¥{deptTotal.toLocaleString()}
-                </div>
-                <div className="text-sm text-gray-500 mt-1">
-                  人均: ¥{Math.round(deptTotal / deptCount).toLocaleString()}
-                </div>
-              </div>
+              </Col>
             );
           })}
-        </div>
+        </Row>
       </Card>
     </div>
   );
