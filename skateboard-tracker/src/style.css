@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #app {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+}
+
+.el-menu {
+  border-right: none !important;
+}
+
+.el-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.el-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.el-tag {
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
