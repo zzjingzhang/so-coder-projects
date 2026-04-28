@@ -126,8 +126,8 @@ const Home: React.FC = () => {
           </Typography>
         </Box>
 
-        <Box className="flex flex-col lg:flex-row gap-6">
-          <Box className="lg:w-80 shrink-0">
+        <Box className="flex flex-row gap-6">
+          <Box className="w-80 shrink-0">
             <FilterPanel
               filters={filters}
               onFilterChange={handleFilterChange}
@@ -154,7 +154,7 @@ const Home: React.FC = () => {
                 </Typography>
               </Alert>
             ) : (
-              <Box className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Box className="grid grid-cols-2 gap-6">
                 {filteredJobs.map((job) => (
                   <JobCard
                     key={job.id}
