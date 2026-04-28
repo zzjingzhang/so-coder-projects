@@ -1,9 +1,11 @@
 <nz-layout class="h-screen">
   <nz-sider 
     nzCollapsible 
-    [nzCollapsed]="isCollapsed" 
-    [nzTrigger]="null"
+    [(nzCollapsed)]="isCollapsed"
     nzWidth="240"
+    [nzCollapsedWidth]="80"
+    nzTheme="dark"
+    [nzTrigger]="null"
   >
     <div class="logo h-16 flex items-center justify-center bg-gray-800">
       @if (!isCollapsed) {
@@ -28,7 +30,7 @@
       <button 
         nz-button 
         nzType="text" 
-        (click)="toggleCollapse()"
+        (click)="isCollapsed = !isCollapsed"
       >
         <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
       </button>
