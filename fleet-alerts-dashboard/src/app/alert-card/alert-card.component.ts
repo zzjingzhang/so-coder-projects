@@ -43,40 +43,72 @@ export class AlertCardComponent implements OnInit {
     this.alertClick.emit(this.alert);
   }
 
-  getBorderColor(): string {
-    if (this.alert.type === AlertType.CRITICAL) {
-      return '#D64545';
-    } else if (this.alert.type === AlertType.ATTENTION) {
-      return '#F2A93B';
-    }
-    return 'transparent';
-  }
+  getCardClasses(): string {
+    const classes: string[] = [
+      'relative',
+      'border-l-4',
+      'rounded-lg',
+      'shadow-sm',
+      'cursor-pointer',
+      'transition-all',
+      'duration-200',
+      'hover:shadow-md',
+      'mb-3'
+    ];
 
-  getBackgroundColor(): string {
+    if (this.alert.type === AlertType.CRITICAL) {
+      classes.push('border-l-red-500');
+    } else if (this.alert.type === AlertType.ATTENTION) {
+      classes.push('border-l-amber-500');
+    } else {
+      classes.push('border-l-transparent');
+    }
+
     if (!this.alert.isRead) {
       if (this.alert.type === AlertType.CRITICAL) {
-        return '#FEF2F2';
+        classes.push('bg-red-50');
       } else if (this.alert.type === AlertType.ATTENTION) {
-        return '#FFFBEB';
+        classes.push('bg-amber-50');
+      } else {
+        classes.push('bg-blue-50');
       }
-      return '#EFF6FF';
+    } else {
+      classes.push('bg-white');
     }
-    return '#FFFFFF';
+
+    return classes.join(' ');
   }
 
-  getDotColor(): string {
+  getDotClasses(): string {
+    const classes: string[] = [
+      'absolute',
+      'top-4',
+      'right-14',
+      'w-2',
+      'h-2',
+      'rounded-full'
+    ];
+
     if (this.alert.type === AlertType.CRITICAL) {
-      return '#D64545';
+      classes.push('bg-red-500');
     } else if (this.alert.type === AlertType.ATTENTION) {
-      return '#F2A93B';
+      classes.push('bg-amber-500');
+    } else {
+      classes.push('bg-slate-600');
     }
-    return '#475569';
+
+    return classes.join(' ');
   }
 
-  getTitleClass(): string {
+  getTitleClasses(): string {
+    const classes: string[] = ['text-sm', 'leading-5', 'mb-1'];
+    
     if (!this.alert.isRead) {
-      return 'text-gray-900 font-semibold';
+      classes.push('text-gray-900', 'font-semibold');
+    } else {
+      classes.push('text-gray-700', 'font-medium');
     }
-    return 'text-gray-700 font-medium';
+
+    return classes.join(' ');
   }
 }

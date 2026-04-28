@@ -1,15 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-@import "tailwindcss";
-
-@theme {
-  --color-fleet-bg: #F7F9FB;
-  --color-fleet-critical: #D64545;
-  --color-fleet-warning: #F2A93B;
-  --color-fleet-info: #475569;
-  
-  --font-family-inter: 'Inter', system-ui, sans-serif;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --fleet-bg: #F7F9FB;

@@ -1,13 +1,11 @@
 <div 
   (click)="onClick()"
-  class="relative border-l-4 rounded-lg shadow-sm cursor-pointer transition-all duration-200 hover:shadow-md mb-3"
-  [style.border-left-color]="getBorderColor()"
-  [style.background-color]="getBackgroundColor()"
+  [ngClass]="getCardClasses()"
 >
   <div class="p-4">
     <div class="flex justify-between items-start">
       <div class="flex-1 pr-4">
-        <h3 class="text-sm leading-5 mb-1" [ngClass]="getTitleClass()">
+        <h3 [ngClass]="getTitleClasses()">
           {{ alert.title }}
         </h3>
         
@@ -27,8 +25,7 @@
     
     <div 
       *ngIf="!alert.isRead"
-      class="absolute top-4 right-14 w-2 h-2 rounded-full"
-      [style.background-color]="getDotColor()"
+      [ngClass]="getDotClasses()"
     ></div>
   </div>
 </div>
