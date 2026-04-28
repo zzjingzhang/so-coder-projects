@@ -27,11 +27,12 @@
             </div>
           </div>
           <div class="relative">
-            <img 
-              :src="featuredPost.image" 
-              :alt="featuredPost.title"
-              class="w-full h-64 object-cover rounded-2xl shadow-2xl"
-            />
+            <div 
+              class="w-full h-64 flex items-center justify-center rounded-2xl shadow-2xl"
+              :class="featuredPost.bgClass"
+            >
+              <div class="text-7xl">{{ featuredPost.icon }}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -41,11 +42,12 @@
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         <article v-for="post in blogPosts" :key="post.id" class="group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
           <div class="relative overflow-hidden">
-            <img 
-              :src="post.image" 
-              :alt="post.title"
-              class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-            />
+            <div 
+              class="w-full h-48 flex items-center justify-center group-hover:scale-110 transition-transform duration-500"
+              :class="post.bgClass"
+            >
+              <div class="text-6xl">{{ post.icon }}</div>
+            </div>
             <div class="absolute top-4 left-4">
               <span class="px-3 py-1 bg-blue-600 text-white text-sm rounded-full">
                 {{ post.category }}
@@ -104,7 +106,8 @@ const featuredPost = {
   excerpt: '深入探讨 Vue 3 组合式 API 的设计理念和最佳实践，包括响应式数据管理、组件复用、代码组织等核心概念。',
   date: '2024年1月15日',
   readTime: '8 分钟阅读',
-  image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=vue%203%20composition%20api%20code%20on%20screen%20modern%20developer%20workspace&image_size=landscape_16_9',
+  icon: '💚',
+  bgClass: 'bg-gradient-to-br from-green-400 to-emerald-500',
   category: 'Vue.js'
 }
 
@@ -115,7 +118,8 @@ const blogPosts = [
     excerpt: '分享在大型项目中使用 TypeScript 的经验，包括类型设计、模块组织、代码规范等实用技巧。',
     date: '2024年1月10日',
     readTime: '10 分钟阅读',
-    image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=typescript%20code%20editor%20syntax%20highlighting%20modern%20interface&image_size=landscape_16_9',
+    icon: '📘',
+    bgClass: 'bg-gradient-to-br from-blue-400 to-indigo-500',
     category: 'TypeScript'
   },
   {
@@ -124,7 +128,8 @@ const blogPosts = [
     excerpt: '学习如何优化 Tailwind CSS 的构建性能，包括按需加载、自定义配置、生产环境优化等。',
     date: '2024年1月5日',
     readTime: '6 分钟阅读',
-    image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=tailwind%20css%20design%20system%20color%20palette%20modern%20ui&image_size=landscape_16_9',
+    icon: '🎨',
+    bgClass: 'bg-gradient-to-br from-cyan-400 to-blue-500',
     category: 'CSS'
   },
   {
@@ -133,7 +138,8 @@ const blogPosts = [
     excerpt: '从单体应用到微服务架构的演进之路，分享服务拆分、通信机制、部署策略等实战经验。',
     date: '2024年1月1日',
     readTime: '12 分钟阅读',
-    image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=microservices%20architecture%20diagram%20nodes%20connections%20tech%20abstract&image_size=landscape_16_9',
+    icon: '🟢',
+    bgClass: 'bg-gradient-to-br from-emerald-400 to-teal-500',
     category: '后端'
   },
   {
@@ -142,7 +148,8 @@ const blogPosts = [
     excerpt: '对比 Vuex、Pinia、Zustand 等主流状态管理方案，帮助你选择最适合项目的方案。',
     date: '2023年12月28日',
     readTime: '8 分钟阅读',
-    image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=state%20management%20data%20flow%20diagram%20modern%20tech%20visualization&image_size=landscape_16_9',
+    icon: '📦',
+    bgClass: 'bg-gradient-to-br from-amber-400 to-orange-500',
     category: 'Vue.js'
   },
   {
@@ -151,7 +158,8 @@ const blogPosts = [
     excerpt: '掌握 Git 高级技巧，包括分支策略、冲突解决、代码审查、提交规范等专业开发流程。',
     date: '2023年12月25日',
     readTime: '7 分钟阅读',
-    image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=git%20branch%20merge%20workflow%20code%20collaboration%20tech&image_size=landscape_16_9',
+    icon: '🔧',
+    bgClass: 'bg-gradient-to-br from-rose-400 to-pink-500',
     category: '工具'
   }
 ]

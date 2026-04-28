@@ -43,11 +43,12 @@
             <div class="relative w-full aspect-square max-w-md mx-auto">
               <div class="absolute inset-0 bg-gradient-to-br from-blue-400 to-purple-500 rounded-3xl transform rotate-6"></div>
               <div class="absolute inset-0 bg-gradient-to-br from-indigo-400 to-blue-500 rounded-3xl transform -rotate-6 opacity-50"></div>
-              <img 
-                src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20developer%20portrait%20working%20on%20laptop%20with%20code%20on%20screen%20modern%20minimalist%20style&image_size=square_hd" 
-                alt="Developer"
-                class="relative w-full h-full object-cover rounded-3xl shadow-2xl"
-              />
+              <div class="relative w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl shadow-2xl flex items-center justify-center">
+                <div class="text-center text-white">
+                  <div class="text-9xl mb-4">👨‍💻</div>
+                  <p class="text-xl font-medium">Full Stack Dev</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

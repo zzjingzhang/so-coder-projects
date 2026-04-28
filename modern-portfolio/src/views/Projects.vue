@@ -33,11 +33,12 @@
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div v-for="project in filteredProjects" :key="project.id" class="group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
           <div class="relative overflow-hidden">
-            <img 
-              :src="project.image" 
-              :alt="project.title"
-              class="w-full h-52 object-cover group-hover:scale-110 transition-transform duration-500"
-            />
+            <div 
+              class="w-full h-52 flex items-center justify-center group-hover:scale-110 transition-transform duration-500"
+              :class="project.bgClass"
+            >
+              <div class="text-7xl">{{ project.icon }}</div>
+            </div>
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <div class="absolute bottom-4 left-4 right-4 flex gap-3">
                 <a :href="project.github" class="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white rounded-lg hover:bg-white/20 transition-colors">
@@ -104,7 +105,8 @@ const projects = [
     id: 1,
     title: '电商管理系统',
     description: '一个完整的电商后台管理系统，包含商品管理、订单处理、用户管理、数据统计等功能模块。',
-    image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20ecommerce%20dashboard%20admin%20panel%20interface%20clean%20design&image_size=landscape_16_9',
+    icon: '🛒',
+    bgClass: 'bg-gradient-to-br from-blue-500 to-cyan-500',
     tags: ['Vue 3', 'TypeScript', 'Element Plus'],
     category: 'fullstack',
     github: '#',
@@ -114,7 +116,8 @@ const projects = [
     id: 2,
     title: '社交媒体应用',
     description: '实时社交平台，支持消息推送、动态分享、好友互动、群组管理等社交功能。',
-    image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=social%20media%20app%20interface%20modern%20mobile%20first%20design&image_size=landscape_16_9',
+    icon: '💬',
+    bgClass: 'bg-gradient-to-br from-purple-500 to-pink-500',
     tags: ['React', 'Node.js', 'Socket.io'],
     category: 'fullstack',
     github: '#',
@@ -124,7 +127,8 @@ const projects = [
     id: 3,
     title: '数据可视化平台',
     description: '企业级数据可视化解决方案，支持多种图表类型、数据导入导出和实时数据更新。',
-    image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=data%20visualization%20dashboard%20charts%20graphs%20analytics%20modern%20interface&image_size=landscape_16_9',
+    icon: '📊',
+    bgClass: 'bg-gradient-to-br from-green-500 to-teal-500',
     tags: ['Vue 3', 'ECharts', 'Python'],
     category: 'frontend',
     github: '#',
@@ -134,7 +138,8 @@ const projects = [
     id: 4,
     title: '在线学习平台',
     description: '完整的在线教育系统，支持视频课程、直播教学、作业管理、学习进度跟踪。',
-    image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=online%20learning%20platform%20education%20website%20modern%20design&image_size=landscape_16_9',
+    icon: '📚',
+    bgClass: 'bg-gradient-to-br from-indigo-500 to-blue-500',
     tags: ['Next.js', 'PostgreSQL', 'Redis'],
     category: 'fullstack',
     github: '#',
@@ -144,7 +149,8 @@ const projects = [
     id: 5,
     title: '任务管理应用',
     description: '简洁高效的任务管理工具，支持看板视图、任务分配、截止日期提醒、团队协作。',
-    image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=task%20management%20app%20kanban%20board%20modern%20minimalist%20design&image_size=landscape_16_9',
+    icon: '✅',
+    bgClass: 'bg-gradient-to-br from-amber-500 to-orange-500',
     tags: ['Vue 3', 'Tailwind', 'Firebase'],
     category: 'frontend',
     github: '#',
@@ -154,7 +160,8 @@ const projects = [
     id: 6,
     title: 'API 网关服务',
     description: '高性能微服务 API 网关，支持路由转发、负载均衡、限流熔断、认证授权。',
-    image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=api%20gateway%20server%20architecture%20technology%20diagram%20abstract&image_size=landscape_16_9',
+    icon: '🚀',
+    bgClass: 'bg-gradient-to-br from-rose-500 to-pink-500',
     tags: ['Go', 'Docker', 'Kubernetes'],
     category: 'backend',
     github: '#',
@@ -164,7 +171,8 @@ const projects = [
     id: 7,
     title: '健身追踪 App',
     description: '移动端健身追踪应用，支持运动记录、饮食管理、目标设定、数据统计分析。',
-    image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=fitness%20tracker%20mobile%20app%20interface%20health%20modern%20design&image_size=landscape_16_9',
+    icon: '💪',
+    bgClass: 'bg-gradient-to-br from-emerald-500 to-green-500',
     tags: ['React Native', 'Node.js', 'MongoDB'],
     category: 'mobile',
     github: '#',
@@ -174,7 +182,8 @@ const projects = [
     id: 8,
     title: '区块链钱包',
     description: '安全的加密货币钱包应用，支持多链资产管理、转账交易、DApp 浏览器。',
-    image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=blockchain%20wallet%20app%20cryptocurrency%20modern%20fintech%20design&image_size=landscape_16_9',
+    icon: '💎',
+    bgClass: 'bg-gradient-to-br from-fuchsia-500 to-purple-500',
     tags: ['TypeScript', 'Web3.js', 'React Native'],
     category: 'mobile',
     github: '#',
@@ -184,7 +193,8 @@ const projects = [
     id: 9,
     title: '即时通讯系统',
     description: '企业级即时通讯解决方案，支持一对一聊天、群组消息、文件传输、语音视频通话。',
-    image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=instant%20messaging%20app%20chat%20interface%20modern%20communication%20design&image_size=landscape_16_9',
+    icon: '💬',
+    bgClass: 'bg-gradient-to-br from-sky-500 to-blue-500',
     tags: ['Node.js', 'Socket.io', 'WebRTC'],
     category: 'backend',
     github: '#',

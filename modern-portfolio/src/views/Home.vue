@@ -45,12 +45,11 @@
             <div class="relative w-96 h-96 mx-auto">
               <div class="absolute inset-0 bg-gradient-to-br from-blue-400 to-purple-500 rounded-3xl transform rotate-6"></div>
               <div class="absolute inset-0 bg-gradient-to-br from-indigo-400 to-blue-500 rounded-3xl transform -rotate-6 opacity-50"></div>
-              <div class="relative w-full h-full bg-white dark:bg-gray-800 rounded-3xl shadow-2xl flex items-center justify-center overflow-hidden">
-                <img 
-                  src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20developer%20portrait%20working%20on%20laptop%20with%20code%20on%20screen%20modern%20minimalist%20style&image_size=square_hd" 
-                  alt="Developer"
-                  class="w-full h-full object-cover"
-                />
+              <div class="relative w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl shadow-2xl flex items-center justify-center overflow-hidden">
+                <div class="text-center text-white">
+                  <div class="text-8xl mb-4">👨‍💻</div>
+                  <p class="text-lg font-medium">Full Stack Developer</p>
+                </div>
               </div>
             </div>
           </div>
@@ -84,11 +83,12 @@
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div v-for="project in featuredProjects" :key="project.id" class="group bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
             <div class="relative overflow-hidden">
-              <img 
-                :src="project.image" 
-                :alt="project.title"
-                class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-              />
+              <div 
+                class="w-full h-48 flex items-center justify-center"
+                :class="project.bgClass"
+              >
+                <div class="text-5xl">{{ project.icon }}</div>
+              </div>
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </div>
             <div class="p-6">
@@ -177,7 +177,8 @@ const featuredProjects = [
     id: 1,
     title: '电商管理系统',
     description: '一个完整的电商后台管理系统，包含商品管理、订单处理、用户管理等功能。',
-    image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20ecommerce%20dashboard%20admin%20panel%20interface%20clean%20design&image_size=landscape_16_9',
+    icon: '🛒',
+    bgClass: 'bg-gradient-to-br from-blue-500 to-cyan-500',
     tags: ['Vue 3', 'TypeScript', 'Element Plus'],
     github: '#',
     link: '#'
@@ -186,7 +187,8 @@ const featuredProjects = [
     id: 2,
     title: '社交媒体应用',
     description: '实时社交平台，支持消息推送、动态分享、好友互动等社交功能。',
-    image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=social%20media%20app%20interface%20modern%20mobile%20first%20design&image_size=landscape_16_9',
+    icon: '💬',
+    bgClass: 'bg-gradient-to-br from-purple-500 to-pink-500',
     tags: ['React', 'Node.js', 'Socket.io'],
     github: '#',
     link: '#'
@@ -195,7 +197,8 @@ const featuredProjects = [
     id: 3,
     title: '数据可视化平台',
     description: '企业级数据可视化解决方案，支持多种图表类型和实时数据更新。',
-    image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=data%20visualization%20dashboard%20charts%20graphs%20analytics%20modern%20interface&image_size=landscape_16_9',
+    icon: '📊',
+    bgClass: 'bg-gradient-to-br from-green-500 to-teal-500',
     tags: ['Vue 3', 'ECharts', 'Python'],
     github: '#',
     link: '#'
