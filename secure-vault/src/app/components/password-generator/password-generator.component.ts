@@ -9,6 +9,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzModalRef } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-password-generator',
@@ -70,21 +71,27 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
         </div>
         
         <div class="checkbox-group">
-          <label nz-checkbox [(ngModel)]="options.includeLowercase">
-            小写字母 (a-z)
-          </label>
-          <label nz-checkbox [(ngModel)]="options.includeUppercase">
-            大写字母 (A-Z)
-          </label>
-          <label nz-checkbox [(ngModel)]="options.includeNumbers">
-            数字 (0-9)
-          </label>
-          <label nz-checkbox [(ngModel)]="options.includeSymbols">
-            特殊符号 (!&#64;#$%^&*)
-          </label>
-          <label nz-checkbox [(ngModel)]="options.excludeAmbiguous">
-            排除易混淆字符 (0, O, l, I)
-          </label>
+          <div class="checkbox-row">
+            <label nz-checkbox [(ngModel)]="options.includeLowercase">
+              小写字母 (a-z)
+            </label>
+            <label nz-checkbox [(ngModel)]="options.includeUppercase">
+              大写字母 (A-Z)
+            </label>
+          </div>
+          <div class="checkbox-row">
+            <label nz-checkbox [(ngModel)]="options.includeNumbers">
+              数字 (0-9)
+            </label>
+            <label nz-checkbox [(ngModel)]="options.includeSymbols">
+              特殊符号 (!&#64;#$%^&*)
+            </label>
+          </div>
+          <div class="checkbox-row">
+            <label nz-checkbox [(ngModel)]="options.excludeAmbiguous">
+              排除易混淆字符 (0, O, l, I)
+            </label>
+          </div>
         </div>
       </div>
       
@@ -187,23 +194,46 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
     }
     
     .checkbox-group {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
     
-    .checkbox-group label {
-      display: inline-flex !important;
-      align-items: center !important;
-      font-size: 14px;
-      color: #4b5563;
-      line-height: 1.5;
-      white-space: nowrap;
+    .checkbox-row {
+      display: flex;
+      gap: 24px;
+    }
+    
+    .checkbox-row nz-checkbox {
+      flex: 1;
+      min-width: 0;
     }
     
     .checkbox-group nz-checkbox {
       display: inline-flex !important;
       align-items: center !important;
+      font-size: 14px;
+      color: #4b5563;
+      line-height: 1.5;
+    }
+    
+    .checkbox-group ::ng-deep .ant-checkbox-wrapper {
+      display: inline-flex !important;
+      align-items: center !important;
+      line-height: 1.5;
+    }
+    
+    .checkbox-group ::ng-deep .ant-checkbox {
+      margin-right: 8px;
+      top: 0;
+    }
+    
+    .checkbox-group ::ng-deep .ant-checkbox + span {
+      padding-inline-start: 0;
+      padding-inline-end: 0;
+      display: inline-flex;
+      align-items: center;
+      line-height: 1.5;
     }
     
     .generator-actions {
@@ -259,7 +289,10 @@ export class PasswordGeneratorComponent implements OnInit {
   generatedPassword: string = '';
   options: PasswordGeneratorOptions;
   
-  constructor(private passwordGeneratorService: PasswordGeneratorService) {
+  constructor(
+    private passwordGeneratorService: PasswordGeneratorService,
+    private modalRef: NzModalRef
+  ) {
     this.options = this.passwordGeneratorService.getDefaultOptions();
   }
   
@@ -282,6 +315,7 @@ export class PasswordGeneratorComponent implements OnInit {
   usePassword(): void {
     if (this.generatedPassword) {
       this.passwordSelected.emit(this.generatedPassword);
+      this.modalRef.close(this.generatedPassword);
     }
   }
 }

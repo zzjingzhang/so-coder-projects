@@ -695,6 +695,12 @@ export class EditPasswordComponent implements OnInit {
       nzFooter: null,
       nzWidth: 500
     });
+    
+    modal.afterClose.subscribe((result: string) => {
+      if (result) {
+        this.passwordForm.patchValue({ password: result });
+      }
+    });
   }
   
   onSubmit(): void {
