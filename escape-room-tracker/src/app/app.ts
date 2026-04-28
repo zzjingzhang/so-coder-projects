@@ -22,4 +22,9 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 })
 export class App {
   isCollapsed = false;
+
+  toggleCollapse(): void {
+    this.isCollapsed = !this.isCollapsed;
+    console.log('toggleCollapse called, isCollapsed:', this.isCollapsed);
+  }
 }

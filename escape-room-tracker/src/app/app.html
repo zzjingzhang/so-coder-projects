@@ -1,8 +1,16 @@
 <nz-layout class="h-screen">
-  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" nzWidth="240">
+  <nz-sider 
+    nzCollapsible 
+    [nzCollapsed]="isCollapsed" 
+    [nzTrigger]="null"
+    nzWidth="240"
+  >
     <div class="logo h-16 flex items-center justify-center bg-gray-800">
-      <span class="text-white text-xl font-bold" *ngIf="!isCollapsed">密室逃脱记录</span>
-      <span class="text-white text-xl font-bold" *ngIf="isCollapsed">🎮</span>
+      @if (!isCollapsed) {
+        <span class="text-white text-xl font-bold">密室逃脱记录</span>
+      } @else {
+        <span class="text-white text-xl font-bold">🎮</span>
+      }
     </div>
     <ul nz-menu nzTheme="dark" nzMode="inline">
       <li nz-menu-item nzMatchRouter routerLink="/rooms">
@@ -17,7 +25,11 @@
   </nz-sider>
   <nz-layout>
     <nz-header class="bg-white px-4 flex items-center shadow-md">
-      <button nz-button nzType="text" (click)="isCollapsed = !isCollapsed">
+      <button 
+        nz-button 
+        nzType="text" 
+        (click)="toggleCollapse()"
+      >
         <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
       </button>
       <h2 class="ml-4 text-lg font-medium text-gray-800">密室逃脱体验跟踪系统</h2>
