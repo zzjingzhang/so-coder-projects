@@ -189,12 +189,21 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
     .checkbox-group {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      gap: 16px;
     }
     
     .checkbox-group label {
+      display: inline-flex !important;
+      align-items: center !important;
       font-size: 14px;
       color: #4b5563;
+      line-height: 1.5;
+      white-space: nowrap;
+    }
+    
+    .checkbox-group nz-checkbox {
+      display: inline-flex !important;
+      align-items: center !important;
     }
     
     .generator-actions {

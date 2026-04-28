@@ -446,8 +446,17 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
     }
     
     .submit-btn:disabled {
-      opacity: 0.7;
+      background: #e5e7eb !important;
+      color: #9ca3af !important;
+      opacity: 1;
       cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+    
+    .submit-btn:disabled:hover {
+      transform: none;
+      box-shadow: none;
     }
     
     @media (max-width: 768px) {
