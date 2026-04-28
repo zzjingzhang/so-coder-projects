@@ -72,7 +72,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
             ></app-search-bar>
           </div>
           
-          <div class="stats-section" *ngIf="passwords.length > 0">
+          <div class="stats-section" [class.hidden]="passwords.length === 0">
             <div class="stat-card">
               <div class="stat-icon total">
                 <span nz-icon nzType="lock" nzTheme="outline"></span>
@@ -124,34 +124,39 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
               </span>
             </div>
             
-            <div 
-              *ngIf="filteredPasswords.length === 0"
-              class="empty-state"
-            >
-              <div class="empty-content">
-                <span nz-icon nzType="inbox" nzTheme="outline" class="empty-icon"></span>
-                <h3>暂无密码记录</h3>
-                <p>点击下方按钮添加您的第一个密码</p>
-                <button 
-                  nz-button 
-                  nzType="primary"
-                  (click)="navigateToAdd()"
-                  class="add-first-btn"
-                >
-                  <span nz-icon nzType="plus" nzTheme="outline"></span>
-                  添加第一个密码
-                </button>
+            <div class="passwords-content">
+              <div 
+                [class.hidden]="filteredPasswords.length > 0"
+                class="empty-state"
+              >
+                <div class="empty-content">
+                  <span nz-icon nzType="inbox" nzTheme="outline" class="empty-icon"></span>
+                  <h3>暂无密码记录</h3>
+                  <p>点击下方按钮添加您的第一个密码</p>
+                  <button 
+                    nz-button 
+                    nzType="primary"
+                    (click)="navigateToAdd()"
+                    class="add-first-btn"
+                  >
+                    <span nz-icon nzType="plus" nzTheme="outline"></span>
+                    添加第一个密码
+                  </button>
+                </div>
               </div>
-            </div>
-            
-            <div class="passwords-grid" *ngIf="filteredPasswords.length > 0">
-              <app-password-card 
-                *ngFor="let password of filteredPasswords; trackBy: trackByPasswordId"
-                [password]="password"
-                (edit)="navigateToEdit($event)"
-                (delete)="deletePassword($event)"
-                class="password-card-item"
-              ></app-password-card>
+              
+              <div 
+                class="passwords-grid"
+                [class.hidden]="filteredPasswords.length === 0"
+              >
+                <app-password-card 
+                  *ngFor="let password of filteredPasswords; trackBy: trackByPasswordId"
+                  [password]="password"
+                  (edit)="navigateToEdit($event)"
+                  (delete)="deletePassword($event)"
+                  class="password-card-item"
+                ></app-password-card>
+              </div>
             </div>
           </div>
           
@@ -265,6 +270,13 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 16px;
+      min-height: 84px;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    
+    .stats-section.hidden {
+      opacity: 0;
+      visibility: hidden;
     }
     
     .stat-card {
@@ -339,6 +351,11 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
     
+    .passwords-content {
+      position: relative;
+      min-height: 200px;
+    }
+    
     .section-header {
       display: flex;
       justify-content: space-between;
@@ -365,6 +382,18 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
       padding: 48px 0;
       display: flex;
       justify-content: center;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+    
+    .empty-state.hidden,
+    .passwords-grid.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
     }
     
     .empty-content {
@@ -414,6 +443,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 20px;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
     }
     
     .password-card-item {
