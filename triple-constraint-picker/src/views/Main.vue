@@ -97,6 +97,9 @@ const handleToggle = (key: string) => {
 input[type="checkbox"] + div {
   position: relative;
   overflow: hidden;
+  padding: 0;
+  /* 确保轨道有足够的内边距，即使滑块放大也不会超出 */
+  box-sizing: border-box;
 }
 
 input[type="checkbox"] + div::after {
@@ -108,38 +111,53 @@ input[type="checkbox"] + div::after {
   border-radius: 50%;
   height: 24px;
   width: 24px;
-  transition: all 0.3s ease-in-out;
-  transform: translateX(0) scale(1);
+  transition: transform 0.3s ease-in-out, left 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out, margin 0.3s ease-in-out;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-/* 滑块动画：在过渡过程中放大 */
-input[type="checkbox"] + div::after {
-  transition: transform 0.3s ease-in-out, left 0.3s ease-in-out;
+  transform-origin: center;
 }
 
 input[type="checkbox"]:checked + div {
   background-color: #8e44ad;
 }
 
+/* 选中状态：滑块移动到右侧 - 使用 translateX 代替 left，确保在边界内 */
 input[type="checkbox"]:checked + div::after {
-  left: calc(100% - 26px);
-  transform: scale(1.1);
+  transform: translateX(28px);
 }
 
-/* 悬停时的放大效果 */
+/* 悬停时的放大效果 - 不使用 scale，而是直接修改宽高和边距，确保滑块始终在轨道内 */
 input[type="checkbox"] + div:hover::after,
 input[type="checkbox"]:focus + div::after {
-  transform: scale(1.1);
+  width: 26px;
+  height: 26px;
+  margin-top: -1px;
+  margin-left: -1px;
 }
 
+/* 选中状态悬停时的放大效果 - 调整位置以适应放大的滑块 */
 input[type="checkbox"]:checked + div:hover::after,
 input[type="checkbox"]:checked:focus + div::after {
-  transform: scale(1.15);
+  transform: translateX(26px);
+  width: 26px;
+  height: 26px;
+  margin-top: -1px;
+  margin-left: -1px;
 }
 
-/* 过渡过程中放大的动画 */
+/* 点击时的放大效果 */
 input[type="checkbox"]:active + div::after {
-  transform: scale(1.2);
+  width: 28px;
+  height: 28px;
+  margin-top: -2px;
+  margin-left: -2px;
+}
+
+/* 选中状态点击时的放大效果 */
+input[type="checkbox"]:checked:active + div::after {
+  transform: translateX(24px);
+  width: 28px;
+  height: 28px;
+  margin-top: -2px;
+  margin-left: -2px;
 }
 </style>
