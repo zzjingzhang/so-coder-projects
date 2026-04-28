@@ -46,6 +46,24 @@ html, body {
   cursor: not-allowed !important;
 }
 
+.ant-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  vertical-align: middle !important;
+}
+
+.ant-btn nz-icon,
+.ant-btn span[nz-icon],
+.ant-btn [nz-icon] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: middle !important;
+  line-height: 1 !important;
+}
+
 .ant-input:focus,
 .ant-input-focused {
   border-color: #667eea !important;
