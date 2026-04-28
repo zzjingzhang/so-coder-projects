@@ -143,15 +143,6 @@ const handleSubmit = async () => {
   })
 }
 
-const handleTagInputConfirm = (tagValue: string) => {
-  if (tagValue) {
-    const index = form.tags.indexOf(tagValue)
-    if (index === -1) {
-      form.tags.push(tagValue)
-    }
-  }
-}
-
 const resetFilters = () => {
   searchKeyword.value = ''
   filterCategory.value = ''
@@ -368,7 +359,6 @@ const resetFilters = () => {
             allow-create
             default-first-option
             placeholder="输入后按回车添加标签"
-            @change="handleTagInputConfirm"
             class="w-full"
           >
             <el-option
