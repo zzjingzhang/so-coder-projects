@@ -1,0 +1,32 @@
+<nz-layout class="h-screen">
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" nzWidth="240">
+    <div class="logo h-16 flex items-center justify-center bg-gray-800">
+      <span class="text-white text-xl font-bold" *ngIf="!isCollapsed">密室逃脱记录</span>
+      <span class="text-white text-xl font-bold" *ngIf="isCollapsed">🎮</span>
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline">
+      <li nz-menu-item nzMatchRouter routerLink="/rooms">
+        <span nz-icon nzType="home"></span>
+        <span>场馆档案</span>
+      </li>
+      <li nz-menu-item nzMatchRouter routerLink="/records">
+        <span nz-icon nzType="file-text"></span>
+        <span>通关记录</span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header class="bg-white px-4 flex items-center shadow-md">
+      <button nz-button nzType="text" (click)="isCollapsed = !isCollapsed">
+        <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
+      </button>
+      <h2 class="ml-4 text-lg font-medium text-gray-800">密室逃脱体验跟踪系统</h2>
+    </nz-header>
+    <nz-content class="bg-gray-100 overflow-auto">
+      <router-outlet></router-outlet>
+    </nz-content>
+    <nz-footer class="text-center text-gray-500 bg-white">
+      密室逃脱体验跟踪系统 ©2026 Created with Angular & NG-ZORRO
+    </nz-footer>
+  </nz-layout>
+</nz-layout>
