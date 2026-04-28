@@ -14,50 +14,58 @@
             v-for="item in navItems" 
             :key="item.path" 
             :to="item.path"
-            class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors"
-            :class="{ 'text-blue-600 dark:text-blue-400': $route.path === item.path }"
+            class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors relative group"
+            :class="{ 'text-blue-600 dark:text-blue-400': isActiveRoute(item.path) }"
           >
             {{ item.label }}
+            <span 
+              class="absolute -bottom-1 left-0 h-0.5 bg-blue-600 dark:bg-blue-400 transition-all duration-300"
+              :class="isActiveRoute(item.path) ? 'w-full' : 'w-0 group-hover:w-full'"
+            ></span>
           </RouterLink>
           
           <button 
             @click="$emit('toggle-theme')"
-            class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 hover:scale-110"
             aria-label="Toggle theme"
           >
-            <svg v-if="isDark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            <svg v-if="isDark" class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
-            <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            <svg v-else class="w-5 h-5 text-indigo-600" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>
           </button>
         </nav>
 
         <button 
           @click="mobileMenuOpen = true"
-          class="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          class="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 hover:scale-110"
           aria-label="Open menu"
         >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
       </div>
     </div>
 
-    <MobileNavigation 
-      v-if="mobileMenuOpen" 
-      :nav-items="navItems"
-      :is-dark="isDark"
-      @close="mobileMenuOpen = false"
-      @toggle-theme="$emit('toggle-theme')"
-    />
+    <Teleport to="body">
+      <MobileNavigation 
+        v-if="mobileMenuOpen" 
+        :nav-items="navItems"
+        :is-dark="isDark"
+        :is-open="mobileMenuOpen"
+        @close="mobileMenuOpen = false"
+        @toggle-theme="$emit('toggle-theme')"
+      />
+    </Teleport>
   </header>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 import MobileNavigation from './MobileNavigation.vue'
 
 defineProps<{
@@ -68,7 +76,15 @@ defineEmits<{
   (e: 'toggle-theme'): void
 }>()
 
+const route = useRoute()
 const mobileMenuOpen = ref(false)
+
+const isActiveRoute = (path: string): boolean => {
+  if (path === '/') {
+    return route.path === '/'
+  }
+  return route.path.startsWith(path)
+}
 
 const navItems = [
   { path: '/', label: '首页' },

@@ -21,7 +21,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           'vue-vendor': ['vue', 'vue-router'],
-          'primevue': ['primevue'],
         },
       },
     },
