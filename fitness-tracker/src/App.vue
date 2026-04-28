@@ -24,8 +24,8 @@
           :key="route.name"
           :to="route.path"
           link
-          :prepend-icon="route.meta?.icon"
-          :title="route.meta?.title"
+          :prepend-icon="route.meta?.icon as any"
+          :title="route.meta?.title as any"
         ></v-list-item>
       </v-list>
     </v-navigation-drawer>

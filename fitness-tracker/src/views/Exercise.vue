@@ -15,28 +15,25 @@
           <v-divider></v-divider>
           <v-card-text>
             <v-list>
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon color="primary">mdi-run</v-icon>
-                </v-list-item-icon>
+              <v-list-item :prepend-icon="'mdi-run'" prepend-icon-color="primary">
                 <v-list-item-title>总运动次数</v-list-item-title>
-                <v-list-item-subtitle>{{ exerciseRecords.length }}次</v-list-item-subtitle>
+                <template #append>
+                  <span class="font-bold">{{ exerciseRecords.length }}次</span>
+                </template>
               </v-list-item>
               <v-divider></v-divider>
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon color="success">mdi-clock-outline</v-icon>
-                </v-list-item-icon>
+              <v-list-item :prepend-icon="'mdi-clock-outline'" prepend-icon-color="success">
                 <v-list-item-title>总运动时长</v-list-item-title>
-                <v-list-item-subtitle>{{ totalMinutes }}分钟</v-list-item-subtitle>
+                <template #append>
+                  <span class="font-bold">{{ totalMinutes }}分钟</span>
+                </template>
               </v-list-item>
               <v-divider></v-divider>
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon color="orange">mdi-fire</v-icon>
-                </v-list-item-icon>
+              <v-list-item :prepend-icon="'mdi-fire'" prepend-icon-color="orange">
                 <v-list-item-title>总消耗卡路里</v-list-item-title>
-                <v-list-item-subtitle>{{ totalCalories }}kcal</v-list-item-subtitle>
+                <template #append>
+                  <span class="font-bold">{{ totalCalories }}kcal</span>
+                </template>
               </v-list-item>
             </v-list>
           </v-card-text>
@@ -50,14 +47,13 @@
               <v-list-item
                 v-for="(count, type) in exerciseTypeCounts"
                 :key="type"
+                :prepend-icon="getExerciseIcon(type as ExerciseType)"
+                :prepend-icon-color="getTypeColor(type as ExerciseType)"
               >
-                <v-list-item-icon>
-                  <v-icon :color="getTypeColor(type as ExerciseType)">
-                    {{ getExerciseIcon(type as ExerciseType) }}
-                  </v-icon>
-                </v-list-item-icon>
                 <v-list-item-title>{{ getExerciseName(type as ExerciseType) }}</v-list-item-title>
-                <v-list-item-subtitle>{{ count }}次</v-list-item-subtitle>
+                <template #append>
+                  <span class="font-bold">{{ count }}次</span>
+                </template>
               </v-list-item>
             </v-list>
           </v-card-text>
@@ -83,6 +79,9 @@
               <v-chip :color="getIntensityColor(item.intensity)" size="small">
                 {{ getIntensityName(item.intensity) }}
               </v-chip>
+            </template>
+            <template #item.date="{ item }">
+              {{ formatDate(item.date) }}
             </template>
             <template #item.actions="{ item }">
               <v-btn icon size="small" color="primary" @click="editExercise(item)">
@@ -289,6 +288,14 @@ const getIntensityColor = (intensity: ExerciseIntensity) => {
     high: 'red'
   };
   return colors[intensity];
+};
+
+const formatDate = (date: string) => {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 };
 
 const resetForm = () => {
