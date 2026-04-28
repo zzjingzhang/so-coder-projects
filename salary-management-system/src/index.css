@@ -12,9 +12,139 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f5f7fa;
+  background-color: #f9fafb;
 }
 
 #root {
   min-height: 100vh;
+}
+
+/* Ant Design Layout 样式覆盖 */
+.ant-layout {
+  background-color: #f9fafb !important;
+}
+
+.ant-layout-sider {
+  background-color: #ffffff !important;
+  border-right: 1px solid #e5e7eb !important;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.02) !important;
+}
+
+.ant-layout-sider-light .ant-layout-sider-trigger {
+  background-color: #ffffff !important;
+  color: #4b5563 !important;
+}
+
+.ant-layout-header {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  padding: 0 24px !important;
+  height: 64px !important;
+  line-height: 64px !important;
+}
+
+.ant-layout-content {
+  margin: 24px !important;
+  padding: 24px !important;
+  background-color: #ffffff !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  min-height: calc(100vh - 112px) !important;
+}
+
+/* Menu 样式 */
+.ant-menu {
+  background-color: transparent !important;
+  border-right: none !important;
+}
+
+.ant-menu-light .ant-menu-item-selected {
+  background-color: #eff6ff !important;
+  color: #2563eb !important;
+}
+
+.ant-menu-light .ant-menu-item:hover {
+  background-color: #f3f4f6 !important;
+}
+
+/* Logo 区域样式 */
+.sider-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+}
+
+.sider-logo span {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* 头部标题样式 */
+.header-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+/* 用户信息样式 */
+.user-info {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.user-info:hover {
+  background-color: #f3f4f6;
+}
+
+.user-info .ant-avatar {
+  background-color: #3b82f6;
+}
+
+.user-info span {
+  margin-left: 8px;
+  color: #374151;
+  font-weight: 500;
+}
+
+/* 按钮样式优化 */
+.ant-btn-text:hover {
+  background-color: #f3f4f6 !important;
+}
+
+/* 卡片样式优化 */
+.ant-card {
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+/* 表格样式优化 */
+.ant-table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* 表单样式优化 */
+.ant-form-item-label > label {
+  color: #374151;
+  font-weight: 500;
+}
+
+/* 统计卡片样式 */
+.ant-statistic-title {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.ant-statistic-content {
+  color: #1f2937;
 }
