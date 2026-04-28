@@ -30,7 +30,7 @@ onMounted(() => {
       <h1 class="text-2xl font-bold text-gray-900">睡眠仪表盘</h1>
       <router-link 
         to="/record" 
-        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 transition-colors duration-150"
       >
         <i class="pi pi-plus mr-2"></i>
         记录今天的睡眠
@@ -271,7 +271,7 @@ onMounted(() => {
       <p class="text-gray-500 mb-4">开始记录您的睡眠数据，以获得更好的睡眠质量分析</p>
       <router-link 
         to="/record"
-        class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 transition-colors duration-150"
       >
         <i class="pi pi-plus mr-2"></i>
         开始记录
