@@ -65,14 +65,14 @@ const handleToggle = (key: string) => {
             class="sr-only"
           />
           <div 
-            class="switch-track relative w-14 h-7 rounded-full transition-colors duration-300"
+            class="switch-track relative rounded-full transition-colors duration-300"
             :class="selected[option.key] ? 'bg-purple-700' : 'bg-gray-300'"
           >
             <div 
-              class="switch-thumb absolute top-1 w-5 h-5 rounded-full bg-white shadow-md transition-all duration-300 ease-in-out"
+              class="switch-thumb absolute rounded-full bg-white shadow-md"
               :class="{
-                'translate-x-7': selected[option.key],
-                'translate-x-1': !selected[option.key]
+                'thumb-checked': selected[option.key],
+                'thumb-unchecked': !selected[option.key]
               }"
             ></div>
           </div>
@@ -105,44 +105,77 @@ const handleToggle = (key: string) => {
 </template>
 
 <style scoped>
-/* 开关轨道样式 */
+/* 开关轨道样式 - 固定尺寸 */
 .switch-track {
+  width: 56px;
+  height: 28px;
   position: relative;
   overflow: visible;
 }
 
-/* 滑块样式 */
+/* 滑块样式 - 固定初始位置和尺寸 */
 .switch-thumb {
   position: absolute;
-  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out, margin 0.3s ease-in-out;
+  width: 20px;
+  height: 20px;
+  top: 4px;
+  left: 4px;
+  transition: all 0.3s ease-in-out;
   transform-origin: center;
 }
 
-/* 悬停时的放大效果 - 滑块轻微放大，但保持在轨道内 */
-.switch-track:hover .switch-thumb,
-.switch-track:focus-within .switch-thumb {
-  width: 22px;
-  height: 22px;
-  margin-top: -1px;
-  margin-left: -1px;
+/* 未选中状态：滑块在左侧 */
+.thumb-unchecked {
+  left: 4px;
+  width: 20px;
+  height: 20px;
 }
 
-/* 选中状态悬停时的放大效果 - 调整位置 */
-.switch-track:hover .switch-thumb.translate-x-7,
-.switch-track:focus-within .switch-thumb.translate-x-7 {
-  transform: translateX(1.625rem); /* 26px */
+/* 选中状态：滑块移动到右侧 */
+/* 轨道宽度 56px，滑块宽度 20px，两侧各留 4px 边距 */
+/* 56px - 4px - 20px - 4px = 28px */
+.thumb-checked {
+  left: 32px; /* 4px + 28px */
+  width: 20px;
+  height: 20px;
+}
+
+/* 悬停时的放大效果 - 直接修改尺寸，并调整位置以保持在轨道内 */
+/* 未选中状态悬停：滑块放大，但保持左侧对齐 */
+.switch-track:hover .thumb-unchecked,
+.switch-track:focus-within .thumb-unchecked {
+  width: 22px;
+  height: 22px;
+  top: 3px; /* 调整 top 以保持垂直居中 */
+  left: 3px; /* 调整 left 以保持左侧对齐 */
+}
+
+/* 选中状态悬停：滑块放大，但保持右侧对齐 */
+/* 轨道宽度 56px，滑块放大到 22px，右侧留 4px */
+/* left = 56px - 4px - 22px = 30px */
+.switch-track:hover .thumb-checked,
+.switch-track:focus-within .thumb-checked {
+  width: 22px;
+  height: 22px;
+  top: 3px; /* 调整 top 以保持垂直居中 */
+  left: 30px; /* 调整 left 以保持右侧对齐 */
 }
 
 /* 点击时的放大效果 */
-.switch-track:active .switch-thumb {
+/* 未选中状态点击 */
+.switch-track:active .thumb-unchecked {
   width: 24px;
   height: 24px;
-  margin-top: -2px;
-  margin-left: -2px;
+  top: 2px;
+  left: 2px;
 }
 
-/* 选中状态点击时的放大效果 - 调整位置 */
-.switch-track:active .switch-thumb.translate-x-7 {
-  transform: translateX(1.5rem); /* 24px */
+/* 选中状态点击：保持右侧对齐 */
+/* left = 56px - 4px - 24px = 28px */
+.switch-track:active .thumb-checked {
+  width: 24px;
+  height: 24px;
+  top: 2px;
+  left: 28px;
 }
 </style>
