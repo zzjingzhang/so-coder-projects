@@ -148,3 +148,227 @@ body {
 .ant-statistic-content {
   color: #1f2937;
 }
+
+/* 页面内容间距 */
+.page-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px !important;
+}
+
+/* 卡片之间的间距 */
+.card-container {
+  margin-bottom: 24px !important;
+}
+
+/* 统计卡片容器 */
+.statistic-row {
+  margin-bottom: 24px !important;
+}
+
+/* 统计卡片间距 */
+.ant-row.statistic-row {
+  margin-bottom: 24px !important;
+}
+
+/* 表单间距 */
+.ant-form {
+  margin: 0 !important;
+}
+
+.ant-form-item {
+  margin-bottom: 24px !important;
+}
+
+.ant-form-item:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* 表单行间距 */
+.ant-form .ant-row {
+  margin-bottom: 8px !important;
+}
+
+.ant-form .ant-row:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* 卡片内边距 */
+.ant-card-body {
+  padding: 24px !important;
+}
+
+/* 卡片标题间距 */
+.ant-card-head {
+  border-bottom: 1px solid #f0f0f0 !important;
+  padding: 0 24px !important;
+  min-height: 56px !important;
+}
+
+.ant-card-head-title {
+  padding: 16px 0 !important;
+}
+
+/* 分隔线样式 */
+.ant-divider {
+  margin: 24px 0 !important;
+}
+
+/* 统计卡片样式 */
+.statistic-card {
+  padding: 16px !important;
+}
+
+.statistic-card .ant-card-body {
+  padding: 16px !important;
+}
+
+/* 内容区域内的间距 */
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* 页面标题区域 */
+.page-header {
+  margin-bottom: 16px !important;
+}
+
+/* 页面描述文字 */
+.page-description {
+  margin-top: 4px !important;
+  margin-bottom: 0 !important;
+}
+
+/* 表格间距 */
+.ant-table-wrapper {
+  margin-bottom: 24px !important;
+}
+
+.ant-table-wrapper:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* 搜索框间距 */
+.search-container {
+  margin-bottom: 16px !important;
+}
+
+/* 按钮区域间距 */
+.button-group {
+  margin-bottom: 16px !important;
+}
+
+/* 模态框内边距 */
+.ant-modal-body {
+  padding: 24px !important;
+}
+
+/* 模态框底部间距 */
+.ant-modal-footer {
+  padding: 16px 24px !important;
+}
+
+/* 标签间距 */
+.ant-tag {
+  margin-right: 8px !important;
+  margin-bottom: 8px !important;
+}
+
+/* 头像间距 */
+.ant-avatar {
+  margin-right: 8px !important;
+}
+
+/* 下拉菜单间距 */
+.ant-dropdown-menu-item {
+  padding: 8px 16px !important;
+}
+
+/* 按钮间距 */
+.ant-btn {
+  margin-right: 8px !important;
+}
+
+.ant-btn:last-child {
+  margin-right: 0 !important;
+}
+
+/* 输入框前缀图标间距 */
+.ant-input-affix-wrapper .ant-input-prefix {
+  margin-right: 8px !important;
+  color: #9ca3af !important;
+}
+
+/* 文本域计数 */
+.ant-input-textarea-show-count::after {
+  color: #9ca3af !important;
+}
+
+/* 选择器样式 */
+.ant-select-selector {
+  border-radius: 6px !important;
+}
+
+/* 日期选择器样式 */
+.ant-picker {
+  border-radius: 6px !important;
+}
+
+/* 输入框样式 */
+.ant-input {
+  border-radius: 6px !important;
+}
+
+/* 数字输入框样式 */
+.ant-input-number {
+  border-radius: 6px !important;
+}
+
+/* 复选框样式 */
+.ant-checkbox-wrapper {
+  margin-right: 16px !important;
+}
+
+/* 单选框样式 */
+.ant-radio-wrapper {
+  margin-right: 16px !important;
+}
+
+/* 开关样式 */
+.ant-switch {
+  margin-right: 8px !important;
+}
+
+/* 徽章样式 */
+.ant-badge {
+  margin-right: 8px !important;
+}
+
+/* 分页样式 */
+.ant-pagination {
+  margin-top: 24px !important;
+  margin-bottom: 0 !important;
+}
+
+/* 空状态样式 */
+.ant-empty {
+  padding: 48px 0 !important;
+}
+
+/* 加载状态样式 */
+.ant-spin-container {
+  min-height: 200px !important;
+}
+
+/* 提示消息样式 */
+.ant-message {
+  top: 24px !important;
+}
+
+/* 通知消息样式 */
+.ant-notification {
+  top: 24px !important;
+  right: 24px !important;
+}

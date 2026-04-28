@@ -75,30 +75,67 @@ const CompanyProfile = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div 
+      style={{ 
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '32px',
+      }}
+    >
+      <div 
+        style={{ 
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '8px',
+        }}
+      >
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">公司资料管理</h1>
-          <p className="text-gray-500 mt-1">管理和维护公司的基本信息</p>
+          <h1 
+            style={{ 
+              fontSize: '24px',
+              fontWeight: 700,
+              color: '#1f2937',
+              margin: 0,
+            }}
+          >
+            公司资料管理
+          </h1>
+          <p 
+            style={{ 
+              color: '#6b7280',
+              marginTop: '4px',
+              marginBottom: 0,
+              fontSize: '14px',
+            }}
+          >
+            管理和维护公司的基本信息
+          </p>
         </div>
         {!editing ? (
           <Button
             type="primary"
             icon={<EditOutlined />}
             onClick={handleEdit}
-            className="bg-blue-600 hover:bg-blue-700"
+            style={{ 
+              backgroundColor: '#2563eb',
+              borderColor: '#2563eb',
+            }}
           >
             编辑资料
           </Button>
         ) : (
-          <Space>
+          <Space size="middle">
             <Button onClick={handleCancel}>取消</Button>
             <Button
               type="primary"
               icon={<SaveOutlined />}
               onClick={handleSave}
               loading={loading}
-              className="bg-blue-600 hover:bg-blue-700"
+              style={{ 
+                backgroundColor: '#2563eb',
+                borderColor: '#2563eb',
+              }}
             >
               保存修改
             </Button>
@@ -106,34 +143,52 @@ const CompanyProfile = () => {
         )}
       </div>
 
-      <Row gutter={[16, 16]}>
+      <Row gutter={[24, 24]} style={{ marginBottom: '8px' }}>
         <Col xs={24} sm={12} md={8}>
-          <Card className="shadow-sm hover:shadow-md transition-shadow">
+          <Card 
+            bordered={false}
+            style={{ 
+              boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+              borderRadius: '8px',
+            }}
+          >
             <Statistic
               title="员工总数"
               value={companyData.employeeCount}
-              prefix={<TeamOutlined className="text-blue-500" />}
-              valueStyle={{ color: '#1890ff' }}
+              prefix={<TeamOutlined style={{ color: '#3b82f6' }} />}
+              style={{ textAlign: 'center' }}
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8}>
-          <Card className="shadow-sm hover:shadow-md transition-shadow">
+          <Card 
+            bordered={false}
+            style={{ 
+              boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+              borderRadius: '8px',
+            }}
+          >
             <Statistic
               title="部门数量"
               value={companyData.departmentCount}
-              prefix={<HomeOutlined className="text-green-500" />}
-              valueStyle={{ color: '#52c41a' }}
+              prefix={<HomeOutlined style={{ color: '#22c55e' }} />}
+              style={{ textAlign: 'center' }}
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8}>
-          <Card className="shadow-sm hover:shadow-md transition-shadow">
+          <Card 
+            bordered={false}
+            style={{ 
+              boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+              borderRadius: '8px',
+            }}
+          >
             <Statistic
               title="成立时间"
               value={companyData.establishmentDate}
-              prefix={<CalendarOutlined className="text-purple-500" />}
-              valueStyle={{ color: '#722ed1', fontSize: '16px' }}
+              prefix={<CalendarOutlined style={{ color: '#8b5cf6' }} />}
+              style={{ textAlign: 'center' }}
             />
           </Card>
         </Col>
@@ -141,12 +196,16 @@ const CompanyProfile = () => {
 
       <Card
         title={
-          <div className="flex items-center">
-            <BankOutlined className="mr-2 text-blue-600" />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <BankOutlined style={{ marginRight: '8px', color: '#2563eb' }} />
             基本信息
           </div>
         }
-        className="shadow-sm"
+        bordered={false}
+        style={{ 
+          boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+          borderRadius: '8px',
+        }}
       >
         <Form
           form={form}
@@ -154,7 +213,7 @@ const CompanyProfile = () => {
           initialValues={companyData}
           disabled={!editing}
         >
-          <Row gutter={[16, 16]}>
+          <Row gutter={[24, 24]}>
             <Col xs={24} md={12}>
               <Form.Item
                 name="companyName"
@@ -245,19 +304,21 @@ const CompanyProfile = () => {
         </Form>
       </Card>
 
-      <Divider />
-
       <Card
         title={
-          <div className="flex items-center">
-            <EnvironmentOutlined className="mr-2 text-blue-600" />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <EnvironmentOutlined style={{ marginRight: '8px', color: '#2563eb' }} />
             联系方式
           </div>
         }
-        className="shadow-sm"
+        bordered={false}
+        style={{ 
+          boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+          borderRadius: '8px',
+        }}
       >
         <Form form={form} layout="vertical" initialValues={companyData} disabled={!editing}>
-          <Row gutter={[16, 16]}>
+          <Row gutter={[24, 24]}>
             <Col xs={24} md={12}>
               <Form.Item
                 name="address"
@@ -300,19 +361,21 @@ const CompanyProfile = () => {
         </Form>
       </Card>
 
-      <Divider />
-
       <Card
         title={
-          <div className="flex items-center">
-            <BankOutlined className="mr-2 text-blue-600" />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <BankOutlined style={{ marginRight: '8px', color: '#2563eb' }} />
             银行信息
           </div>
         }
-        className="shadow-sm"
+        bordered={false}
+        style={{ 
+          boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+          borderRadius: '8px',
+        }}
       >
         <Form form={form} layout="vertical" initialValues={companyData} disabled={!editing}>
-          <Row gutter={[16, 16]}>
+          <Row gutter={[24, 24]}>
             <Col xs={24} md={12}>
               <Form.Item
                 name="bankName"
@@ -337,22 +400,52 @@ const CompanyProfile = () => {
 
       <Card
         title={
-          <div className="flex items-center">
-            <UploadOutlined className="mr-2 text-blue-600" />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <UploadOutlined style={{ marginRight: '8px', color: '#2563eb' }} />
             公司Logo
           </div>
         }
-        className="shadow-sm"
+        bordered={false}
+        style={{ 
+          boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+          borderRadius: '8px',
+        }}
       >
-        <div className="flex items-center gap-6">
-          <div className="w-32 h-32 bg-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
-            <BankOutlined className="text-5xl text-gray-400" />
+        <div style={{ 
+          display: 'flex',
+          alignItems: 'center',
+          gap: '24px',
+        }}>
+          <div style={{ 
+            width: '128px',
+            height: '128px',
+            backgroundColor: '#f3f4f6',
+            borderRadius: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            border: '2px dashed #d1d5db',
+          }}>
+            <BankOutlined style={{ fontSize: '48px', color: '#9ca3af' }} />
           </div>
           <div>
-            <p className="text-gray-600 mb-4">支持 JPG、PNG 格式，建议尺寸 200x200 像素，文件大小不超过 2MB</p>
+            <p style={{ 
+              color: '#4b5563',
+              marginBottom: '16px',
+              marginTop: '0',
+            }}>
+              支持 JPG、PNG 格式，建议尺寸 200x200 像素，文件大小不超过 2MB
+            </p>
             {editing && (
               <Upload {...uploadProps}>
-                <Button icon={<UploadOutlined />} className="bg-blue-600 hover:bg-blue-700 text-white">
+                <Button 
+                  icon={<UploadOutlined />} 
+                  style={{ 
+                    backgroundColor: '#2563eb',
+                    borderColor: '#2563eb',
+                    color: 'white',
+                  }}
+                >
                   上传Logo
                 </Button>
               </Upload>
