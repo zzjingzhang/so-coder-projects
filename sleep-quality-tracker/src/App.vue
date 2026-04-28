@@ -2,6 +2,7 @@
 import { onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
+import Toast from 'primevue/toast'
 
 const router = useRouter()
 const toast = useToast()
@@ -32,6 +33,7 @@ onUnmounted(() => {
 
 <template>
   <div class="min-h-screen bg-gray-50">
+    <Toast position="top-right" />
     <nav class="bg-white shadow-sm border-b">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
