@@ -96,8 +96,9 @@
     [draggable]="false"
     [resizable]="false"
     maximizable="true"
+    styleClass="dialog-white-bg"
   >
-    <form #recordForm="ngForm" (ngSubmit)="saveRecord()" class="space-y-4">
+    <form #recordForm="ngForm" (ngSubmit)="saveRecord()" class="p-6 space-y-4">
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">仪式名称 *</label>
