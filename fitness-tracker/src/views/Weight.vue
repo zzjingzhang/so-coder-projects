@@ -132,6 +132,9 @@
             :items-per-page="10"
             class="elevation-0"
           >
+            <template #item.date="{ item }">
+              {{ formatDate(item.date) }}
+            </template>
             <template #item.actions="{ item }">
               <v-btn
                 icon
@@ -344,6 +347,14 @@ const weightProgress = computed(() => {
   const lostSoFar = weightGoal.value.startWeight - latestWeight.value;
   return totalToLose > 0 ? Math.min(100, (lostSoFar / totalToLose) * 100) : 0;
 });
+
+const formatDate = (date: string | Date) => {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
 
 const deleteWeight = (id: string) => {
   const index = weightRecords.value.findIndex((w) => w.id === id);
