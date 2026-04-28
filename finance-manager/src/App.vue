@@ -86,6 +86,11 @@ const openSettings = () => {
   settingsDialogVisible.value = true
 }
 
+const goToTransactions = () => {
+  searchDialogVisible.value = false
+  router.push('/transactions')
+}
+
 const formatCurrency = (value) => {
   return `¥${value.toLocaleString()}`
 }
@@ -273,10 +278,7 @@ const formatCurrency = (value) => {
         <Button
           label="查看全部记录"
           icon="pi pi-external-link"
-          @click="
-            searchDialogVisible = false
-            router.push('/transactions')
-          "
+          @click="goToTransactions"
         />
       </template>
     </Dialog>
