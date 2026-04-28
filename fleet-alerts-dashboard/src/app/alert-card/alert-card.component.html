@@ -1,0 +1,34 @@
+<div 
+  (click)="onClick()"
+  class="relative border-l-4 rounded-lg shadow-sm cursor-pointer transition-all duration-200 hover:shadow-md mb-3"
+  [style.border-left-color]="getBorderColor()"
+  [style.background-color]="getBackgroundColor()"
+>
+  <div class="p-4">
+    <div class="flex justify-between items-start">
+      <div class="flex-1 pr-4">
+        <h3 class="text-sm leading-5 mb-1" [ngClass]="getTitleClass()">
+          {{ alert.title }}
+        </h3>
+        
+        <p class="text-xs text-gray-500 mb-2">
+          {{ alert.context }}
+        </p>
+        
+        <p class="text-sm text-gray-600 leading-5">
+          {{ alert.details }}
+        </p>
+      </div>
+      
+      <div class="text-xs text-gray-400 whitespace-nowrap">
+        {{ formattedTime }}
+      </div>
+    </div>
+    
+    <div 
+      *ngIf="!alert.isRead"
+      class="absolute top-4 right-14 w-2 h-2 rounded-full"
+      [style.background-color]="getDotColor()"
+    ></div>
+  </div>
+</div>
