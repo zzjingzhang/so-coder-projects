@@ -1,0 +1,197 @@
+<div class="max-w-7xl mx-auto animate-fade-in">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-incense-dark">🌿 香品档案</h1>
+    <p-button 
+      label="添加香品" 
+      icon="pi pi-plus" 
+      (click)="showAddDialog()"
+      styleClass="bg-incense-brown"
+    ></p-button>
+  </div>
+
+  <p-toast></p-toast>
+
+  <p-table 
+    [value]="incenses()" 
+    [paginator]="true" 
+    [rows]="10" 
+    [rowsPerPageOptions]="[10, 25, 50]"
+    responsiveLayout="scroll"
+  >
+    <ng-template pTemplate="header">
+      <tr class="table-header">
+        <th pSortableColumn="name">
+          香品名称 <p-sortIcon field="name"></p-sortIcon>
+        </th>
+        <th pSortableColumn="type">
+          香料类型 <p-sortIcon field="type"></p-sortIcon>
+        </th>
+        <th pSortableColumn="origin">
+          产地 <p-sortIcon field="origin"></p-sortIcon>
+        </th>
+        <th pSortableColumn="quality">
+          品质 <p-sortIcon field="quality"></p-sortIcon>
+        </th>
+        <th pSortableColumn="price">
+          价格 <p-sortIcon field="price"></p-sortIcon>
+        </th>
+        <th>描述</th>
+        <th>操作</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-incense>
+      <tr class="hover:bg-incense-cream transition-colors">
+        <td class="font-medium text-incense-dark">{{ incense.name }}</td>
+        <td>
+          <p-tag [value]="incense.type" severity="info"></p-tag>
+        </td>
+        <td>{{ incense.origin }}</td>
+        <td>
+          <p-tag 
+            [value]="incense.quality" 
+            [severity]="getQualitySeverity(incense.quality)"
+          ></p-tag>
+        </td>
+        <td class="font-medium text-incense-gold">¥{{ incense.price.toLocaleString() }}</td>
+        <td class="max-w-xs truncate">{{ incense.description }}</td>
+        <td>
+          <div class="flex gap-2">
+            <p-button 
+              icon="pi pi-pencil" 
+              (click)="showEditDialog(incense)"
+              styleClass="p-button-text p-button-sm"
+            ></p-button>
+            <p-button 
+              icon="pi pi-trash" 
+              (click)="deleteIncense(incense)"
+              styleClass="p-button-text p-button-sm p-button-danger"
+            ></p-button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="7" class="text-center py-8 text-gray-500">
+          暂无香品数据，请添加新香品
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-confirmDialog 
+    [style]="{ width: '500px' }"
+    acceptButtonStyleClass="p-button-danger"
+    rejectButtonStyleClass="p-button-text"
+  ></p-confirmDialog>
+
+  <p-dialog 
+    [header]="isEdit() ? '编辑香品' : '添加香品'" 
+    [(visible)]="displayDialog" 
+    [style]="{ width: '600px' }"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+  >
+    <form #incenseForm="ngForm" (ngSubmit)="saveIncense()" class="space-y-4">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">香品名称 *</label>
+          <input 
+            type="text" 
+            pInputText 
+            [(ngModel)]="formData.name"
+            name="name"
+            required
+            class="input-field"
+            placeholder="请输入香品名称"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">香料类型 *</label>
+          <p-dropdown 
+            [(ngModel)]="formData.type"
+            name="type"
+            [options]="incenseTypes"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="请选择香料类型"
+            [style]="{ width: '100%' }"
+            required
+          ></p-dropdown>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">产地</label>
+          <p-dropdown 
+            [(ngModel)]="formData.origin"
+            name="origin"
+            [options]="origins"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="请选择产地"
+            [style]="{ width: '100%' }"
+          ></p-dropdown>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">品质</label>
+          <p-dropdown 
+            [(ngModel)]="formData.quality"
+            name="quality"
+            [options]="qualities"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="请选择品质"
+            [style]="{ width: '100%' }"
+          ></p-dropdown>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">价格 (¥)</label>
+          <p-inputNumber 
+            [(ngModel)]="formData.price"
+            name="price"
+            mode="currency"
+            currency="CNY"
+            [min]="0"
+            [style]="{ width: '100%' }"
+          ></p-inputNumber>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">图片链接</label>
+          <input 
+            type="text" 
+            pInputText 
+            [(ngModel)]="formData.imageUrl"
+            name="imageUrl"
+            class="input-field"
+            placeholder="请输入图片链接"
+          />
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">描述</label>
+        <textarea 
+          pInputTextarea 
+          [(ngModel)]="formData.description"
+          name="description"
+          [rows]="4"
+          class="input-field"
+          placeholder="请输入香品描述"
+        ></textarea>
+      </div>
+    </form>
+    <ng-template pTemplate="footer">
+      <p-button 
+        label="取消" 
+        icon="pi pi-times" 
+        (click)="hideDialog()"
+        styleClass="p-button-text"
+      ></p-button>
+      <p-button 
+        label="保存" 
+        icon="pi pi-check" 
+        (click)="saveIncense()"
+        styleClass="bg-incense-brown"
+      ></p-button>
+    </ng-template>
+  </p-dialog>
+</div>

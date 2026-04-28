@@ -1,0 +1,66 @@
+<div class="max-w-7xl mx-auto animate-fade-in">
+  <div class="text-center mb-12 mt-8">
+    <h1 class="text-4xl md:text-5xl font-bold text-incense-dark mb-4">
+      🌿 香道文化管理系统
+    </h1>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+      传承千年香文化，记录每一次品香的美好体验，管理您的香品收藏
+    </p>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-6 mb-12">
+    @for (feature of features; track feature.title) {
+      <p-card class="hover:shadow-xl transition-shadow cursor-pointer" [routerLink]="feature.route">
+        <ng-template pTemplate="header">
+          <div class="h-40 {{ feature.color }} flex items-center justify-center">
+            <span class="text-6xl">{{ feature.icon }}</span>
+          </div>
+        </ng-template>
+        <h3 class="text-xl font-bold text-incense-dark mb-2">{{ feature.title }}</h3>
+        <p class="text-gray-600">{{ feature.description }}</p>
+        <div class="mt-4">
+          <p-button 
+            label="进入管理" 
+            [routerLink]="feature.route"
+            styleClass="w-full"
+          ></p-button>
+        </div>
+      </p-card>
+    }
+  </div>
+
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+    @for (stat of quickStats; track stat.label) {
+      <div class="card text-center">
+        <div class="text-3xl mb-2">{{ stat.icon }}</div>
+        <div class="text-2xl font-bold text-incense-dark">{{ stat.value }}</div>
+        <div class="text-sm text-gray-500">{{ stat.label }}</div>
+      </div>
+    }
+  </div>
+
+  <p-card class="mb-12">
+    <ng-template pTemplate="header">
+      <div class="bg-incense-cream p-4">
+        <h2 class="text-2xl font-bold text-incense-dark">关于香道文化</h2>
+      </div>
+    </ng-template>
+    <div class="prose max-w-none">
+      <p class="text-gray-700 leading-relaxed mb-4">
+        香道，是中国传统文化中的一颗璀璨明珠。它源于古人对自然香气的崇尚，
+        历经千年发展，形成了一套独特的品香艺术和文化体系。香道不仅是一种
+        嗅觉的享受，更是一种修身养性的生活方式。
+      </p>
+      <p class="text-gray-700 leading-relaxed">
+        从沉香、檀香到龙涎香，每一种香料都有其独特的品质和产地。通过本系统，
+        您可以系统地管理香品档案，记录每一次品香的体验，感受香道文化的深邃魅力。
+      </p>
+    </div>
+  </p-card>
+
+  <div class="text-center py-8">
+    <p class="text-gray-500 text-sm">
+      开始您的香道之旅，从这里开始 🌿
+    </p>
+  </div>
+</div>

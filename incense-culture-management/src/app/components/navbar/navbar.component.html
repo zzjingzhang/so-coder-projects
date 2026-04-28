@@ -1,0 +1,53 @@
+<nav class="bg-incense-dark shadow-lg">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex justify-between h-16">
+      <div class="flex items-center">
+        <span class="text-white text-xl font-bold">🌿 香道文化管理系统</span>
+      </div>
+      
+      <div class="hidden md:flex items-center space-x-4">
+        @for (item of navItems; track item.path) {
+          <a 
+            [routerLink]="item.path" 
+            routerLinkActive="bg-incense-light bg-opacity-20"
+            class="text-white hover:bg-white hover:bg-opacity-10 px-3 py-2 rounded-md text-sm font-medium transition-all"
+            [routerLinkActiveOptions]="{ exact: item.path === '/home' }"
+          >
+            {{ item.icon }} {{ item.label }}
+          </a>
+        }
+      </div>
+      
+      <div class="md:hidden flex items-center">
+        <button 
+          (click)="toggleMenu()"
+          class="text-white hover:text-incense-light"
+        >
+          @if (menuOpen()) {
+            <span class="text-2xl">✕</span>
+          } @else {
+            <span class="text-2xl">☰</span>
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  @if (menuOpen()) {
+    <div class="md:hidden bg-incense-dark animate-fade-in">
+      <div class="px-2 pt-2 pb-3 space-y-1">
+        @for (item of navItems; track item.path) {
+          <a 
+            [routerLink]="item.path" 
+            routerLinkActive="bg-incense-light bg-opacity-20"
+            (click)="toggleMenu()"
+            class="text-white hover:bg-white hover:bg-opacity-10 block px-3 py-2 rounded-md text-base font-medium"
+            [routerLinkActiveOptions]="{ exact: item.path === '/home' }"
+          >
+            {{ item.icon }} {{ item.label }}
+          </a>
+        }
+      </div>
+    </div>
+  }
+</nav>

@@ -1,0 +1,231 @@
+<div class="max-w-7xl mx-auto animate-fade-in">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-incense-dark">📖 品香记录</h1>
+    <p-button 
+      label="添加记录" 
+      icon="pi pi-plus" 
+      (click)="showAddDialog()"
+      styleClass="bg-incense-brown"
+    ></p-button>
+  </div>
+
+  <p-toast></p-toast>
+
+  <p-table 
+    [value]="records()" 
+    [paginator]="true" 
+    [rows]="10" 
+    [rowsPerPageOptions]="[10, 25, 50]"
+    responsiveLayout="scroll"
+  >
+    <ng-template pTemplate="header">
+      <tr class="table-header">
+        <th pSortableColumn="ritualName">
+          仪式名称 <p-sortIcon field="ritualName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="incenseName">
+          使用香品 <p-sortIcon field="incenseName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="ritualType">
+          仪式类型 <p-sortIcon field="ritualType"></p-sortIcon>
+        </th>
+        <th>评分</th>
+        <th>时长</th>
+        <th>环境</th>
+        <th>开始时间</th>
+        <th>操作</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-record>
+      <tr class="hover:bg-incense-cream transition-colors">
+        <td class="font-medium text-incense-dark">{{ record.ritualName }}</td>
+        <td>
+          <p-tag [value]="record.incenseName" severity="info"></p-tag>
+        </td>
+        <td>
+          <p-tag [value]="record.ritualType" severity="warning"></p-tag>
+        </td>
+        <td class="text-lg">{{ getRatingStars(record.rating) }}</td>
+        <td>{{ record.duration }} 分钟</td>
+        <td>
+          <div class="text-sm">
+            <span class="text-gray-600">{{ record.temperature }}°C</span>
+            <span class="mx-1">/</span>
+            <span class="text-gray-600">{{ record.humidity }}%</span>
+          </div>
+        </td>
+        <td class="text-sm text-gray-600">{{ formatDate(record.startTime) }}</td>
+        <td>
+          <div class="flex gap-2">
+            <p-button 
+              icon="pi pi-eye" 
+              (click)="showEditDialog(record)"
+              styleClass="p-button-text p-button-sm"
+              pTooltip="查看详情"
+            ></p-button>
+            <p-button 
+              icon="pi pi-trash" 
+              (click)="deleteRecord(record)"
+              styleClass="p-button-text p-button-sm p-button-danger"
+              pTooltip="删除记录"
+            ></p-button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8" class="text-center py-8 text-gray-500">
+          暂无品香记录，请添加新记录
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-confirmDialog 
+    [style]="{ width: '500px' }"
+    acceptButtonStyleClass="p-button-danger"
+    rejectButtonStyleClass="p-button-text"
+  ></p-confirmDialog>
+
+  <p-dialog 
+    [header]="isEdit() ? '查看/编辑记录' : '添加记录'" 
+    [(visible)]="displayDialog" 
+    [style]="{ width: '700px' }"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    maximizable="true"
+  >
+    <form #recordForm="ngForm" (ngSubmit)="saveRecord()" class="space-y-4">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">仪式名称 *</label>
+          <input 
+            type="text" 
+            pInputText 
+            [(ngModel)]="formData.ritualName"
+            name="ritualName"
+            required
+            class="input-field"
+            placeholder="请输入仪式名称"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">仪式类型 *</label>
+          <p-dropdown 
+            [(ngModel)]="formData.ritualType"
+            name="ritualType"
+            [options]="ritualTypes"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="请选择仪式类型"
+            [style]="{ width: '100%' }"
+            required
+          ></p-dropdown>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">使用香品</label>
+          <p-dropdown 
+            [(ngModel)]="formData.incenseName"
+            name="incenseName"
+            [options]="incenses"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="请选择香品"
+            [style]="{ width: '100%' }"
+          ></p-dropdown>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">评分</label>
+          <p-rating 
+            [(ngModel)]="formData.rating" 
+            name="rating"
+            [cancel]="false"
+          ></p-rating>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">开始时间</label>
+          <p-calendar 
+            [(ngModel)]="formData.startTime"
+            name="startTime"
+            [showTime]="true"
+            hourFormat="24"
+            [style]="{ width: '100%' }"
+            dateFormat="yy-mm-dd"
+          ></p-calendar>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">结束时间</label>
+          <p-calendar 
+            [(ngModel)]="formData.endTime"
+            name="endTime"
+            [showTime]="true"
+            hourFormat="24"
+            [style]="{ width: '100%' }"
+            dateFormat="yy-mm-dd"
+            (onSelect)="calculateDuration()"
+          ></p-calendar>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">温度 (°C)</label>
+          <p-inputNumber 
+            [(ngModel)]="formData.temperature"
+            name="temperature"
+            [min]="0"
+            [max]="50"
+            [showButtons]="true"
+            [style]="{ width: '100%' }"
+          ></p-inputNumber>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">湿度 (%)</label>
+          <p-inputNumber 
+            [(ngModel)]="formData.humidity"
+            name="humidity"
+            [min]="0"
+            [max]="100"
+            [showButtons]="true"
+            [style]="{ width: '100%' }"
+          ></p-inputNumber>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">品香体验</label>
+        <textarea 
+          pInputTextarea 
+          [(ngModel)]="formData.experience"
+          name="experience"
+          [rows]="4"
+          class="input-field"
+          placeholder="请描述您的品香体验和感受"
+        ></textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">备注</label>
+        <textarea 
+          pInputTextarea 
+          [(ngModel)]="formData.notes"
+          name="notes"
+          [rows]="2"
+          class="input-field"
+          placeholder="其他备注信息"
+        ></textarea>
+      </div>
+    </form>
+    <ng-template pTemplate="footer">
+      <p-button 
+        label="取消" 
+        icon="pi pi-times" 
+        (click)="hideDialog()"
+        styleClass="p-button-text"
+      ></p-button>
+      <p-button 
+        label="保存" 
+        icon="pi pi-check" 
+        (click)="saveRecord()"
+        styleClass="bg-incense-brown"
+      ></p-button>
+    </ng-template>
+  </p-dialog>
+</div>

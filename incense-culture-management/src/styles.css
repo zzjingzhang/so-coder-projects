@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background-color: #f8f5f0;
+  color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: #5D4037;
+}
+
+.btn-primary {
+  @apply bg-incense-brown text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all;
+}
+
+.btn-secondary {
+  @apply bg-white border border-incense-brown text-incense-brown px-4 py-2 rounded-lg hover:bg-incense-cream transition-all;
+}
+
+.card {
+  @apply bg-white rounded-xl shadow-md p-6;
+}
+
+.input-field {
+  @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-incense-light;
+}
+
+.table-header {
+  @apply bg-incense-cream text-incense-dark font-medium;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
