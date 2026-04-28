@@ -3,36 +3,27 @@ import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
 import { TagModule } from 'primeng/tag';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
-import { CalendarModule } from 'primeng/calendar';
-import { RatingModule } from 'primeng/rating';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormsModule } from '@angular/forms';
 import { IncenseRecord } from '../../types';
 
 @Component({
   selector: 'app-incense-record',
+  standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     TableModule,
     ButtonModule,
     DialogModule,
-    InputTextModule,
-    InputTextareaModule,
-    InputNumberModule,
     DropdownModule,
     TagModule,
     ConfirmDialogModule,
-    ToastModule,
-    CalendarModule,
-    RatingModule,
-    FormsModule
+    ToastModule
   ],
   providers: [ConfirmationService, MessageService],
   templateUrl: './incense-record.component.html',
@@ -258,5 +249,29 @@ export class IncenseRecordComponent {
       hour: '2-digit',
       minute: '2-digit'
     });
+  }
+
+  formatDateForInput(date: Date): string {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const hours = String(d.getHours()).padStart(2, '0');
+    const minutes = String(d.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  }
+
+  updateStartTime(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.value) {
+      this.formData.startTime = new Date(input.value);
+    }
+  }
+
+  updateEndTime(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.value) {
+      this.formData.endTime = new Date(input.value);
+    }
   }
 }

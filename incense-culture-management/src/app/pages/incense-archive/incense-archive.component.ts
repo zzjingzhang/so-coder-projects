@@ -3,9 +3,6 @@ import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
 import { TagModule } from 'primeng/tag';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -16,19 +13,17 @@ import { Incense } from '../../types';
 
 @Component({
   selector: 'app-incense-archive',
+  standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     TableModule,
     ButtonModule,
     DialogModule,
-    InputTextModule,
-    InputTextareaModule,
-    InputNumberModule,
     DropdownModule,
     TagModule,
     ConfirmDialogModule,
-    ToastModule,
-    FormsModule
+    ToastModule
   ],
   providers: [ConfirmationService, MessageService],
   templateUrl: './incense-archive.component.html',

@@ -79,11 +79,11 @@
     </ng-template>
   </p-table>
 
-  <p-confirmDialog 
+  <p-confirm-dialog 
     [style]="{ width: '500px' }"
     acceptButtonStyleClass="p-button-danger"
     rejectButtonStyleClass="p-button-text"
-  ></p-confirmDialog>
+  ></p-confirm-dialog>
 
   <p-dialog 
     [header]="isEdit() ? '编辑香品' : '添加香品'" 
@@ -99,7 +99,6 @@
           <label class="block text-sm font-medium text-gray-700 mb-1">香品名称 *</label>
           <input 
             type="text" 
-            pInputText 
             [(ngModel)]="formData.name"
             name="name"
             required
@@ -146,20 +145,19 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">价格 (¥)</label>
-          <p-inputNumber 
+          <input 
+            type="number" 
             [(ngModel)]="formData.price"
             name="price"
-            mode="currency"
-            currency="CNY"
-            [min]="0"
-            [style]="{ width: '100%' }"
-          ></p-inputNumber>
+            min="0"
+            class="input-field"
+            placeholder="请输入价格"
+          />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">图片链接</label>
           <input 
             type="text" 
-            pInputText 
             [(ngModel)]="formData.imageUrl"
             name="imageUrl"
             class="input-field"
@@ -170,10 +168,9 @@
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">描述</label>
         <textarea 
-          pInputTextarea 
           [(ngModel)]="formData.description"
           name="description"
-          [rows]="4"
+          rows="4"
           class="input-field"
           placeholder="请输入香品描述"
         ></textarea>
