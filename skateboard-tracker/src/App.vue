@@ -22,12 +22,22 @@ const handleMenuSelect = (key: string) => {
 
 <template>
   <div class="app-container h-screen flex bg-gray-50">
-    <el-aside :width="isCollapse ? '64px' : '200px'" class="bg-white shadow-lg transition-all duration-300">
-      <div class="logo h-16 flex items-center justify-center border-b border-gray-100">
+    <el-aside :width="isCollapse ? '64px' : '200px'" class="bg-white shadow-lg transition-all duration-300 relative">
+      <div class="logo h-16 flex items-center px-4 border-b border-gray-100">
         <el-icon class="text-2xl text-orange-500 mr-2">
           <VideoPlay />
         </el-icon>
         <span v-if="!isCollapse" class="font-bold text-lg text-gray-800">滑板管理</span>
+        <el-button 
+          v-if="!isCollapse"
+          type="text" 
+          class="ml-auto"
+          @click="isCollapse = !isCollapse"
+        >
+          <el-icon>
+            <Fold />
+          </el-icon>
+        </el-button>
       </div>
       <el-menu
         :default-active="currentPath"
@@ -44,17 +54,14 @@ const handleMenuSelect = (key: string) => {
           <template #title>{{ item.title }}</template>
         </el-menu-item>
       </el-menu>
-      <div class="absolute bottom-4 left-0 right-0 px-4">
+      <div v-if="isCollapse" class="absolute bottom-4 left-0 right-0 px-4">
         <el-button 
           type="text" 
           class="w-full justify-center"
           @click="isCollapse = !isCollapse"
         >
-          <el-icon v-if="isCollapse">
+          <el-icon>
             <Expand />
-          </el-icon>
-          <el-icon v-else>
-            <Fold />
           </el-icon>
         </el-button>
       </div>
