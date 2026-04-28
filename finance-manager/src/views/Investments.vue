@@ -338,7 +338,7 @@ const formatCurrency = (value) => {
     <!-- 投资列表 -->
     <Card>
       <template #header>
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between px-4 py-2 border-b border-gray-100">
           <h3 class="text-lg font-semibold text-gray-800">投资组合</h3>
           <Tag :value="`共 ${filteredInvestments.length} 项投资`" severity="info" />
         </div>

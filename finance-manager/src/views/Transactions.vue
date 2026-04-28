@@ -340,7 +340,7 @@ const formatCurrency = (value) => {
     <!-- 交易列表 -->
     <Card>
       <template #header>
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between px-4 py-2 border-b border-gray-100">
           <h3 class="text-lg font-semibold text-gray-800">交易记录</h3>
           <Tag :value="`共 ${filteredTransactions.length} 条记录`" severity="info" />
         </div>

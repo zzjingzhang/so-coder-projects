@@ -143,13 +143,14 @@ const navigateTo = (item) => {
           <template #end>
             <div class="flex items-center gap-4">
               <Button icon="pi pi-search" text rounded />
-              <Button icon="pi pi-bell" text rounded>
+              <div class="relative">
+                <Button icon="pi pi-bell" text rounded />
                 <Badge
                   :value="pendingBillsCount"
                   severity="danger"
                   class="absolute -top-1 -right-1"
                 />
-              </Button>
+              </div>
               <Button icon="pi pi-cog" text rounded />
             </div>
           </template>

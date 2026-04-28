@@ -301,7 +301,9 @@ const formatCurrency = (value) => {
     <!-- 收支趋势图 -->
     <Card>
       <template #header>
-        <h3 class="text-lg font-semibold text-gray-800">收支趋势</h3>
+        <div class="px-4 py-2 border-b border-gray-100">
+          <h3 class="text-lg font-semibold text-gray-800">收支趋势</h3>
+        </div>
       </template>
       <template #content>
         <div class="h-80">
@@ -315,7 +317,9 @@ const formatCurrency = (value) => {
       <!-- 收入分类 -->
       <Card>
         <template #header>
-          <h3 class="text-lg font-semibold text-gray-800">收入分类</h3>
+          <div class="px-4 py-2 border-b border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-800">收入分类</h3>
+          </div>
         </template>
         <template #content>
           <div class="h-80">
@@ -327,7 +331,9 @@ const formatCurrency = (value) => {
       <!-- 支出分类 -->
       <Card>
         <template #header>
-          <h3 class="text-lg font-semibold text-gray-800">支出分类</h3>
+          <div class="px-4 py-2 border-b border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-800">支出分类</h3>
+          </div>
         </template>
         <template #content>
           <div class="h-80">
@@ -340,7 +346,9 @@ const formatCurrency = (value) => {
     <!-- 月度对比图 -->
     <Card>
       <template #header>
-        <h3 class="text-lg font-semibold text-gray-800">月度收支对比</h3>
+        <div class="px-4 py-2 border-b border-gray-100">
+          <h3 class="text-lg font-semibold text-gray-800">月度收支对比</h3>
+        </div>
       </template>
       <template #content>
         <div class="h-80">
@@ -352,7 +360,7 @@ const formatCurrency = (value) => {
     <!-- 收入分类详情 -->
     <Card>
       <template #header>
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between px-4 py-2 border-b border-gray-100">
           <h3 class="text-lg font-semibold text-gray-800">收入分类详情</h3>
           <Tag :value="`共 ${incomeByCategory.length} 类`" severity="success" />
         </div>
@@ -396,7 +404,7 @@ const formatCurrency = (value) => {
     <!-- 支出分类详情 -->
     <Card>
       <template #header>
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between px-4 py-2 border-b border-gray-100">
           <h3 class="text-lg font-semibold text-gray-800">支出分类详情</h3>
           <Tag :value="`共 ${expenseByCategory.length} 类`" severity="danger" />
         </div>
@@ -441,7 +449,9 @@ const formatCurrency = (value) => {
     <!-- 财务总结 -->
     <Card>
       <template #header>
-        <h3 class="text-lg font-semibold text-gray-800">财务总结</h3>
+        <div class="px-4 py-2 border-b border-gray-100">
+          <h3 class="text-lg font-semibold text-gray-800">财务总结</h3>
+        </div>
       </template>
       <template #content>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">

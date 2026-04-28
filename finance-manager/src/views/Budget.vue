@@ -273,7 +273,9 @@ const formatCurrency = (value) => {
     <!-- 总体进度条 -->
     <Card>
       <template #header>
-        <h3 class="text-lg font-semibold text-gray-800">总体预算执行情况</h3>
+        <div class="px-4 py-2 border-b border-gray-100">
+          <h3 class="text-lg font-semibold text-gray-800">总体预算执行情况</h3>
+        </div>
       </template>
       <template #content>
         <div class="space-y-4">
@@ -300,7 +302,7 @@ const formatCurrency = (value) => {
     <!-- 各分类预算详情 -->
     <Card>
       <template #header>
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between px-4 py-2 border-b border-gray-100">
           <h3 class="text-lg font-semibold text-gray-800">各分类预算详情</h3>
           <Tag :value="`共 ${filteredBudgets.length} 项预算`" severity="info" />
         </div>
