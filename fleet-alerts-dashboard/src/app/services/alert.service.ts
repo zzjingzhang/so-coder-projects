@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Alert, AlertType } from '../models/alert.model';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlertService {
   private alerts: Alert[] = [];
+  private alertsSubject = new BehaviorSubject<Alert[]>([]);
 
   constructor() {
     this.initializeMockData();
@@ -180,10 +182,16 @@ export class AlertService {
         isRead: true
       }
     ];
+    
+    this.alertsSubject.next([...this.alerts]);
   }
 
   getAlerts(): Alert[] {
     return [...this.alerts];
+  }
+
+  getAlertsObservable(): Observable<Alert[]> {
+    return this.alertsSubject.asObservable();
   }
 
   getAlertById(id: string): Alert | undefined {
@@ -194,6 +202,7 @@ export class AlertService {
     const alert = this.getAlertById(id);
     if (alert) {
       alert.isRead = true;
+      this.alertsSubject.next([...this.alerts]);
     }
   }
 
@@ -201,6 +210,7 @@ export class AlertService {
     const alert = this.getAlertById(id);
     if (alert) {
       alert.isRead = false;
+      this.alertsSubject.next([...this.alerts]);
     }
   }
 
@@ -208,5 +218,6 @@ export class AlertService {
     this.alerts.forEach(alert => {
       alert.isRead = true;
     });
+    this.alertsSubject.next([...this.alerts]);
   }
 }
