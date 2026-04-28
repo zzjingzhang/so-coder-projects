@@ -62,14 +62,26 @@ const handleToggle = (key: string) => {
             type="checkbox"
             :checked="selected[option.key]"
             @change="handleToggle(option.key)"
-            class="sr-only peer"
+            class="sr-only"
           />
-          <div class="w-14 h-7 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all after:ease-in-out after:duration-300 after:scale-100 after:hover:scale-110 after:checked:scale-110 peer-checked:bg-purple-700"></div>
+          <div 
+            class="switch-track relative w-14 h-7 rounded-full transition-colors duration-300"
+            :class="selected[option.key] ? 'bg-purple-700' : 'bg-gray-300'"
+          >
+            <div 
+              class="switch-thumb absolute top-1 w-5 h-5 rounded-full bg-white shadow-md transition-all duration-300 ease-in-out"
+              :class="{
+                'translate-x-7': selected[option.key],
+                'translate-x-1': !selected[option.key]
+              }"
+            ></div>
+          </div>
         </label>
       </div>
     </div>
     
-    <div class="mt-12 text-center">
+    <!-- 固定高度的容器，防止页面抖动 -->
+    <div class="mt-12 text-center h-20 flex flex-col justify-center items-center">
       <p class="text-gray-600 mb-4">
         当前选择：
         <span v-if="selectedOptions.length === 0" class="text-gray-500">
@@ -93,71 +105,44 @@ const handleToggle = (key: string) => {
 </template>
 
 <style scoped>
-/* 自定义开关动画效果 */
-input[type="checkbox"] + div {
+/* 开关轨道样式 */
+.switch-track {
   position: relative;
-  overflow: hidden;
-  padding: 0;
-  /* 确保轨道有足够的内边距，即使滑块放大也不会超出 */
-  box-sizing: border-box;
+  overflow: visible;
 }
 
-input[type="checkbox"] + div::after {
-  content: '';
+/* 滑块样式 */
+.switch-thumb {
   position: absolute;
-  top: 2px;
-  left: 2px;
-  background-color: white;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  transition: transform 0.3s ease-in-out, left 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out, margin 0.3s ease-in-out;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out, margin 0.3s ease-in-out;
   transform-origin: center;
 }
 
-input[type="checkbox"]:checked + div {
-  background-color: #8e44ad;
-}
-
-/* 选中状态：滑块移动到右侧 - 使用 translateX 代替 left，确保在边界内 */
-input[type="checkbox"]:checked + div::after {
-  transform: translateX(28px);
-}
-
-/* 悬停时的放大效果 - 不使用 scale，而是直接修改宽高和边距，确保滑块始终在轨道内 */
-input[type="checkbox"] + div:hover::after,
-input[type="checkbox"]:focus + div::after {
-  width: 26px;
-  height: 26px;
+/* 悬停时的放大效果 - 滑块轻微放大，但保持在轨道内 */
+.switch-track:hover .switch-thumb,
+.switch-track:focus-within .switch-thumb {
+  width: 22px;
+  height: 22px;
   margin-top: -1px;
   margin-left: -1px;
 }
 
-/* 选中状态悬停时的放大效果 - 调整位置以适应放大的滑块 */
-input[type="checkbox"]:checked + div:hover::after,
-input[type="checkbox"]:checked:focus + div::after {
-  transform: translateX(26px);
-  width: 26px;
-  height: 26px;
-  margin-top: -1px;
-  margin-left: -1px;
+/* 选中状态悬停时的放大效果 - 调整位置 */
+.switch-track:hover .switch-thumb.translate-x-7,
+.switch-track:focus-within .switch-thumb.translate-x-7 {
+  transform: translateX(1.625rem); /* 26px */
 }
 
 /* 点击时的放大效果 */
-input[type="checkbox"]:active + div::after {
-  width: 28px;
-  height: 28px;
+.switch-track:active .switch-thumb {
+  width: 24px;
+  height: 24px;
   margin-top: -2px;
   margin-left: -2px;
 }
 
-/* 选中状态点击时的放大效果 */
-input[type="checkbox"]:checked:active + div::after {
-  transform: translateX(24px);
-  width: 28px;
-  height: 28px;
-  margin-top: -2px;
-  margin-left: -2px;
+/* 选中状态点击时的放大效果 - 调整位置 */
+.switch-track:active .switch-thumb.translate-x-7 {
+  transform: translateX(1.5rem); /* 24px */
 }
 </style>
