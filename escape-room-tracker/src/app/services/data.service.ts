@@ -14,7 +14,7 @@ export class DataService {
       description: '探索一座神秘的古墓，解开千年谜题',
       estimatedTime: 60,
       location: '神秘密室馆',
-      imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=ancient%20tomb%20interior%20with%20mystical%20symbols%20and%20dim%20lighting&image_size=square_hd'
+      imageUrl: 'https://picsum.photos/seed/ancient-tomb/400/300'
     },
     {
       id: '2',
@@ -24,7 +24,7 @@ export class DataService {
       description: '空间站发生故障，必须在限定时间内修复',
       estimatedTime: 75,
       location: '未来密室馆',
-      imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=futuristic%20space%20station%20interior%20with%20control%20panels&image_size=square_hd'
+      imageUrl: 'https://picsum.photos/seed/space-station/400/300'
     },
     {
       id: '3',
@@ -34,7 +34,7 @@ export class DataService {
       description: '学习魔法，通过考试才能毕业',
       estimatedTime: 45,
       location: '奇幻密室馆',
-      imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=magical%20academy%20classroom%20with%20spell%20books&image_size=square_hd'
+      imageUrl: 'https://picsum.photos/seed/magic-academy/400/300'
     },
     {
       id: '4',
@@ -44,7 +44,7 @@ export class DataService {
       description: '在警察到来之前，破解银行保险柜',
       estimatedTime: 90,
       location: '极限密室馆',
-      imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=bank%20vault%20interior%20with%20security%20systems&image_size=square_hd'
+      imageUrl: 'https://picsum.photos/seed/bank-vault/400/300'
     }
   ];
 
