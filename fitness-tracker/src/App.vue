@@ -16,6 +16,7 @@
       v-model="drawer"
       app
       color="white"
+      permanent
     >
       <v-list>
         <v-list-item
@@ -23,13 +24,9 @@
           :key="route.name"
           :to="route.path"
           link
-          @click="drawer = false"
-        >
-          <v-list-item-icon>
-            <v-icon>{{ route.meta?.icon }}</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>{{ route.meta?.title }}</v-list-item-title>
-        </v-list-item>
+          :prepend-icon="route.meta?.icon"
+          :title="route.meta?.title"
+        ></v-list-item>
       </v-list>
     </v-navigation-drawer>
 
