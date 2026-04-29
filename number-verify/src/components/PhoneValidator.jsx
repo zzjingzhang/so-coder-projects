@@ -31,6 +31,7 @@ import {
   WrapItem,
   IconButton,
   Tooltip,
+  SimpleGrid,
 } from '@chakra-ui/react'
 import { SearchIcon, CopyIcon, RepeatIcon, CloseIcon } from '@chakra-ui/icons'
 import { ResultCard } from './ui/ResultCard'
