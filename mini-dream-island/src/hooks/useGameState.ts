@@ -229,7 +229,8 @@ export const useGameState = () => {
     gameLoopRef.current = setInterval(() => {
       setGameState(prev => {
         const now = Date.now();
-        const newResources = [...prev.resources];
+        const newResources = prev.resources.map(r => ({ ...r }));
+        
         const capacity = BASE_STORAGE_CAPACITY + prev.placedBuildings.reduce((total, placed) => {
           const building = prev.buildings.find(b => b.id === placed.buildingId);
           if (building?.storage) {
@@ -241,7 +242,7 @@ export const useGameState = () => {
         const villageHallCount = prev.placedBuildings.filter(pb => pb.buildingId === 'village_hall').length;
         const productionBonus = 1 + villageHallCount * 0.1;
         
-        prev.placedBuildings.forEach(placed => {
+        const newPlacedBuildings = prev.placedBuildings.map(placed => {
           const building = prev.buildings.find(b => b.id === placed.buildingId);
           
           if (building?.production) {
@@ -261,20 +262,57 @@ export const useGameState = () => {
                 };
               }
               
-              placed.lastProduction = now - (timeSinceLastProduction % building.production.interval);
+              return {
+                ...placed,
+                lastProduction: now - (timeSinceLastProduction % building.production.interval),
+              };
             }
           }
+          return placed;
+        });
+        
+        const newBuildings = prev.buildings.map(building => {
+          if (!building.unlocked && building.unlockCondition) {
+            const resourceAmount = newResources.find(r => r.id === building.unlockCondition!.resourceId)?.amount || 0;
+            if (resourceAmount >= building.unlockCondition.amount) {
+              return { ...building, unlocked: true };
+            }
+          }
+          return building;
+        });
+        
+        const newOrders = prev.orders.map(order => {
+          if (order.completed) return order;
+          
+          const canComplete = order.requirements.every(req => {
+            const resourceAmount = newResources.find(r => r.id === req.resourceId)?.amount || 0;
+            return resourceAmount >= req.amount;
+          });
+          
+          if (canComplete) {
+            order.rewards.forEach(reward => {
+              const resourceIndex = newResources.findIndex(r => r.id === reward.resourceId);
+              if (resourceIndex !== -1) {
+                newResources[resourceIndex] = {
+                  ...newResources[resourceIndex],
+                  amount: Math.min(capacity, newResources[resourceIndex].amount + reward.amount),
+                };
+              }
+            });
+            return { ...order, completed: true };
+          }
+          return order;
         });
         
         return {
           ...prev,
           resources: newResources,
+          placedBuildings: newPlacedBuildings,
+          buildings: newBuildings,
+          orders: newOrders,
           totalPlayTime: prev.totalPlayTime + 1,
         };
       });
-      
-      unlockBuildings();
-      checkOrders();
     }, 1000);
     
     return () => {
@@ -282,7 +320,7 @@ export const useGameState = () => {
         clearInterval(gameLoopRef.current);
       }
     };
-  }, [unlockBuildings, checkOrders]);
+  }, []);
 
   return {
     gameState,
