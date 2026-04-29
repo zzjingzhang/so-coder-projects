@@ -6,11 +6,19 @@ export const useKeyboardShortcut = (key, callback, options = {}) => {
   const handleKeyDown = useCallback(
     (event) => {
       const keysMatch = event.key.toLowerCase() === key.toLowerCase()
-      const ctrlMatches = !ctrlKey || event.ctrlKey
-      const metaMatches = !metaKey || event.metaKey
       const shiftMatches = !shiftKey || event.shiftKey
 
-      if (keysMatch && ctrlMatches && metaMatches && shiftMatches) {
+      let modifierMatches = false
+      
+      if (ctrlKey && metaKey) {
+        modifierMatches = event.ctrlKey && event.metaKey
+      } else if (ctrlKey || metaKey) {
+        modifierMatches = event.ctrlKey || event.metaKey
+      } else {
+        modifierMatches = true
+      }
+
+      if (keysMatch && modifierMatches && shiftMatches) {
         if (preventDefault) {
           event.preventDefault()
         }
@@ -29,7 +37,6 @@ export const useKeyboardShortcut = (key, callback, options = {}) => {
 export const useToggleSidebar = (onToggle) => {
   useKeyboardShortcut('b', onToggle, {
     ctrlKey: true,
-    metaKey: true,
     preventDefault: true,
   })
 }
