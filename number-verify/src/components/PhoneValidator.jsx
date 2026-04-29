@@ -50,6 +50,11 @@ const PhoneInputForm = ({ onSubmit, isLoading, defaultCountry = 'CN' }) => {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [countryCode, setCountryCode] = useState(defaultCountry)
   const { showInfo } = useNotification()
+  
+  const headerColor = useColorModeValue('gray.800', 'white')
+  const subtextColor = useColorModeValue('gray.500', 'gray.400')
+  const emptyTextColor = useColorModeValue('gray.500', 'gray.400')
+  const textColor = useColorModeValue('gray.800', 'gray.200')
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -81,8 +86,8 @@ const PhoneInputForm = ({ onSubmit, isLoading, defaultCountry = 'CN' }) => {
   return (
     <Card>
       <CardHeader>
-        <Heading size="md">电话号码验证</Heading>
-        <Text mt={2} color="gray.500" fontSize="sm">
+        <Heading size="md" color={headerColor}>电话号码验证</Heading>
+        <Text mt={2} color={subtextColor} fontSize="sm">
           选择国家/地区并输入电话号码进行验证
         </Text>
       </CardHeader>
@@ -193,6 +198,10 @@ const PhoneInputForm = ({ onSubmit, isLoading, defaultCountry = 'CN' }) => {
 
 const HistoryList = ({ history, onClear, onRetry }) => {
   const { showSuccess } = useNotification()
+  
+  const emptyTextColor = useColorModeValue('gray.500', 'gray.400')
+  const textColor = useColorModeValue('gray.800', 'gray.200')
+  const subtextColor = useColorModeValue('gray.500', 'gray.400')
 
   const handleClear = () => {
     onClear()
@@ -202,7 +211,7 @@ const HistoryList = ({ history, onClear, onRetry }) => {
   if (history.length === 0) {
     return (
       <Box textAlign="center" py={8}>
-        <Text color="gray.500">暂无验证历史</Text>
+        <Text color={emptyTextColor}>暂无验证历史</Text>
       </Box>
     )
   }
@@ -210,7 +219,7 @@ const HistoryList = ({ history, onClear, onRetry }) => {
   return (
     <VStack spacing={3} align="stretch">
       <Flex justify="space-between" align="center">
-        <Text fontWeight="medium">历史记录 ({history.length})</Text>
+        <Text fontWeight="medium" color={textColor}>历史记录 ({history.length})</Text>
         <Button size="sm" variant="ghost" leftIcon={<CloseIcon />} onClick={handleClear}>
           清除
         </Button>
@@ -238,8 +247,8 @@ const HistoryList = ({ history, onClear, onRetry }) => {
         >
           <Flex justify="space-between" align="center">
             <Box>
-              <Text fontWeight="medium">{item.fullNumber}</Text>
-              <Text fontSize="xs" color="gray.500">
+              <Text fontWeight="medium" color={textColor}>{item.fullNumber}</Text>
+              <Text fontSize="xs" color={subtextColor}>
                 {new Date(item.queriedAt).toLocaleString('zh-CN')}
               </Text>
             </Box>
@@ -350,7 +359,13 @@ export const PhoneValidator = () => {
 
 const ApiDocsTab = () => {
   const { showSuccess } = useNotification()
-  const bgColor = useColorModeValue('gray.900', 'gray.900')
+  const codeBlockBg = useColorModeValue('gray.900', 'gray.900')
+  const headerBg = useColorModeValue('gray.50', 'gray.800')
+  const headerColor = useColorModeValue('gray.800', 'white')
+  const subtextColor = useColorModeValue('gray.500', 'gray.400')
+  const textColor = useColorModeValue('gray.800', 'gray.200')
+  const descColor = useColorModeValue('gray.600', 'gray.400')
+  const codeTextColor = useColorModeValue('gray.300', 'gray.300')
 
   const endpoints = [
     {
@@ -429,8 +444,8 @@ const ApiDocsTab = () => {
     <VStack spacing={6} align="stretch">
       <Card>
         <CardHeader>
-          <Heading size="md">API 端点</Heading>
-          <Text mt={2} color="gray.500" fontSize="sm">
+          <Heading size="md" color={headerColor}>API 端点</Heading>
+          <Text mt={2} color={subtextColor} fontSize="sm">
             使用以下 REST API 端点进行电话号码验证
           </Text>
         </CardHeader>
@@ -438,16 +453,16 @@ const ApiDocsTab = () => {
           <VStack spacing={6} align="stretch">
             {endpoints.map((endpoint, idx) => (
               <Box key={idx} borderWidth="1px" rounded="lg" overflow="hidden">
-                <Box p={4} bg="gray.50">
+                <Box p={4} bg={headerBg}>
                   <Flex align="center" gap={3} mb={2}>
                     <Tag colorScheme={getMethodColor(endpoint.method)} fontWeight="bold">
                       {endpoint.method}
                     </Tag>
-                    <Text fontFamily="mono" fontWeight="medium">
+                    <Text fontFamily="mono" fontWeight="medium" color={textColor}>
                       {endpoint.path}
                     </Text>
                   </Flex>
-                  <Text color="gray.600" fontSize="sm">
+                  <Text color={descColor} fontSize="sm">
                     {endpoint.description}
                   </Text>
                 </Box>
@@ -455,21 +470,21 @@ const ApiDocsTab = () => {
                 <Divider />
 
                 <Box p={4}>
-                  <Text fontWeight="medium" mb={3}>
+                  <Text fontWeight="medium" mb={3} color={textColor}>
                     参数:
                   </Text>
                   <VStack spacing={2} align="stretch">
                     {endpoint.params.map((param, pIdx) => (
                       <Flex key={pIdx} gap={4} align="flex-start">
                         <Box flex="0 0 200px">
-                          <Text fontFamily="mono" fontSize="sm" fontWeight="medium">
+                          <Text fontFamily="mono" fontSize="sm" fontWeight="medium" color={textColor}>
                             {param.name}
                           </Text>
-                          <Text fontSize="xs" color="gray.500">
+                          <Text fontSize="xs" color={subtextColor}>
                             {param.type} {param.required && <Tag size="xs" colorScheme="red">必需</Tag>}
                           </Text>
                         </Box>
-                        <Text fontSize="sm" color="gray.600">
+                        <Text fontSize="sm" color={descColor}>
                           {param.desc}
                         </Text>
                       </Flex>
@@ -481,18 +496,18 @@ const ApiDocsTab = () => {
 
                 <Box p={4}>
                   <Flex justify="space-between" align="center" mb={3}>
-                    <Text fontWeight="medium">请求示例:</Text>
+                    <Text fontWeight="medium" color={textColor}>请求示例:</Text>
                     <Button size="sm" leftIcon={<CopyIcon />} onClick={() => handleCopy(endpoint.example)}>
                       复制
                     </Button>
                   </Flex>
                   <Box
                     p={4}
-                    bg={bgColor}
+                    bg={codeBlockBg}
                     rounded="md"
                     overflowX="auto"
                   >
-                    <Text fontFamily="mono" fontSize="sm" color="gray.300" whiteSpace="pre">
+                    <Text fontFamily="mono" fontSize="sm" color={codeTextColor} whiteSpace="pre">
                       {endpoint.example}
                     </Text>
                   </Box>
@@ -502,18 +517,18 @@ const ApiDocsTab = () => {
 
                 <Box p={4}>
                   <Flex justify="space-between" align="center" mb={3}>
-                    <Text fontWeight="medium">响应示例:</Text>
+                    <Text fontWeight="medium" color={textColor}>响应示例:</Text>
                     <Button size="sm" leftIcon={<CopyIcon />} onClick={() => handleCopy(endpoint.response)}>
                       复制
                     </Button>
                   </Flex>
                   <Box
                     p={4}
-                    bg={bgColor}
+                    bg={codeBlockBg}
                     rounded="md"
                     overflowX="auto"
                   >
-                    <Text fontFamily="mono" fontSize="sm" color="gray.300" whiteSpace="pre">
+                    <Text fontFamily="mono" fontSize="sm" color={codeTextColor} whiteSpace="pre">
                       {endpoint.response}
                     </Text>
                   </Box>
@@ -526,7 +541,7 @@ const ApiDocsTab = () => {
 
       <Card>
         <CardHeader>
-          <Heading size="md">速率限制</Heading>
+          <Heading size="md" color={headerColor}>速率限制</Heading>
         </CardHeader>
         <CardBody>
           <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
@@ -534,7 +549,7 @@ const ApiDocsTab = () => {
               <Text fontSize="3xl" fontWeight="bold" color="blue.500">
                 10
               </Text>
-              <Text fontSize="sm" color="gray.500">
+              <Text fontSize="sm" color={subtextColor}>
                 每秒请求
               </Text>
             </Box>
@@ -542,7 +557,7 @@ const ApiDocsTab = () => {
               <Text fontSize="3xl" fontWeight="bold" color="blue.500">
                 600
               </Text>
-              <Text fontSize="sm" color="gray.500">
+              <Text fontSize="sm" color={subtextColor}>
                 每分钟请求
               </Text>
             </Box>
@@ -550,7 +565,7 @@ const ApiDocsTab = () => {
               <Text fontSize="3xl" fontWeight="bold" color="blue.500">
                 10,000
               </Text>
-              <Text fontSize="sm" color="gray.500">
+              <Text fontSize="sm" color={subtextColor}>
                 每天请求
               </Text>
             </Box>

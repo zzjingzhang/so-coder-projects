@@ -33,6 +33,8 @@ export const Sidebar = ({ isOpen, onClose, onToggle, activeTab, onTabChange, ...
   const hoverBg = useColorModeValue('gray.100', 'gray.700')
   const activeBg = useColorModeValue('blue.50', 'blue.900')
   const activeColor = useColorModeValue('blue.600', 'blue.400')
+  const textColor = useColorModeValue('gray.700', 'gray.200')
+  const headerColor = useColorModeValue('gray.800', 'white')
 
   useToggleSidebar(onToggle)
 
@@ -53,7 +55,7 @@ export const Sidebar = ({ isOpen, onClose, onToggle, activeTab, onTabChange, ...
               py={3}
               rounded="md"
               bg={isActive ? activeBg : 'transparent'}
-              color={isActive ? activeColor : 'inherit'}
+              color={isActive ? activeColor : textColor}
               fontWeight={isActive ? 'medium' : 'normal'}
               _hover={{ bg: isActive ? activeBg : hoverBg }}
               transition="all 0.2s"

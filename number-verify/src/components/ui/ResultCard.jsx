@@ -1,22 +1,24 @@
-import { Box, Flex, Text, Badge, Heading, SimpleGrid, Divider } from '@chakra-ui/react'
+import { Box, Flex, Text, Badge, Heading, SimpleGrid, Divider, useColorModeValue } from '@chakra-ui/react'
 import { StatusIcon } from './StatusIcon'
 import { STATUS_LABELS } from '../../constants/status'
 
 const AnswerLikelihoodBar = ({ likelihood }) => {
   const color = likelihood >= 0.8 ? 'valid.500' : likelihood >= 0.5 ? 'warning.500' : 'invalid.500'
   const label = likelihood >= 0.8 ? '高' : likelihood >= 0.5 ? '中' : '低'
+  const labelColor = useColorModeValue('gray.600', 'gray.400')
+  const barBg = useColorModeValue('gray.200', 'gray.700')
 
   return (
     <Box>
       <Flex justify="space-between" mb={1}>
-        <Text fontSize="sm" color="gray.600">
+        <Text fontSize="sm" color={labelColor}>
           应答可能性
         </Text>
         <Text fontSize="sm" fontWeight="medium" color={color}>
           {label} ({Math.round(likelihood * 100)}%)
         </Text>
       </Flex>
-      <Box w="full" h="2" bg="gray.100" rounded="full" overflow="hidden">
+      <Box w="full" h="2" bg={barBg} rounded="full" overflow="hidden">
         <Box w={`${likelihood * 100}%`} h="full" bg={color} transition="width 0.5s ease" />
       </Box>
     </Box>
@@ -28,12 +30,15 @@ const InfoRow = ({ label, value, isAvailable = true }) => {
     return null
   }
 
+  const labelColor = useColorModeValue('gray.500', 'gray.400')
+  const valueColor = useColorModeValue('gray.800', 'gray.200')
+
   return (
     <Flex justify="space-between" align="center" py={2}>
-      <Text fontSize="sm" color="gray.500">
+      <Text fontSize="sm" color={labelColor}>
         {label}
       </Text>
-      <Text fontSize="sm" fontWeight="medium" color="gray.800">
+      <Text fontSize="sm" fontWeight="medium" color={valueColor}>
         {value}
       </Text>
     </Flex>
@@ -41,20 +46,27 @@ const InfoRow = ({ label, value, isAvailable = true }) => {
 }
 
 export const ResultCard = ({ result, ...props }) => {
+  const emptyBorderColor = useColorModeValue('gray.200', 'gray.600')
+  const emptyBgColor = useColorModeValue('gray.50', 'gray.800')
+  const emptyTextColor = useColorModeValue('gray.500', 'gray.400')
+  const numberColor = useColorModeValue('gray.800', 'gray.200')
+  const ownerInfoColor = useColorModeValue('gray.700', 'gray.300')
+  const timestampColor = useColorModeValue('gray.400', 'gray.500')
+
   if (!result) {
     return (
       <Box
         p={6}
         borderWidth="2px"
         borderStyle="dashed"
-        borderColor="gray.200"
+        borderColor={emptyBorderColor}
         rounded="xl"
-        bg="gray.50"
+        bg={emptyBgColor}
         textAlign="center"
         {...props}
       >
         <StatusIcon status="idle" size="xl" mb={4} />
-        <Text color="gray.500">请输入电话号码进行验证</Text>
+        <Text color={emptyTextColor}>请输入电话号码进行验证</Text>
       </Box>
     )
   }
@@ -82,7 +94,7 @@ export const ResultCard = ({ result, ...props }) => {
               {isValid ? '有效号码' : '无效号码'}
             </Badge>
           </Flex>
-          <Text fontSize="lg" fontWeight="bold" color="gray.800">
+          <Text fontSize="lg" fontWeight="bold" color={numberColor}>
             {fullNumber}
           </Text>
         </Box>
@@ -120,7 +132,7 @@ export const ResultCard = ({ result, ...props }) => {
         <>
           <Divider my={4} />
           <Box>
-            <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={2}>
+            <Text fontSize="sm" fontWeight="medium" color={ownerInfoColor} mb={2}>
               所有者信息
             </Text>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={2}>
@@ -137,7 +149,7 @@ export const ResultCard = ({ result, ...props }) => {
       )}
 
       <Divider my={4} />
-      <Text fontSize="xs" color="gray.400">
+      <Text fontSize="xs" color={timestampColor}>
         验证时间: {new Date(result.timestamp).toLocaleString('zh-CN')}
       </Text>
     </Box>
