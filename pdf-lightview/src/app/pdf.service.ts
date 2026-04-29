@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as pdfjsLib from 'pdfjs-dist';
+import * as pdfjsLib from 'pdfjs-dist/webpack.mjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +9,7 @@ export class PdfService {
   private currentPage: number = 1;
   private scale: number = 1.0;
 
-  constructor() {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.7.284/pdf.worker.min.mjs`;
-  }
+  constructor() {}
 
   async loadPdfFromFile(file: File): Promise<void> {
     try {
