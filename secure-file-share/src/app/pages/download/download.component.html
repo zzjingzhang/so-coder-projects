@@ -1,0 +1,220 @@
+<div class="min-h-screen flex items-center justify-center p-4 md:p-8">
+  <div class="w-full max-w-lg">
+    <!-- Header -->
+    <div class="text-center mb-8 animate-fade-in">
+      <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">
+        🔒 安全文件下载
+      </h1>
+      <p class="text-white/80 text-lg">
+        安全获取分享的文件
+      </p>
+    </div>
+
+    <!-- Main Card -->
+    <div class="card animate-slide-up">
+      <!-- Loading State -->
+      @if (state === 'loading') {
+        <div class="text-center py-12">
+          <div class="inline-block animate-spin text-4xl mb-4">⏳</div>
+          <p class="text-gray-600">正在加载文件信息...</p>
+        </div>
+      }
+
+      <!-- Error State -->
+      @if (state === 'error') {
+        <div class="text-center py-8">
+          <div class="text-6xl mb-4">❌</div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">
+            出错了
+          </h3>
+          <p class="text-gray-600 mb-6">{{ errorMessage }}</p>
+          <button
+            nz-button
+            nzType="primary"
+            (click)="goToHome()"
+            class="btn-primary"
+          >
+            🏠 返回首页
+          </button>
+        </div>
+      }
+
+      <!-- Expired State -->
+      @if (state === 'expired') {
+        <div class="text-center py-8">
+          <div class="text-6xl mb-4">⏰</div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">
+            链接已过期
+          </h3>
+          <p class="text-gray-600 mb-6">
+            该分享链接已过期，请联系分享者重新生成链接。
+          </p>
+          <button
+            nz-button
+            nzType="primary"
+            (click)="goToHome()"
+            class="btn-primary"
+          >
+            🏠 返回首页
+          </button>
+        </div>
+      }
+
+      <!-- Password Required State -->
+      @if (state === 'password_required') {
+        <div class="space-y-6">
+          <div class="text-center">
+            <div class="text-5xl mb-4">🔐</div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">
+              需要密码访问
+            </h3>
+            <p class="text-gray-600">
+              该文件受密码保护，请输入访问密码
+            </p>
+          </div>
+
+          <!-- File Preview -->
+          <div class="bg-gray-50 rounded-xl p-4">
+            <div class="flex items-center space-x-3">
+              <span class="text-3xl">{{ fileIcon }}</span>
+              <div class="flex-1 min-w-0">
+                <p class="font-medium text-gray-900 truncate">
+                  {{ fileEntity?.originalName }}
+                </p>
+                <p class="text-sm text-gray-500">
+                  {{ formattedFileSize }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Password Form -->
+          <form [formGroup]="passwordForm" (ngSubmit)="onVerifyPassword()" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                🔑 访问密码
+              </label>
+              <input
+                type="password"
+                formControlName="password"
+                placeholder="请输入访问密码"
+                class="input-field"
+                [disabled]="isVerifying"
+                [class.border-red-500]="passwordForm.get('password')?.invalid && passwordForm.get('password')?.touched"
+              />
+              @if (passwordForm.get('password')?.hasError('required') && passwordForm.get('password')?.touched) {
+                <p class="text-red-500 text-sm mt-1">请输入密码</p>
+              }
+              @if (passwordForm.get('password')?.hasError('incorrect')) {
+                <p class="text-red-500 text-sm mt-1">密码错误，请重新输入</p>
+              }
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3">
+              <button
+                type="button"
+                nz-button
+                nzType="default"
+                (click)="goToHome()"
+                class="btn-secondary flex-1"
+              >
+                🏠 返回首页
+              </button>
+              <button
+                type="submit"
+                nz-button
+                nzType="primary"
+                [disabled]="isVerifying || passwordForm.invalid"
+                class="btn-primary flex-1"
+              >
+                @if (isVerifying) {
+                  <span class="flex items-center justify-center space-x-2">
+                    <span class="animate-spin">⏳</span>
+                    <span>验证中...</span>
+                  </span>
+                } @else {
+                  <span>✅ 验证密码</span>
+                }
+              </button>
+            </div>
+          </form>
+        </div>
+      }
+
+      <!-- Ready State -->
+      @if (state === 'ready' || state === 'downloading') {
+        <div class="space-y-6">
+          <div class="text-center">
+            <div class="text-6xl mb-4">{{ fileIcon }}</div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">
+              文件已准备好下载
+            </h3>
+          </div>
+
+          <!-- File Info -->
+          <div class="bg-gray-50 rounded-xl p-4 space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-gray-500">文件名</span>
+              <span class="font-medium text-gray-900 text-right truncate max-w-[60%]">
+                {{ fileEntity?.originalName }}
+              </span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-gray-500">文件大小</span>
+              <span class="font-medium text-gray-900">
+                {{ formattedFileSize }}
+              </span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-gray-500">有效期至</span>
+              <span class="font-medium text-gray-900">
+                {{ expiresAtFormatted }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Download Button -->
+          <div class="pt-4">
+            <button
+              nz-button
+              nzType="primary"
+              nzSize="large"
+              (click)="onDownload()"
+              [disabled]="isDownloading"
+              class="w-full btn-primary"
+            >
+              @if (isDownloading) {
+                <span class="flex items-center justify-center space-x-2">
+                  <span class="animate-spin">⏳</span>
+                  <span>准备下载中...</span>
+                </span>
+              } @else {
+                <span class="flex items-center justify-center space-x-2">
+                  <span>📥</span>
+                  <span>下载文件</span>
+                </span>
+              }
+            </button>
+          </div>
+
+          <!-- Secondary Actions -->
+          <div class="flex justify-center pt-2">
+            <button
+              nz-button
+              nzType="text"
+              (click)="goToHome()"
+              class="text-gray-500 hover:text-primary-600"
+            >
+              🏠 返回首页
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center mt-8 text-white/60 text-sm">
+      <p>🔒 您的文件安全有保障 · 所有传输均经过加密</p>
+    </div>
+  </div>
+</div>
