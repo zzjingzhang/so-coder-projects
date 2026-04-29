@@ -12,7 +12,7 @@
 
     <router-link 
       to="/" 
-      class="absolute top-6 left-6 z-20 bg-gray-800 bg-opacity-80 text-white px-6 py-3 rounded-xl hover:bg-gray-700 transition-all duration-300 shadow-lg text-base font-medium"
+      class="absolute top-8 left-8 z-20 bg-gray-800 bg-opacity-80 text-white px-8 py-4 rounded-xl hover:bg-gray-700 transition-all duration-300 shadow-lg text-lg font-medium"
       v-if="!gameState.isPlaying"
     >
       ← 返回菜单
@@ -20,41 +20,61 @@
 
     <div v-if="!gameState.isPlaying && !gameState.isGameOver" 
          class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-85 z-10">
-      <div class="text-center px-8">
-        <h1 class="text-5xl md:text-6xl font-bold text-white mb-6 drop-shadow-2xl">射击游戏</h1>
-        <p class="text-xl md:text-2xl text-gray-300 mb-12 text-center">使用屏幕左侧按钮移动，右侧按钮跳跃和射击</p>
-        <el-button type="primary" size="large" @click="startGame" class="text-xl px-12 py-8 rounded-2xl shadow-2xl">
-          🎮 开始游戏
-        </el-button>
+      <div class="text-center px-8 md:px-12 py-12 md:py-16">
+        <h1 class="text-5xl md:text-7xl font-bold text-white mb-8 md:mb-10 drop-shadow-2xl leading-tight">
+          射击游戏
+        </h1>
+        <p class="text-xl md:text-3xl text-gray-300 mt-6 md:mt-8 mb-12 md:mb-16 text-center leading-relaxed">
+          使用屏幕左侧按钮移动，右侧按钮跳跃和射击
+        </p>
+        <div class="mt-8 md:mt-12">
+          <el-button type="primary" size="large" @click="startGame" class="text-xl md:text-2xl px-16 py-10 rounded-2xl shadow-2xl">
+            🎮 开始游戏
+          </el-button>
+        </div>
       </div>
     </div>
 
     <div v-if="gameState.isGameOver" 
          class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-85 z-10">
-      <div class="text-center px-8">
-        <h1 class="text-5xl md:text-6xl font-bold text-red-500 mb-8 drop-shadow-2xl">游戏结束</h1>
-        <p class="text-3xl md:text-4xl text-white mb-4">最终得分: {{ gameState.score }}</p>
-        <p class="text-xl md:text-2xl text-gray-300 mb-12">关卡: {{ gameState.level }}</p>
-        <el-button type="primary" size="large" @click="restartGame" class="text-xl px-12 py-8 rounded-2xl shadow-2xl">
-          🔄 重新开始
-        </el-button>
+      <div class="text-center px-8 md:px-12 py-12 md:py-16">
+        <h1 class="text-5xl md:text-7xl font-bold text-red-500 mb-10 md:mb-12 drop-shadow-2xl leading-tight">
+          游戏结束
+        </h1>
+        <p class="text-3xl md:text-5xl text-white mb-6 md:mb-8 mt-6 md:mt-8 leading-relaxed">
+          最终得分: {{ gameState.score }}
+        </p>
+        <p class="text-xl md:text-3xl text-gray-300 mb-12 md:mb-16 mt-6 md:mt-8 leading-relaxed">
+          关卡: {{ gameState.level }}
+        </p>
+        <div class="mt-8 md:mt-12">
+          <el-button type="primary" size="large" @click="restartGame" class="text-xl md:text-2xl px-16 py-10 rounded-2xl shadow-2xl">
+            🔄 重新开始
+          </el-button>
+        </div>
       </div>
     </div>
 
-    <div v-if="gameState.isPlaying" class="absolute top-6 left-6 right-6 flex justify-between items-start gap-6 z-10">
-      <div class="bg-black bg-opacity-60 rounded-2xl p-5 shadow-xl backdrop-blur-sm">
-        <p class="text-white text-xl md:text-2xl font-bold mb-2">得分: {{ gameState.score }}</p>
-        <p class="text-yellow-400 text-base md:text-lg">关卡: {{ gameState.level }}</p>
+    <div v-if="gameState.isPlaying" class="absolute top-8 left-8 right-8 flex justify-between items-start gap-8 z-10">
+      <div class="bg-black bg-opacity-60 rounded-2xl p-6 md:p-8 shadow-xl backdrop-blur-sm">
+        <p class="text-white text-xl md:text-3xl font-bold mb-4 md:mb-6 leading-tight">
+          得分: {{ gameState.score }}
+        </p>
+        <p class="text-yellow-400 text-base md:text-xl mt-4 md:mt-6 leading-relaxed">
+          关卡: {{ gameState.level }}
+        </p>
       </div>
-      <div class="bg-black bg-opacity-60 rounded-2xl p-5 shadow-xl backdrop-blur-sm">
-        <p class="text-red-400 text-xl md:text-2xl font-bold">生命: {{ player.health }}</p>
+      <div class="bg-black bg-opacity-60 rounded-2xl p-6 md:p-8 shadow-xl backdrop-blur-sm">
+        <p class="text-red-400 text-xl md:text-3xl font-bold leading-tight">
+          生命: {{ player.health }}
+        </p>
       </div>
     </div>
 
-    <div v-if="gameState.isPlaying" class="absolute bottom-12 left-0 right-0 flex justify-between px-6 md:px-12 z-10">
-      <div class="flex gap-6">
+    <div v-if="gameState.isPlaying" class="absolute bottom-16 left-0 right-0 flex justify-between px-8 md:px-16 z-10">
+      <div class="flex gap-8 md:gap-10">
         <button 
-          class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gray-700 bg-opacity-80 text-white text-3xl md:text-4xl font-bold flex items-center justify-center active:bg-gray-600 shadow-2xl backdrop-blur-sm transition-all duration-150 active:scale-95"
+          class="w-24 h-24 md:w-28 md:h-28 rounded-full bg-gray-700 bg-opacity-80 text-white text-4xl md:text-5xl font-bold flex items-center justify-center active:bg-gray-600 shadow-2xl backdrop-blur-sm transition-all duration-150 active:scale-95"
           @touchstart.prevent="activateControl('left')"
           @touchend.prevent="deactivateControl('left')"
           @mousedown.prevent="activateControl('left')"
@@ -64,7 +84,7 @@
           ←
         </button>
         <button 
-          class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gray-700 bg-opacity-80 text-white text-3xl md:text-4xl font-bold flex items-center justify-center active:bg-gray-600 shadow-2xl backdrop-blur-sm transition-all duration-150 active:scale-95"
+          class="w-24 h-24 md:w-28 md:h-28 rounded-full bg-gray-700 bg-opacity-80 text-white text-4xl md:text-5xl font-bold flex items-center justify-center active:bg-gray-600 shadow-2xl backdrop-blur-sm transition-all duration-150 active:scale-95"
           @touchstart.prevent="activateControl('right')"
           @touchend.prevent="deactivateControl('right')"
           @mousedown.prevent="activateControl('right')"
@@ -74,9 +94,9 @@
           →
         </button>
       </div>
-      <div class="flex gap-6">
+      <div class="flex gap-8 md:gap-10">
         <button 
-          class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-green-600 bg-opacity-80 text-white text-2xl md:text-3xl font-bold flex items-center justify-center active:bg-green-500 shadow-2xl backdrop-blur-sm transition-all duration-150 active:scale-95"
+          class="w-24 h-24 md:w-28 md:h-28 rounded-full bg-green-600 bg-opacity-80 text-white text-3xl md:text-4xl font-bold flex items-center justify-center active:bg-green-500 shadow-2xl backdrop-blur-sm transition-all duration-150 active:scale-95"
           @touchstart.prevent="activateControl('jump')"
           @touchend.prevent="deactivateControl('jump')"
           @mousedown.prevent="activateControl('jump')"
@@ -86,7 +106,7 @@
           跳
         </button>
         <button 
-          class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-red-600 bg-opacity-80 text-white text-2xl md:text-3xl font-bold flex items-center justify-center active:bg-red-500 shadow-2xl backdrop-blur-sm transition-all duration-150 active:scale-95"
+          class="w-24 h-24 md:w-28 md:h-28 rounded-full bg-red-600 bg-opacity-80 text-white text-3xl md:text-4xl font-bold flex items-center justify-center active:bg-red-500 shadow-2xl backdrop-blur-sm transition-all duration-150 active:scale-95"
           @touchstart.prevent="activateControl('shoot')"
           @touchend.prevent="deactivateControl('shoot')"
           @mousedown.prevent="activateControl('shoot')"

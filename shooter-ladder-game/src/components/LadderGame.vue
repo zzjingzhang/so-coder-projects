@@ -8,7 +8,7 @@
 
     <router-link 
       to="/" 
-      class="absolute top-6 left-6 z-20 bg-gray-800 bg-opacity-80 text-white px-6 py-3 rounded-xl hover:bg-gray-700 transition-all duration-300 shadow-lg text-base font-medium"
+      class="absolute top-8 left-8 z-20 bg-gray-800 bg-opacity-80 text-white px-8 py-4 rounded-xl hover:bg-gray-700 transition-all duration-300 shadow-lg text-lg font-medium"
       v-if="!gameState.isPlaying"
     >
       ← 返回菜单
@@ -16,43 +16,67 @@
 
     <div v-if="!gameState.isPlaying && !gameState.isGameOver" 
          class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-85 z-10">
-      <div class="text-center px-8">
-        <h1 class="text-5xl md:text-6xl font-bold text-white mb-6 drop-shadow-2xl">梯子游戏</h1>
-        <p class="text-xl md:text-2xl text-gray-300 mb-4 text-center">机器人正在准备攀登...</p>
-        <p class="text-xl md:text-2xl text-yellow-400 mb-12 text-center">观察机器人如何自动收集金币并到达顶部！</p>
-        <el-button type="primary" size="large" @click="startGame" class="text-xl px-12 py-8 rounded-2xl shadow-2xl">
-          🤖 开始观察
-        </el-button>
+      <div class="text-center px-8 md:px-12 py-12 md:py-16">
+        <h1 class="text-5xl md:text-7xl font-bold text-white mb-8 md:mb-10 drop-shadow-2xl leading-tight">
+          梯子游戏
+        </h1>
+        <p class="text-xl md:text-3xl text-gray-300 mt-6 md:mt-8 mb-6 md:mb-8 text-center leading-relaxed">
+          机器人正在准备攀登...
+        </p>
+        <p class="text-xl md:text-3xl text-yellow-400 mb-12 md:mb-16 mt-6 md:mt-8 text-center leading-relaxed">
+          观察机器人如何自动收集金币并到达顶部！
+        </p>
+        <div class="mt-8 md:mt-12">
+          <el-button type="primary" size="large" @click="startGame" class="text-xl md:text-2xl px-16 py-10 rounded-2xl shadow-2xl">
+            🤖 开始观察
+          </el-button>
+        </div>
       </div>
     </div>
 
     <div v-if="gameState.isGameOver" 
          class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-85 z-10">
-      <div class="text-center px-8">
-        <h1 class="text-5xl md:text-6xl font-bold mb-8 drop-shadow-2xl" :class="gameState.won ? 'text-green-500' : 'text-red-500'">
+      <div class="text-center px-8 md:px-12 py-12 md:py-16">
+        <h1 class="text-5xl md:text-7xl font-bold mb-10 md:mb-12 drop-shadow-2xl leading-tight" :class="gameState.won ? 'text-green-500' : 'text-red-500'">
           {{ gameState.won ? '🎉 任务完成！' : '💔 游戏结束' }}
         </h1>
-        <p class="text-3xl md:text-4xl text-white mb-4">最终得分: {{ gameState.score }}</p>
-        <p class="text-xl md:text-2xl text-gray-300 mb-12">关卡: {{ gameState.level }}</p>
-        <el-button type="primary" size="large" @click="restartGame" class="text-xl px-12 py-8 rounded-2xl shadow-2xl">
-          🔄 再看一次
-        </el-button>
+        <p class="text-3xl md:text-5xl text-white mb-6 md:mb-8 mt-6 md:mt-8 leading-relaxed">
+          最终得分: {{ gameState.score }}
+        </p>
+        <p class="text-xl md:text-3xl text-gray-300 mb-12 md:mb-16 mt-6 md:mt-8 leading-relaxed">
+          关卡: {{ gameState.level }}
+        </p>
+        <div class="mt-8 md:mt-12">
+          <el-button type="primary" size="large" @click="restartGame" class="text-xl md:text-2xl px-16 py-10 rounded-2xl shadow-2xl">
+            🔄 再看一次
+          </el-button>
+        </div>
       </div>
     </div>
 
-    <div v-if="gameState.isPlaying" class="absolute top-6 left-6 right-6 flex justify-between items-start gap-6 z-10">
-      <div class="bg-black bg-opacity-60 rounded-2xl p-5 shadow-xl backdrop-blur-sm">
-        <p class="text-white text-xl md:text-2xl font-bold mb-2">机器人得分: {{ gameState.score }}</p>
-        <p class="text-yellow-400 text-base md:text-lg">关卡: {{ gameState.level }}</p>
+    <div v-if="gameState.isPlaying" class="absolute top-8 left-8 right-8 flex justify-between items-start gap-8 z-10">
+      <div class="bg-black bg-opacity-60 rounded-2xl p-6 md:p-8 shadow-xl backdrop-blur-sm">
+        <p class="text-white text-xl md:text-3xl font-bold mb-4 md:mb-6 leading-tight">
+          机器人得分: {{ gameState.score }}
+        </p>
+        <p class="text-yellow-400 text-base md:text-xl mt-4 md:mt-6 leading-relaxed">
+          关卡: {{ gameState.level }}
+        </p>
       </div>
-      <div class="bg-black bg-opacity-60 rounded-2xl p-5 shadow-xl backdrop-blur-sm">
-        <p class="text-purple-400 text-xl md:text-2xl font-bold mb-2">能量: {{ robot.health }}</p>
-        <p class="text-blue-300 text-base md:text-lg">目标: {{ gameState.coinsCollected }}/{{ totalCoins }}</p>
+      <div class="bg-black bg-opacity-60 rounded-2xl p-6 md:p-8 shadow-xl backdrop-blur-sm">
+        <p class="text-purple-400 text-xl md:text-3xl font-bold mb-4 md:mb-6 leading-tight">
+          能量: {{ robot.health }}
+        </p>
+        <p class="text-blue-300 text-base md:text-xl mt-4 md:mt-6 leading-relaxed">
+          目标: {{ gameState.coinsCollected }}/{{ totalCoins }}
+        </p>
       </div>
     </div>
 
-    <div v-if="gameState.isPlaying" class="absolute top-6 left-1/2 transform -translate-x-1/2 bg-blue-600 bg-opacity-80 rounded-xl px-6 py-3 z-10 shadow-lg backdrop-blur-sm">
-      <p class="text-white text-base md:text-lg font-bold">🤖 机器人模式运行中...</p>
+    <div v-if="gameState.isPlaying" class="absolute top-8 left-1/2 transform -translate-x-1/2 bg-blue-600 bg-opacity-80 rounded-xl px-8 py-5 z-10 shadow-lg backdrop-blur-sm">
+      <p class="text-white text-lg md:text-xl font-bold leading-relaxed">
+        🤖 机器人模式运行中...
+      </p>
     </div>
   </div>
 </template>
