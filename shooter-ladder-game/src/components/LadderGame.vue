@@ -6,50 +6,54 @@
       class="w-full h-full"
     />
 
+    <router-link 
+      to="/" 
+      class="absolute top-6 left-6 z-20 bg-gray-800 bg-opacity-80 text-white px-6 py-3 rounded-xl hover:bg-gray-700 transition-all duration-300 shadow-lg text-base font-medium"
+      v-if="!gameState.isPlaying"
+    >
+      ← 返回菜单
+    </router-link>
+
     <div v-if="!gameState.isPlaying && !gameState.isGameOver" 
-         class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-80 z-10">
-      <h1 class="text-4xl font-bold text-white mb-4">梯子游戏</h1>
-      <p class="text-gray-300 mb-2 text-center px-4">机器人正在准备攀登...</p>
-      <p class="text-yellow-400 mb-8 text-center px-4">观察机器人如何自动收集金币并到达顶部！</p>
-      <el-button type="primary" size="large" @click="startGame" class="text-lg px-8 py-4">
-        开始观察
-      </el-button>
+         class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-85 z-10">
+      <div class="text-center px-8">
+        <h1 class="text-5xl md:text-6xl font-bold text-white mb-6 drop-shadow-2xl">梯子游戏</h1>
+        <p class="text-xl md:text-2xl text-gray-300 mb-4 text-center">机器人正在准备攀登...</p>
+        <p class="text-xl md:text-2xl text-yellow-400 mb-12 text-center">观察机器人如何自动收集金币并到达顶部！</p>
+        <el-button type="primary" size="large" @click="startGame" class="text-xl px-12 py-8 rounded-2xl shadow-2xl">
+          🤖 开始观察
+        </el-button>
+      </div>
     </div>
 
     <div v-if="gameState.isGameOver" 
-         class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-80 z-10">
-      <h1 class="text-4xl font-bold" :class="gameState.won ? 'text-green-500' : 'text-red-500'" mb-4>
-        {{ gameState.won ? '任务完成！' : '游戏结束' }}
-      </h1>
-      <p class="text-2xl text-white mb-2">最终得分: {{ gameState.score }}</p>
-      <p class="text-lg text-gray-300 mb-8">关卡: {{ gameState.level }}</p>
-      <el-button type="primary" size="large" @click="restartGame" class="text-lg px-8 py-4">
-        再看一次
-      </el-button>
-    </div>
-
-    <div v-if="gameState.isPlaying" class="absolute top-4 left-4 right-4 flex justify-between items-start z-10">
-      <div class="bg-black bg-opacity-50 rounded-lg p-3">
-        <p class="text-white text-lg font-bold">机器人得分: {{ gameState.score }}</p>
-        <p class="text-yellow-400 text-sm">关卡: {{ gameState.level }}</p>
-      </div>
-      <div class="bg-black bg-opacity-50 rounded-lg p-3">
-        <p class="text-purple-400 text-lg font-bold">能量: {{ robot.health }}</p>
-        <p class="text-blue-300 text-sm">目标: {{ gameState.coinsCollected }}/{{ totalCoins }}</p>
+         class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-85 z-10">
+      <div class="text-center px-8">
+        <h1 class="text-5xl md:text-6xl font-bold mb-8 drop-shadow-2xl" :class="gameState.won ? 'text-green-500' : 'text-red-500'">
+          {{ gameState.won ? '🎉 任务完成！' : '💔 游戏结束' }}
+        </h1>
+        <p class="text-3xl md:text-4xl text-white mb-4">最终得分: {{ gameState.score }}</p>
+        <p class="text-xl md:text-2xl text-gray-300 mb-12">关卡: {{ gameState.level }}</p>
+        <el-button type="primary" size="large" @click="restartGame" class="text-xl px-12 py-8 rounded-2xl shadow-2xl">
+          🔄 再看一次
+        </el-button>
       </div>
     </div>
 
-    <div v-if="gameState.isPlaying" class="absolute top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 bg-opacity-70 rounded-lg px-4 py-2 z-10">
-      <p class="text-white text-sm font-bold">🤖 机器人模式运行中...</p>
+    <div v-if="gameState.isPlaying" class="absolute top-6 left-6 right-6 flex justify-between items-start gap-6 z-10">
+      <div class="bg-black bg-opacity-60 rounded-2xl p-5 shadow-xl backdrop-blur-sm">
+        <p class="text-white text-xl md:text-2xl font-bold mb-2">机器人得分: {{ gameState.score }}</p>
+        <p class="text-yellow-400 text-base md:text-lg">关卡: {{ gameState.level }}</p>
+      </div>
+      <div class="bg-black bg-opacity-60 rounded-2xl p-5 shadow-xl backdrop-blur-sm">
+        <p class="text-purple-400 text-xl md:text-2xl font-bold mb-2">能量: {{ robot.health }}</p>
+        <p class="text-blue-300 text-base md:text-lg">目标: {{ gameState.coinsCollected }}/{{ totalCoins }}</p>
+      </div>
     </div>
 
-    <router-link 
-      to="/" 
-      class="absolute bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 bg-opacity-70 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors z-20"
-      v-if="!gameState.isPlaying"
-    >
-      返回菜单
-    </router-link>
+    <div v-if="gameState.isPlaying" class="absolute top-6 left-1/2 transform -translate-x-1/2 bg-blue-600 bg-opacity-80 rounded-xl px-6 py-3 z-10 shadow-lg backdrop-blur-sm">
+      <p class="text-white text-base md:text-lg font-bold">🤖 机器人模式运行中...</p>
+    </div>
   </div>
 </template>
 
