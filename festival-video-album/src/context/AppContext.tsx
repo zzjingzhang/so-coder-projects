@@ -3,10 +3,10 @@ import type {
   AppState, 
   UploadedImage, 
   GenerationConfig, 
-  ProcessingStep, 
   VideoTask
 } from '../types/index';
 import { 
+  ProcessingStep,
   HolidayTheme,
   VideoStyle
 } from '../types/index';
