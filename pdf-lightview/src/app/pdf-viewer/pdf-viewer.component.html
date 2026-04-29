@@ -1,0 +1,189 @@
+<div class="min-h-screen bg-gray-50 dark:bg-dark-bg transition-colors duration-300">
+  <!-- Header -->
+  <header class="bg-white dark:bg-dark-surface shadow-md p-4 sticky top-0 z-10">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <h1 class="text-2xl font-bold text-blue-600 dark:text-blue-400 flex items-center gap-2">
+        <i class="pi pi-file-pdf text-3xl"></i>
+        PDF LightView
+      </h1>
+      <div class="flex items-center gap-3">
+        <span class="text-sm text-gray-600 dark:text-gray-300">{{ isDarkMode ? '暗模式' : '亮模式' }}</span>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" [(ngModel)]="isDarkMode" (change)="toggleDarkMode()" class="sr-only peer">
+          <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto p-4">
+    <!-- Error Message -->
+    @if (errorMessage) {
+      <div class="mb-4 p-3 bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-300 rounded-lg flex items-center gap-2">
+        <i class="pi pi-exclamation-triangle"></i>
+        {{ errorMessage }}
+      </div>
+    }
+
+    <!-- Upload Section -->
+    <div class="bg-white dark:bg-dark-surface rounded-lg shadow-md p-6 mb-6">
+      <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white flex items-center gap-2">
+        <i class="pi pi-upload"></i>
+        加载PDF文件
+      </h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- File Upload -->
+        <div>
+          <h3 class="text-md font-medium mb-2 text-gray-700 dark:text-gray-300 flex items-center gap-2">
+            <i class="pi pi-folder-open"></i>
+            从本地上传
+          </h3>
+          <div class="relative">
+            <input 
+              type="file" 
+              id="fileInput" 
+              accept=".pdf" 
+              (change)="onFileSelected($event)"
+              class="hidden"
+            >
+            <label 
+              for="fileInput" 
+              class="flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg cursor-pointer transition-colors duration-200 w-full"
+            >
+              <i class="pi pi-upload"></i>
+              选择PDF文件
+            </label>
+          </div>
+        </div>
+
+        <!-- URL Input -->
+        <div>
+          <h3 class="text-md font-medium mb-2 text-gray-700 dark:text-gray-300 flex items-center gap-2">
+            <i class="pi pi-link"></i>
+            从URL加载
+          </h3>
+          <div class="flex gap-2">
+            <input 
+              type="text" 
+              placeholder="输入PDF URL" 
+              [(ngModel)]="pdfUrl"
+              class="flex-grow px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-dark-surface text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+              (keyup.enter)="loadPdfFromUrl()"
+            >
+            <button 
+              (click)="loadPdfFromUrl()"
+              class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2"
+            >
+              <i class="pi pi-download"></i>
+              加载
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Indicator -->
+    @if (isLoading) {
+      <div class="flex justify-center items-center py-12">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    }
+
+    <!-- PDF Viewer -->
+    @if (hasPdfLoaded() && !isLoading) {
+      <div class="bg-white dark:bg-dark-surface rounded-lg shadow-md p-6">
+        <!-- Controls -->
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
+          <!-- Navigation Controls -->
+          <div class="flex items-center gap-2">
+            <button 
+              (click)="goToPreviousPage()"
+              [disabled]="getCurrentPage() <= 1"
+              class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
+            >
+              <i class="pi pi-chevron-left"></i>
+            </button>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300 px-3 py-1 bg-white dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600">
+              {{ getCurrentPage() }} / {{ getTotalPages() }}
+            </span>
+            <button 
+              (click)="goToNextPage()"
+              [disabled]="getCurrentPage() >= getTotalPages()"
+              class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
+            >
+              <i class="pi pi-chevron-right"></i>
+            </button>
+          </div>
+
+          <!-- Zoom Controls -->
+          <div class="flex items-center gap-2">
+            <button 
+              (click)="zoomOut()"
+              [disabled]="getScale() <= 0.25"
+              class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
+            >
+              <i class="pi pi-minus"></i>
+            </button>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300 px-3 py-1 bg-white dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600">
+              {{ (getScale() * 100).toFixed(0) }}%
+            </span>
+            <button 
+              (click)="zoomIn()"
+              [disabled]="getScale() >= 3.0"
+              class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
+            >
+              <i class="pi pi-plus"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- PDF Canvas -->
+        <div class="flex justify-center overflow-auto max-h-[70vh] bg-gray-200 dark:bg-gray-700 rounded-lg p-4">
+          <canvas #pdfCanvas class="shadow-lg"></canvas>
+        </div>
+      </div>
+    }
+
+    <!-- Welcome Message -->
+    @if (!hasPdfLoaded() && !isLoading) {
+      <div class="bg-white dark:bg-dark-surface rounded-lg shadow-md p-12 text-center">
+        <i class="pi pi-file-pdf text-6xl text-blue-500 mb-4"></i>
+        <h2 class="text-2xl font-bold mb-2 text-gray-800 dark:text-white">欢迎使用PDF LightView</h2>
+        <p class="text-gray-600 dark:text-gray-300 mb-6">
+          请上传PDF文件或输入PDF URL来开始查看
+        </p>
+        <div class="mt-6 space-y-3 text-left max-w-md mx-auto bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+          <div class="flex items-center gap-3">
+            <i class="pi pi-check-circle text-green-500 text-xl"></i>
+            <span class="text-gray-600 dark:text-gray-300">支持从本地文件上传PDF</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <i class="pi pi-check-circle text-green-500 text-xl"></i>
+            <span class="text-gray-600 dark:text-gray-300">支持从URL加载PDF</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <i class="pi pi-check-circle text-green-500 text-xl"></i>
+            <span class="text-gray-600 dark:text-gray-300">支持页面导航（上一页/下一页）</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <i class="pi pi-check-circle text-green-500 text-xl"></i>
+            <span class="text-gray-600 dark:text-gray-300">支持缩放功能（放大/缩小）</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <i class="pi pi-check-circle text-green-500 text-xl"></i>
+            <span class="text-gray-600 dark:text-gray-300">支持暗模式切换</span>
+          </div>
+        </div>
+      </div>
+    }
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white dark:bg-dark-surface shadow-inner p-4 mt-8">
+    <div class="max-w-7xl mx-auto text-center text-sm text-gray-600 dark:text-gray-400">
+      PDF LightView - 轻量级PDF查看器 Web 应用程序
+    </div>
+  </footer>
+</div>

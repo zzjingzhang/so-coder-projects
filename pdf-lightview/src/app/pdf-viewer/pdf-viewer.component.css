@@ -1,0 +1,79 @@
+/* Custom styles for PDF Viewer Component */
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* Ensure smooth transitions for dark mode */
+.bg-gray-50,
+.bg-white,
+.bg-dark-bg,
+.bg-dark-surface,
+.text-gray-600,
+.text-gray-700,
+.text-gray-800,
+.text-dark-text,
+.text-blue-600,
+.text-blue-400 {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom scrollbar for PDF container */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #6b7280;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* File Upload custom styles */
+.p-fileupload .p-button {
+  width: 100% !important;
+}
+
+/* PrimeNG Input Switch custom styles */
+.p-inputswitch {
+  vertical-align: middle;
+}
+
+.dark .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
+  background: #3b82f6;
+}
+
+.dark .p-inputswitch .p-inputswitch-slider {
+  background: #4b5563;
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
