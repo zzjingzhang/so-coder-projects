@@ -1,4 +1,5 @@
-import { HolidayTheme, VideoStyle, ProcessingStep, VideoTask } from '../types';
+import type { VideoTask } from '../types/index';
+import { HolidayTheme, VideoStyle, ProcessingStep } from '../types/index';
 
 // 主题和样式的提示词配置
 const themePrompts: Record<HolidayTheme, string> = {

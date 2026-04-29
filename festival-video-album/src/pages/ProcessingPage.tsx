@@ -8,7 +8,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
-import { ProcessingStep } from '../types';
+import { ProcessingStep } from '../types/index';
 import { 
   analyzePhotos, 
   submitVideoTask, 

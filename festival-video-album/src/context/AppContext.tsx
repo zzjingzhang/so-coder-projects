@@ -1,13 +1,15 @@
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
-import { 
+import type { 
   AppState, 
   UploadedImage, 
   GenerationConfig, 
   ProcessingStep, 
-  VideoTask,
+  VideoTask
+} from '../types/index';
+import { 
   HolidayTheme,
   VideoStyle
-} from '../types';
+} from '../types/index';
 
 // 初始状态
 const initialState: AppState = {

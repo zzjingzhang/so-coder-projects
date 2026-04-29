@@ -10,7 +10,8 @@ import {
   Check
 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
-import { HolidayTheme, VideoStyle, UploadedImage } from '../types';
+import type { UploadedImage } from '../types/index';
+import { HolidayTheme, VideoStyle } from '../types/index';
 
 const holidayThemes = [
   { 
