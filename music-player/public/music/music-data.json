@@ -1,0 +1,56 @@
+[
+  {
+    "id": "1",
+    "title": "Dreamy Vibes",
+    "artist": "Ambient Sounds",
+    "album": "Chill Collection",
+    "duration": 245,
+    "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+    "coverUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=abstract%20musical%20album%20cover%20with%20colorful%20sound%20waves%20and%20notes&image_size=square_hd"
+  },
+  {
+    "id": "2",
+    "title": "Electronic Dreams",
+    "artist": "Synth Master",
+    "album": "Digital Era",
+    "duration": 198,
+    "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+    "coverUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=neon%20electronic%20music%20album%20cover%20with%20glowing%20synthesizer&image_size=square_hd"
+  },
+  {
+    "id": "3",
+    "title": "Jazz Evening",
+    "artist": "Smooth Trio",
+    "album": "Night Sessions",
+    "duration": 312,
+    "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+    "coverUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=warm%20jazz%20club%20scene%20with%20saxophone%20piano%20and%20double%20bass&image_size=square_hd"
+  },
+  {
+    "id": "4",
+    "title": "Rock Anthem",
+    "artist": "Electric Band",
+    "album": "Power Chords",
+    "duration": 276,
+    "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+    "coverUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=electric%20guitar%20on%20stage%20with%20spotlights%20rock%20concert%20vibe&image_size=square_hd"
+  },
+  {
+    "id": "5",
+    "title": "Classical Morning",
+    "artist": "Orchestra Ensemble",
+    "album": "Morning Melodies",
+    "duration": 420,
+    "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+    "coverUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=elegant%20classical%20orchestra%20conductor%20with%20violins%20and%20cellos&image_size=square_hd"
+  },
+  {
+    "id": "6",
+    "title": "Hip Hop Beats",
+    "artist": "Urban Flow",
+    "album": "Street Rhythms",
+    "duration": 234,
+    "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+    "coverUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=urban%20hip%20hop%20street%20art%20with%20graffiti%20and%20turntables&image_size=square_hd"
+  }
+]
