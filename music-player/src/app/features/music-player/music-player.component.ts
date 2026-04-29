@@ -44,7 +44,7 @@ import { formatTime, cn } from '../../shared/utils';
               )"
             >
               <img 
-                [src]="currentSong()?.coverUrl || 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=default%20music%20album%20cover%20with%20musical%20notes&image_size=square_hd'" 
+                [src]="currentSong()?.coverUrl || 'https://picsum.photos/seed/default/400/400'" 
                 [alt]="currentSong()?.title || 'Album Cover'"
                 class="w-full h-full object-cover"
               />

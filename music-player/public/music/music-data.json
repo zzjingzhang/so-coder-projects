@@ -6,7 +6,7 @@
     "album": "Chill Collection",
     "duration": 245,
     "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-    "coverUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=abstract%20musical%20album%20cover%20with%20colorful%20sound%20waves%20and%20notes&image_size=square_hd"
+    "coverUrl": "https://picsum.photos/seed/music1/400/400"
   },
   {
     "id": "2",
@@ -15,7 +15,7 @@
     "album": "Digital Era",
     "duration": 198,
     "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-    "coverUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=neon%20electronic%20music%20album%20cover%20with%20glowing%20synthesizer&image_size=square_hd"
+    "coverUrl": "https://picsum.photos/seed/music2/400/400"
   },
   {
     "id": "3",
@@ -24,7 +24,7 @@
     "album": "Night Sessions",
     "duration": 312,
     "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
-    "coverUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=warm%20jazz%20club%20scene%20with%20saxophone%20piano%20and%20double%20bass&image_size=square_hd"
+    "coverUrl": "https://picsum.photos/seed/music3/400/400"
   },
   {
     "id": "4",
@@ -33,7 +33,7 @@
     "album": "Power Chords",
     "duration": 276,
     "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
-    "coverUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=electric%20guitar%20on%20stage%20with%20spotlights%20rock%20concert%20vibe&image_size=square_hd"
+    "coverUrl": "https://picsum.photos/seed/music4/400/400"
   },
   {
     "id": "5",
@@ -42,7 +42,7 @@
     "album": "Morning Melodies",
     "duration": 420,
     "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
-    "coverUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=elegant%20classical%20orchestra%20conductor%20with%20violins%20and%20cellos&image_size=square_hd"
+    "coverUrl": "https://picsum.photos/seed/music5/400/400"
   },
   {
     "id": "6",
@@ -51,6 +51,6 @@
     "album": "Street Rhythms",
     "duration": 234,
     "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
-    "coverUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=urban%20hip%20hop%20street%20art%20with%20graffiti%20and%20turntables&image_size=square_hd"
+    "coverUrl": "https://picsum.photos/seed/music6/400/400"
   }
 ]

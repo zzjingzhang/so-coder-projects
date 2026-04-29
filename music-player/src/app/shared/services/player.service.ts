@@ -118,21 +118,25 @@ export class PlayerService {
       currentSong: song, 
       currentIndex,
       error: null,
-      isLoading: true 
+      isLoading: true,
+      isPlaying: false
     }));
     
     this.audio.src = song.audioUrl;
     this.audio.load();
-    this.audio.play().catch(err => {
-      console.error('Playback error:', err);
-      this.state.update(s => ({ 
-        ...s, 
-        isLoading: false,
-        error: '播放失败，请尝试其他歌曲' 
-      }));
-    });
-    
-    this.state.update(s => ({ ...s, isPlaying: true }));
+    this.audio.play()
+      .then(() => {
+        this.state.update(s => ({ ...s, isPlaying: true, isLoading: false }));
+      })
+      .catch(err => {
+        console.error('Playback error:', err);
+        this.state.update(s => ({ 
+          ...s, 
+          isPlaying: false,
+          isLoading: false,
+          error: '自动播放被阻止，请点击播放按钮开始播放' 
+        }));
+      });
   }
 
   togglePlay(): void {
