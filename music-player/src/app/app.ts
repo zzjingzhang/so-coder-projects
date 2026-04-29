@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
 import { PlayerService } from './shared/services';
 import { MusicPlayerComponent } from './features/music-player/music-player.component';
 import { PlaylistSidebarComponent } from './features/playlist-sidebar/playlist-sidebar.component';
@@ -8,7 +7,7 @@ import { PlaylistSidebarComponent } from './features/playlist-sidebar/playlist-s
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, MusicPlayerComponent, PlaylistSidebarComponent],
+  imports: [CommonModule, MusicPlayerComponent, PlaylistSidebarComponent],
   template: `
     <div class="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-300">
       <div class="fixed inset-0 overflow-hidden pointer-events-none">

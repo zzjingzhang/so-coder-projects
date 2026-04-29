@@ -1,7 +1,5 @@
 import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
-import { SliderModule } from 'primeng/slider';
 import { PlayerService } from '../../shared/services';
 import { PlayMode } from '../../shared/types';
 import { formatTime, cn } from '../../shared/utils';
@@ -9,7 +7,7 @@ import { formatTime, cn } from '../../shared/utils';
 @Component({
   selector: 'app-music-player',
   standalone: true,
-  imports: [CommonModule, ButtonModule, SliderModule],
+  imports: [CommonModule],
   template: `
     <div class="w-full max-w-2xl mx-auto">
       <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-3xl shadow-2xl p-6 md:p-8 animate-fade-in">
@@ -46,8 +44,8 @@ import { formatTime, cn } from '../../shared/utils';
               )"
             >
               <img 
-                [src]="currentSong?.coverUrl || 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=default%20music%20album%20cover%20with%20musical%20notes&image_size=square_hd'" 
-                [alt]="currentSong?.title || 'Album Cover'"
+                [src]="currentSong()?.coverUrl || 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=default%20music%20album%20cover%20with%20musical%20notes&image_size=square_hd'" 
+                [alt]="currentSong()?.title || 'Album Cover'"
                 class="w-full h-full object-cover"
               />
             </div>
@@ -62,13 +60,13 @@ import { formatTime, cn } from '../../shared/utils';
 
         <div class="text-center mb-6">
           <h2 class="text-2xl font-bold text-gray-800 dark:text-white truncate">
-            {{ currentSong?.title || '未选择歌曲' }}
+            {{ currentSong()?.title || '未选择歌曲' }}
           </h2>
           <p class="text-gray-500 dark:text-gray-400 truncate">
-            {{ currentSong?.artist || '---' }}
+            {{ currentSong()?.artist || '---' }}
           </p>
           <p class="text-sm text-gray-400 dark:text-gray-500 truncate">
-            {{ currentSong?.album || '---' }}
+            {{ currentSong()?.album || '---' }}
           </p>
         </div>
 
@@ -102,7 +100,7 @@ import { formatTime, cn } from '../../shared/utils';
           <button 
             (click)="playerService.togglePlayMode()"
             class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            [title]="playModeLabel"
+            [title]="playModeLabel()"
           >
             <svg *ngIf="playerService.playMode() === PlayMode.LIST" class="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -128,7 +126,7 @@ import { formatTime, cn } from '../../shared/utils';
 
           <button 
             (click)="playerService.togglePlay()"
-            [disabled]="!currentSong"
+            [disabled]="!currentSong()"
             class="p-4 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <svg *ngIf="!playerService.isPlaying()" class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -184,11 +182,11 @@ import { formatTime, cn } from '../../shared/utils';
             />
           </div>
           <span class="text-sm text-gray-500 dark:text-gray-400 w-12 text-right">
-            {{ volumePercent }}%
+            {{ volumePercent() }}%
           </span>
         </div>
 
-        <div *ngIf="playerService.isPlaying() && currentSong" class="flex justify-center gap-1 mt-6">
+        <div *ngIf="playerService.isPlaying() && currentSong()" class="flex justify-center gap-1 mt-6">
           <div class="w-1 bg-gradient-to-t from-primary-500 to-accent-500 rounded-full animate-music-bar-1"></div>
           <div class="w-1 bg-gradient-to-t from-primary-500 to-accent-500 rounded-full animate-music-bar-2"></div>
           <div class="w-1 bg-gradient-to-t from-primary-500 to-accent-500 rounded-full animate-music-bar-3"></div>
