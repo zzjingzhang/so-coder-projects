@@ -1,0 +1,307 @@
+<div class="min-h-screen py-8 px-4">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-8">
+      <h1 class="text-4xl md:text-5xl font-bold text-white mb-3">
+        <span class="gradient-text">Ring Sizer</span>
+      </h1>
+      <p class="text-lg text-white/80 max-w-2xl mx-auto">
+        Find your perfect ring size across multiple measurement systems: US, UK, Europe, Japan, and China
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div class="space-y-6">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <div class="flex items-center gap-3">
+                <i class="pi pi-cog text-2xl"></i>
+                <span class="text-xl font-semibold">Input Your Measurement</span>
+              </div>
+            </div>
+          </ng-template>
+
+          <div class="space-y-6">
+            <div class="flex flex-wrap gap-2">
+              @for (mode of inputModes; track mode.id) {
+                <button
+                  pButton
+                  type="button"
+                  [label]="mode.label"
+                  [icon]="mode.icon"
+                  [class]="inputMode === mode.id ? 'p-button-primary' : 'p-button-outlined p-button-secondary'"
+                  (click)="setInputMode(mode.id)"
+                ></button>
+              }
+            </div>
+
+            <div class="space-y-4">
+              @if (inputMode === 'circumference') {
+                <div>
+                  <label class="input-label">
+                    Finger Circumference (mm)
+                  </label>
+                  <p-inputNumber
+                    [(ngModel)]="circumference"
+                    [min]="41"
+                    [max]="72"
+                    [step]="0.5"
+                    [showButtons]="true"
+                    buttonLayout="horizontal"
+                    incrementButtonIcon="pi pi-plus"
+                    decrementButtonIcon="pi pi-minus"
+                    (onInput)="onCircumferenceChange()"
+                  ></p-inputNumber>
+                  <p class="text-sm text-gray-500 mt-2">
+                    Measure around your finger where the ring will sit
+                  </p>
+                </div>
+              }
+
+              @if (inputMode === 'diameter') {
+                <div>
+                  <label class="input-label">
+                    Ring Diameter (mm)
+                  </label>
+                  <p-inputNumber
+                    [(ngModel)]="diameter"
+                    [min]="13"
+                    [max]="23"
+                    [step]="0.1"
+                    [showButtons]="true"
+                    buttonLayout="horizontal"
+                    incrementButtonIcon="pi pi-plus"
+                    decrementButtonIcon="pi pi-minus"
+                    (onInput)="onDiameterChange()"
+                  ></p-inputNumber>
+                  <p class="text-sm text-gray-500 mt-2">
+                    Enter the inner diameter of a ring that fits you
+                  </p>
+                </div>
+              }
+
+              @if (inputMode === 'size') {
+                <div class="space-y-4">
+                  <div>
+                    <label class="input-label">
+                      Measurement System
+                    </label>
+                    <p-select
+                      [options]="systemOptions"
+                      [(ngModel)]="selectedSystem"
+                      optionLabel="label"
+                      optionValue="value"
+                      placeholder="Select a system"
+                      (onChange)="onSystemChange()"
+                    ></p-select>
+                  </div>
+                  <div>
+                    <label class="input-label">
+                      Ring Size
+                    </label>
+                    <p-select
+                      [options]="availableSizes"
+                      [(ngModel)]="selectedSize"
+                      optionLabel="label"
+                      optionValue="value"
+                      placeholder="Select your size"
+                      (onChange)="onSizeChange()"
+                    ></p-select>
+                  </div>
+                </div>
+              }
+            </div>
+
+            @if (convertedSizes) {
+              <p-divider></p-divider>
+              
+              <div class="grid grid-cols-2 gap-4">
+                <div class="bg-gray-50 rounded-lg p-4 text-center">
+                  <p class="text-sm text-gray-500 mb-1">Circumference</p>
+                  <p class="text-xl font-bold text-gray-700">{{ convertedSizes.circumference.toFixed(1) }} mm</p>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4 text-center">
+                  <p class="text-sm text-gray-500 mb-1">Diameter</p>
+                  <p class="text-xl font-bold text-gray-700">{{ convertedSizes.diameter.toFixed(2) }} mm</p>
+                </div>
+              </div>
+            }
+          </div>
+        </p-card>
+
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <div class="flex items-center gap-3">
+                <i class="pi pi-eye text-2xl"></i>
+                <span class="text-xl font-semibold">Preview</span>
+              </div>
+            </div>
+          </ng-template>
+
+          <div class="flex justify-center items-center py-4">
+            <div class="ring-preview">
+              <svg viewBox="0 0 200 200" class="hand-svg">
+                <path
+                  d="M60 180 Q55 150 50 120 Q45 100 50 80 Q55 60 70 55 Q85 50 100 55 Q115 60 120 80 Q125 100 120 120 Q115 150 110 180 Z"
+                  fill="#f5d0c5"
+                  stroke="#e8b8a8"
+                  stroke-width="2"
+                />
+                
+                <ellipse
+                  cx="85"
+                  cy="130"
+                  rx="8"
+                  ry="5"
+                  fill="none"
+                  stroke="#e0a898"
+                  stroke-width="1"
+                  opacity="0.5"
+                />
+                <ellipse
+                  cx="110"
+                  cy="130"
+                  rx="8"
+                  ry="5"
+                  fill="none"
+                  stroke="#e0a898"
+                  stroke-width="1"
+                  opacity="0.5"
+                />
+                
+                <circle
+                  cx="100"
+                  cy="100"
+                  [attr.r]="previewOuterRadius"
+                  class="ring-circle glow-effect"
+                />
+                <circle
+                  cx="100"
+                  cy="100"
+                  [attr.r]="previewInnerRadius"
+                  class="ring-circle"
+                />
+                <circle
+                  cx="100"
+                  cy="100"
+                  [attr.r]="previewInnerRadius"
+                  class="ring-inner"
+                />
+                
+                <path
+                  d="M100 100 L100 85"
+                  stroke="none"
+                />
+              </svg>
+            </div>
+          </div>
+          
+          <p class="text-center text-sm text-gray-500">
+            Visual representation of ring size on your finger
+          </p>
+        </p-card>
+      </div>
+
+      <div class="space-y-6">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <div class="flex items-center gap-3">
+                <i class="pi pi-exchange text-2xl"></i>
+                <span class="text-xl font-semibold">Equivalent Sizes</span>
+              </div>
+            </div>
+          </ng-template>
+
+          @if (convertedSizes) {
+            <div class="space-y-4">
+              @for (system of systems; track system) {
+                <div class="flex items-center justify-between p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors">
+                  <div class="flex items-center gap-3">
+                    <span class="size-chip text-white" [ngClass]="getSystemColor(system)">
+                      {{ getSystemLabel(system) }}
+                    </span>
+                  </div>
+                  <div class="text-right">
+                    @if (getSizeValue(system) !== null) {
+                      <span class="text-2xl font-bold text-gray-800">
+                        {{ getSizeValue(system) }}
+                      </span>
+                    } @else {
+                      <span class="text-gray-400 text-sm">
+                        N/A
+                      </span>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="text-center py-8 text-gray-400">
+              <i class="pi pi-info-circle text-4xl mb-2"></i>
+              <p>Enter your measurements to see converted sizes</p>
+            </div>
+          }
+        </p-card>
+
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <div class="flex items-center gap-3">
+                <i class="pi pi-info-circle text-2xl"></i>
+                <span class="text-xl font-semibold">How to Measure</span>
+              </div>
+            </div>
+          </ng-template>
+
+          <div class="space-y-4">
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-bold flex-shrink-0">
+                1
+              </div>
+              <div>
+                <p class="font-semibold text-gray-700">Use a String or Paper</p>
+                <p class="text-sm text-gray-500">Wrap a piece of string or paper around your finger at the widest point (usually the knuckle).</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-bold flex-shrink-0">
+                2
+              </div>
+              <div>
+                <p class="font-semibold text-gray-700">Mark the Measurement</p>
+                <p class="text-sm text-gray-500">Mark where the string/paper meets, then measure the length in millimeters.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-bold flex-shrink-0">
+                3
+              </div>
+              <div>
+                <p class="font-semibold text-gray-700">Consider the Fit</p>
+                <p class="text-sm text-gray-500">The ring should slide on with slight resistance and come off with some effort. Consider going up half a size if between sizes.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-bold flex-shrink-0">
+                4
+              </div>
+              <div>
+                <p class="font-semibold text-gray-700">Measure Multiple Times</p>
+                <p class="text-sm text-gray-500">Fingers can swell throughout the day. Measure a few times for accuracy, especially in the evening.</p>
+              </div>
+            </div>
+          </div>
+        </p-card>
+      </div>
+    </div>
+
+    <div class="mt-8 text-center text-white/60 text-sm">
+      <p>Ring sizing may vary slightly between manufacturers. Always confirm with a professional jeweler for important purchases.</p>
+    </div>
+  </div>
+</div>
