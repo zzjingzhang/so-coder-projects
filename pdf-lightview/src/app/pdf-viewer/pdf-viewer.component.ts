@@ -56,7 +56,8 @@ export class PdfViewerComponent implements OnInit {
     const files = inputElement.files;
     if (files && files.length > 0) {
       const file = files[0];
-      if (file.type === 'application/pdf') {
+      const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+      if (isPdf) {
         this.loadPdfFromFile(file);
       } else {
         this.errorMessage = '请选择有效的PDF文件';

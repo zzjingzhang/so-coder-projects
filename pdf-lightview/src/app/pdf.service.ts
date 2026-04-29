@@ -10,20 +10,30 @@ export class PdfService {
   private scale: number = 1.0;
 
   constructor() {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs`;
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.7.284/pdf.worker.min.mjs`;
   }
 
   async loadPdfFromFile(file: File): Promise<void> {
-    const arrayBuffer = await file.arrayBuffer();
-    this.pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-    this.currentPage = 1;
-    this.scale = 1.0;
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      this.pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      this.currentPage = 1;
+      this.scale = 1.0;
+    } catch (error) {
+      console.error('Error loading PDF from file:', error);
+      throw error;
+    }
   }
 
   async loadPdfFromUrl(url: string): Promise<void> {
-    this.pdfDoc = await pdfjsLib.getDocument(url).promise;
-    this.currentPage = 1;
-    this.scale = 1.0;
+    try {
+      this.pdfDoc = await pdfjsLib.getDocument(url).promise;
+      this.currentPage = 1;
+      this.scale = 1.0;
+    } catch (error) {
+      console.error('Error loading PDF from URL:', error);
+      throw error;
+    }
   }
 
   async renderPage(canvas: HTMLCanvasElement): Promise<void> {
