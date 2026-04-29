@@ -71,6 +71,36 @@ const theme = extendTheme({
         focusBorderColor: 'blue.500',
       },
     },
+    Tabs: {
+      variants: {
+        enclosed: {
+          tab: {
+            color: 'gray.600',
+            _selected: {
+              color: 'blue.600',
+              bg: 'white',
+              borderColor: 'inherit',
+              borderBottomColor: 'white',
+            },
+            _dark: {
+              color: 'gray.400',
+              _selected: {
+                color: 'blue.400',
+                bg: 'gray.800',
+                borderColor: 'gray.700',
+                borderBottomColor: 'gray.800',
+              },
+            },
+          },
+          tablist: {
+            borderColor: 'gray.200',
+            _dark: {
+              borderColor: 'gray.700',
+            },
+          },
+        },
+      },
+    },
   },
 })
 

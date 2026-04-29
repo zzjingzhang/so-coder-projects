@@ -5,6 +5,7 @@ export const Header = ({ onToggleSidebar, ...props }) => {
   const { colorMode, toggleColorMode } = useColorMode()
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
+  const headingColor = useColorModeValue('gray.800', 'white')
 
   return (
     <Box
@@ -25,12 +26,13 @@ export const Header = ({ onToggleSidebar, ...props }) => {
             <IconButton
               icon={<HamburgerIcon />}
               variant="ghost"
+              color={headingColor}
               aria-label="Toggle sidebar"
               onClick={onToggleSidebar}
               display={{ base: 'flex', lg: 'none' }}
             />
           </Tooltip>
-          <Heading as="h1" size="md">
+          <Heading as="h1" size="md" color={headingColor}>
             📱 NumberVerify
           </Heading>
         </Flex>
