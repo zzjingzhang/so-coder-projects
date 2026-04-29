@@ -1,11 +1,5 @@
 @import "tailwindcss";
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow-x: hidden;
@@ -16,4 +10,59 @@ body {
 #app {
   width: 100%;
   min-height: 100svh;
+}
+
+/* 自定义间距类 - 确保间距生效 */
+.spacing-t-2 { margin-top: 8px !important; }
+.spacing-t-4 { margin-top: 16px !important; }
+.spacing-t-6 { margin-top: 24px !important; }
+.spacing-t-8 { margin-top: 32px !important; }
+.spacing-t-10 { margin-top: 40px !important; }
+.spacing-t-12 { margin-top: 48px !important; }
+.spacing-t-16 { margin-top: 64px !important; }
+.spacing-t-20 { margin-top: 80px !important; }
+
+.spacing-b-2 { margin-bottom: 8px !important; }
+.spacing-b-4 { margin-bottom: 16px !important; }
+.spacing-b-6 { margin-bottom: 24px !important; }
+.spacing-b-8 { margin-bottom: 32px !important; }
+.spacing-b-10 { margin-bottom: 40px !important; }
+.spacing-b-12 { margin-bottom: 48px !important; }
+.spacing-b-16 { margin-bottom: 64px !important; }
+.spacing-b-20 { margin-bottom: 80px !important; }
+
+.spacing-y-4 { margin-top: 16px !important; margin-bottom: 16px !important; }
+.spacing-y-6 { margin-top: 24px !important; margin-bottom: 24px !important; }
+.spacing-y-8 { margin-top: 32px !important; margin-bottom: 32px !important; }
+.spacing-y-10 { margin-top: 40px !important; margin-bottom: 40px !important; }
+.spacing-y-12 { margin-top: 48px !important; margin-bottom: 48px !important; }
+
+.spacing-p-4 { padding: 16px !important; }
+.spacing-p-6 { padding: 24px !important; }
+.spacing-p-8 { padding: 32px !important; }
+.spacing-p-10 { padding: 40px !important; }
+.spacing-p-12 { padding: 48px !important; }
+
+.spacing-px-4 { padding-left: 16px !important; padding-right: 16px !important; }
+.spacing-px-6 { padding-left: 24px !important; padding-right: 24px !important; }
+.spacing-px-8 { padding-left: 32px !important; padding-right: 32px !important; }
+
+.spacing-py-4 { padding-top: 16px !important; padding-bottom: 16px !important; }
+.spacing-py-6 { padding-top: 24px !important; padding-bottom: 24px !important; }
+.spacing-py-8 { padding-top: 32px !important; padding-bottom: 32px !important; }
+
+.spacing-gap-4 { gap: 16px !important; }
+.spacing-gap-6 { gap: 24px !important; }
+.spacing-gap-8 { gap: 32px !important; }
+.spacing-gap-10 { gap: 40px !important; }
+.spacing-gap-12 { gap: 48px !important; }
+
+/* 行高 */
+.text-leading-tight { line-height: 1.25 !important; }
+.text-leading-relaxed { line-height: 1.75 !important; }
+
+/* Element Plus 按钮样式覆盖 */
+.el-button--large {
+  padding: 20px 32px !important;
+  font-size: 18px !important;
 }

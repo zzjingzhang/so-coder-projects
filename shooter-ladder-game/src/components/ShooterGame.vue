@@ -1,79 +1,178 @@
 <template>
-  <div class="relative w-full h-screen bg-gray-900 overflow-hidden select-none"
-       @touchstart.prevent="handleTouchStart"
-       @touchmove.prevent="handleTouchMove"
-       @touchend.prevent="handleTouchEnd">
-    
-    <canvas 
-      ref="gameCanvas" 
+  <div
+    class="relative w-full h-screen bg-gray-900 overflow-hidden select-none"
+    @touchstart.prevent="handleTouchStart"
+    @touchmove.prevent="handleTouchMove"
+    @touchend.prevent="handleTouchEnd"
+  >
+    <canvas
+      ref="gameCanvas"
       class="w-full h-full"
       :style="{ touchAction: 'none' }"
     />
 
-    <router-link 
-      to="/" 
-      class="absolute top-8 left-8 z-20 bg-gray-800 bg-opacity-80 text-white px-8 py-4 rounded-xl hover:bg-gray-700 transition-all duration-300 shadow-lg text-lg font-medium"
+    <router-link
+      to="/"
+      class="absolute z-20 bg-gray-800 bg-opacity-80 text-white rounded-xl hover:bg-gray-700 transition-all duration-300 shadow-lg"
+      style="
+        top: 32px;
+        left: 32px;
+        padding-left: 32px;
+        padding-right: 32px;
+        padding-top: 16px;
+        padding-bottom: 16px;
+        font-size: 18px;
+        font-weight: 500;
+      "
       v-if="!gameState.isPlaying"
     >
       ← 返回菜单
     </router-link>
 
-    <div v-if="!gameState.isPlaying && !gameState.isGameOver" 
-         class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-85 z-10">
-      <div class="text-center px-8 md:px-12 py-12 md:py-16">
-        <h1 class="text-5xl md:text-7xl font-bold text-white mb-8 md:mb-10 drop-shadow-2xl leading-tight">
+    <div
+      v-if="!gameState.isPlaying && !gameState.isGameOver"
+      class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-85 z-10"
+    >
+      <div
+        class="text-center"
+        style="
+          padding-left: 32px;
+          padding-right: 32px;
+          padding-top: 48px;
+          padding-bottom: 48px;
+        "
+      >
+        <h1
+          class="text-5xl md:text-7xl font-bold text-white drop-shadow-2xl"
+          style="margin-bottom: 32px; line-height: 1.25"
+        >
           射击游戏
         </h1>
-        <p class="text-xl md:text-3xl text-gray-300 mt-6 md:mt-8 mb-12 md:mb-16 text-center leading-relaxed">
+        <p
+          class="text-xl md:text-3xl text-gray-300"
+          style="margin-top: 24px; margin-bottom: 48px; line-height: 1.75"
+        >
           使用屏幕左侧按钮移动，右侧按钮跳跃和射击
         </p>
-        <div class="mt-8 md:mt-12">
-          <el-button type="primary" size="large" @click="startGame" class="text-xl md:text-2xl px-16 py-10 rounded-2xl shadow-2xl">
+        <div style="margin-top: 32px">
+          <el-button
+            type="primary"
+            size="large"
+            @click="startGame"
+            class="bg-white text-red-600 hover:bg-gray-100 border-none font-bold rounded-2xl shadow-2xl"
+            style="
+              padding-left: 64px;
+              padding-right: 64px;
+              padding-top: 40px;
+              padding-bottom: 40px;
+              font-size: 20px;
+            "
+          >
             🎮 开始游戏
           </el-button>
         </div>
       </div>
     </div>
 
-    <div v-if="gameState.isGameOver" 
-         class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-85 z-10">
-      <div class="text-center px-8 md:px-12 py-12 md:py-16">
-        <h1 class="text-5xl md:text-7xl font-bold text-red-500 mb-10 md:mb-12 drop-shadow-2xl leading-tight">
+    <div
+      v-if="gameState.isGameOver"
+      class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-85 z-10"
+    >
+      <div
+        class="text-center"
+        style="
+          padding-left: 32px;
+          padding-right: 32px;
+          padding-top: 48px;
+          padding-bottom: 48px;
+        "
+      >
+        <h1
+          class="text-5xl md:text-7xl font-bold text-red-500 drop-shadow-2xl"
+          style="margin-bottom: 40px; line-height: 1.25"
+        >
           游戏结束
         </h1>
-        <p class="text-3xl md:text-5xl text-white mb-6 md:mb-8 mt-6 md:mt-8 leading-relaxed">
+        <p
+          class="text-3xl md:text-5xl text-white"
+          style="margin-top: 24px; margin-bottom: 24px; line-height: 1.75"
+        >
           最终得分: {{ gameState.score }}
         </p>
-        <p class="text-xl md:text-3xl text-gray-300 mb-12 md:mb-16 mt-6 md:mt-8 leading-relaxed">
+        <p
+          class="text-xl md:text-3xl text-gray-300"
+          style="margin-top: 24px; margin-bottom: 48px; line-height: 1.75"
+        >
           关卡: {{ gameState.level }}
         </p>
-        <div class="mt-8 md:mt-12">
-          <el-button type="primary" size="large" @click="restartGame" class="text-xl md:text-2xl px-16 py-10 rounded-2xl shadow-2xl">
+        <div style="margin-top: 32px">
+          <el-button
+            type="primary"
+            size="large"
+            @click="restartGame"
+            class="bg-white text-red-600 hover:bg-gray-100 border-none font-bold rounded-2xl shadow-2xl"
+            style="
+              padding-left: 64px;
+              padding-right: 64px;
+              padding-top: 40px;
+              padding-bottom: 40px;
+              font-size: 20px;
+            "
+          >
             🔄 重新开始
           </el-button>
         </div>
       </div>
     </div>
 
-    <div v-if="gameState.isPlaying" class="absolute top-8 left-8 right-8 flex justify-between items-start gap-8 z-10">
-      <div class="bg-black bg-opacity-60 rounded-2xl p-6 md:p-8 shadow-xl backdrop-blur-sm">
-        <p class="text-white text-xl md:text-3xl font-bold mb-4 md:mb-6 leading-tight">
+    <div
+      v-if="gameState.isPlaying"
+      class="absolute flex justify-between items-start z-10"
+      style="top: 32px; left: 32px; right: 32px; gap: 32px"
+    >
+      <div
+        class="bg-black bg-opacity-60 rounded-2xl shadow-xl backdrop-blur-sm"
+        style="padding: 24px"
+      >
+        <p
+          class="text-white text-xl md:text-3xl font-bold"
+          style="margin-bottom: 16px; line-height: 1.25"
+        >
           得分: {{ gameState.score }}
         </p>
-        <p class="text-yellow-400 text-base md:text-xl mt-4 md:mt-6 leading-relaxed">
+        <p
+          class="text-yellow-400 text-base md:text-xl"
+          style="margin-top: 16px; line-height: 1.75"
+        >
           关卡: {{ gameState.level }}
         </p>
       </div>
-      <div class="bg-black bg-opacity-60 rounded-2xl p-6 md:p-8 shadow-xl backdrop-blur-sm">
-        <p class="text-red-400 text-xl md:text-3xl font-bold leading-tight">
+      <div
+        class="bg-black bg-opacity-60 rounded-2xl shadow-xl backdrop-blur-sm"
+        style="padding: 24px"
+      >
+        <p
+          class="text-red-400 text-xl md:text-3xl font-bold"
+          style="line-height: 1.25"
+        >
           生命: {{ player.health }}
         </p>
       </div>
     </div>
 
-    <div v-if="gameState.isPlaying" class="absolute bottom-16 left-0 right-0 flex justify-between px-8 md:px-16 z-10">
-      <div class="flex gap-8 md:gap-10">
-        <button 
+    <div
+      v-if="gameState.isPlaying"
+      class="absolute flex justify-between z-10"
+      style="
+        bottom: 64px;
+        left: 0;
+        right: 0;
+        padding-left: 32px;
+        padding-right: 32px;
+      "
+    >
+      <div class="flex" style="gap: 32px">
+        <button
           class="w-24 h-24 md:w-28 md:h-28 rounded-full bg-gray-700 bg-opacity-80 text-white text-4xl md:text-5xl font-bold flex items-center justify-center active:bg-gray-600 shadow-2xl backdrop-blur-sm transition-all duration-150 active:scale-95"
           @touchstart.prevent="activateControl('left')"
           @touchend.prevent="deactivateControl('left')"
@@ -83,7 +182,7 @@
         >
           ←
         </button>
-        <button 
+        <button
           class="w-24 h-24 md:w-28 md:h-28 rounded-full bg-gray-700 bg-opacity-80 text-white text-4xl md:text-5xl font-bold flex items-center justify-center active:bg-gray-600 shadow-2xl backdrop-blur-sm transition-all duration-150 active:scale-95"
           @touchstart.prevent="activateControl('right')"
           @touchend.prevent="deactivateControl('right')"
@@ -94,8 +193,8 @@
           →
         </button>
       </div>
-      <div class="flex gap-8 md:gap-10">
-        <button 
+      <div class="flex" style="gap: 32px">
+        <button
           class="w-24 h-24 md:w-28 md:h-28 rounded-full bg-green-600 bg-opacity-80 text-white text-3xl md:text-4xl font-bold flex items-center justify-center active:bg-green-500 shadow-2xl backdrop-blur-sm transition-all duration-150 active:scale-95"
           @touchstart.prevent="activateControl('jump')"
           @touchend.prevent="deactivateControl('jump')"
@@ -105,7 +204,7 @@
         >
           跳
         </button>
-        <button 
+        <button
           class="w-24 h-24 md:w-28 md:h-28 rounded-full bg-red-600 bg-opacity-80 text-white text-3xl md:text-4xl font-bold flex items-center justify-center active:bg-red-500 shadow-2xl backdrop-blur-sm transition-all duration-150 active:scale-95"
           @touchstart.prevent="activateControl('shoot')"
           @touchend.prevent="deactivateControl('shoot')"
@@ -121,30 +220,37 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, reactive } from 'vue'
-import type { Player, Bullet, Enemy, Platform, Coin, GameState } from '../types'
-const gameCanvas = ref<HTMLCanvasElement | null>(null)
-let ctx: CanvasRenderingContext2D | null = null
-let animationId: number | null = null
-let lastTime = 0
+import { ref, onMounted, onUnmounted, reactive } from "vue";
+import type {
+  Player,
+  Bullet,
+  Enemy,
+  Platform,
+  Coin,
+  GameState,
+} from "../types";
+const gameCanvas = ref<HTMLCanvasElement | null>(null);
+let ctx: CanvasRenderingContext2D | null = null;
+let animationId: number | null = null;
+let lastTime = 0;
 
 const gameState = reactive<GameState>({
   isPlaying: false,
   isPaused: false,
   isGameOver: false,
   level: 1,
-  score: 0
-})
+  score: 0,
+});
 
 const activeControls = reactive<Record<string, boolean>>({
   left: false,
   right: false,
   jump: false,
-  shoot: false
-})
+  shoot: false,
+});
 
 const player = reactive<Player>({
-  id: 'player',
+  id: "player",
   x: 100,
   y: 0,
   width: 40,
@@ -155,61 +261,67 @@ const player = reactive<Player>({
   score: 0,
   isJumping: false,
   canShoot: true,
-  shootCooldown: 0
-})
+  shootCooldown: 0,
+});
 
-const bullets = ref<Bullet[]>([])
-const enemies = ref<Enemy[]>([])
-const platforms = ref<Platform[]>([])
-const coins = ref<Coin[]>([])
+const bullets = ref<Bullet[]>([]);
+const enemies = ref<Enemy[]>([]);
+const platforms = ref<Platform[]>([]);
+const coins = ref<Coin[]>([]);
 
-const GRAVITY = 0.5
-const MOVE_SPEED = 5
-const JUMP_FORCE = -12
-const BULLET_SPEED = 10
-const SHOOT_COOLDOWN = 300
+const GRAVITY = 0.5;
+const MOVE_SPEED = 5;
+const JUMP_FORCE = -12;
+const BULLET_SPEED = 10;
+const SHOOT_COOLDOWN = 300;
 
 function initGame() {
-  if (!gameCanvas.value) return
-  
-  const canvas = gameCanvas.value
-  canvas.width = canvas.offsetWidth
-  canvas.height = canvas.offsetHeight
-  ctx = canvas.getContext('2d')
+  if (!gameCanvas.value) return;
 
-  player.x = 100
-  player.y = canvas.height - 150
-  player.velocityX = 0
-  player.velocityY = 0
-  player.health = 3
-  player.score = 0
-  player.isJumping = false
-  player.canShoot = true
-  player.shootCooldown = 0
+  const canvas = gameCanvas.value;
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+  ctx = canvas.getContext("2d");
 
-  gameState.score = 0
-  gameState.level = 1
-  gameState.isGameOver = false
+  player.x = 100;
+  player.y = canvas.height - 150;
+  player.velocityX = 0;
+  player.velocityY = 0;
+  player.health = 3;
+  player.score = 0;
+  player.isJumping = false;
+  player.canShoot = true;
+  player.shootCooldown = 0;
 
-  bullets.value = []
-  enemies.value = []
-  coins.value = []
+  gameState.score = 0;
+  gameState.level = 1;
+  gameState.isGameOver = false;
+
+  bullets.value = [];
+  enemies.value = [];
+  coins.value = [];
 
   platforms.value = [
-    { x: 0, y: canvas.height - 50, width: canvas.width, height: 50, isGround: true },
+    {
+      x: 0,
+      y: canvas.height - 50,
+      width: canvas.width,
+      height: 50,
+      isGround: true,
+    },
     { x: 150, y: canvas.height - 150, width: 150, height: 20, isGround: false },
     { x: 400, y: canvas.height - 250, width: 150, height: 20, isGround: false },
     { x: 650, y: canvas.height - 150, width: 150, height: 20, isGround: false },
-    { x: 900, y: canvas.height - 200, width: 150, height: 20, isGround: false }
-  ]
+    { x: 900, y: canvas.height - 200, width: 150, height: 20, isGround: false },
+  ];
 
-  spawnEnemies()
-  spawnCoins()
+  spawnEnemies();
+  spawnCoins();
 }
 
 function spawnEnemies() {
-  if (!gameCanvas.value) return
-  const canvas = gameCanvas.value
+  if (!gameCanvas.value) return;
+  const canvas = gameCanvas.value;
 
   for (let i = 0; i < 3 + gameState.level; i++) {
     enemies.value.push({
@@ -221,10 +333,10 @@ function spawnEnemies() {
       velocityX: 1 + Math.random(),
       velocityY: 0,
       health: 1,
-      type: 'ground',
+      type: "ground",
       moveDirection: Math.random() > 0.5 ? 1 : -1,
-      shootTimer: 0
-    })
+      shootTimer: 0,
+    });
   }
 
   for (let i = 0; i < Math.floor(gameState.level / 2); i++) {
@@ -237,16 +349,16 @@ function spawnEnemies() {
       velocityX: 1.5,
       velocityY: 0,
       health: 1,
-      type: 'flying',
+      type: "flying",
       moveDirection: 1,
-      shootTimer: 0
-    })
+      shootTimer: 0,
+    });
   }
 }
 
 function spawnCoins() {
-  if (!gameCanvas.value) return
-  const canvas = gameCanvas.value
+  if (!gameCanvas.value) return;
+  const canvas = gameCanvas.value;
 
   for (let i = 0; i < 5 + gameState.level * 2; i++) {
     coins.value.push({
@@ -257,47 +369,48 @@ function spawnCoins() {
       height: 20,
       velocityX: 0,
       velocityY: 0,
-      collected: false
-    })
+      collected: false,
+    });
   }
 }
 
 function update(deltaTime: number) {
-  if (!gameCanvas.value || !ctx) return
-  const canvas = gameCanvas.value
+  if (!gameCanvas.value || !ctx) return;
+  const canvas = gameCanvas.value;
 
   if (activeControls.left) {
-    player.velocityX = -MOVE_SPEED
+    player.velocityX = -MOVE_SPEED;
   } else if (activeControls.right) {
-    player.velocityX = MOVE_SPEED
+    player.velocityX = MOVE_SPEED;
   } else {
-    player.velocityX *= 0.8
+    player.velocityX *= 0.8;
   }
 
   if (activeControls.jump && !player.isJumping) {
-    player.velocityY = JUMP_FORCE
-    player.isJumping = true
+    player.velocityY = JUMP_FORCE;
+    player.isJumping = true;
   }
 
   if (activeControls.shoot && player.canShoot) {
-    shootBullet()
+    shootBullet();
   }
 
   if (!player.canShoot) {
-    player.shootCooldown -= deltaTime
+    player.shootCooldown -= deltaTime;
     if (player.shootCooldown <= 0) {
-      player.canShoot = true
+      player.canShoot = true;
     }
   }
 
-  player.velocityY += GRAVITY
-  player.x += player.velocityX
-  player.y += player.velocityY
+  player.velocityY += GRAVITY;
+  player.x += player.velocityX;
+  player.y += player.velocityY;
 
-  if (player.x < 0) player.x = 0
-  if (player.x + player.width > canvas.width) player.x = canvas.width - player.width
+  if (player.x < 0) player.x = 0;
+  if (player.x + player.width > canvas.width)
+    player.x = canvas.width - player.width;
 
-  player.isJumping = true
+  player.isJumping = true;
   for (const platform of platforms.value) {
     if (
       player.velocityY >= 0 &&
@@ -306,83 +419,88 @@ function update(deltaTime: number) {
       player.y + player.height >= platform.y &&
       player.y + player.height <= platform.y + platform.height + 20
     ) {
-      player.y = platform.y - player.height
-      player.velocityY = 0
-      player.isJumping = false
+      player.y = platform.y - player.height;
+      player.velocityY = 0;
+      player.isJumping = false;
     }
   }
 
   if (player.y > canvas.height) {
-    player.health--
+    player.health--;
     if (player.health <= 0) {
-      endGame()
+      endGame();
     } else {
-      player.x = 100
-      player.y = canvas.height - 150
-      player.velocityY = 0
+      player.x = 100;
+      player.y = canvas.height - 150;
+      player.velocityY = 0;
     }
   }
 
-  bullets.value = bullets.value.filter(bullet => {
-    bullet.x += bullet.velocityX
-    bullet.y += bullet.velocityY
-    return bullet.x > 0 && bullet.x < canvas.width && bullet.y > 0 && bullet.y < canvas.height
-  })
+  bullets.value = bullets.value.filter((bullet) => {
+    bullet.x += bullet.velocityX;
+    bullet.y += bullet.velocityY;
+    return (
+      bullet.x > 0 &&
+      bullet.x < canvas.width &&
+      bullet.y > 0 &&
+      bullet.y < canvas.height
+    );
+  });
 
   for (const enemy of enemies.value) {
-    if (enemy.type === 'ground') {
-      enemy.x += enemy.velocityX * enemy.moveDirection
+    if (enemy.type === "ground") {
+      enemy.x += enemy.velocityX * enemy.moveDirection;
       if (enemy.x < 0 || enemy.x + enemy.width > canvas.width) {
-        enemy.moveDirection *= -1
+        enemy.moveDirection *= -1;
       }
     } else {
-      enemy.x += enemy.velocityX * enemy.moveDirection
-      enemy.y += Math.sin(Date.now() / 500) * 0.5
+      enemy.x += enemy.velocityX * enemy.moveDirection;
+      enemy.y += Math.sin(Date.now() / 500) * 0.5;
       if (enemy.x < 0 || enemy.x + enemy.width > canvas.width) {
-        enemy.moveDirection *= -1
+        enemy.moveDirection *= -1;
       }
     }
   }
 
-  bullets.value = bullets.value.filter(bullet => {
-    if (!bullet.isPlayerBullet) return true
-    
+  bullets.value = bullets.value.filter((bullet) => {
+    if (!bullet.isPlayerBullet) return true;
+
     for (let i = enemies.value.length - 1; i >= 0; i--) {
-      const enemy = enemies.value[i]
+      const enemy = enemies.value[i];
       if (
         bullet.x < enemy.x + enemy.width &&
         bullet.x + bullet.width > enemy.x &&
         bullet.y < enemy.y + enemy.height &&
         bullet.y + bullet.height > enemy.y
       ) {
-        enemy.health--
+        enemy.health--;
         if (enemy.health <= 0) {
-          enemies.value.splice(i, 1)
-          gameState.score += 100
+          enemies.value.splice(i, 1);
+          gameState.score += 100;
         }
-        return false
+        return false;
       }
     }
-    return true
-  })
+    return true;
+  });
 
-  bullets.value = bullets.value.filter(bullet => {
-    if (bullet.isPlayerBullet) return true
-    
+  bullets.value = bullets.value.filter((bullet) => {
+    if (bullet.isPlayerBullet) return true;
+
     if (
       bullet.x < player.x + player.width &&
       bullet.x + bullet.width > player.x &&
       bullet.y < player.y + player.height &&
       bullet.y + bullet.height > player.y
     ) {
-      player.health--
+      player.health--;
       if (player.health <= 0) {
-        endGame()
+        endGame();
       }
-      return false
+      return false;
     }
-    return true
-  })
+    return true;
+  });
 
   for (const enemy of enemies.value) {
     if (
@@ -391,12 +509,12 @@ function update(deltaTime: number) {
       player.y < enemy.y + enemy.height &&
       player.y + player.height > enemy.y
     ) {
-      player.health--
-      player.x = 100
-      player.y = canvas.height - 150
-      player.velocityY = 0
+      player.health--;
+      player.x = 100;
+      player.y = canvas.height - 150;
+      player.velocityY = 0;
       if (player.health <= 0) {
-        endGame()
+        endGame();
       }
     }
   }
@@ -409,22 +527,22 @@ function update(deltaTime: number) {
       player.y < coin.y + coin.height &&
       player.y + player.height > coin.y
     ) {
-      coin.collected = true
-      gameState.score += 50
+      coin.collected = true;
+      gameState.score += 50;
     }
   }
 
   if (enemies.value.length === 0) {
-    gameState.level++
-    spawnEnemies()
-    spawnCoins()
+    gameState.level++;
+    spawnEnemies();
+    spawnCoins();
   }
 }
 
 function shootBullet() {
-  player.canShoot = false
-  player.shootCooldown = SHOOT_COOLDOWN
-  
+  player.canShoot = false;
+  player.shootCooldown = SHOOT_COOLDOWN;
+
   bullets.value.push({
     id: `bullet-${Date.now()}`,
     x: player.x + player.width,
@@ -434,167 +552,181 @@ function shootBullet() {
     velocityX: BULLET_SPEED,
     velocityY: 0,
     isPlayerBullet: true,
-    damage: 1
-  })
+    damage: 1,
+  });
 }
 
 function render() {
-  if (!gameCanvas.value || !ctx) return
-  const canvas = gameCanvas.value
+  if (!gameCanvas.value || !ctx) return;
+  const canvas = gameCanvas.value;
 
-  ctx.fillStyle = '#1a1a2e'
-  ctx.fillRect(0, 0, canvas.width, canvas.height)
+  ctx.fillStyle = "#1a1a2e";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   for (const platform of platforms.value) {
     if (platform.isGround) {
-      ctx.fillStyle = '#4a5568'
+      ctx.fillStyle = "#4a5568";
     } else {
-      ctx.fillStyle = '#718096'
+      ctx.fillStyle = "#718096";
     }
-    ctx.fillRect(platform.x, platform.y, platform.width, platform.height)
+    ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
   }
 
   for (const coin of coins.value) {
     if (!coin.collected) {
-      ctx.fillStyle = '#fbbf24'
-      ctx.beginPath()
-      ctx.arc(coin.x + coin.width / 2, coin.y + coin.height / 2, coin.width / 2, 0, Math.PI * 2)
-      ctx.fill()
-      ctx.strokeStyle = '#f59e0b'
-      ctx.lineWidth = 2
-      ctx.stroke()
+      ctx.fillStyle = "#fbbf24";
+      ctx.beginPath();
+      ctx.arc(
+        coin.x + coin.width / 2,
+        coin.y + coin.height / 2,
+        coin.width / 2,
+        0,
+        Math.PI * 2,
+      );
+      ctx.fill();
+      ctx.strokeStyle = "#f59e0b";
+      ctx.lineWidth = 2;
+      ctx.stroke();
     }
   }
 
   for (const enemy of enemies.value) {
-    if (enemy.type === 'ground') {
-      ctx.fillStyle = '#ef4444'
-      ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height)
-      ctx.fillStyle = '#ffffff'
-      ctx.fillRect(enemy.x + 8, enemy.y + 10, 8, 8)
-      ctx.fillRect(enemy.x + 20, enemy.y + 10, 8, 8)
-      ctx.fillStyle = '#000000'
-      ctx.fillRect(enemy.x + 10, enemy.y + 12, 4, 4)
-      ctx.fillRect(enemy.x + 22, enemy.y + 12, 4, 4)
+    if (enemy.type === "ground") {
+      ctx.fillStyle = "#ef4444";
+      ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(enemy.x + 8, enemy.y + 10, 8, 8);
+      ctx.fillRect(enemy.x + 20, enemy.y + 10, 8, 8);
+      ctx.fillStyle = "#000000";
+      ctx.fillRect(enemy.x + 10, enemy.y + 12, 4, 4);
+      ctx.fillRect(enemy.x + 22, enemy.y + 12, 4, 4);
     } else {
-      ctx.fillStyle = '#8b5cf6'
-      ctx.beginPath()
-      ctx.ellipse(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, enemy.width / 2, enemy.height / 2, 0, 0, Math.PI * 2)
-      ctx.fill()
-      ctx.fillStyle = '#ffffff'
-      ctx.fillRect(enemy.x + 10, enemy.y + 8, 6, 6)
-      ctx.fillRect(enemy.x + 24, enemy.y + 8, 6, 6)
+      ctx.fillStyle = "#8b5cf6";
+      ctx.beginPath();
+      ctx.ellipse(
+        enemy.x + enemy.width / 2,
+        enemy.y + enemy.height / 2,
+        enemy.width / 2,
+        enemy.height / 2,
+        0,
+        0,
+        Math.PI * 2,
+      );
+      ctx.fill();
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(enemy.x + 10, enemy.y + 8, 6, 6);
+      ctx.fillRect(enemy.x + 24, enemy.y + 8, 6, 6);
     }
   }
 
   for (const bullet of bullets.value) {
     if (bullet.isPlayerBullet) {
-      ctx.fillStyle = '#3b82f6'
+      ctx.fillStyle = "#3b82f6";
     } else {
-      ctx.fillStyle = '#ef4444'
+      ctx.fillStyle = "#ef4444";
     }
-    ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height)
+    ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
   }
 
-  ctx.fillStyle = '#22c55e'
-  ctx.fillRect(player.x, player.y, player.width, player.height)
-  ctx.fillStyle = '#ffffff'
-  ctx.fillRect(player.x + 8, player.y + 15, 10, 10)
-  ctx.fillRect(player.x + 22, player.y + 15, 10, 10)
-  ctx.fillStyle = '#000000'
-  ctx.fillRect(player.x + 12, player.y + 18, 4, 4)
-  ctx.fillRect(player.x + 26, player.y + 18, 4, 4)
-  ctx.fillStyle = '#065f46'
-  ctx.fillRect(player.x + player.width, player.y + 25, 15, 8)
+  ctx.fillStyle = "#22c55e";
+  ctx.fillRect(player.x, player.y, player.width, player.height);
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(player.x + 8, player.y + 15, 10, 10);
+  ctx.fillRect(player.x + 22, player.y + 15, 10, 10);
+  ctx.fillStyle = "#000000";
+  ctx.fillRect(player.x + 12, player.y + 18, 4, 4);
+  ctx.fillRect(player.x + 26, player.y + 18, 4, 4);
+  ctx.fillStyle = "#065f46";
+  ctx.fillRect(player.x + player.width, player.y + 25, 15, 8);
 }
 
 function gameLoop(currentTime: number) {
-  if (!gameState.isPlaying) return
+  if (!gameState.isPlaying) return;
 
-  const deltaTime = currentTime - lastTime
-  lastTime = currentTime
+  const deltaTime = currentTime - lastTime;
+  lastTime = currentTime;
 
-  update(deltaTime)
-  render()
+  update(deltaTime);
+  render();
 
-  animationId = requestAnimationFrame(gameLoop)
+  animationId = requestAnimationFrame(gameLoop);
 }
 
 function startGame() {
-  initGame()
-  gameState.isPlaying = true
-  gameState.isGameOver = false
-  lastTime = performance.now()
-  animationId = requestAnimationFrame(gameLoop)
+  initGame();
+  gameState.isPlaying = true;
+  gameState.isGameOver = false;
+  lastTime = performance.now();
+  animationId = requestAnimationFrame(gameLoop);
 }
 
 function endGame() {
-  gameState.isPlaying = false
-  gameState.isGameOver = true
+  gameState.isPlaying = false;
+  gameState.isGameOver = true;
   if (animationId) {
-    cancelAnimationFrame(animationId)
-    animationId = null
+    cancelAnimationFrame(animationId);
+    animationId = null;
   }
 }
 
 function restartGame() {
-  startGame()
+  startGame();
 }
 
 function activateControl(type: string) {
-  activeControls[type] = true
+  activeControls[type] = true;
 }
 
 function deactivateControl(type: string) {
-  activeControls[type] = false
+  activeControls[type] = false;
 }
 
 function handleTouchStart(e: TouchEvent) {
-  e.preventDefault()
+  e.preventDefault();
 }
 
 function handleTouchMove(e: TouchEvent) {
-  e.preventDefault()
+  e.preventDefault();
 }
 
 function handleTouchEnd(e: TouchEvent) {
-  e.preventDefault()
+  e.preventDefault();
 }
 
 function handleResize() {
   if (gameCanvas.value) {
-    const canvas = gameCanvas.value
-    const prevWidth = canvas.width
-    const prevHeight = canvas.height
-    canvas.width = canvas.offsetWidth
-    canvas.height = canvas.offsetHeight
-    
-    const scaleX = canvas.width / prevWidth
-    const scaleY = canvas.height / prevHeight
-    
-    player.x *= scaleX
-    player.y *= scaleY
-    player.velocityX *= scaleX
-    
-    platforms.value.forEach(p => {
-      p.x *= scaleX
-      p.y *= scaleY
-      p.width *= scaleX
-      p.height *= scaleY
-    })
+    const canvas = gameCanvas.value;
+    const prevWidth = canvas.width;
+    const prevHeight = canvas.height;
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const scaleX = canvas.width / prevWidth;
+    const scaleY = canvas.height / prevHeight;
+
+    player.x *= scaleX;
+    player.y *= scaleY;
+    player.velocityX *= scaleX;
+
+    platforms.value.forEach((p) => {
+      p.x *= scaleX;
+      p.y *= scaleY;
+      p.width *= scaleX;
+      p.height *= scaleY;
+    });
   }
 }
 
 onMounted(() => {
-  window.addEventListener('resize', handleResize)
-})
+  window.addEventListener("resize", handleResize);
+});
 
 onUnmounted(() => {
-  window.removeEventListener('resize', handleResize)
+  window.removeEventListener("resize", handleResize);
   if (animationId) {
-    cancelAnimationFrame(animationId)
+    cancelAnimationFrame(animationId);
   }
-})
+});
 </script>
 
 <style scoped>

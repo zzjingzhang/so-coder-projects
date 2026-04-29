@@ -8,7 +8,8 @@
 
     <router-link 
       to="/" 
-      class="absolute top-8 left-8 z-20 bg-gray-800 bg-opacity-80 text-white px-8 py-4 rounded-xl hover:bg-gray-700 transition-all duration-300 shadow-lg text-lg font-medium"
+      class="absolute z-20 bg-gray-800 bg-opacity-80 text-white rounded-xl hover:bg-gray-700 transition-all duration-300 shadow-lg"
+      style="top: 32px; left: 32px; padding-left: 32px; padding-right: 32px; padding-top: 16px; padding-bottom: 16px; font-size: 18px; font-weight: 500;"
       v-if="!gameState.isPlaying"
     >
       ← 返回菜单
@@ -16,18 +17,25 @@
 
     <div v-if="!gameState.isPlaying && !gameState.isGameOver" 
          class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-85 z-10">
-      <div class="text-center px-8 md:px-12 py-12 md:py-16">
-        <h1 class="text-5xl md:text-7xl font-bold text-white mb-8 md:mb-10 drop-shadow-2xl leading-tight">
+      <div class="text-center" 
+           style="padding-left: 32px; padding-right: 32px; padding-top: 48px; padding-bottom: 48px;">
+        <h1 class="text-5xl md:text-7xl font-bold text-white drop-shadow-2xl" 
+            style="margin-bottom: 32px; line-height: 1.25;">
           梯子游戏
         </h1>
-        <p class="text-xl md:text-3xl text-gray-300 mt-6 md:mt-8 mb-6 md:mb-8 text-center leading-relaxed">
+        <p class="text-xl md:text-3xl text-gray-300" 
+           style="margin-top: 24px; margin-bottom: 24px; line-height: 1.75;">
           机器人正在准备攀登...
         </p>
-        <p class="text-xl md:text-3xl text-yellow-400 mb-12 md:mb-16 mt-6 md:mt-8 text-center leading-relaxed">
+        <p class="text-xl md:text-3xl text-yellow-400" 
+           style="margin-top: 24px; margin-bottom: 48px; line-height: 1.75;">
           观察机器人如何自动收集金币并到达顶部！
         </p>
-        <div class="mt-8 md:mt-12">
-          <el-button type="primary" size="large" @click="startGame" class="text-xl md:text-2xl px-16 py-10 rounded-2xl shadow-2xl">
+        <div style="margin-top: 32px;">
+          <el-button type="primary" size="large" 
+                     @click="startGame" 
+                     class="bg-white text-blue-600 hover:bg-gray-100 border-none font-bold rounded-2xl shadow-2xl"
+                     style="padding-left: 64px; padding-right: 64px; padding-top: 40px; padding-bottom: 40px; font-size: 20px;">
             🤖 开始观察
           </el-button>
         </div>
@@ -36,45 +44,64 @@
 
     <div v-if="gameState.isGameOver" 
          class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-85 z-10">
-      <div class="text-center px-8 md:px-12 py-12 md:py-16">
-        <h1 class="text-5xl md:text-7xl font-bold mb-10 md:mb-12 drop-shadow-2xl leading-tight" :class="gameState.won ? 'text-green-500' : 'text-red-500'">
+      <div class="text-center" 
+           style="padding-left: 32px; padding-right: 32px; padding-top: 48px; padding-bottom: 48px;">
+        <h1 class="text-5xl md:text-7xl font-bold drop-shadow-2xl" 
+            :class="gameState.won ? 'text-green-500' : 'text-red-500'"
+            style="margin-bottom: 40px; line-height: 1.25;">
           {{ gameState.won ? '🎉 任务完成！' : '💔 游戏结束' }}
         </h1>
-        <p class="text-3xl md:text-5xl text-white mb-6 md:mb-8 mt-6 md:mt-8 leading-relaxed">
+        <p class="text-3xl md:text-5xl text-white" 
+           style="margin-top: 24px; margin-bottom: 24px; line-height: 1.75;">
           最终得分: {{ gameState.score }}
         </p>
-        <p class="text-xl md:text-3xl text-gray-300 mb-12 md:mb-16 mt-6 md:mt-8 leading-relaxed">
+        <p class="text-xl md:text-3xl text-gray-300" 
+           style="margin-top: 24px; margin-bottom: 48px; line-height: 1.75;">
           关卡: {{ gameState.level }}
         </p>
-        <div class="mt-8 md:mt-12">
-          <el-button type="primary" size="large" @click="restartGame" class="text-xl md:text-2xl px-16 py-10 rounded-2xl shadow-2xl">
+        <div style="margin-top: 32px;">
+          <el-button type="primary" size="large" 
+                     @click="restartGame" 
+                     class="bg-white text-blue-600 hover:bg-gray-100 border-none font-bold rounded-2xl shadow-2xl"
+                     style="padding-left: 64px; padding-right: 64px; padding-top: 40px; padding-bottom: 40px; font-size: 20px;">
             🔄 再看一次
           </el-button>
         </div>
       </div>
     </div>
 
-    <div v-if="gameState.isPlaying" class="absolute top-8 left-8 right-8 flex justify-between items-start gap-8 z-10">
-      <div class="bg-black bg-opacity-60 rounded-2xl p-6 md:p-8 shadow-xl backdrop-blur-sm">
-        <p class="text-white text-xl md:text-3xl font-bold mb-4 md:mb-6 leading-tight">
+    <div v-if="gameState.isPlaying" 
+         class="absolute flex justify-between items-start z-10"
+         style="top: 32px; left: 32px; right: 32px; gap: 32px;">
+      <div class="bg-black bg-opacity-60 rounded-2xl shadow-xl backdrop-blur-sm"
+           style="padding: 24px;">
+        <p class="text-white text-xl md:text-3xl font-bold" 
+           style="margin-bottom: 16px; line-height: 1.25;">
           机器人得分: {{ gameState.score }}
         </p>
-        <p class="text-yellow-400 text-base md:text-xl mt-4 md:mt-6 leading-relaxed">
+        <p class="text-yellow-400 text-base md:text-xl" 
+           style="margin-top: 16px; line-height: 1.75;">
           关卡: {{ gameState.level }}
         </p>
       </div>
-      <div class="bg-black bg-opacity-60 rounded-2xl p-6 md:p-8 shadow-xl backdrop-blur-sm">
-        <p class="text-purple-400 text-xl md:text-3xl font-bold mb-4 md:mb-6 leading-tight">
+      <div class="bg-black bg-opacity-60 rounded-2xl shadow-xl backdrop-blur-sm"
+           style="padding: 24px;">
+        <p class="text-purple-400 text-xl md:text-3xl font-bold" 
+           style="margin-bottom: 16px; line-height: 1.25;">
           能量: {{ robot.health }}
         </p>
-        <p class="text-blue-300 text-base md:text-xl mt-4 md:mt-6 leading-relaxed">
+        <p class="text-blue-300 text-base md:text-xl" 
+           style="margin-top: 16px; line-height: 1.75;">
           目标: {{ gameState.coinsCollected }}/{{ totalCoins }}
         </p>
       </div>
     </div>
 
-    <div v-if="gameState.isPlaying" class="absolute top-8 left-1/2 transform -translate-x-1/2 bg-blue-600 bg-opacity-80 rounded-xl px-8 py-5 z-10 shadow-lg backdrop-blur-sm">
-      <p class="text-white text-lg md:text-xl font-bold leading-relaxed">
+    <div v-if="gameState.isPlaying" 
+         class="absolute z-10 bg-blue-600 bg-opacity-80 rounded-xl shadow-lg backdrop-blur-sm"
+         style="top: 32px; left: 50%; transform: translateX(-50%); padding-left: 32px; padding-right: 32px; padding-top: 20px; padding-bottom: 20px;">
+      <p class="text-white text-lg md:text-xl font-bold" 
+         style="line-height: 1.75;">
         🤖 机器人模式运行中...
       </p>
     </div>
