@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+#app {
+  height: 100%;
+}
+
+.virtual-table-container {
+  width: 100%;
+  overflow: auto;
+  position: relative;
+}
+
+.virtual-table-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgb(var(--v-theme-surface));
+}
+
+.virtual-table-body {
+  position: relative;
+}
+
+.virtual-table-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.virtual-table-cell {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.virtual-table-cell:last-child {
+  border-right: none;
+}
+
+.code-preview {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.code-preview pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.code-preview .keyword {
+  color: #569cd6;
+}
+
+.code-preview .string {
+  color: #ce9178;
+}
+
+.code-preview .comment {
+  color: #6a9955;
+}
+
+.code-preview .function {
+  color: #dcdcaa;
+}
+
+.code-preview .number {
+  color: #b5cea8;
+}
+
+.code-preview .tag {
+  color: #4ec9b0;
+}
+
+.code-preview .attr {
+  color: #9cdcfe;
+}
