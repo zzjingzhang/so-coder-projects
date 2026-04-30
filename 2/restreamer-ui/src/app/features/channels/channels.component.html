@@ -1,0 +1,295 @@
+<div class="space-y-6">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">
+        {{ 'channels.title' | translate }}
+      </h1>
+      <p class="text-gray-500 mt-1">
+        Manage your streaming channels
+      </p>
+    </div>
+    <div class="flex gap-3">
+      <span class="p-input-icon-left w-full sm:w-64">
+        <i class="pi pi-search"></i>
+        <input 
+          type="text" 
+          pInputText 
+          [(ngModel)]="searchQuery"
+          (input)="searchChannels()"
+          placeholder="Search channels..."
+          class="w-full"
+        />
+      </span>
+      <button 
+        pButton 
+        [label]="'channels.createChannel' | translate"
+        icon="pi pi-plus"
+        class="p-button-primary"
+        (click)="openCreateDialog()"
+      ></button>
+    </div>
+  </div>
+
+  @if (loading) {
+    <app-loading-spinner 
+      [message]="'app.loading' | translate"
+    ></app-loading-spinner>
+  } @else if (filteredChannels.length === 0) {
+    <app-empty-state 
+      icon="video"
+      title="No Channels Found"
+      description="Start by creating your first streaming channel"
+      [showAction]="true"
+      actionLabel="Create Channel"
+      actionIcon="pi pi-plus"
+      (actionClick)="openCreateDialog()"
+    ></app-empty-state>
+  } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (channel of filteredChannels; track channel.id) {
+        <app-card 
+          [hasShadow]="true"
+          [hasBorder]="true"
+          [hoverable]="true"
+          padding="medium"
+        >
+          <div class="space-y-4">
+            <div class="flex items-start justify-between">
+              <div class="flex items-center gap-3">
+                <div class="relative">
+                  <p-image 
+                    [src]="channel.thumbnail"
+                    [alt]="channel.name"
+                    width="80"
+                    height="45"
+                    preview
+                    styleClass="rounded-lg object-cover"
+                  ></p-image>
+                  <p-badge 
+                    [value]="channel.status"
+                    [severity]="getStatusBadgeSeverity(channel.status)"
+                    class="absolute -top-1 -right-1"
+                  ></p-badge>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-900">{{ channel.name }}</h3>
+                  @if (channel.description) {
+                    <p class="text-sm text-gray-500 line-clamp-2">{{ channel.description }}</p>
+                  }
+                </div>
+              </div>
+              
+              <div class="flex gap-1">
+                <button 
+                  pButton 
+                  icon="pi pi-pencil"
+                  class="p-button-text p-button-sm"
+                  (click)="openEditDialog(channel)"
+                  pTooltip="Edit Channel"
+                ></button>
+                <button 
+                  pButton 
+                  [icon]="channel.status === 'online' ? 'pi pi-pause' : 'pi pi-play'"
+                  class="p-button-text p-button-sm"
+                  (click)="toggleChannelStatus(channel)"
+                  pTooltip="Toggle Status"
+                ></button>
+                <button 
+                  pButton 
+                  icon="pi pi-trash"
+                  class="p-button-text p-button-sm p-button-danger"
+                  (click)="confirmDelete(channel)"
+                  pTooltip="Delete Channel"
+                ></button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 pt-3 border-t border-gray-100">
+              <div class="text-center">
+                <p class="text-xs text-gray-500">Viewers</p>
+                <p class="font-semibold text-gray-900">{{ channel.viewers }}</p>
+              </div>
+              <div class="text-center">
+                <p class="text-xs text-gray-500">Bitrate</p>
+                <p class="font-semibold text-gray-900">{{ channel.bitrate }}</p>
+              </div>
+              <div class="text-center">
+                <p class="text-xs text-gray-500">Resolution</p>
+                <p class="font-semibold text-gray-900">{{ channel.resolution }}</p>
+              </div>
+            </div>
+
+            <div class="flex gap-2">
+              <button 
+                pButton 
+                label="Preview"
+                icon="pi pi-play"
+                class="p-button-outlined p-button-sm flex-1"
+              ></button>
+              <button 
+                pButton 
+                label="Settings"
+                icon="pi pi-cog"
+                class="p-button-text p-button-sm"
+              ></button>
+            </div>
+          </div>
+        </app-card>
+      }
+    </div>
+  }
+</div>
+
+<app-dialog 
+  [(visible)]="showCreateDialog"
+  header="{{ 'channels.createChannel' | translate }}"
+  width="500px"
+>
+  <form [formGroup]="channelForm" (ngSubmit)="saveChannel()" class="space-y-4">
+    <app-form-field 
+      [label]="'channels.channelName' | translate"
+      [required]="true"
+    >
+      <input 
+        type="text" 
+        pInputText 
+        formControlName="name"
+        placeholder="Enter channel name"
+        class="w-full"
+      />
+    </app-form-field>
+
+    <app-form-field 
+      [label]="'channels.channelDescription' | translate"
+    >
+      <textarea 
+        pInputTextarea 
+        formControlName="description"
+        placeholder="Enter description"
+        rows="3"
+        class="w-full"
+      ></textarea>
+    </app-form-field>
+
+    <app-form-field 
+      [label]="'channels.sourceUrl' | translate"
+      [required]="true"
+    >
+      <input 
+        type="text" 
+        pInputText 
+        formControlName="sourceUrl"
+        placeholder="rtmp://source.example.com/live/stream"
+        class="w-full"
+      />
+    </app-form-field>
+
+    <app-form-field 
+      [label]="'channels.destinationUrl' | translate"
+      [required]="true"
+    >
+      <input 
+        type="text" 
+        pInputText 
+        formControlName="destinationUrl"
+        placeholder="rtmp://destination.example.com/live/stream"
+        class="w-full"
+      />
+    </app-form-field>
+  </form>
+
+  <ng-container footer>
+    <div class="flex justify-end gap-3">
+      <button 
+        pButton 
+        [label]="'app.cancel' | translate"
+        class="p-button-text"
+        (click)="closeDialogs()"
+      ></button>
+      <button 
+        pButton 
+        [label]="'app.create' | translate"
+        class="p-button-primary"
+        (click)="saveChannel()"
+        [disabled]="channelForm.invalid"
+      ></button>
+    </div>
+  </ng-container>
+</app-dialog>
+
+<app-dialog 
+  [(visible)]="showEditDialog"
+  header="{{ 'channels.editChannel' | translate }}"
+  width="500px"
+>
+  <form [formGroup]="channelForm" (ngSubmit)="saveChannel()" class="space-y-4">
+    <app-form-field 
+      [label]="'channels.channelName' | translate"
+      [required]="true"
+    >
+      <input 
+        type="text" 
+        pInputText 
+        formControlName="name"
+        placeholder="Enter channel name"
+        class="w-full"
+      />
+    </app-form-field>
+
+    <app-form-field 
+      [label]="'channels.channelDescription' | translate"
+    >
+      <textarea 
+        pInputTextarea 
+        formControlName="description"
+        placeholder="Enter description"
+        rows="3"
+        class="w-full"
+      ></textarea>
+    </app-form-field>
+
+    <app-form-field 
+      [label]="'channels.sourceUrl' | translate"
+      [required]="true"
+    >
+      <input 
+        type="text" 
+        pInputText 
+        formControlName="sourceUrl"
+        placeholder="rtmp://source.example.com/live/stream"
+        class="w-full"
+      />
+    </app-form-field>
+
+    <app-form-field 
+      [label]="'channels.destinationUrl' | translate"
+      [required]="true"
+    >
+      <input 
+        type="text" 
+        pInputText 
+        formControlName="destinationUrl"
+        placeholder="rtmp://destination.example.com/live/stream"
+        class="w-full"
+      />
+    </app-form-field>
+  </form>
+
+  <ng-container footer>
+    <div class="flex justify-end gap-3">
+      <button 
+        pButton 
+        [label]="'app.cancel' | translate"
+        class="p-button-text"
+        (click)="closeDialogs()"
+      ></button>
+      <button 
+        pButton 
+        [label]="'app.save' | translate"
+        class="p-button-primary"
+        (click)="saveChannel()"
+        [disabled]="channelForm.invalid"
+      ></button>
+    </div>
+  </ng-container>
+</app-dialog>

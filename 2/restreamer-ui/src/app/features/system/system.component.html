@@ -1,0 +1,230 @@
+<div class="space-y-6">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">
+        {{ 'system.title' | translate }}
+      </h1>
+      <p class="text-gray-500 mt-1">
+        Monitor your system resources and status
+      </p>
+    </div>
+    <button 
+      pButton 
+      label="Refresh"
+      icon="pi pi-refresh"
+      class="p-button-outlined"
+    ></button>
+  </div>
+
+  @if (loading) {
+    <app-loading-spinner 
+      [message]="'app.loading' | translate"
+    ></app-loading-spinner>
+  } @else {
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <app-card 
+        title="System Information"
+        [hasShadow]="true"
+        [hasBorder]="true"
+      >
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <p class="text-xs text-gray-500">Hostname</p>
+              <p class="font-medium text-gray-900">{{ systemInfo?.hostname }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Operating System</p>
+              <p class="font-medium text-gray-900">{{ systemInfo?.os }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Architecture</p>
+              <p class="font-medium text-gray-900">{{ systemInfo?.architecture }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Kernel</p>
+              <p class="font-medium text-gray-900">{{ systemInfo?.kernel }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Uptime</p>
+              <p class="font-medium text-gray-900">{{ systemInfo?.uptime }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Version</p>
+              <p class="font-medium text-gray-900">{{ systemInfo?.version }}</p>
+            </div>
+          </div>
+        </div>
+      </app-card>
+
+      <app-card 
+        title="CPU"
+        [hasShadow]="true"
+        [hasBorder]="true"
+      >
+        <div class="space-y-4">
+          <div class="grid grid-cols-3 gap-4">
+            <div>
+              <p class="text-xs text-gray-500">Model</p>
+              <p class="font-medium text-gray-900 text-sm">{{ cpuInfo?.model }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Cores / Threads</p>
+              <p class="font-medium text-gray-900">{{ cpuInfo?.cores }} / {{ cpuInfo?.threads }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Temperature</p>
+              <p class="font-medium text-gray-900">{{ cpuInfo?.temperature }}°C</p>
+            </div>
+          </div>
+          
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-sm font-medium text-gray-700">CPU Usage</span>
+              <span class="text-sm text-gray-500">{{ cpuInfo?.usage?.toFixed(1) }}%</span>
+            </div>
+            <app-progress-bar 
+              [value]="cpuInfo?.usage || 0"
+              [max]="100"
+              height="12px"
+            ></app-progress-bar>
+          </div>
+          
+          <div>
+            <p class="text-xs text-gray-500 mb-1">Load Average</p>
+            <div class="flex gap-4">
+              <span class="text-sm font-medium text-gray-900">
+                <i class="pi pi-clock mr-1"></i>1m: {{ getLoadAverage(0) }}
+              </span>
+              <span class="text-sm font-medium text-gray-900">
+                5m: {{ getLoadAverage(1) }}
+              </span>
+              <span class="text-sm font-medium text-gray-900">
+                15m: {{ getLoadAverage(2) }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </app-card>
+
+      <app-card 
+        title="Memory"
+        [hasShadow]="true"
+        [hasBorder]="true"
+      >
+        <div class="space-y-4">
+          <div class="grid grid-cols-3 gap-4">
+            <div>
+              <p class="text-xs text-gray-500">Total</p>
+              <p class="font-medium text-gray-900">{{ memoryInfo?.total }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Used</p>
+              <p class="font-medium text-gray-900">{{ memoryInfo?.used }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Free</p>
+              <p class="font-medium text-gray-900">{{ memoryInfo?.free }}</p>
+            </div>
+          </div>
+          
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-sm font-medium text-gray-700">Memory Usage</span>
+              <span class="text-sm text-gray-500">{{ memoryInfo?.usage?.toFixed(1) }}%</span>
+            </div>
+            <app-progress-bar 
+              [value]="memoryInfo?.usage || 0"
+              [max]="100"
+              height="12px"
+            ></app-progress-bar>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <p class="text-xs text-gray-500">Buffers</p>
+              <p class="font-medium text-gray-900">{{ memoryInfo?.buffers }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Cached</p>
+              <p class="font-medium text-gray-900">{{ memoryInfo?.cached }}</p>
+            </div>
+          </div>
+        </div>
+      </app-card>
+
+      <app-card 
+        title="Network"
+        [hasShadow]="true"
+        [hasBorder]="true"
+      >
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="text-center p-4 bg-blue-50 rounded-lg">
+              <p class="text-xs text-blue-600 mb-1">Incoming</p>
+              <p class="text-xl font-bold text-blue-700">{{ networkInfo?.traffic?.in }}</p>
+            </div>
+            <div class="text-center p-4 bg-green-50 rounded-lg">
+              <p class="text-xs text-green-600 mb-1">Outgoing</p>
+              <p class="text-xl font-bold text-green-700">{{ networkInfo?.traffic?.out }}</p>
+            </div>
+          </div>
+          
+          @for (iface of networkInfo?.interfaces; track iface.name) {
+            <div class="p-4 bg-gray-50 rounded-lg">
+              <p class="font-medium text-gray-900 mb-2">{{ iface.name }}</p>
+              <div class="grid grid-cols-2 gap-2 text-sm">
+                <div>
+                  <p class="text-xs text-gray-500">IP Address</p>
+                  <p class="font-medium text-gray-700">{{ iface.ip }}</p>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-500">MAC Address</p>
+                  <p class="font-medium text-gray-700">{{ iface.mac }}</p>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-500">RX</p>
+                  <p class="font-medium text-gray-700">{{ iface.rxBytes }}</p>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-500">TX</p>
+                  <p class="font-medium text-gray-700">{{ iface.txBytes }}</p>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </app-card>
+    </div>
+
+    <app-card 
+      title="Disks"
+      [hasShadow]="true"
+      [hasBorder]="true"
+    >
+      <div class="space-y-4">
+        @for (disk of diskInfo; track disk.name) {
+          <div class="p-4 bg-gray-50 rounded-lg">
+            <div class="flex justify-between items-center mb-2">
+              <div>
+                <p class="font-medium text-gray-900">{{ disk.name }}</p>
+                <p class="text-xs text-gray-500">Mount: {{ disk.mount }}</p>
+              </div>
+              <div class="text-right">
+                <p class="text-sm text-gray-700">
+                  {{ disk.used }} / {{ disk.total }}
+                </p>
+                <p class="text-xs text-gray-500">{{ disk.free }} free</p>
+              </div>
+            </div>
+            <app-progress-bar 
+              [value]="disk.usage"
+              [max]="100"
+              height="8px"
+            ></app-progress-bar>
+          </div>
+        }
+      </div>
+    </app-card>
+  }
+</div>

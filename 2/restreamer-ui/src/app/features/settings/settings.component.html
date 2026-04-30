@@ -1,0 +1,448 @@
+<div class="space-y-6">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">
+        {{ 'settings.title' | translate }}
+      </h1>
+      <p class="text-gray-500 mt-1">
+        Configure FFmpeg encoding, audio/video filters, and output options
+      </p>
+    </div>
+    <div class="flex gap-3">
+      <button 
+        pButton 
+        label="Reset"
+        icon="pi pi-undo"
+        class="p-button-text"
+        (click)="resetSettings()"
+      ></button>
+      <button 
+        pButton 
+        [label]="saving ? 'Saving...' : 'Save'"
+        icon="pi pi-save"
+        class="p-button-primary"
+        [loading]="saving"
+        (click)="saveSettings()"
+      ></button>
+    </div>
+  </div>
+
+  @if (loading) {
+    <app-loading-spinner 
+      [message]="'app.loading' | translate"
+    ></app-loading-spinner>
+  } @else {
+    <app-card 
+      [showHeader]="false"
+      [hasShadow]="true"
+      [hasBorder]="true"
+    >
+      <div class="flex gap-2 mb-6 border-b border-gray-200 pb-4">
+        <button 
+          pButton
+          [label]="'Encoding'"
+          [class]="activeTabIndex === 0 ? 'p-button-primary' : 'p-button-outlined'"
+          (click)="activeTabIndex = 0"
+        ></button>
+        <button 
+          pButton
+          [label]="'Output'"
+          [class]="activeTabIndex === 1 ? 'p-button-primary' : 'p-button-outlined'"
+          (click)="activeTabIndex = 1"
+        ></button>
+        <button 
+          pButton
+          [label]="'Filters'"
+          [class]="activeTabIndex === 2 ? 'p-button-primary' : 'p-button-outlined'"
+          (click)="activeTabIndex = 2"
+        ></button>
+      </div>
+
+      @if (activeTabIndex === 0) {
+        <div class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <app-form-field 
+              [label]="'Video Codec'"
+              [required]="true"
+            >
+              <div class="space-y-2">
+                @for (codec of videoCodecs; track codec.value) {
+                  <div class="flex items-center gap-2">
+                    <p-radioButton 
+                      [value]="codec.value"
+                      formControlName="videoCodec"
+                      [inputId]="'videoCodec-' + codec.value"
+                    ></p-radioButton>
+                    <label [for]="'videoCodec-' + codec.value" class="cursor-pointer">
+                      {{ codec.label }}
+                    </label>
+                  </div>
+                }
+              </div>
+            </app-form-field>
+
+            <app-form-field 
+              [label]="'Video Bitrate'"
+              [required]="true"
+              helpText="Kbps (100 - 50000)"
+            >
+              <p-inputNumber 
+                formControlName="videoBitrate"
+                mode="decimal"
+                [min]="100"
+                [max]="50000"
+                [showButtons]="true"
+                buttonLayout="horizontal"
+                incrementButtonIcon="pi pi-plus"
+                decrementButtonIcon="pi pi-minus"
+                suffix=" Kbps"
+                styleClass="w-full"
+              ></p-inputNumber>
+            </app-form-field>
+
+            <app-form-field 
+              [label]="'Resolution'"
+              [required]="true"
+            >
+              <div class="space-y-2">
+                @for (res of resolutions; track res.value) {
+                  <div class="flex items-center gap-2">
+                    <p-radioButton 
+                      [value]="res.value"
+                      formControlName="videoResolution"
+                      [inputId]="'videoResolution-' + res.value"
+                    ></p-radioButton>
+                    <label [for]="'videoResolution-' + res.value" class="cursor-pointer">
+                      {{ res.label }}
+                    </label>
+                  </div>
+                }
+              </div>
+            </app-form-field>
+
+            <app-form-field 
+              [label]="'FPS'"
+              [required]="true"
+              helpText="Frames per second (1 - 120)"
+            >
+              <p-inputNumber 
+                formControlName="videoFPS"
+                mode="decimal"
+                [min]="1"
+                [max]="120"
+                [showButtons]="true"
+                buttonLayout="horizontal"
+                incrementButtonIcon="pi pi-plus"
+                decrementButtonIcon="pi pi-minus"
+                suffix=" fps"
+                styleClass="w-full"
+              ></p-inputNumber>
+            </app-form-field>
+
+            <app-form-field 
+              [label]="'Preset'"
+            >
+              <div class="space-y-2">
+                @for (preset of presets; track preset.value) {
+                  <div class="flex items-center gap-2">
+                    <p-radioButton 
+                      [value]="preset.value"
+                      formControlName="videoPreset"
+                      [inputId]="'videoPreset-' + preset.value"
+                    ></p-radioButton>
+                    <label [for]="'videoPreset-' + preset.value" class="cursor-pointer">
+                      {{ preset.label }}
+                    </label>
+                  </div>
+                }
+              </div>
+            </app-form-field>
+
+            <app-form-field 
+              [label]="'Audio Codec'"
+              [required]="true"
+            >
+              <div class="space-y-2">
+                @for (codec of audioCodecs; track codec.value) {
+                  <div class="flex items-center gap-2">
+                    <p-radioButton 
+                      [value]="codec.value"
+                      formControlName="audioCodec"
+                      [inputId]="'audioCodec-' + codec.value"
+                    ></p-radioButton>
+                    <label [for]="'audioCodec-' + codec.value" class="cursor-pointer">
+                      {{ codec.label }}
+                    </label>
+                  </div>
+                }
+              </div>
+            </app-form-field>
+
+            <app-form-field 
+              [label]="'Audio Bitrate'"
+              [required]="true"
+              helpText="Kbps (32 - 512)"
+            >
+              <p-inputNumber 
+                formControlName="audioBitrate"
+                mode="decimal"
+                [min]="32"
+                [max]="512"
+                [showButtons]="true"
+                buttonLayout="horizontal"
+                incrementButtonIcon="pi pi-plus"
+                decrementButtonIcon="pi pi-minus"
+                suffix=" Kbps"
+                styleClass="w-full"
+              ></p-inputNumber>
+            </app-form-field>
+
+            <app-form-field 
+              [label]="'Channels'"
+              [required]="true"
+            >
+              <div class="space-y-2">
+                <div class="flex items-center gap-2">
+                  <p-radioButton [value]="1" formControlName="audioChannels" inputId="ch1"></p-radioButton>
+                  <label for="ch1" class="cursor-pointer">1 (Mono)</label>
+                </div>
+                <div class="flex items-center gap-2">
+                  <p-radioButton [value]="2" formControlName="audioChannels" inputId="ch2"></p-radioButton>
+                  <label for="ch2" class="cursor-pointer">2 (Stereo)</label>
+                </div>
+                <div class="flex items-center gap-2">
+                  <p-radioButton [value]="6" formControlName="audioChannels" inputId="ch6"></p-radioButton>
+                  <label for="ch6" class="cursor-pointer">5.1 Surround</label>
+                </div>
+                <div class="flex items-center gap-2">
+                  <p-radioButton [value]="8" formControlName="audioChannels" inputId="ch8"></p-radioButton>
+                  <label for="ch8" class="cursor-pointer">7.1 Surround</label>
+                </div>
+              </div>
+            </app-form-field>
+          </div>
+        </div>
+      }
+
+      @if (activeTabIndex === 1) {
+        <div class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <app-form-field 
+              [label]="'Output Format'"
+              [required]="true"
+            >
+              <div class="space-y-2">
+                @for (format of outputFormats; track format.value) {
+                  <div class="flex items-center gap-2">
+                    <p-radioButton 
+                      [value]="format.value"
+                      formControlName="outputFormat"
+                      [inputId]="'outputFormat-' + format.value"
+                    ></p-radioButton>
+                    <label [for]="'outputFormat-' + format.value" class="cursor-pointer">
+                      {{ format.label }}
+                    </label>
+                  </div>
+                }
+              </div>
+            </app-form-field>
+
+            <app-form-field 
+              [label]="'Output Path'"
+              [required]="true"
+            >
+              <input 
+                type="text" 
+                pInputText 
+                formControlName="outputPath"
+                placeholder="/output/stream.m3u8"
+                class="w-full"
+              />
+            </app-form-field>
+
+            <app-form-field 
+              [label]="'Segment Duration'"
+              [required]="true"
+              helpText="Seconds (1 - 10)"
+            >
+              <p-inputNumber 
+                formControlName="segmentDuration"
+                mode="decimal"
+                [min]="1"
+                [max]="10"
+                [showButtons]="true"
+                buttonLayout="horizontal"
+                incrementButtonIcon="pi pi-plus"
+                decrementButtonIcon="pi pi-minus"
+                suffix=" seconds"
+                styleClass="w-full"
+              ></p-inputNumber>
+            </app-form-field>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="p-4 bg-gray-50 rounded-lg">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="font-medium text-gray-900">HLS Settings</p>
+                  <p class="text-sm text-gray-500">HTTP Live Streaming</p>
+                </div>
+                <p-checkbox 
+                  formControlName="hlsEnabled"
+                  [binary]="true"
+                ></p-checkbox>
+              </div>
+            </div>
+
+            <div class="p-4 bg-gray-50 rounded-lg">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="font-medium text-gray-900">RTMP Settings</p>
+                  <p class="text-sm text-gray-500">Real-Time Messaging Protocol</p>
+                </div>
+                <p-checkbox 
+                  formControlName="rtmpEnabled"
+                  [binary]="true"
+                ></p-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (activeTabIndex === 2) {
+        <div class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <app-form-field 
+              [label]="'Video Filters'"
+            >
+              <p-multiSelect 
+                [options]="videoFilterOptions"
+                optionLabel="label"
+                optionValue="value"
+                formControlName="videoFilters"
+                placeholder="Select video filters"
+                styleClass="w-full"
+              ></p-multiSelect>
+            </app-form-field>
+
+            <app-form-field 
+              [label]="'Audio Filters'"
+            >
+              <p-multiSelect 
+                [options]="audioFilterOptions"
+                optionLabel="label"
+                optionValue="value"
+                formControlName="audioFilters"
+                placeholder="Select audio filters"
+                styleClass="w-full"
+              ></p-multiSelect>
+            </app-form-field>
+          </div>
+
+          <p-divider></p-divider>
+
+          <h3 class="text-lg font-semibold text-gray-900">Video Adjustments</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <app-form-field 
+              [label]="'Brightness'"
+            >
+              <p-slider 
+                formControlName="brightness"
+                [min]="-100"
+                [max]="100"
+                [step]="1"
+                styleClass="w-full"
+              ></p-slider>
+              <p class="text-sm text-gray-500 mt-2">
+                Value: {{ f['brightness'].value }}
+              </p>
+            </app-form-field>
+
+            <app-form-field 
+              [label]="'Contrast'"
+            >
+              <p-slider 
+                formControlName="contrast"
+                [min]="-100"
+                [max]="100"
+                [step]="1"
+                styleClass="w-full"
+              ></p-slider>
+              <p class="text-sm text-gray-500 mt-2">
+                Value: {{ f['contrast'].value }}
+              </p>
+            </app-form-field>
+
+            <app-form-field 
+              [label]="'Saturation'"
+            >
+              <p-slider 
+                formControlName="saturation"
+                [min]="-100"
+                [max]="100"
+                [step]="1"
+                styleClass="w-full"
+              ></p-slider>
+              <p class="text-sm text-gray-500 mt-2">
+                Value: {{ f['saturation'].value }}
+              </p>
+            </app-form-field>
+          </div>
+
+          <p-divider></p-divider>
+
+          <h3 class="text-lg font-semibold text-gray-900">Audio Adjustments</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <app-form-field 
+              [label]="'Volume'"
+            >
+              <p-slider 
+                formControlName="volume"
+                [min]="0"
+                [max]="200"
+                [step]="1"
+                styleClass="w-full"
+              ></p-slider>
+              <p class="text-sm text-gray-500 mt-2">
+                Value: {{ f['volume'].value }}%
+              </p>
+            </app-form-field>
+          </div>
+
+          <p-divider></p-divider>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="p-4 bg-gray-50 rounded-lg">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="font-medium text-gray-900">Deinterlace</p>
+                  <p class="text-sm text-gray-500">Remove interlacing from video</p>
+                </div>
+                <p-checkbox 
+                  formControlName="deinterlace"
+                  [binary]="true"
+                ></p-checkbox>
+              </div>
+            </div>
+
+            <div class="p-4 bg-gray-50 rounded-lg">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="font-medium text-gray-900">Denoise</p>
+                  <p class="text-sm text-gray-500">Reduce video noise</p>
+                </div>
+                <p-checkbox 
+                  formControlName="denoise"
+                  [binary]="true"
+                ></p-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </app-card>
+  }
+</div>

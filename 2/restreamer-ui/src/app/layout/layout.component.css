@@ -1,0 +1,52 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.main-content {
+  background-color: #f8fafc;
+  min-height: calc(100vh - 128px);
+}
+
+@media (max-width: 1023px) {
+  .sidebar {
+    position: fixed;
+    z-index: 40;
+  }
+}
+
+::ng-deep .p-toast {
+  z-index: 9999;
+}
+
+::ng-deep .p-confirm-dialog {
+  z-index: 9998;
+}
+
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-wrapper {
+  display: flex;
+  flex: 1;
+}
+
+.content-area {
+  flex: 1;
+  transition: margin-left 0.3s ease;
+}
+
+@media (min-width: 1024px) {
+  .content-area.sidebar-open {
+    margin-left: 16rem;
+  }
+}
+
+@media (max-width: 1023px) {
+  .content-area {
+    margin-left: 0 !important;
+  }
+}

@@ -1,0 +1,150 @@
+<div class="space-y-6">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">
+        {{ 'dashboard.title' | translate }}
+      </h1>
+      <p class="text-gray-500 mt-1">
+        Overview of your streaming system
+      </p>
+    </div>
+    <button 
+      pButton 
+      label="Refresh"
+      icon="pi pi-refresh"
+      class="p-button-outlined"
+    ></button>
+  </div>
+
+  @if (loading) {
+    <app-loading-spinner 
+      [message]="'app.loading' | translate"
+    ></app-loading-spinner>
+  } @else {
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      @for (card of statCards; track card.title) {
+        <app-card 
+          [hasShadow]="true"
+          [hasBorder]="true"
+          padding="medium"
+        >
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">{{ card.title }}</p>
+              <p class="text-2xl font-bold text-gray-900 mt-1">{{ card.value }}</p>
+              @if (card.change) {
+                <p 
+                  class="text-xs mt-1"
+                  [class.text-green-600]="card.changeType === 'positive'"
+                  [class.text-red-600]="card.changeType === 'negative'"
+                  [class.text-gray-500]="card.changeType === 'neutral'"
+                >
+                  {{ card.change }}
+                </p>
+              }
+            </div>
+            <div 
+              class="w-12 h-12 rounded-xl flex items-center justify-center"
+              [class.bg-blue-100]="card.color === 'blue'"
+              [class.bg-green-100]="card.color === 'green'"
+              [class.bg-purple-100]="card.color === 'purple'"
+              [class.bg-orange-100]="card.color === 'orange'"
+            >
+              <i 
+                [class]="card.icon"
+                class="text-xl"
+                [class.text-blue-600]="card.color === 'blue'"
+                [class.text-green-600]="card.color === 'green'"
+                [class.text-purple-600]="card.color === 'purple'"
+                [class.text-orange-600]="card.color === 'orange'"
+              ></i>
+            </div>
+          </div>
+        </app-card>
+      }
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <app-card 
+        title="System Status"
+        [hasShadow]="true"
+        [hasBorder]="true"
+      >
+        <div class="space-y-4">
+          @for (metric of systemMetrics; track metric.label) {
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-sm font-medium text-gray-700">{{ metric.label }}</span>
+                <span class="text-sm text-gray-500">{{ metric.value.toFixed(1) }}{{ metric.unit }}</span>
+              </div>
+              <app-progress-bar 
+                [value]="metric.value"
+                [max]="metric.max"
+                [showLabel]="false"
+                height="8px"
+              ></app-progress-bar>
+            </div>
+          }
+        </div>
+      </app-card>
+
+      <app-card 
+        title="Active Channels"
+        [hasShadow]="true"
+        [hasBorder]="true"
+        [headerActions]="true"
+      >
+        <button 
+          pButton 
+          icon="pi pi-ellipsis-v"
+          class="p-button-text p-button-sm"
+        ></button>
+        
+        <div class="space-y-4">
+          @for (channel of recentChannels; track channel.id) {
+            <div 
+              class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+            >
+              <div class="relative flex-shrink-0">
+                <p-image 
+                  [src]="channel.thumbnail"
+                  alt="{{ channel.name }}"
+                  width="80"
+                  height="45"
+                  preview
+                  styleClass="rounded-lg object-cover"
+                ></p-image>
+                <p-badge 
+                  [value]="channel.status"
+                  [severity]="getStatusBadgeSeverity(channel.status)"
+                  class="absolute -top-1 -right-1"
+                ></p-badge>
+              </div>
+              
+              <div class="flex-1 min-w-0">
+                <p class="font-medium text-gray-900 truncate">{{ channel.name }}</p>
+                <div class="flex items-center gap-3 mt-1">
+                  <span class="text-xs text-gray-500">
+                    <i class="pi pi-users mr-1"></i>{{ channel.viewers }}
+                  </span>
+                  <span class="text-xs text-gray-500">
+                    <i class="pi pi-chart-line mr-1"></i>{{ channel.bitrate }}
+                  </span>
+                  <span class="text-xs text-gray-500">
+                    <i class="pi pi-desktop mr-1"></i>{{ channel.resolution }}
+                  </span>
+                </div>
+              </div>
+              
+              <button 
+                pButton 
+                icon="pi pi-play"
+                class="p-button-text p-button-sm"
+              ></button>
+            </div>
+          }
+        </div>
+      </app-card>
+    </div>
+  }
+</div>

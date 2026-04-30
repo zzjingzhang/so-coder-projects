@@ -1,0 +1,39 @@
+:host {
+  display: block;
+}
+
+.progress-bar-container {
+  width: 100%;
+}
+
+::ng-deep .p-progressbar {
+  border-radius: 9999px;
+  background-color: #e2e8f0;
+}
+
+::ng-deep .p-progressbar-value {
+  border-radius: 9999px;
+}
+
+::ng-deep .p-progressbar-value-animate {
+  transition: width 0.6s ease-in-out;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+::ng-deep .p-progressbar-label {
+  color: white;
+  font-weight: 500;
+  font-size: 0.75rem;
+}

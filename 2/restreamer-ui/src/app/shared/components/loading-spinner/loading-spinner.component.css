@@ -1,0 +1,26 @@
+:host {
+  display: block;
+}
+
+::ng-deep .p-progress-spinner-circle {
+  stroke: #3b82f6 !important;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner-overlay {
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

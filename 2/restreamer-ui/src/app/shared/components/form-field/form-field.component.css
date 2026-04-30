@@ -1,0 +1,54 @@
+:host {
+  display: block;
+}
+
+.form-field {
+  margin-bottom: 1rem;
+}
+
+::ng-deep .form-field .p-inputtext {
+  width: 100%;
+}
+
+::ng-deep .form-field.error .p-inputtext {
+  border-color: #ef4444;
+}
+
+::ng-deep .form-field.error .p-inputtext:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+::ng-deep .form-field .p-dropdown {
+  width: 100%;
+}
+
+::ng-deep .form-field.error .p-dropdown {
+  border-color: #ef4444;
+}
+
+::ng-deep .form-field .p-inputnumber {
+  width: 100%;
+}
+
+::ng-deep .form-field .p-inputnumber input {
+  width: 100%;
+}
+
+::ng-deep .form-field .p-checkbox {
+  display: inline-flex;
+}
+
+.label-required {
+  color: #ef4444;
+  margin-left: 0.25rem;
+}
+
+.error-icon {
+  color: #ef4444;
+}
+
+.help-text {
+  color: #64748b;
+  font-size: 0.75rem;
+}

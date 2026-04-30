@@ -1,0 +1,38 @@
+:host {
+  display: contents;
+}
+
+::ng-deep .p-confirm-dialog {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+::ng-deep .p-confirm-dialog .p-dialog-header {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-bottom: 1px solid #fcd34d;
+}
+
+::ng-deep .p-confirm-dialog .p-dialog-title {
+  color: #92400e;
+  font-weight: 600;
+}
+
+::ng-deep .p-confirm-dialog .p-dialog-content {
+  background: #ffffff;
+}
+
+::ng-deep .p-confirm-dialog .p-dialog-footer {
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+}
+
+.confirm-icon {
+  color: #f59e0b;
+}
+
+@media (max-width: 640px) {
+  ::ng-deep .p-confirm-dialog {
+    width: 95vw !important;
+    max-width: 95vw !important;
+  }
+}

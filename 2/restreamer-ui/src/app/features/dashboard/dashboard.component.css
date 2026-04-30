@@ -1,0 +1,51 @@
+:host {
+  display: block;
+}
+
+.stat-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.icon-container {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.channel-item {
+  transition: all 0.2s ease;
+}
+
+.channel-item:hover {
+  background-color: #f8fafc;
+}
+
+::ng-deep .p-image {
+  display: block;
+}
+
+::ng-deep .p-image-preview-indicator {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 640px) {
+  .stat-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .channel-list {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,69 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+::ng-deep .p-password {
+  width: 100%;
+}
+
+::ng-deep .p-password input {
+  width: 100%;
+}
+
+::ng-deep .p-checkbox {
+  width: auto;
+}
+
+.login-container {
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logo-container {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  box-shadow: 0 10px 40px rgba(59, 130, 246, 0.3);
+}
+
+.demo-info {
+  background: linear-gradient(135deg, #eff6ff 0%, #faf5ff 100%);
+  border: 1px solid #bfdbfe;
+}
+
+@media (max-width: 640px) {
+  .login-card {
+    margin: 1rem;
+    border-radius: 1rem;
+  }
+}
+
+::ng-deep .p-button {
+  transition: all 0.2s ease;
+}
+
+::ng-deep .p-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+::ng-deep .p-button:active {
+  transform: translateY(0);
+}
+
+::ng-deep .p-inputtext {
+  transition: all 0.2s ease;
+}
+
+::ng-deep .p-inputtext:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}

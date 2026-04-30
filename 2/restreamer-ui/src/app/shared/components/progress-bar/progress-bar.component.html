@@ -1,0 +1,23 @@
+<div class="progress-bar-container">
+  @if (showLabel && label) {
+    <div class="flex justify-between items-center mb-1">
+      <span class="text-sm font-medium text-gray-700">{{ label }}</span>
+      @if (showValue) {
+        <span class="text-sm font-medium text-gray-600">
+          {{ percentage }}{{ unit }}
+        </span>
+      }
+    </div>
+  }
+  
+  <div 
+    class="w-full bg-gray-200 rounded-full overflow-hidden"
+    [style.height]="height"
+  >
+    <div 
+      class="h-full rounded-full transition-all duration-300"
+      [class]="severityClass"
+      [style.width]="indeterminate ? '100%' : percentage + '%'"
+      [class.animate-pulse]="indeterminate"
+    ></div>
+  </div>

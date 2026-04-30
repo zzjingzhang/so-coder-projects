@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+footer {
+  min-height: 60px;
+}
+
+@media (max-width: 640px) {
+  .footer-links {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}

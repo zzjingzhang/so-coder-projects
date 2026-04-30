@@ -1,0 +1,24 @@
+@if (overlay) {
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-6 shadow-xl flex flex-col items-center">
+      <div [class]="getSizeClass()" class="border-4 border-gray-200 border-t-primary rounded-full animate-spin"></div>
+      @if (message) {
+        <p class="mt-4 text-gray-600 text-sm">{{ message }}</p>
+      }
+    </div>
+  </div>
+} @else if (fullScreen) {
+  <div class="fixed inset-0 bg-white flex flex-col items-center justify-center z-50">
+    <div [class]="getSizeClass()" class="border-4 border-gray-200 border-t-primary rounded-full animate-spin"></div>
+    @if (message) {
+      <p class="mt-4 text-gray-600 text-lg">{{ message }}</p>
+    }
+  </div>
+} @else {
+  <div class="flex flex-col items-center justify-center py-4">
+    <div [class]="getSizeClass()" class="border-4 border-gray-200 border-t-primary rounded-full animate-spin"></div>
+    @if (message) {
+      <p class="mt-3 text-gray-600 text-sm">{{ message }}</p>
+    }
+  </div>
+}

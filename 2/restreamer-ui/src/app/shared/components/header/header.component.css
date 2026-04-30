@@ -1,0 +1,47 @@
+:host {
+  display: block;
+}
+
+::ng-deep .p-button {
+  margin: 0;
+}
+
+::ng-deep .p-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdown-enter {
+  animation: slideIn 0.15s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-item {
+  transition: background-color 0.15s ease;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+@media (max-width: 768px) {
+  .user-menu {
+    width: 280px;
+    right: -16px;
+  }
+  
+  .language-menu {
+    right: -16px;
+  }
+}

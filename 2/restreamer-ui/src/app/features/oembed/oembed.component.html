@@ -1,0 +1,7 @@
+@if (format === 'json') {
+  <pre class="p-4 bg-gray-900 text-green-400 font-mono text-sm overflow-x-auto">{{ getJsonResponse() }}</pre>
+} @else if (format === 'xml') {
+  <pre class="p-4 bg-gray-900 text-green-400 font-mono text-sm overflow-x-auto">{{ getXmlResponse() }}</pre>
+} @else {
+  <pre class="p-4 bg-gray-900 text-red-400 font-mono text-sm">{{ '{"error": "Invalid format. Supported formats: json, xml"}' }}</pre>
+}

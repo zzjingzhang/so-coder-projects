@@ -1,0 +1,326 @@
+<div class="space-y-6">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">
+        {{ 'player.title' | translate }}
+      </h1>
+      <p class="text-gray-500 mt-1">
+        Stream: {{ channelId }}
+      </p>
+    </div>
+    <div class="flex gap-3">
+      <button 
+        pButton 
+        label="Copy Embed Code"
+        icon="pi pi-code"
+        class="p-button-outlined"
+        (click)="copyEmbedCode()"
+      ></button>
+    </div>
+  </div>
+
+  <app-card 
+    [showHeader]="false"
+    [hasShadow]="true"
+    [hasBorder]="true"
+  >
+    <div 
+      class="relative bg-black rounded-lg overflow-hidden aspect-video cursor-pointer"
+      (mouseenter)="showControlsOverlay()"
+      (mouseleave)="hideControlsOverlay()"
+    >
+      <video
+        class="w-full h-full object-contain"
+        [src]="streamUrl"
+        [muted]="isMuted"
+        (click)="togglePlay()"
+      ></video>
+
+      @for (overlay of overlayList; track overlay.id) {
+        @if (overlay.enabled) {
+          <div 
+            class="absolute px-3 py-2 bg-black/60 text-white text-sm rounded"
+            [class.top-2]="overlay.position.includes('top')"
+            [class.bottom-2]="overlay.position.includes('bottom')"
+            [class.left-2]="overlay.position.includes('left')"
+            [class.right-2]="overlay.position.includes('right')"
+            [class.inset-0.flex.items-center.justify-center]="overlay.position === 'center'"
+          >
+            @if (overlay.type === 'text') {
+              {{ overlay.content }}
+            } @else if (overlay.type === 'image' || overlay.type === 'logo') {
+              <img 
+                [src]="overlay.content" 
+                alt="Overlay" 
+                class="h-8 object-contain"
+              />
+            }
+          </div>
+        }
+      }
+
+      @if (!isPlaying) {
+        <div class="absolute inset-0 flex items-center justify-center bg-black/30">
+          <button
+            class="w-20 h-20 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+            (click)="togglePlay()"
+          >
+            <i class="pi pi-play text-white text-4xl ml-1"></i>
+          </button>
+        </div>
+      }
+
+      @if (showControls) {
+        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 transition-opacity">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <button 
+                class="text-white hover:text-blue-300 transition-colors"
+                (click)="togglePlay()"
+              >
+                <i 
+                  [class]="isPlaying ? 'pi pi-pause text-xl' : 'pi pi-play text-xl'"
+                ></i>
+              </button>
+              
+              <button 
+                class="text-white hover:text-blue-300 transition-colors"
+                (click)="toggleMute()"
+              >
+                <i 
+                  [class]="isMuted ? 'pi pi-volume-off text-xl' : 'pi pi-volume-up text-xl'"
+                ></i>
+              </button>
+
+              <div class="w-24">
+                <p-slider 
+                  [(ngModel)]="volume"
+                  [min]="0"
+                  [max]="100"
+                  class="w-full"
+                ></p-slider>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <button 
+                class="text-white hover:text-blue-300 transition-colors"
+                (click)="toggleFullscreen()"
+              >
+                <i class="pi pi-expand text-xl"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </app-card>
+
+  @if (streamStats) {
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+      <div class="text-center p-4 bg-gray-50 rounded-lg">
+        <p class="text-xs text-gray-500 mb-1">Bitrate</p>
+        <p class="font-bold text-gray-900">{{ streamStats.bitrate }}</p>
+      </div>
+      <div class="text-center p-4 bg-gray-50 rounded-lg">
+        <p class="text-xs text-gray-500 mb-1">Buffer</p>
+        <p class="font-bold text-gray-900">{{ streamStats.buffer }}</p>
+      </div>
+      <div class="text-center p-4 bg-gray-50 rounded-lg">
+        <p class="text-xs text-gray-500 mb-1">Latency</p>
+        <p class="font-bold text-gray-900">{{ streamStats.latency }}</p>
+      </div>
+      <div class="text-center p-4 bg-gray-50 rounded-lg">
+        <p class="text-xs text-gray-500 mb-1">Frame Rate</p>
+        <p class="font-bold text-gray-900">{{ streamStats.frameRate }}</p>
+      </div>
+      <div class="text-center p-4 bg-gray-50 rounded-lg">
+        <p class="text-xs text-gray-500 mb-1">Dropped</p>
+        <p class="font-bold text-gray-900">{{ streamStats.droppedFrames }}</p>
+      </div>
+      <div class="text-center p-4 bg-gray-50 rounded-lg">
+        <p class="text-xs text-gray-500 mb-1">Resolution</p>
+        <p class="font-bold text-gray-900">{{ streamStats.resolution }}</p>
+      </div>
+      <div class="text-center p-4 bg-gray-50 rounded-lg">
+        <p class="text-xs text-gray-500 mb-1">Codec</p>
+        <p class="font-bold text-gray-900">{{ streamStats.codec }}</p>
+      </div>
+    </div>
+  }
+
+  <app-card 
+    title="Overlays"
+    [headerActions]="true"
+    [hasShadow]="true"
+    [hasBorder]="true"
+  >
+    <button 
+      pButton 
+      icon="pi pi-plus"
+      class="p-button-text p-button-sm"
+      (click)="openOverlayDialog()"
+    ></button>
+    
+    @if (overlayList.length === 0) {
+      <app-empty-state 
+        icon="custom"
+        customIcon="pi pi-image"
+        title="No overlays configured"
+        description="Add an overlay to customize your stream"
+        [showAction]="true"
+        actionLabel="Add Overlay"
+        actionIcon="pi pi-plus"
+        (actionClick)="openOverlayDialog()"
+      ></app-empty-state>
+    } @else {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        @for (overlay of overlayList; track overlay.id) {
+          <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <div class="flex items-start justify-between mb-3">
+              <div>
+                <p class="font-medium text-gray-900">
+                  {{ overlay.type === 'text' ? 'Text' : overlay.type === 'logo' ? 'Logo' : 'Image' }}
+                </p>
+                <p class="text-sm text-gray-500">{{ overlay.position }}</p>
+              </div>
+              <p-checkbox 
+                [binary]="true"
+                [(ngModel)]="overlay.enabled"
+                (onChange)="toggleOverlay(overlay)"
+              ></p-checkbox>
+            </div>
+            
+            <p class="text-sm text-gray-700 mb-3 truncate">
+              {{ overlay.content }}
+            </p>
+
+            <div class="flex gap-2">
+              <button 
+                pButton 
+                icon="pi pi-pencil"
+                class="p-button-text p-button-sm"
+                (click)="openOverlayDialog(overlay)"
+              ></button>
+              <button 
+                pButton 
+                icon="pi pi-trash"
+                class="p-button-text p-button-sm p-button-danger"
+                (click)="deleteOverlay(overlay)"
+              ></button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </app-card>
+
+  <app-card 
+    title="Embed Options"
+    [hasShadow]="true"
+    [hasBorder]="true"
+  >
+    <div class="space-y-6">
+      <div>
+        <p class="text-sm text-gray-500 mb-2">Embed Code</p>
+        <div class="p-4 bg-gray-900 rounded-lg text-green-400 font-mono text-sm overflow-x-auto">
+          <pre>{{ getEmbedCode() }}</pre>
+        </div>
+      </div>
+
+      <div>
+        <p class="text-sm text-gray-500 mb-2">OEmbed Endpoints</p>
+        <div class="space-y-2">
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded">JSON</span>
+            <code class="text-sm text-gray-700 flex-1">
+              /oembed?format=json&#38;url={{ getOEmbedUrl('json') }}
+            </code>
+          </div>
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+            <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded">XML</span>
+            <code class="text-sm text-gray-700 flex-1">
+              /oembed?format=xml&#38;url={{ getOEmbedUrl('xml') }}
+            </code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-card>
+
+  <p-dialog 
+    [(visible)]="overlayDialogVisible"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    header="{{ activeOverlay?.id ? 'Edit Overlay' : 'Add Overlay' }}"
+    styleClass="w-full max-w-md"
+  >
+    @if (activeOverlay) {
+      <div class="space-y-4">
+        <app-form-field label="Type">
+          <p-selectButton 
+            [(ngModel)]="activeOverlay.type"
+            [options]="[
+              { label: 'Text', value: 'text' },
+              { label: 'Image', value: 'image' },
+              { label: 'Logo', value: 'logo' }
+            ]"
+            optionLabel="label"
+            optionValue="value"
+          ></p-selectButton>
+        </app-form-field>
+
+        <app-form-field label="Content">
+          <textarea 
+            pInputTextarea 
+            [(ngModel)]="activeOverlay.content"
+            [rows]="3"
+            class="w-full"
+            placeholder="Enter text content or image URL"
+          ></textarea>
+        </app-form-field>
+
+        <app-form-field label="Position">
+          <p-selectButton 
+            [(ngModel)]="activeOverlay.position"
+            [options]="[
+              { label: 'Top Left', value: 'top-left' },
+              { label: 'Top Right', value: 'top-right' },
+              { label: 'Bottom Left', value: 'bottom-left' },
+              { label: 'Bottom Right', value: 'bottom-right' },
+              { label: 'Center', value: 'center' }
+            ]"
+            optionLabel="label"
+            optionValue="value"
+          ></p-selectButton>
+        </app-form-field>
+
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-gray-700">Enabled</span>
+          <p-checkbox 
+            [binary]="true"
+            [(ngModel)]="activeOverlay.enabled"
+          ></p-checkbox>
+        </div>
+      </div>
+    }
+
+    <ng-template pTemplate="footer">
+      <button 
+        pButton 
+        label="Cancel"
+        icon="pi pi-times"
+        class="p-button-text"
+        (click)="overlayDialogVisible = false"
+      ></button>
+      <button 
+        pButton 
+        label="Save"
+        icon="pi pi-check"
+        class="p-button-primary"
+        (click)="saveOverlay()"
+      ></button>
+    </ng-template>
+  </p-dialog>
+</div>

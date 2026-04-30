@@ -1,0 +1,61 @@
+:host {
+  display: block;
+}
+
+.empty-state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.empty-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f1f5f9;
+  border-radius: 9999px;
+  margin-bottom: 1.5rem;
+}
+
+.empty-icon {
+  color: #94a3b8;
+}
+
+.empty-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.empty-description {
+  font-size: 0.875rem;
+  color: #64748b;
+  max-width: 28rem;
+  margin-bottom: 1.5rem;
+}
+
+.small {
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.5rem;
+}
+
+.medium {
+  width: 4rem;
+  height: 4rem;
+  font-size: 2rem;
+}
+
+.large {
+  width: 5rem;
+  height: 5rem;
+  font-size: 2.5rem;
+}
+
+::ng-deep .p-button {
+  min-width: 120px;
+}

@@ -1,0 +1,36 @@
+<p-dialog 
+  [(visible)]="visible"
+  [header]="header"
+  [closable]="closable"
+  [modal]="modal"
+  [dismissableMask]="dismissableMask"
+  [styleClass]="styleClass"
+  [style]="{ width: width, minHeight: height }"
+  (onHide)="onHide()"
+>
+  <ng-template pTemplate="content">
+    <ng-content></ng-content>
+  </ng-template>
+  
+  @if (showFooter && buttons.length > 0) {
+    <ng-template pTemplate="footer">
+      <div 
+        class="flex gap-2"
+        [class.justify-start]="footerAlign === 'left'"
+        [class.justify-center]="footerAlign === 'center'"
+        [class.justify-end]="footerAlign === 'right'"
+      >
+        @for (button of buttons; track button.label) {
+          <button
+            pButton
+            [label]="button.label"
+            [icon]="button.icon || ''"
+            [class]="getButtonSeverityClass(button.severity)"
+            [disabled]="button.disabled || false"
+            (click)="onButtonClicked(button.action || button.label)"
+          ></button>
+        }
+      </div>
+    </ng-template>
+  }
+</p-dialog>

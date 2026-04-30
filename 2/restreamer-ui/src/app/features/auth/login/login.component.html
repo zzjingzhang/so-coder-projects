@@ -1,0 +1,108 @@
+<div style="background: #eff6ff; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px;">
+  <div style="background: white; max-width: 448px; width: 100%; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); padding: 32px;">
+    <div style="text-align: center; margin-bottom: 24px;">
+      <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+        <span style="color: white; font-size: 24px;">🎬</span>
+      </div>
+      <h1 style="font-size: 24px; font-weight: bold; color: #111827; margin-bottom: 8px;">Restreamer Login</h1>
+      <p style="color: #6b7280; margin: 0;">Welcome back! Please sign in to continue.</p>
+    </div>
+
+    @if (successMessage) {
+      <div style="padding: 12px 16px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; margin-bottom: 16px;">
+        <p style="color: #166534; margin: 0; font-size: 14px;">
+          ✅ {{ successMessage }}
+        </p>
+      </div>
+    }
+
+    @if (errorMessage) {
+      <div style="padding: 12px 16px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; margin-bottom: 16px;">
+        <p style="color: #991b1b; margin: 0; font-size: 14px;">
+          ❌ {{ errorMessage }}
+        </p>
+      </div>
+    }
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" style="display: flex; flex-direction: column; gap: 16px;">
+      <div>
+        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">
+          Username <span style="color: #ef4444;">*</span>
+        </label>
+        <input 
+          type="text" 
+          formControlName="username"
+          placeholder="Enter username (e.g., admin)"
+          [class]="submitted && loginForm.get('username')?.invalid ? 'border-red-400' : 'border-gray-300'"
+          style="width: 100%; padding: 10px 12px; border-width: 1px; border-style: solid; border-radius: 8px; font-size: 14px; box-sizing: border-box;"
+        />
+        @if (submitted && loginForm.get('username')?.invalid) {
+          <p style="color: #ef4444; font-size: 12px; margin-top: 4px;">Username is required</p>
+        }
+      </div>
+
+      <div>
+        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">
+          Password <span style="color: #ef4444;">*</span>
+        </label>
+        <input 
+          type="password" 
+          formControlName="password"
+          placeholder="Enter password (e.g., password)"
+          [class]="submitted && loginForm.get('password')?.invalid ? 'border-red-400' : 'border-gray-300'"
+          style="width: 100%; padding: 10px 12px; border-width: 1px; border-style: solid; border-radius: 8px; font-size: 14px; box-sizing: border-box;"
+        />
+        @if (submitted && loginForm.get('password')?.invalid) {
+          <p style="color: #ef4444; font-size: 12px; margin-top: 4px;">Password is required</p>
+        }
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <input 
+            type="checkbox" 
+            formControlName="rememberMe"
+            id="rememberMe4"
+            style="width: 16px; height: 16px; cursor: pointer;"
+          />
+          <label for="rememberMe4" style="font-size: 14px; color: #4b5563; cursor: pointer;">
+            Remember me
+          </label>
+        </div>
+        <a href="#" style="font-size: 14px; color: #3b82f6; text-decoration: none;">Forgot password?</a>
+      </div>
+
+      <button 
+        type="submit" 
+        [disabled]="loading"
+        style="width: 100%; padding: 12px 16px; background: #3b82f6; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; opacity: {{ loading ? '0.7' : '1' }};"
+      >
+        {{ loading ? '🔄 Signing in...' : '🔐 Login' }}
+      </button>
+    </form>
+
+    <div style="margin-top: 24px;">
+      <div style="display: flex; align-items: center; justify-content: center; font-size: 14px; color: #6b7280; position: relative; margin-bottom: 16px;">
+        <div style="position: absolute; width: 100%; border-top: 1px solid #e5e7eb;"></div>
+        <span style="background: white; padding: 0 16px; position: relative; z-index: 1;">Or</span>
+      </div>
+
+      <button 
+        type="button"
+        (click)="loginWithAuth0()"
+        [disabled]="auth0Loading"
+        style="width: 100%; padding: 12px 16px; background: transparent; color: #3b82f6; border: 2px solid #3b82f6; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; opacity: {{ auth0Loading ? '0.7' : '1' }};"
+      >
+        {{ auth0Loading ? '🔄 Redirecting...' : '🔗 Login with Auth0' }}
+      </button>
+    </div>
+
+    <div style="margin-top: 24px; padding: 16px; background: #eff6ff; border-radius: 8px; border: 1px solid #bfdbfe;">
+      <p style="font-size: 12px; color: #1e40af; margin: 0;">
+        <strong>ℹ️ Demo Credentials:</strong><br>
+        Username: <code style="background: #dbeafe; padding: 2px 6px; border-radius: 4px; font-family: monospace;">admin</code> or <code style="background: #dbeafe; padding: 2px 6px; border-radius: 4px; font-family: monospace;">user</code><br>
+        Password: <code style="background: #dbeafe; padding: 2px 6px; border-radius: 4px; font-family: monospace;">password</code>
+      </p>
+    </div>
+  </div>
+</div>

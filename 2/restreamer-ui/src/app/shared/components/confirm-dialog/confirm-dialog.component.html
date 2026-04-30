@@ -1,0 +1,51 @@
+<p-confirmDialog 
+  [header]="header"
+  [message]="message"
+  [icon]="icon"
+  [acceptLabel]="acceptLabel"
+  [rejectLabel]="rejectLabel"
+  [acceptButtonStyleClass]="acceptButtonStyleClass"
+  [rejectButtonStyleClass]="rejectButtonStyleClass"
+  [closable]="closable"
+  (onAccept)="accept()"
+  (onReject)="reject()"
+>
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2">
+      <i [class]="icon" class="text-yellow-500"></i>
+      <span>{{ header }}</span>
+    </div>
+  </ng-template>
+  
+  <ng-template pTemplate="message">
+    <div class="flex items-start gap-4">
+      <div class="flex-shrink-0">
+        <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+          <i [class]="icon" class="text-yellow-500 text-xl"></i>
+        </div>
+      </div>
+      <div>
+        <p class="text-gray-700">{{ message }}</p>
+      </div>
+    </div>
+  </ng-template>
+  
+  <ng-template pTemplate="footer">
+    <div class="flex justify-end gap-3">
+      <button 
+        pButton
+        [label]="rejectLabel"
+        icon="pi pi-times"
+        [class]="rejectButtonStyleClass"
+        (click)="reject()"
+      ></button>
+      <button 
+        pButton
+        [label]="acceptLabel"
+        icon="pi pi-check"
+        [class]="acceptButtonStyleClass"
+        (click)="accept()"
+      ></button>
+    </div>
+  </ng-template>
+</p-confirmDialog>
