@@ -1,0 +1,124 @@
+@import "ng-zorro-antd/ng-zorro-antd.dark.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.dark {
+  @apply bg-gray-900 text-white;
+}
+
+.light {
+  @apply bg-gray-100 text-gray-900;
+}
+
+.video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  transition: background-color 0.5s ease;
+}
+
+.overlay-dark {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.overlay-light {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.nz-slider {
+  @apply px-2;
+}
+
+.nz-slider-track {
+  @apply bg-gradient-to-r from-purple-400 to-pink-500;
+}
+
+.nz-slider-handle {
+  @apply border-purple-500;
+}
+
+.nz-switch {
+  @apply bg-gray-400;
+}
+
+.nz-switch-checked {
+  @apply bg-purple-500;
+}
+
+.rain-effect {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.rain-drop {
+  position: absolute;
+  bottom: 100%;
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(174,194,224,0.8));
+  animation: rain-fall linear infinite;
+}
+
+@keyframes rain-fall {
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+.focus-mode-timer {
+  @apply text-6xl md:text-8xl font-mono font-bold tracking-wider;
+  text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+}
+
+.glass-panel {
+  @apply backdrop-blur-lg bg-white/10 dark:bg-black/20 border border-white/20 dark:border-white/10 rounded-2xl shadow-xl;
+}
+
+.glass-button {
+  @apply backdrop-blur-sm bg-white/20 dark:bg-white/10 hover:bg-white/30 dark:hover:bg-white/20 transition-all duration-300 border border-white/30 dark:border-white/20;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(168, 85, 247, 0.6);
+  }
+}
+
+.playing-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}

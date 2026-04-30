@@ -1,0 +1,92 @@
+<div class="glass-panel p-8 text-center">
+  <h2 class="text-xl font-bold text-white mb-6">⏱️ 专注倒计时</h2>
+
+  <!-- 预设时长 -->
+  <div class="flex gap-2 justify-center mb-6">
+    <button
+      *ngFor="let preset of presets"
+      nz-button
+      [nzType]="timerService.getDuration() === preset.minutes * 60 ? 'primary' : 'default'"
+      nzGhost
+      (click)="setPreset(preset.minutes)"
+      [disabled]="state !== 'idle'"
+    >
+      {{ preset.label }}
+    </button>
+  </div>
+
+  <!-- 倒计时显示 -->
+  <div class="mb-8">
+    <div 
+      class="focus-mode-timer"
+      [class.text-green-400]="state === 'completed'"
+      [class.text-yellow-400]="state === 'paused'"
+    >
+      {{ formatTime(remainingSeconds) }}
+    </div>
+    <div class="text-white/60 mt-2 capitalize">
+      {{ state === 'idle' ? '准备开始' : 
+         state === 'running' ? '专注中...' : 
+         state === 'paused' ? '已暂停' : '完成！🎉' }}
+    </div>
+  </div>
+
+  <!-- 控制按钮 -->
+  <div class="flex items-center justify-center gap-4">
+    <button
+      *ngIf="state === 'idle'"
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      (click)="start()"
+    >
+      <span nz-icon nzType="play" class="mr-2"></span>
+      开始
+    </button>
+
+    <button
+      *ngIf="state === 'running'"
+      nz-button
+      nzType="primary"
+      nzDanger
+      nzSize="large"
+      (click)="pause()"
+    >
+      <span nz-icon nzType="pause" class="mr-2"></span>
+      暂停
+    </button>
+
+    <button
+      *ngIf="state === 'paused'"
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      (click)="start()"
+    >
+      <span nz-icon nzType="play" class="mr-2"></span>
+      继续
+    </button>
+
+    <button
+      *ngIf="state === 'completed'"
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      (click)="reset()"
+    >
+      <span nz-icon nzType="reload" class="mr-2"></span>
+      重新开始
+    </button>
+
+    <button
+      *ngIf="state !== 'idle'"
+      nz-button
+      nzSize="large"
+      nzGhost
+      (click)="reset()"
+    >
+      <span nz-icon nzType="close" class="mr-2"></span>
+      重置
+    </button>
+  </div>
+</div>

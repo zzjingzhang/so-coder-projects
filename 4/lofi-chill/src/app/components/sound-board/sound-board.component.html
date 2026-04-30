@@ -1,0 +1,63 @@
+<div class="glass-panel p-6">
+  <h2 class="text-xl font-bold text-white mb-4">🎛️ 环境音面板</h2>
+  
+  <!-- 全局音量 -->
+  <div class="mb-6 p-4 bg-white/5 rounded-xl">
+    <div class="flex items-center justify-between mb-2">
+      <span class="text-white flex items-center gap-2">
+        <span nz-icon nzType="sound" class="text-lg"></span>
+        全局音量
+      </span>
+      <span class="text-white/60">{{ ambientSoundsService.getGlobalVolume() }}%</span>
+    </div>
+    <nz-slider
+      [nzMin]="0"
+      [nzMax]="100"
+      [ngModel]="ambientSoundsService.getGlobalVolume()"
+      (ngModelChange)="ambientSoundsService.setGlobalVolume($event)"
+    ></nz-slider>
+  </div>
+
+  <!-- 环境音列表 -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+    <div
+      *ngFor="let sound of ambientSoundsService.getSounds()"
+      class="p-4 bg-white/5 rounded-xl transition-all hover:bg-white/10"
+      [class.border-purple-500]="sound.enabled"
+    >
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <span nz-icon [nzType]="sound.icon" [class.text-purple-400]="sound.enabled" class="text-lg"></span>
+          <span class="text-white">{{ sound.name }}</span>
+        </div>
+        <nz-switch
+          [ngModel]="sound.enabled"
+          (ngModelChange)="toggleSound(sound)"
+        ></nz-switch>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-white/40 text-xs">音量</span>
+        <nz-slider
+          [nzMin]="0"
+          [nzMax]="100"
+          [ngModel]="sound.volume"
+          (ngModelChange)="setSoundVolume(sound, $event)"
+          class="flex-1"
+        ></nz-slider>
+        <span class="text-white/40 text-xs w-8">{{ sound.volume }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 重置按钮 -->
+  <button
+    nz-button
+    nzType="dashed"
+    nzBlock
+    (click)="ambientSoundsService.resetToDefaults()"
+    class="mt-4"
+  >
+    <span nz-icon nzType="reload" class="mr-2"></span>
+    重置默认
+  </button>
+</div>

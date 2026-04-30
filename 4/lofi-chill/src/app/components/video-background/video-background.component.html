@@ -1,0 +1,46 @@
+<div class="fixed inset-0 z-0 overflow-hidden">
+  <!-- 使用静态渐变背景代替视频URL，保证可访问性 -->
+  <div 
+    class="absolute inset-0 bg-gradient-to-br"
+    [class.from-purple-900]="currentMood === 'chill'"
+    [class.from-blue-900]="currentMood === 'jazz'"
+    [class.from-gray-900]="currentMood === 'sleep'"
+    [class.to-slate-900]="currentDayNight === 'night'"
+    [class.to-indigo-800]="currentDayNight === 'day'"
+  ></div>
+
+  <!-- 叠加装饰 -->
+  <div class="absolute inset-0 bg-black/20"></div>
+
+  <!-- 动态动画背景 -->
+  <div class="absolute inset-0 overflow-hidden">
+    <div 
+      class="absolute w-96 h-96 rounded-full blur-3xl opacity-20 animate-pulse"
+      [style.background-color]="getCurrentConfig().color"
+      style="top: -50px; left: -50px;"
+    ></div>
+    <div 
+      class="absolute w-80 h-80 rounded-full blur-3xl opacity-15 animate-pulse"
+      [style.background-color]="getCurrentConfig().color"
+      style="bottom: -30px; right: -30px; animation-delay: 1s;"
+    ></div>
+  </div>
+
+  <!-- 雨效果 -->
+  <div *ngIf="rainMode" class="rain-effect">
+    <div
+      *ngFor="let drop of raindrops"
+      class="rain-drop"
+      [style.left]="drop.left"
+      [style.animationDuration]="drop.duration"
+      [style.animationDelay]="drop.delay"
+      [style.width]="drop.width"
+    ></div>
+  </div>
+</div>
+
+<div 
+  class="overlay"
+  [class.overlay-dark]="isDark"
+  [class.overlay-light]="!isDark"
+></div>

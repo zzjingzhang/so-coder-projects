@@ -1,0 +1,77 @@
+<footer class="border-t border-white/10 backdrop-blur-md bg-black/30">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0">
+      <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-3">
+          <button
+            nz-button
+            nzShape="circle"
+            nzType="primary"
+            (click)="playerService.previousSong()"
+          >
+            <span nz-icon nzType="left" class="text-lg"></span>
+          </button>
+
+          <button
+            nz-button
+            nzShape="circle"
+            nzType="primary"
+            [nzSize]="'large'"
+            [class.playing-glow]="playerService.isPlaying()"
+            (click)="playerService.togglePlay()"
+          >
+            <span 
+              nz-icon 
+              [nzType]="playerService.isPlaying() ? 'pause' : 'play'" 
+              class="text-xl"
+            ></span>
+          </button>
+
+          <button
+            nz-button
+            nzShape="circle"
+            nzType="primary"
+            (click)="playerService.nextSong()"
+          >
+            <span nz-icon nzType="right" class="text-lg"></span>
+          </button>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <span nz-icon nzType="sound" class="text-white/70"></span>
+          <nz-slider
+            [nzMin]="0"
+            [nzMax]="100"
+            [ngModel]="playerService.getVolume()"
+            (ngModelChange)="playerService.setVolume($event)"
+            class="w-24"
+            nzTooltipVisible="never"
+          ></nz-slider>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <ng-container *ngIf="playerService.getCurrentSong() as song">
+          <div class="text-white font-medium">
+            {{ song.title }}
+          </div>
+          <div class="text-white/60 text-sm">
+            by 
+            <a 
+              [href]="song.githubUrl" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="text-purple-400 hover:text-purple-300 transition-colors"
+            >
+              {{ song.author }}
+            </a>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="text-white/50 text-sm">
+        <span>🎵 Lofi Chill v1.0</span>
+      </div>
+    </div>
+  </div>
+</footer>

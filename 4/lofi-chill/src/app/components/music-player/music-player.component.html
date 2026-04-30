@@ -1,0 +1,50 @@
+<div class="glass-panel p-8 text-center">
+  <div 
+    class="w-48 h-48 mx-auto rounded-2xl mb-6 bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center animate-float"
+    [class.playing-glow]="playerService.isPlaying()"
+  >
+    <span class="text-8xl">🎵</span>
+  </div>
+
+  <ng-container *ngIf="playerService.getCurrentSong() as song">
+    <h2 class="text-2xl font-bold text-white mb-2">{{ song.title }}</h2>
+    <p class="text-white/60 mb-6">{{ song.author }}</p>
+  </ng-container>
+
+  <div class="flex items-center justify-center gap-4">
+    <button
+      nz-button
+      nzShape="circle"
+      nzGhost
+      (click)="playerService.previousSong()"
+      class="w-12 h-12"
+    >
+      <span nz-icon nzType="left" class="text-xl"></span>
+    </button>
+
+    <button
+      nz-button
+      nzShape="circle"
+      nzType="primary"
+      [nzSize]="'large'"
+      (click)="playerService.togglePlay()"
+      class="w-16 h-16"
+    >
+      <span 
+        nz-icon 
+        [nzType]="playerService.isPlaying() ? 'pause' : 'play'" 
+        class="text-2xl"
+      ></span>
+    </button>
+
+    <button
+      nz-button
+      nzShape="circle"
+      nzGhost
+      (click)="playerService.nextSong()"
+      class="w-12 h-12"
+    >
+      <span nz-icon nzType="right" class="text-xl"></span>
+    </button>
+  </div>
+</div>

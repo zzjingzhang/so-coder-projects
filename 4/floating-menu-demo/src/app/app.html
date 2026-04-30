@@ -1,0 +1,39 @@
+<div class="app-container">
+  <header class="app-header">
+    <h1>{{ title() }}</h1>
+    <p class="subtitle">拖拽浮动按钮，点击打开菜单，调节大小和主题颜色</p>
+  </header>
+
+  <main class="app-content">
+    <div class="instructions">
+      <h2>功能说明</h2>
+      <ul>
+        <li><strong>拖拽移动：</strong>按住浮动按钮并拖拽可移动位置</li>
+        <li><strong>调整大小：</strong>悬停按钮，左上角出现调整手柄，拖拽可改变大小</li>
+        <li><strong>打开菜单：</strong>点击浮动按钮打开菜单</li>
+        <li><strong>主题颜色：</strong>在菜单中选择预设颜色或自定义颜色</li>
+        <li><strong>关闭菜单：</strong>点击页面空白处或鼠标离开菜单自动关闭</li>
+      </ul>
+    </div>
+
+    <div class="demo-area">
+      <div class="feature-card">
+        <div class="feature-icon">🎛️</div>
+        <h3>处理中心</h3>
+        <p>集中处理各类任务和请求</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💼</div>
+        <h3>我的工作台</h3>
+        <p>个人工作空间和工具集合</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📁</div>
+        <h3>资源管理</h3>
+        <p>管理和组织各类资源文件</p>
+      </div>
+    </div>
+  </main>
+
+  <app-floating-menu></app-floating-menu>
+</div>

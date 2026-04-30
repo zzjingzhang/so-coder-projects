@@ -1,0 +1,84 @@
+<div class="floating-menu-container">
+  <div
+    #floatingButton
+    class="floating-button"
+    [class.dragging]="isDragging"
+    (mousedown)="onDragStart($event)"
+    (click)="toggleMenu($event)"
+    [style.width.px]="buttonSize"
+    [style.height.px]="buttonSize"
+    [style.backgroundColor]="'var(--themeColor)'"
+    [style.boxShadow]="'0 4px 12px var(--shadowColor)'"
+  >
+    <div class="resize-handle" (mousedown)="onResizeStart($event)"></div>
+    <svg class="menu-icon" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+    </svg>
+  </div>
+
+  <div
+    #menuPopup
+    class="menu-popup"
+    [class.open]="isMenuOpen"
+    [style.--themeColor]="themeColor"
+    (mouseleave)="closeMenu()"
+  >
+    <div class="menu-header">
+      <span class="menu-title">菜单</span>
+      <button class="close-btn" (click)="closeMenu()">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="menu-content">
+      <div class="menu-item" *ngFor="let item of menuItems" (click)="onMenuItemClick(item)">
+        <svg class="menu-item-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path *ngIf="item.icon === 'settings'" d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+          <path *ngIf="item.icon === 'work'" d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+          <path *ngIf="item.icon === 'folder'" d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+        </svg>
+        <span class="menu-item-label">{{ item.label }}</span>
+      </div>
+    </div>
+
+    <div class="menu-settings">
+      <div class="settings-section">
+        <label class="settings-label">按钮大小</label>
+        <input
+          type="range"
+          min="40"
+          max="120"
+          step="1"
+          [value]="buttonSize"
+          (input)="onSliderInput($event)"
+          class="size-slider"
+        >
+        <span class="size-value">{{ buttonSize }}px</span>
+      </div>
+
+      <div class="settings-section">
+        <label class="settings-label">主题颜色</label>
+        <div class="color-picker">
+          <div
+            *ngFor="let color of colorOptions"
+            class="color-option"
+            [class.selected]="themeColor === color"
+            [style.backgroundColor]="color"
+            (click)="selectColor(color)"
+          ></div>
+        </div>
+        <div class="custom-color">
+          <input
+            type="color"
+            [value]="themeColor"
+            (input)="onThemeColorChange($event)"
+            class="color-input"
+          >
+          <span>自定义颜色</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
