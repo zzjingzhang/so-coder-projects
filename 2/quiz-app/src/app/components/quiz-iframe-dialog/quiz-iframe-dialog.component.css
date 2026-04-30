@@ -1,0 +1,9 @@
+/* Quiz Iframe Dialog Styles */
+:host {
+  display: block;
+  height: 100%;
+}
+
+iframe {
+  display: block;
+}

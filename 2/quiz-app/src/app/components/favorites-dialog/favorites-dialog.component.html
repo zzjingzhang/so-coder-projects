@@ -1,0 +1,40 @@
+<h2 mat-dialog-title class="flex items-center gap-2">
+  <mat-icon class="text-pink-500">bookmark</mat-icon>
+  我的收藏
+  <span class="text-sm text-gray-500 font-normal">
+    (共 {{ favoriteQuestions.length }} 题)
+  </span>
+</h2>
+
+<mat-dialog-content class="py-4">
+  @if (favoriteQuestions.length === 0) {
+    <div class="text-center py-8 text-gray-500">
+      <mat-icon class="text-6xl mb-4 text-gray-300">bookmark_border</mat-icon>
+      <p>暂无收藏的题目</p>
+    </div>
+  } @else {
+    <div class="space-y-2">
+      @for (questionId of favoriteQuestions; track questionId) {
+        @let question = getQuestionById(questionId);
+        @if (question) {
+          <div
+            class="question-item flex items-center gap-3 p-3 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-pink-300 hover:bg-pink-50 transition-all"
+            (click)="goToQuestion(questionId)"
+          >
+            <span class="flex-shrink-0 w-8 h-8 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center font-semibold text-sm">
+              {{ getQuestionIndex(questionId) }}
+            </span>
+            <span class="flex-1 text-gray-700 line-clamp-2">
+              {{ question.title }}
+            </span>
+            <mat-icon class="text-gray-400 flex-shrink-0">chevron_right</mat-icon>
+          </div>
+        }
+      }
+    </div>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">关闭</button>
+</mat-dialog-actions>

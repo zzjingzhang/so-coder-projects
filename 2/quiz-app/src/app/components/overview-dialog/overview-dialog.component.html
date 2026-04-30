@@ -1,0 +1,42 @@
+<h2 mat-dialog-title class="flex items-center gap-2">
+  <mat-icon>dashboard</mat-icon>
+  题目概览
+</h2>
+
+<mat-dialog-content class="py-4">
+  <!-- Legend -->
+  <div class="flex items-center gap-6 mb-6 text-sm">
+    <div class="flex items-center gap-2">
+      <span class="w-4 h-4 rounded bg-gray-100 border border-gray-300"></span>
+      <span class="text-gray-600">未答</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="w-4 h-4 rounded bg-green-100 border border-green-500"></span>
+      <span class="text-gray-600">已答对</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="w-4 h-4 rounded bg-red-100 border border-red-500"></span>
+      <span class="text-gray-600">已答错</span>
+    </div>
+  </div>
+
+  <!-- Question Grid -->
+  <div class="grid grid-cols-5 gap-3">
+    @for (question of questions; track question.id) {
+      @let index = $index;
+      <button
+        mat-stroked-button
+        class="h-12 flex items-center justify-center gap-1"
+        [ngClass]="getStatusClass(question.id)"
+        (click)="goToQuestion(index)"
+      >
+        <mat-icon class="text-sm">{{ getStatusIcon(question.id) }}</mat-icon>
+        <span class="font-medium">{{ index + 1 }}</span>
+      </button>
+    }
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">关闭</button>
+</mat-dialog-actions>

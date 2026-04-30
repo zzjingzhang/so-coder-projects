@@ -1,0 +1,26 @@
+<div class="flex flex-col h-full">
+  <!-- Header -->
+  <div class="flex items-center justify-between px-4 py-3 bg-gray-100 border-b border-gray-200">
+    <div class="flex items-center gap-2">
+      <mat-icon class="text-blue-500">quiz</mat-icon>
+      <span class="font-semibold text-gray-700">答题系统</span>
+    </div>
+    <button 
+      mat-icon-button 
+      (click)="close()"
+      class="text-gray-500 hover:text-gray-700"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Iframe Container -->
+  <div class="flex-1 bg-white">
+    <iframe 
+      src="/quiz" 
+      class="w-full h-full border-0"
+      title="Quiz System"
+      sandbox="allow-same-origin allow-scripts allow-forms"
+    ></iframe>
+  </div>
+</div>

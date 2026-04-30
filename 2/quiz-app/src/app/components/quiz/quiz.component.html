@@ -1,0 +1,159 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white shadow-sm sticky top-0 z-40">
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <h1 class="text-xl font-bold text-gray-800">答题系统</h1>
+      
+      <div class="flex items-center gap-3">
+        <!-- 题目概览 -->
+        <button 
+          mat-stroked-button 
+          color="primary"
+          (click)="openOverview()"
+          class="flex items-center gap-2"
+        >
+          <mat-icon>dashboard</mat-icon>
+          <span>题目概览</span>
+        </button>
+        
+        <!-- 收藏夹 -->
+        <button 
+          mat-stroked-button 
+          color="accent"
+          (click)="openFavorites()"
+          class="flex items-center gap-2 relative"
+        >
+          <mat-icon>bookmark</mat-icon>
+          <span>收藏夹</span>
+          @if (favoriteCount > 0) {
+            <span class="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              {{ favoriteCount }}
+            </span>
+          }
+        </button>
+        
+        <!-- 错题本 -->
+        <button 
+          mat-stroked-button 
+          color="warn"
+          (click)="openWrongQuestions()"
+          class="flex items-center gap-2"
+        >
+          <mat-icon>error_outline</mat-icon>
+          <span>错题本</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <div class="bg-white rounded-xl shadow-lg p-8">
+      <!-- Progress -->
+      <div class="flex items-center justify-between mb-6">
+        <span class="text-sm text-gray-500">
+          第 {{ currentIndex + 1 }} 题 / 共 {{ questions.length }} 题
+        </span>
+        <div class="w-64 bg-gray-200 rounded-full h-2">
+          <div 
+            class="bg-blue-500 h-2 rounded-full transition-all duration-300"
+            [style.width.%]="progressPercent"
+          ></div>
+        </div>
+      </div>
+
+      <!-- Question Title -->
+      <div class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">
+          {{ currentQuestion.title }}
+        </h2>
+      </div>
+
+      <!-- Options -->
+      <div class="space-y-3 mb-8">
+        @for (item of currentQuestion.items; track $index) {
+          @let optionIndex = $index;
+          <div 
+            class="flex items-center p-4 border-2 rounded-lg transition-all duration-200"
+            [ngClass]="getOptionClass(optionIndex)"
+            (click)="isOptionClickable() && selectAnswer(optionIndex)"
+          >
+            <span 
+              class="w-8 h-8 flex items-center justify-center rounded-full font-semibold mr-4 text-sm"
+              [ngClass]="getOptionBadgeClass(optionIndex)"
+            >
+              {{ getOptionLabel(optionIndex) }}
+            </span>
+            <span class="flex-1">{{ item }}</span>
+            @if (isAnswerShown()) {
+              @if (isCorrectAnswer(optionIndex)) {
+                <mat-icon class="text-green-500">check_circle</mat-icon>
+              }
+              @if (isOptionSelected(optionIndex) && !isCorrectAnswer(optionIndex)) {
+                <mat-icon class="text-red-500">cancel</mat-icon>
+              }
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Answer Explanation -->
+      @if (currentState?.showReason) {
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-6">
+          <div class="flex items-center gap-2 mb-2">
+            <mat-icon class="text-blue-500">lightbulb</mat-icon>
+            <span class="font-semibold text-blue-700">答案解析</span>
+          </div>
+          <p class="text-gray-700">{{ currentQuestion.reason }}</p>
+        </div>
+      }
+
+      <!-- Action Buttons -->
+      <div class="flex items-center justify-between">
+        <div class="flex gap-3">
+          <button 
+            mat-stroked-button 
+            (click)="goToPrevious()"
+            [disabled]="isFirstQuestion"
+            class="flex items-center gap-2"
+          >
+            <mat-icon>arrow_back</mat-icon>
+            上一题
+          </button>
+          
+          <button 
+            mat-stroked-button 
+            (click)="goToNext()"
+            [disabled]="isLastQuestion"
+            class="flex items-center gap-2"
+          >
+            下一题
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+
+        <div class="flex gap-3">
+          <button 
+            mat-stroked-button 
+            color="primary"
+            (click)="showReason()"
+            class="flex items-center gap-2"
+          >
+            <mat-icon>visibility</mat-icon>
+            查看答案
+          </button>
+          
+          <button 
+            mat-stroked-button 
+            [color]="currentState?.isFavorited ? 'accent' : 'primary'"
+            (click)="toggleFavorite()"
+            class="flex items-center gap-2"
+          >
+            <mat-icon>{{ currentState?.isFavorited ? 'bookmark' : 'bookmark_border' }}</mat-icon>
+            {{ currentState?.isFavorited ? '已收藏' : '收藏' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
