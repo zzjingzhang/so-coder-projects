@@ -1,0 +1,195 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'primereact/resources/themes/lara-light-blue/theme.css';
+@import 'primereact/resources/primereact.min.css';
+@import 'primeicons/primeicons.css';
+@import 'react-quill/dist/quill.snow.css';
+
+:root {
+  --giga-primary: #0ea5e9;
+  --giga-primary-light: #38bdf8;
+  --giga-primary-dark: #0284c7;
+  --giga-success: #22c55e;
+  --giga-warning: #f59e0b;
+  --giga-danger: #ef4444;
+  --giga-info: #3b82f6;
+  --giga-border: #e5e7eb;
+  --giga-bg: #ffffff;
+  --giga-bg-secondary: #f9fafb;
+  --giga-text: #111827;
+  --giga-text-secondary: #6b7280;
+}
+
+.dark {
+  --giga-bg: #111827;
+  --giga-bg-secondary: #1f2937;
+  --giga-border: #374151;
+  --giga-text: #f9fafb;
+  --giga-text-secondary: #9ca3af;
+}
+
+@layer components {
+  .giga-field {
+    @apply mb-4;
+  }
+  
+  .giga-label {
+    @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1;
+  }
+  
+  .giga-input {
+    @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
+           focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500
+           bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+           placeholder-gray-400 dark:placeholder-gray-500
+           disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:cursor-not-allowed;
+  }
+  
+  .giga-textarea {
+    @apply giga-input min-h-[100px] resize-y;
+  }
+  
+  .giga-select {
+    @apply giga-input;
+  }
+  
+  .giga-checkbox {
+    @apply w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded 
+           focus:ring-primary-500 dark:ring-offset-gray-800 
+           dark:bg-gray-700 dark:border-gray-600 cursor-pointer;
+  }
+  
+  .giga-button {
+    @apply inline-flex items-center justify-center px-4 py-2 border border-transparent 
+           text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 
+           hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 
+           focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed
+           transition-colors duration-200;
+  }
+  
+  .giga-button-secondary {
+    @apply giga-button bg-gray-600 hover:bg-gray-700 focus:ring-gray-500;
+  }
+  
+  .giga-button-danger {
+    @apply giga-button bg-red-600 hover:bg-red-700 focus:ring-red-500;
+  }
+  
+  .giga-button-success {
+    @apply giga-button bg-green-600 hover:bg-green-700 focus:ring-green-500;
+  }
+  
+  .giga-button-outline {
+    @apply inline-flex items-center justify-center px-4 py-2 border border-gray-300 
+           dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 
+           dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 
+           dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 
+           focus:ring-primary-500 transition-colors duration-200;
+  }
+  
+  .giga-table {
+    @apply w-full border-collapse;
+  }
+  
+  .giga-table-header {
+    @apply bg-gray-50 dark:bg-gray-800;
+  }
+  
+  .giga-table-header-cell {
+    @apply px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 
+           uppercase tracking-wider border-b border-gray-200 dark:border-gray-700;
+  }
+  
+  .giga-table-row {
+    @apply bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 
+           transition-colors duration-150;
+  }
+  
+  .giga-table-cell {
+    @apply px-4 py-3 border-b border-gray-200 dark:border-gray-700 
+           text-gray-900 dark:text-gray-100;
+  }
+  
+  .giga-card {
+    @apply bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700;
+  }
+  
+  .giga-card-header {
+    @apply px-6 py-4 border-b border-gray-200 dark:border-gray-700;
+  }
+  
+  .giga-card-body {
+    @apply px-6 py-4;
+  }
+  
+  .giga-card-footer {
+    @apply px-6 py-4 border-t border-gray-200 dark:border-gray-700 
+           bg-gray-50 dark:bg-gray-800;
+  }
+  
+  .giga-progress {
+    @apply h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden;
+  }
+  
+  .giga-progress-bar {
+    @apply h-full bg-primary-500 transition-all duration-300;
+  }
+  
+  .giga-modal-overlay {
+    @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
+  }
+  
+  .giga-modal {
+    @apply bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-2xl w-full mx-4 
+           max-h-[90vh] overflow-y-auto;
+  }
+  
+  .giga-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+  
+  .giga-badge-primary {
+    @apply bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200;
+  }
+  
+  .giga-badge-success {
+    @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
+  }
+  
+  .giga-badge-warning {
+    @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200;
+  }
+  
+  .giga-badge-danger {
+    @apply bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.ql-container {
+  border: 1px solid #d1d5db;
+  border-bottom-left-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+  min-height: 150px;
+}
+
+.ql-toolbar {
+  border: 1px solid #d1d5db;
+  border-top-left-radius: 0.375rem;
+  border-top-right-radius: 0.375rem;
+  border-bottom: none;
+}
