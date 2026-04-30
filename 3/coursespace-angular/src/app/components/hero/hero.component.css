@@ -1,0 +1,24 @@
+:host {
+  display: block;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 4s ease-in-out infinite;
+}
+
+:host ::ng-deep .ant-btn:hover {
+  transform: translateY(-2px);
+}
+
+:host ::ng-deep [nz-icon] {
+  transition: transform 0.3s ease;
+}

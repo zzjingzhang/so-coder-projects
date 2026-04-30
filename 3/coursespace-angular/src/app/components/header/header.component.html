@@ -1,0 +1,109 @@
+<header class="fixed top-0 left-0 right-0 z-40 bg-white/90 dark:bg-dark-bg/90 backdrop-blur-md border-b border-gray-100 dark:border-dark-border transition-colors duration-300">
+  <div class="container-custom mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 lg:h-20">
+      <div class="flex items-center space-x-2">
+        <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center">
+          <span class="text-white font-bold text-xl">C</span>
+        </div>
+        <span class="text-xl font-bold text-gray-900 dark:text-white">Coursespace</span>
+      </div>
+
+      <nav class="hidden lg:flex items-center space-x-8">
+        @for (item of navItems; track item.id) {
+          <button 
+            (click)="scrollToSection(item.fragment)"
+            class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200"
+          >
+            {{ item.label }}
+          </button>
+        }
+      </nav>
+
+      <div class="hidden lg:flex items-center space-x-4">
+        <button
+          (click)="toggleTheme()"
+          class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          nz-tooltip
+          [nzTooltipTitle]="currentTheme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'"
+        >
+          <span nz-icon [nzType]="currentTheme === 'light' ? 'moon' : 'sun'" nzTheme="outline" class="text-xl"></span>
+        </button>
+
+        <button class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors">
+          Sign In
+        </button>
+
+        <button 
+          nz-button
+          nzType="primary"
+          nzSize="large"
+          class="bg-primary-600 hover:bg-primary-700 border-none rounded-lg px-6 py-2 font-medium transition-all shadow-md hover:shadow-lg"
+        >
+          Sign Up
+        </button>
+      </div>
+
+      <button
+        (click)="toggleDrawer()"
+        class="lg:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+      >
+        <span nz-icon nzType="menu" nzTheme="outline" class="text-2xl"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+@if (isDrawerOpen) {
+  <div class="drawer-mask" (click)="closeDrawer()"></div>
+}
+
+<div class="drawer-content" [class.open]="isDrawerOpen">
+  <div class="p-6">
+    <div class="flex items-center justify-between mb-8">
+      <div class="flex items-center space-x-2">
+        <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
+          <span class="text-white font-bold">C</span>
+        </div>
+        <span class="text-lg font-bold text-gray-900 dark:text-white">Coursespace</span>
+      </div>
+      <button (click)="closeDrawer()" class="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+        <span nz-icon nzType="close" nzTheme="outline" class="text-xl"></span>
+      </button>
+    </div>
+
+    <nav class="flex flex-col space-y-4 mb-8">
+      @for (item of navItems; track item.id) {
+        <button 
+          (click)="scrollToSection(item.fragment)"
+          class="text-left text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 font-medium text-lg py-2 border-b border-gray-100 dark:border-gray-800 transition-colors"
+        >
+          {{ item.label }}
+        </button>
+      }
+    </nav>
+
+    <div class="flex items-center justify-between py-4 border-b border-gray-100 dark:border-gray-800 mb-8">
+      <span class="text-gray-700 dark:text-gray-200 font-medium">Theme</span>
+      <button
+        (click)="toggleTheme()"
+        class="flex items-center space-x-2 px-3 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg"
+      >
+        <span nz-icon [nzType]="currentTheme === 'light' ? 'sun' : 'moon'" nzTheme="outline"></span>
+        <span class="text-sm">{{ currentTheme === 'light' ? 'Light' : 'Dark' }}</span>
+      </button>
+    </div>
+
+    <div class="flex flex-col space-y-3">
+      <button class="w-full py-3 text-gray-700 dark:text-gray-200 hover:text-primary-600 font-medium border-2 border-gray-200 dark:border-gray-700 rounded-lg transition-colors">
+        Sign In
+      </button>
+      <button 
+        nz-button
+        nzType="primary"
+        class="w-full py-6 bg-primary-600 hover:bg-primary-700 border-none rounded-lg font-medium shadow-md"
+      >
+        Sign Up
+      </button>
+    </div>
+  </div>
+</div>

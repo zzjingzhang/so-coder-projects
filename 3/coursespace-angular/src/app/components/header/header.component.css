@@ -1,0 +1,22 @@
+:host {
+  display: block;
+}
+
+header {
+  transition: box-shadow 0.3s ease;
+}
+
+:host ::ng-deep nz-button {
+  transition: all 0.3s ease !important;
+}
+
+:host ::ng-deep .ant-btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  border: none !important;
+}
+
+:host ::ng-deep .ant-btn-primary:hover {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, #1d4ed8 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}

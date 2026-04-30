@@ -1,0 +1,54 @@
+<div 
+  #headerContainer
+  class="relative overflow-hidden bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700"
+  [style.height.px]="headerHeight"
+>
+  <div 
+    #backgroundImage
+    class="absolute inset-0 bg-cover bg-center transition-transform duration-75"
+    [style.transform]="getTransformStyle(imageTransform)"
+    [style.opacity]="getOpacityStyle(imageTransform)"
+    style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=beautiful%20mountain%20landscape%20with%20sunset%20sky%20and%20clouds%20nature%20scenery&image_size=landscape_16_9');"
+  >
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60"></div>
+  </div>
+
+  <div 
+    #headerLogo
+    class="absolute top-4 left-6 flex items-center gap-3 transition-all duration-75"
+    [style.transform]="getTransformStyle(logoTransform)"
+    [style.opacity]="getOpacityStyle(logoTransform)"
+  >
+    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-lg">
+      <span class="text-xl text-indigo-600 font-bold">E</span>
+    </div>
+    <span class="text-white font-bold text-lg tracking-wide">Explore</span>
+  </div>
+
+  <div class="absolute bottom-0 left-0 right-0 p-8">
+    <h1 
+      #titleText
+      class="text-white font-bold transition-all duration-75 mb-2"
+      [style.transform]="getTransformStyle(titleTransform)"
+      [style.opacity]="getOpacityStyle(titleTransform)"
+      [style.fontSize.px]="isExpanded ? 48 : 32"
+    >
+      Discover Amazing Places
+    </h1>
+    <p 
+      #subtitleText
+      class="text-white/80 text-lg transition-all duration-75"
+      [style.transform]="getTransformStyle(subtitleTransform)"
+      [style.opacity]="getOpacityStyle(subtitleTransform)"
+    >
+      Explore the world's most beautiful destinations
+    </p>
+  </div>
+
+  <div class="absolute bottom-6 right-6 flex items-center gap-2">
+    <span class="text-white/70 text-sm">{{ isExpanded ? 'Scroll down to collapse' : 'Scroll up to expand' }}</span>
+    <svg class="w-5 h-5 text-white/70 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+    </svg>
+  </div>
+</div>

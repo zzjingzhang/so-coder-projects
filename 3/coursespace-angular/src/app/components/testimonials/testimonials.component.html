@@ -1,0 +1,96 @@
+<section id="testimonials" class="section-padding bg-white dark:bg-gray-900">
+  <div class="container-custom mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="inline-block px-4 py-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-sm font-medium rounded-full mb-4">
+        Testimonials
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+        What Our
+        <span class="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+          Students Say
+        </span>
+      </h2>
+      <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+        Hear from our satisfied students who have transformed their careers through Coursespace
+      </p>
+    </div>
+
+    <div class="relative">
+      <div class="flex items-center justify-between mb-8">
+        <button 
+          (click)="prevSlide()"
+          [class.opacity-50]="currentIndex === 0"
+          class="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary-100 dark:hover:bg-primary-900/30 transition-colors"
+          [disabled]="currentIndex === 0"
+        >
+          <span nz-icon nzType="arrow-left" nzTheme="outline" class="text-gray-700 dark:text-gray-200"></span>
+        </button>
+        
+        <div class="flex items-center space-x-2">
+          @for (item of [].constructor(maxIndex + 1); track $index; let i = $index) {
+            <button
+              (click)="goToSlide(i)"
+              class="h-2 rounded-full transition-all duration-300"
+              [class.w-8]="i === currentIndex"
+              [class.w-2]="i !== currentIndex"
+              [class.bg-primary-600]="i === currentIndex"
+              [class.bg-gray-300]="i !== currentIndex"
+              [class.dark:bg-gray-600]="i !== currentIndex"
+            ></button>
+          }
+        </div>
+
+        <button 
+          (click)="nextSlide()"
+          [class.opacity-50]="currentIndex >= maxIndex"
+          class="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary-100 dark:hover:bg-primary-900/30 transition-colors"
+          [disabled]="currentIndex >= maxIndex"
+        >
+          <span nz-icon nzType="arrow-right" nzTheme="outline" class="text-gray-700 dark:text-gray-200"></span>
+        </button>
+      </div>
+
+      <div class="overflow-hidden">
+        <div 
+          class="flex transition-transform duration-500 ease-out gap-4"
+          [style.transform]="'translateX(-' + (currentIndex * (100 / slidesToShow)) + '%)'"
+          [style.width]="(100 * testimonials.length / slidesToShow) + '%'"
+        >
+          @for (testimonial of testimonials; track testimonial.id) {
+            <div class="carousel-item flex-shrink-0" [style.width]="(100 / testimonials.length) + '%'">
+              <div class="mx-3 bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 hover:shadow-xl transition-all duration-300" style="width: 270px; margin: 0 auto;">
+                <div class="flex items-center mb-4">
+                  <div class="flex text-amber-400">
+                    @for (star of getStars(testimonial.rating); track $index) {
+                      <span nz-icon nzType="star" nzTheme="fill" class="text-lg"></span>
+                    }
+                  </div>
+                </div>
+
+                <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+                  "{{ testimonial.content }}"
+                </p>
+
+                <div class="flex items-center pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <img 
+                    [src]="testimonial.avatar" 
+                    [alt]="testimonial.name"
+                    class="w-12 h-12 rounded-full object-cover mr-4"
+                  />
+                  <div>
+                    <h4 class="font-semibold text-gray-900 dark:text-white">
+                      {{ testimonial.name }}
+                    </h4>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                      {{ testimonial.position }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

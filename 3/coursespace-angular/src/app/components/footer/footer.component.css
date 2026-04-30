@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+:host ::ng-deep .ant-tooltip-inner {
+  background: #374151;
+}
+
+:host ::ng-deep .ant-tooltip-arrow-content {
+  background: #374151;
+}

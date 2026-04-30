@@ -1,0 +1,38 @@
+# This file is used to ignore files which should not be tracked by git.
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Node
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# Editors and IDEs
+.vscode/*
+!.vscode/extensions.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.idea
+*.sublime-workspace
+
+# OS generated files
+Thumbs.db
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Test coverage
+/coverage
+
+# Sass
+.sass-cache
+
+# Misc
+/.angular/cache

@@ -1,0 +1,84 @@
+<footer class="bg-gray-900 dark:bg-gray-950 text-white">
+  <div class="container-custom mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 py-16">
+      <div class="lg:col-span-1">
+        <div class="flex items-center space-x-2 mb-6">
+          <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center">
+            <span class="text-white font-bold text-xl">C</span>
+          </div>
+          <span class="text-xl font-bold text-white">{{ companyInfo.name }}</span>
+        </div>
+        
+        <p class="text-gray-400 mb-6 leading-relaxed">
+          {{ companyInfo.description }}
+        </p>
+
+        <div class="space-y-3">
+          <div class="flex items-center space-x-3 text-gray-400">
+            <span nz-icon nzType="mail" nzTheme="outline" class="text-primary-400"></span>
+            <span class="text-sm">{{ companyInfo.email }}</span>
+          </div>
+          <div class="flex items-center space-x-3 text-gray-400">
+            <span nz-icon nzType="phone" nzTheme="outline" class="text-primary-400"></span>
+            <span class="text-sm">{{ companyInfo.phone }}</span>
+          </div>
+        </div>
+      </div>
+
+      @for (column of columns; track column.id) {
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-6">
+            {{ column.title }}
+          </h3>
+          <ul class="space-y-3">
+            @for (link of column.links; track link.id) {
+              <li>
+                <a 
+                  [href]="link.href"
+                  class="text-gray-400 hover:text-primary-400 transition-colors duration-200 text-sm flex items-center group"
+                >
+                  <span nz-icon nzType="right" nzTheme="outline" class="mr-2 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all duration-200 text-xs"></span>
+                  {{ link.label }}
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+
+    <div class="border-t border-gray-800 py-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center space-x-4">
+          <span class="text-gray-400 text-sm">Follow us:</span>
+          <div class="flex items-center space-x-3">
+            @for (social of socialLinks; track social.id) {
+              <a
+                [href]="social.url"
+                class="w-10 h-10 bg-gray-800 hover:bg-primary-600 rounded-full flex items-center justify-center transition-all duration-300 hover:-translate-y-1 group"
+                [nzTooltipTitle]="social.name"
+                nz-tooltip
+              >
+                <span 
+                  nz-icon 
+                  [nzType]="getSocialIcon(social.icon)" 
+                  nzTheme="outline" 
+                  class="text-gray-400 group-hover:text-white transition-colors duration-300"
+                ></span>
+              </a>
+            }
+          </div>
+        </div>
+
+        <div class="text-center md:text-right">
+          <p class="text-gray-400 text-sm">
+            © {{ currentYear }} {{ companyInfo.name }}. All rights reserved.
+          </p>
+          <p class="text-gray-500 text-xs mt-1">
+            Made with <span class="text-red-500">❤</span> for learners worldwide
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

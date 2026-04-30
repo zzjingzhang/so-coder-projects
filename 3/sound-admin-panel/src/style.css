@@ -1,0 +1,166 @@
+@import "tailwindcss";
+@import "primeicons/primeicons.css";
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #app {
+  height: 100%;
+  width: 100%;
+}
+
+/* 渐变登录页面样式 */
+.login-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.login-card {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* 深色主题下的登录卡片 */
+.app-dark .login-card {
+  background: rgba(30, 30, 30, 0.95);
+}
+
+/* 仪表板卡片样式 */
+.dashboard-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* 导航抽屉样式 */
+.nav-item {
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+  background-color: rgba(102, 126, 234, 0.1);
+}
+
+.nav-item.active {
+  background-color: rgba(102, 126, 234, 0.2);
+  border-left: 3px solid #667eea;
+}
+
+/* 加载遮罩 */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.app-dark .loading-overlay {
+  background: rgba(30, 30, 30, 0.8);
+}
+
+/* 表单验证错误样式 */
+.field-error .p-inputtext,
+.field-error .p-password,
+.field-error .p-dropdown,
+.field-error .p-textarea {
+  border-color: #ef4444;
+}
+
+.field-error .p-inputtext:focus,
+.field-error .p-password:focus,
+.field-error .p-dropdown:focus,
+.field-error .p-textarea:focus {
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+/* 文件上传区域 */
+.file-upload-area {
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.file-upload-area:hover,
+.file-upload-area.dragover {
+  border-color: #667eea;
+  background-color: rgba(102, 126, 234, 0.05);
+}
+
+.app-dark .file-upload-area {
+  border-color: #4b5563;
+}
+
+.app-dark .file-upload-area:hover,
+.app-dark .file-upload-area.dragover {
+  border-color: #667eea;
+}
+
+/* 数据表格自定义 */
+.p-datatable .p-datatable-thead > tr > th {
+  font-weight: 600;
+}
+
+.p-datatable .p-datatable-tbody > tr:hover {
+  background-color: rgba(102, 126, 234, 0.05);
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+.app-dark ::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+.app-dark ::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+
+.app-dark ::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
