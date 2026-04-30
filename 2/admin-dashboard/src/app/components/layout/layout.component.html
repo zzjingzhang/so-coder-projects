@@ -1,0 +1,150 @@
+<div class="flex h-screen bg-gray-100 dark:bg-gray-900 transition-colors">
+  <aside 
+    [class.w-64]="!sidebarCollapsed" 
+    [class.w-16]="sidebarCollapsed" 
+    class="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col transition-all duration-300"
+  >
+    <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+      <span *ngIf="!sidebarCollapsed" class="text-lg font-bold text-blue-600 dark:text-blue-400">管理系统</span>
+      <button 
+        pButton 
+        icon="pi pi-bars" 
+        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+        (click)="toggleSidebar()"
+      ></button>
+    </div>
+    
+    <nav class="flex-1 overflow-y-auto p-4">
+      <ul class="space-y-2">
+        <li *ngFor="let menu of menus">
+          <div *ngIf="menu.children && menu.children.length > 0">
+            <button 
+              class="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              (click)="toggleMenuExpanded(menu.id)"
+            >
+              <i [class]="menu.icon + ' text-lg'"></i>
+              <span *ngIf="!sidebarCollapsed" class="text-sm font-medium">{{ menu.label }}</span>
+              <i *ngIf="!sidebarCollapsed" [class]="menu.expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" class="ml-auto"></i>
+            </button>
+            
+            <ul *ngIf="menu.expanded && !sidebarCollapsed" class="ml-6 mt-1 space-y-1">
+              <li *ngFor="let child of menu.children">
+                <button 
+                  [routerLink]="child.routerLink"
+                  [class.bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400]="currentPath === child.routerLink"
+                  class="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
+                >
+                  <i [class]="child.icon + ' text-sm'"></i>
+                  <span class="text-sm">{{ child.label }}</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+          
+          <button 
+            *ngIf="!menu.children || menu.children.length === 0"
+            [routerLink]="menu.routerLink"
+            [class.bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400]="currentPath === menu.routerLink"
+            class="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          >
+            <i [class]="menu.icon + ' text-lg'"></i>
+            <span *ngIf="!sidebarCollapsed" class="text-sm font-medium">{{ menu.label }}</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <button 
+          pButton 
+          icon="pi pi-bars" 
+          class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+          (click)="toggleSidebar()"
+        ></button>
+        
+        <div class="flex items-center gap-2">
+          <span *ngFor="let tab of tabs; let i = index">
+            <button 
+              [routerLink]="tab.routerLink"
+              [class.bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white]="currentPath === tab.routerLink"
+              class="px-3 py-1.5 rounded-t-lg text-sm flex items-center gap-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+            >
+              {{ tab.label }}
+              <button 
+                *ngIf="tabs.length > 1"
+                (click)="closeTab(tab.id, $event)"
+                class="ml-1 hover:text-red-500"
+              >
+                <i class="pi pi-times text-xs"></i>
+              </button>
+            </button>
+            <span *ngIf="i < tabs.length - 1" class="text-gray-400 mx-1">/</span>
+          </span>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <button 
+          pButton 
+          icon="pi pi-moon" 
+          class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+          (click)="toggleTheme()"
+        ></button>
+        
+        <div class="relative">
+          <button 
+            pButton 
+            icon="pi pi-bell" 
+            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg relative"
+            (click)="goToMessages()"
+          >
+            <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+          </button>
+        </div>
+        
+        <div class="relative">
+          <button 
+            class="flex items-center gap-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+            (click)="$event.stopPropagation()"
+          >
+            <p-avatar icon="pi pi-user" class="bg-blue-600"></p-avatar>
+            <span class="text-sm font-medium">{{ username }}</span>
+            <i class="pi pi-chevron-down text-sm"></i>
+          </button>
+          
+          <div class="absolute right-0 top-full mt-1 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 hidden group-hover:block">
+            <button 
+              class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+              (click)="goToMessages()"
+            >
+              <i class="pi pi-bell"></i>
+              <span>消息</span>
+            </button>
+            <button 
+              class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+              (click)="goToSettings()"
+            >
+              <i class="pi pi-settings"></i>
+              <span>设置</span>
+            </button>
+            <hr class="border-gray-200 dark:border-gray-700 my-2">
+            <button 
+              class="w-full px-4 py-2 text-left text-sm hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 flex items-center gap-2"
+              (click)="logout()"
+            >
+              <i class="pi pi-sign-out"></i>
+              <span>退出登录</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+    
+    <main class="flex-1 overflow-y-auto p-6">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

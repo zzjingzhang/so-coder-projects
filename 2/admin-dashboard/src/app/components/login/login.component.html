@@ -1,0 +1,56 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+  <div class="w-full max-w-md">
+    <p-card header="后台管理系统登录" class="shadow-xl">
+      <div *ngIf="errorMessage" class="mb-4 p-3 bg-red-100 text-red-700 rounded-lg">
+        {{ errorMessage }}
+      </div>
+      
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="mb-4">
+          <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">用户名</label>
+          <input 
+            id="username" 
+            type="text" 
+            pInputText 
+            formControlName="username"
+            placeholder="请输入用户名"
+            class="w-full"
+          />
+        </div>
+        
+        <div class="mb-4">
+          <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">密码</label>
+          <input 
+            id="password" 
+            type="password" 
+            pPassword 
+            formControlName="password"
+            placeholder="请输入密码"
+            class="w-full"
+          />
+        </div>
+        
+        <div class="mb-4 flex items-center">
+          <p-checkbox 
+            [(ngModel)]="rememberMe" 
+            [ngModelOptions]="{standalone: true}"
+            inputId="remember" 
+            label="记住我"
+            class="mr-2"
+          />
+        </div>
+        
+        <button 
+          type="submit" 
+          pButton 
+          label="登录" 
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white"
+        ></button>
+      </form>
+      
+      <div class="mt-4 text-center text-gray-500 dark:text-gray-400 text-sm">
+        用户名: admin | 密码: admin
+      </div>
+    </p-card>
+  </div>
+</div>
