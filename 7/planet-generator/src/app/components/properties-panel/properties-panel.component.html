@@ -1,0 +1,194 @@
+<p-accordion [multiple]="true">
+  <p-accordionTab header="🌱 Terrain Settings" [selected]="true">
+    <div class="space-y-6">
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-2">
+          Seed: {{ planetParams.seed }}
+        </label>
+        <p-inputNumber
+          [(ngModel)]="planetParams.seed"
+          (onInput)="onParamUpdate()"
+          [min]="0"
+          [max]="999999"
+          [showButtons]="true"
+          styleClass="w-full"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-2">
+          Planet Radius: {{ planetParams.radius }}px
+        </label>
+        <p-slider
+          [(ngModel)]="planetParams.radius"
+          (onSlideEnd)="onParamUpdate()"
+          [min]="100"
+          [max]="200"
+          [step]="10"
+          class="w-full"
+        />
+        <div class="flex justify-between text-xs text-slate-500 mt-1">
+          <span>Small</span>
+          <span>Large</span>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-2">
+          Terrain Roughness: {{ planetParams.terrainRoughness | number:'1.2-2' }}
+        </label>
+        <p-slider
+          [(ngModel)]="planetParams.terrainRoughness"
+          (onSlideEnd)="onParamUpdate()"
+          [min]="0.2"
+          [max]="3.0"
+          [step]="0.1"
+          class="w-full"
+        />
+        <div class="flex justify-between text-xs text-slate-500 mt-1">
+          <span>Smooth</span>
+          <span>Jagged</span>
+        </div>
+      </div>
+    </div>
+  </p-accordionTab>
+
+  <p-accordionTab header="🌊 Ocean Settings">
+    <div class="space-y-6">
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-2">
+          Water Level: {{ waterLevelPercentage | number:'1.0-0' }}%
+        </label>
+        <p-slider
+          [(ngModel)]="waterLevelPercentage"
+          (onSlideEnd)="onParamUpdate()"
+          [min]="0"
+          [max]="90"
+          [step]="1"
+          class="w-full"
+        />
+        <div class="flex justify-between text-xs text-slate-500 mt-1">
+          <span>Desert</span>
+          <span>Ocean World</span>
+        </div>
+      </div>
+
+      <div class="p-3 bg-slate-700 rounded-lg">
+        <div class="flex items-center gap-2 text-sm text-slate-300">
+          <span class="text-blue-400">💧</span>
+          <span>
+            Current water level covers approximately 
+            <span class="font-semibold text-blue-400">{{ waterLevelPercentage | number:'1.0-0' }}%</span> 
+            of the planet surface
+          </span>
+        </div>
+      </div>
+    </div>
+  </p-accordionTab>
+
+  <p-accordionTab header="🌡️ Climate Settings">
+    <div class="space-y-6">
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-2">
+          Temperature: {{ getTemperatureLabel() }}
+        </label>
+        <p-slider
+          [(ngModel)]="temperaturePercentage"
+          (onSlideEnd)="onParamUpdate()"
+          [min]="0"
+          [max]="100"
+          [step]="1"
+          class="w-full"
+        />
+        <div class="flex justify-between text-xs text-slate-500 mt-1">
+          <span>❄️ Frozen</span>
+          <span>🌍 Temperate</span>
+          <span>🔥 Volcanic</span>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-2">
+          Humidity: {{ getHumidityLabel() }}
+        </label>
+        <p-slider
+          [(ngModel)]="humidityPercentage"
+          (onSlideEnd)="onParamUpdate()"
+          [min]="0"
+          [max]="100"
+          [step]="1"
+          class="w-full"
+        />
+        <div class="flex justify-between text-xs text-slate-500 mt-1">
+          <span>🏜️ Desert</span>
+          <span>🌿 Moderate</span>
+          <span>💧 Rainforest</span>
+        </div>
+      </div>
+
+      <div class="p-3 bg-slate-700 rounded-lg">
+        <div class="text-sm text-slate-300 space-y-2">
+          <p>
+            <span class="text-amber-400">☀️</span> 
+            Temperature affects terrain types (ice, desert, etc.)
+          </p>
+          <p>
+            <span class="text-blue-400">💧</span> 
+            Humidity influences vegetation density and color
+          </p>
+        </div>
+      </div>
+    </div>
+  </p-accordionTab>
+
+  <p-accordionTab header="☁️ Atmosphere Settings">
+    <div class="space-y-6">
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-2">
+          Atmosphere Density: {{ getAtmosphereLabel() }}
+        </label>
+        <p-slider
+          [(ngModel)]="atmosphereDensityPercentage"
+          (onSlideEnd)="onParamUpdate()"
+          [min]="0"
+          [max]="100"
+          [step]="1"
+          class="w-full"
+        />
+        <div class="flex justify-between text-xs text-slate-500 mt-1">
+          <span>🌌 None</span>
+          <span>☁️ Earth-like</span>
+          <span>🌫️ Dense</span>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-2">
+          Atmosphere Color
+        </label>
+        <div class="flex gap-2 flex-wrap">
+          @for (color of atmosphereColorOptions; track color.name) {
+            <button
+              (click)="setAtmosphereColor(color.value)"
+              [class.ring-2]="isColorSelected(color.value)"
+              [class.ring-blue-400]="isColorSelected(color.value)"
+              class="w-10 h-10 rounded-full border-2 border-slate-500 hover:border-slate-300 transition-colors"
+              [style.backgroundColor]="color.css"
+              [title]="color.name"
+            ></button>
+          }
+        </div>
+      </div>
+
+      <div class="p-3 bg-slate-700 rounded-lg">
+        <div class="flex items-center gap-2 text-sm text-slate-300">
+          <span class="text-cyan-400">☁️</span>
+          <span>
+            Atmosphere density: 
+            <span class="font-semibold text-cyan-400">{{ atmosphereDensityPercentage | number:'1.0-0' }}%</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </p-accordionTab>
+</p-accordion>

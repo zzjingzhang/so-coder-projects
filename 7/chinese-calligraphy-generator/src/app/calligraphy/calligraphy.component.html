@@ -1,0 +1,93 @@
+<div class="container mx-auto px-4 py-6">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2">
+      <nz-card class="shadow-lg">
+        <div class="bg-stone-200 rounded-lg p-6">
+          <div class="canvas-container flex justify-center items-center">
+            <canvas #canvas class="border-4 border-stone-300 rounded-lg shadow-inner"></canvas>
+          </div>
+          
+          <div class="mt-4 flex justify-center">
+            <span class="text-stone-500 text-sm">
+              当前布局: {{ getCurrentLayoutLabel() }}
+            </span>
+          </div>
+        </div>
+
+        <nz-divider></nz-divider>
+
+        <div class="flex justify-center gap-4">
+          <button nz-button nzType="primary" (click)="startAnimation()" [disabled]="isPlaying" nzSize="large">
+            <span nz-icon nzType="play-circle" nzTheme="outline" class="mr-2"></span>
+            开始书写
+          </button>
+          <button nz-button (click)="stopAnimation()" [disabled]="!isPlaying" nzSize="large">
+            <span nz-icon nzType="pause-circle" nzTheme="outline" class="mr-2"></span>
+            暂停
+          </button>
+          <button nz-button nzDanger (click)="clearCanvas()" nzSize="large">
+            <span nz-icon nzType="delete" nzTheme="outline" class="mr-2"></span>
+            清空
+          </button>
+        </div>
+      </nz-card>
+    </div>
+
+    <div class="space-y-6">
+      <nz-card nzTitle="页面布局">
+        <nz-select [(ngModel)]="layout" (ngModelChange)="onLayoutChange()" style="width: 100%">
+          @for (option of layoutOptions; track option.value) {
+            <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+          }
+        </nz-select>
+      </nz-card>
+
+      <nz-card nzTitle="笔画速度">
+        <div class="px-4">
+          <nz-slider 
+            [(ngModel)]="strokeSpeed" 
+            (ngModelChange)="onSpeedChange()"
+            [nzMin]="10" 
+            [nzMax]="100"
+            [nzMarks]="marks"
+          ></nz-slider>
+          <div class="text-center text-stone-500 mt-2">
+            当前速度: {{ strokeSpeed }}%
+          </div>
+        </div>
+      </nz-card>
+
+      <nz-card nzTitle="墨色选择">
+        <div class="grid grid-cols-5 gap-2">
+          @for (color of inkColors; track color.value) {
+            <div 
+              class="w-10 h-10 rounded-full cursor-pointer border-2 transition-all duration-200"
+              [class.border-stone-800]="inkColor === color.value"
+              [class.border-transparent]="inkColor !== color.value"
+              [class.scale-110]="inkColor === color.value"
+              [style.backgroundColor]="color.value"
+              (click)="inkColor = color.value; onColorChange()"
+              [title]="color.name"
+            ></div>
+          }
+        </div>
+      </nz-card>
+
+      <nz-card nzTitle="自定义颜色">
+        <div class="flex items-center gap-4">
+          <nz-color-picker [(ngModel)]="inkColor" (ngModelChange)="onColorChange()"></nz-color-picker>
+          <span class="text-stone-600">{{ inkColor }}</span>
+        </div>
+      </nz-card>
+
+      <nz-card nzTitle="说明">
+        <div class="text-stone-600 text-sm space-y-2">
+          <p>• 点击「开始书写」观看笔画动画演示</p>
+          <p>• 调节滑块控制笔画书写速度</p>
+          <p>• 选择预设墨色或自定义颜色</p>
+          <p>• 切换不同的页面布局模式</p>
+        </div>
+      </nz-card>
+    </div>
+  </div>
+</div>

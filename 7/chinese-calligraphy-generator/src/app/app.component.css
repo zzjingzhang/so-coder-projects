@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+nz-layout {
+  min-height: 100vh;
+}
+
+nz-header {
+  height: 64px;
+}
+
+nz-content {
+  padding: 24px;
+}

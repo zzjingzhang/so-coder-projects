@@ -1,0 +1,97 @@
+<div class="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4">
+  <div class="w-full max-w-2xl">
+    <div class="flex justify-between items-center mb-4">
+      <div class="flex items-center gap-2">
+        <span class="text-yellow-400 text-xl">🐍</span>
+        <h1 class="text-2xl font-bold text-white">贪吃蛇</h1>
+      </div>
+      <div class="flex gap-6">
+        <div class="text-center">
+          <div class="text-sm text-gray-400">得分</div>
+          <div class="text-2xl font-bold text-green-400">{{ score }}</div>
+        </div>
+        <div class="text-center">
+          <div class="text-sm text-gray-400">最高分</div>
+          <div class="text-2xl font-bold text-yellow-400">{{ highScore }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="relative">
+      <canvas 
+        #gameCanvas
+        class="game-canvas border-2 border-gray-700 mx-auto block"
+        [width]="canvasWidth"
+        [height]="canvasWidth"
+      ></canvas>
+
+      <div 
+        *ngIf="!gameStarted && !gameOver"
+        class="absolute inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-80 rounded"
+      >
+        <p class="text-white text-xl mb-4">按任意方向键开始</p>
+        <p class="text-gray-400 text-sm">或点击下方按钮</p>
+      </div>
+
+      <div 
+        *ngIf="gameOver"
+        class="absolute inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-90 rounded"
+      >
+        <p class="text-red-500 text-3xl font-bold mb-4">游戏结束!</p>
+        <p class="text-white text-xl mb-2">得分: {{ score }}</p>
+        <p class="text-yellow-400 text-lg mb-6">最高分: {{ highScore }}</p>
+        <button 
+          pButton 
+          pRipple
+          label="重新开始" 
+          icon="pi pi-refresh"
+          class="p-button-success p-button-lg"
+          (click)="restart()"
+        ></button>
+      </div>
+    </div>
+
+    <div class="mt-6 md:hidden">
+      <div class="flex flex-col items-center gap-2">
+        <button 
+          pButton 
+          pRipple
+          icon="pi pi-chevron-up"
+          class="p-button-secondary p-button-lg"
+          styleClass="w-16 h-16 flex items-center justify-center"
+          (click)="changeDirection('up')"
+        ></button>
+        <div class="flex gap-2">
+          <button 
+            pButton 
+            pRipple
+            icon="pi pi-chevron-left"
+            class="p-button-secondary p-button-lg"
+            styleClass="w-16 h-16 flex items-center justify-center"
+            (click)="changeDirection('left')"
+          ></button>
+          <button 
+            pButton 
+            pRipple
+            icon="pi pi-chevron-down"
+            class="p-button-secondary p-button-lg"
+            styleClass="w-16 h-16 flex items-center justify-center"
+            (click)="changeDirection('down')"
+          ></button>
+          <button 
+            pButton 
+            pRipple
+            icon="pi pi-chevron-right"
+            class="p-button-secondary p-button-lg"
+            styleClass="w-16 h-16 flex items-center justify-center"
+            (click)="changeDirection('right')"
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 text-center text-gray-500 text-sm">
+      <p class="hidden md:block">使用键盘方向键 ← ↑ → ↓ 控制蛇的移动</p>
+    </div>
+  </div>
+</div>

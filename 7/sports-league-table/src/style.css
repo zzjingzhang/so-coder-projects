@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f5f5;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+.v-data-table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.v-data-table th {
+  background-color: #1976d2 !important;
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+.rank-up {
+  color: #4caf50;
+  font-weight: bold;
+  animation: rankUp 0.5s ease-in-out;
+}
+
+.rank-down {
+  color: #f44336;
+  font-weight: bold;
+  animation: rankDown 0.5s ease-in-out;
+}
+
+@keyframes rankUp {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes rankDown {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(10px); }
+  100% { transform: translateY(0); }
+}
+
+.promotion-zone {
+  background-color: rgba(76, 175, 80, 0.1) !important;
+  border-left: 4px solid #4caf50;
+}
+
+.relegation-zone {
+  background-color: rgba(244, 67, 54, 0.1) !important;
+  border-left: 4px solid #f44336;
+}
+
+.europa-zone {
+  background-color: rgba(33, 150, 243, 0.1) !important;
+  border-left: 4px solid #2196f3;
+}
+
+.conference-zone {
+  background-color: rgba(255, 152, 0, 0.1) !important;
+  border-left: 4px solid #ff9800;
+}

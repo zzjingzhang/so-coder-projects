@@ -1,0 +1,14 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+:host ::ng-deep .p-inputtext,
+:host ::ng-deep .p-dropdown,
+:host ::ng-deep .p-textarea {
+  width: 100%;
+}
+
+:host ::ng-deep .p-button {
+  width: 100%;
+}

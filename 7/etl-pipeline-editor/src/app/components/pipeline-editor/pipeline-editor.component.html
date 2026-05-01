@@ -1,0 +1,103 @@
+<div class="flex flex-col h-screen bg-gray-50">
+  <header class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between shadow-sm">
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2">
+        <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
+        </svg>
+        <h1 class="text-xl font-semibold text-gray-800">ETL Pipeline Editor</h1>
+      </div>
+      <span class="text-gray-400">|</span>
+      <span class="text-gray-600 font-medium">{{ pipelineName }}</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <label class="cursor-pointer px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+        </svg>
+        Import
+        <input type="file" class="hidden" accept=".json" (change)="onImportPipeline($event)">
+      </label>
+      <button (click)="onExportPipeline()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+        </svg>
+        Export
+      </button>
+      <button (click)="onClearPipeline()" class="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition-colors flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+        </svg>
+        Clear
+      </button>
+    </div>
+  </header>
+
+  <div class="flex flex-1 overflow-hidden">
+    <app-node-sidebar 
+      class="w-64 border-r border-gray-200 bg-white"
+      (dragStart)="setDropOffset($event.offset)"
+    ></app-node-sidebar>
+
+    <div 
+      #canvas 
+      id="canvas"
+      class="flex-1 relative overflow-hidden bg-gray-100"
+      [ngStyle]="{
+        'background-image': 'radial-gradient(#d1d5db 1px, transparent 1px)',
+        'background-size': '20px 20px'
+      }"
+      (mousedown)="onCanvasMouseDown($event)"
+      (mousemove)="onCanvasMouseMove($event)"
+      (mouseup)="onCanvasMouseUp($event)"
+      (dragover)="onDragOver($event)"
+      (drop)="onDrop($event)"
+    >
+      <svg class="absolute inset-0 w-full h-full pointer-events-none">
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1" />
+          </marker>
+        </defs>
+        
+        @for (connection of connections; track connection.id) {
+          @let sourceNode = nodes.find(n => n.id === connection.source);
+          @let targetNode = nodes.find(n => n.id === connection.target);
+          
+          @if (sourceNode && targetNode) {
+            @let start = getNodeCenter(sourceNode, true);
+            @let end = getNodeCenter(targetNode, false);
+            @let controlOffset = Math.min(Math.abs(end.x - start.x) / 2, 100);
+            
+            <path 
+              [attr.d]="'M ' + start.x + ' ' + start.y + ' C ' + (start.x + controlOffset) + ' ' + start.y + ', ' + (end.x - controlOffset) + ' ' + end.y + ', ' + end.x + ' ' + end.y"
+              fill="none"
+              stroke="#6366f1"
+              stroke-width="2"
+              marker-end="url(#arrowhead)"
+              class="pointer-events-auto cursor-pointer hover:stroke-red-500 transition-colors"
+              (click)="onDeleteConnection(connection.id)"
+            ></path>
+          }
+        }
+      </svg>
+
+      @for (node of nodes; track node.id) {
+        <app-node 
+          [node]="node"
+          [isSelected]="selectedNode?.id === node.id"
+          class="absolute cursor-move"
+          [style.left.px]="node.position.x"
+          [style.top.px]="node.position.y"
+          (mousedown)="onNodeMouseDown($event, node.id)"
+          (portMouseDown)="onPortMouseDown($event, node.id)"
+          (portMouseUp)="onPortMouseUp($event, node.id)"
+          (nodeClick)="onNodeClick(node)"
+          (deleteNode)="onDeleteNode(node.id)"
+        ></app-node>
+      }
+    </div>
+
+    <app-properties-panel class="w-80 border-l border-gray-200 bg-white"></app-properties-panel>
+  </div>
+</div>

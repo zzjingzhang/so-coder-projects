@@ -1,0 +1,41 @@
+<div class="min-h-full flex flex-col items-center justify-center py-12 px-4">
+  <div class="text-center mb-12">
+    <h1 class="text-5xl font-bold text-stone-800 mb-4">墨韵书法</h1>
+    <p class="text-xl text-stone-600 max-w-2xl">
+      体验传统书法艺术的魅力，通过动画演示感受每一笔画的韵味
+    </p>
+  </div>
+
+  <div class="grid grid-cols-3 gap-8 mb-12">
+    @for (char of sampleCharacters; track char) {
+      <div class="w-32 h-32 bg-white rounded-lg shadow-lg flex items-center justify-center 
+                  border-2 border-stone-200 hover:border-stone-400 hover:shadow-xl 
+                  transition-all duration-300 cursor-pointer">
+        <span class="text-6xl text-stone-800">{{ char }}</span>
+      </div>
+    }
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mb-12">
+    <nz-card class="text-center">
+      <div class="text-4xl mb-4">🎨</div>
+      <h3 class="text-lg font-semibold text-stone-800 mb-2">自定义颜色</h3>
+      <p class="text-stone-600">选择墨色，体验不同风格的书法艺术</p>
+    </nz-card>
+    <nz-card class="text-center">
+      <div class="text-4xl mb-4">⚡</div>
+      <h3 class="text-lg font-semibold text-stone-800 mb-2">速度控制</h3>
+      <p class="text-stone-600">调节笔画速度，观察书写节奏的变化</p>
+    </nz-card>
+    <nz-card class="text-center">
+      <div class="text-4xl mb-4">📐</div>
+      <h3 class="text-lg font-semibold text-stone-800 mb-2">布局定制</h3>
+      <p class="text-stone-600">多种页面布局，满足不同展示需求</p>
+    </nz-card>
+  </div>
+
+  <button nz-button nzType="primary" nzSize="large" (click)="startCalligraphy()" 
+          class="text-lg px-8 py-6 h-auto">
+    开始书法创作
+  </button>
+</div>

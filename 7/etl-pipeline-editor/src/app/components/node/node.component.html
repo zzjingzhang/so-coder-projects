@@ -1,0 +1,46 @@
+<div 
+  class="w-44 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden select-none transition-shadow hover:shadow-xl"
+  [class]="getTypeBorder()"
+  (click)="onNodeClick($event)"
+>
+  <div class="px-3 py-2 flex items-center justify-between" [class]="getTypeColor()">
+    <div class="flex items-center gap-2">
+      <span class="text-lg">{{ getSubtypeIcon() }}</span>
+      <span class="text-white text-xs font-semibold uppercase tracking-wide">{{ getTypeLabel() }}</span>
+    </div>
+    <button 
+      (click)="onDelete($event)"
+      class="text-white/70 hover:text-white transition-colors"
+      title="Delete node"
+    >
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+  </div>
+  
+  <div class="px-3 py-3">
+    <div class="text-sm font-medium text-gray-800 truncate">{{ node.label }}</div>
+    <div class="text-xs text-gray-500 mt-1">{{ node.subtype }}</div>
+  </div>
+  
+  <div 
+    *ngIf="node.type !== 'source'"
+    class="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-crosshair"
+    (mousedown)="onPortMouseDown($event, false)"
+    (mouseup)="onPortMouseUp($event, false)"
+    title="Input port"
+  >
+    <div class="w-4 h-4 rounded-full bg-white border-2 border-gray-400 hover:border-indigo-500 hover:bg-indigo-100 transition-colors"></div>
+  </div>
+  
+  <div 
+    *ngIf="node.type !== 'target'"
+    class="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 cursor-crosshair"
+    (mousedown)="onPortMouseDown($event, true)"
+    (mouseup)="onPortMouseUp($event, true)"
+    title="Output port"
+  >
+    <div class="w-4 h-4 rounded-full bg-white border-2 border-gray-400 hover:border-indigo-500 hover:bg-indigo-100 transition-colors"></div>
+  </div>
+</div>

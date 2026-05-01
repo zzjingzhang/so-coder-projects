@@ -1,0 +1,22 @@
+<nz-layout class="min-h-screen">
+  <nz-header class="bg-stone-800 text-white px-8 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <span class="text-2xl font-bold">墨韵</span>
+      <span class="text-stone-400">中文书法生成器</span>
+    </div>
+    <nz-space>
+      <button nz-button nzType="default" routerLink="/" class="bg-transparent text-white border-stone-600">
+        首页
+      </button>
+      <button nz-button nzType="primary" routerLink="/calligraphy">
+        开始创作
+      </button>
+    </nz-space>
+  </nz-header>
+  <nz-content class="bg-stone-100">
+    <router-outlet></router-outlet>
+  </nz-content>
+  <nz-footer class="bg-stone-800 text-stone-400 text-center">
+    墨韵书法生成器 © 2026 - 传承中华书法艺术
+  </nz-footer>
+</nz-layout>

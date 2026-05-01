@@ -1,0 +1,23 @@
+:host {
+  display: block;
+}
+
+canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.canvas-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+[nz-card] {
+  border-radius: 8px;
+}
+
+[nz-slider] {
+  margin: 16px 0;
+}

@@ -1,0 +1,16 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+button {
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+svg path {
+  transition: stroke 0.2s ease;
+}

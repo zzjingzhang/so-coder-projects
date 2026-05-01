@@ -1,0 +1,82 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.planet-card ::ng-deep .p-card {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(100, 116, 139, 0.3);
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+}
+
+.planet-card ::ng-deep .p-card-header {
+  margin: 0;
+  padding: 0;
+}
+
+.planet-container {
+  min-height: 420px;
+}
+
+.planet-canvas {
+  display: block;
+  animation: rotate 60s linear infinite;
+  box-shadow: 
+    0 0 60px rgba(59, 130, 246, 0.3),
+    0 0 120px rgba(59, 130, 246, 0.1),
+    inset 0 0 40px rgba(0, 0, 0, 0.5);
+}
+
+.planet-canvas:hover {
+  animation-play-state: paused;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+::ng-deep .p-card {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(100, 116, 139, 0.3);
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+}
+
+::ng-deep .p-card-header {
+  margin: 0;
+  padding: 0;
+}
+
+::ng-deep .p-select-label {
+  color: #e2e8f0;
+}
+
+::ng-deep .p-select-trigger {
+  background: rgba(51, 65, 85, 0.8);
+  border-color: rgba(100, 116, 139, 0.5);
+}
+
+::ng-deep .p-slider {
+  background: rgba(51, 65, 85, 0.8);
+}
+
+::ng-deep .p-slider .p-slider-handle {
+  background: #3b82f6;
+  border-color: #3b82f6;
+}
+
+::ng-deep .p-inputnumber input {
+  background: rgba(51, 65, 85, 0.8);
+  border-color: rgba(100, 116, 139, 0.5);
+  color: #e2e8f0;
+}
+
+::ng-deep .p-button {
+  border-radius: 0.5rem;
+}

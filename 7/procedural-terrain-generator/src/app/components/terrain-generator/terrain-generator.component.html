@@ -1,0 +1,129 @@
+<div class="flex h-screen bg-gray-100">
+  <!-- Sidebar Controls -->
+  <mat-sidenav-container class="flex-1">
+    <mat-sidenav #sidenav mode="side" opened class="w-80 bg-white shadow-lg">
+      <div class="p-6">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">地形生成器</h2>
+
+        <!-- Height Scale -->
+        <div class="mb-6">
+          <mat-label class="block text-sm font-medium text-gray-700 mb-2">
+            高度比例: {{ terrainParams.heightScale }}
+          </mat-label>
+          <mat-slider min="10" max="200" step="1" discrete>
+            <input matSliderThumb [(ngModel)]="terrainParams.heightScale" (ngModelChange)="onParamsChange()">
+          </mat-slider>
+          <p class="text-xs text-gray-500 mt-1">控制地形的最大高度</p>
+        </div>
+
+        <!-- Roughness -->
+        <div class="mb-6">
+          <mat-label class="block text-sm font-medium text-gray-700 mb-2">
+            粗糙度: {{ terrainParams.roughness | number:'1.1' }}
+          </mat-label>
+          <mat-slider min="0.1" max="5" step="0.1" discrete>
+            <input matSliderThumb [(ngModel)]="terrainParams.roughness" (ngModelChange)="onParamsChange()">
+          </mat-slider>
+          <p class="text-xs text-gray-500 mt-1">控制地形的细节程度，值越大越粗糙</p>
+        </div>
+
+        <!-- Texture Blend -->
+        <div class="mb-6">
+          <mat-label class="block text-sm font-medium text-gray-700 mb-2">
+            纹理混合: {{ terrainParams.textureBlend | number:'1.1' }}
+          </mat-label>
+          <mat-slider min="0" max="1" step="0.1" discrete>
+            <input matSliderThumb [(ngModel)]="terrainParams.textureBlend" (ngModelChange)="onParamsChange()">
+          </mat-slider>
+          <p class="text-xs text-gray-500 mt-1">控制颜色纹理的混合程度</p>
+        </div>
+
+        <!-- Seed -->
+        <div class="mb-6">
+          <mat-label class="block text-sm font-medium text-gray-700 mb-2">
+            种子: {{ terrainParams.seed }}
+          </mat-label>
+          <div class="flex gap-2">
+            <input matInput type="number" [(ngModel)]="terrainParams.seed" (ngModelChange)="onParamsChange()"
+              class="flex-1 border rounded px-3 py-2">
+            <button mat-raised-button color="primary" (click)="regenerateSeed()">
+              随机
+            </button>
+          </div>
+          <p class="text-xs text-gray-500 mt-1">改变种子值可以生成完全不同的地形</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mb-6 space-y-2">
+          <button mat-raised-button color="primary" class="w-full" (click)="resetView()">
+            重置视图
+          </button>
+        </div>
+
+        <!-- Instructions -->
+        <div class="mt-8 p-4 bg-gray-50 rounded-lg">
+          <h3 class="font-semibold text-gray-700 mb-2">操作说明</h3>
+          <ul class="text-sm text-gray-600 space-y-1">
+            <li>🖱️ 拖动: 平移视图</li>
+            <li>🔄 滚轮: 缩放视图</li>
+            <li>🎨 调整滑块: 实时更新地形</li>
+          </ul>
+        </div>
+
+        <!-- Legend -->
+        <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+          <h3 class="font-semibold text-gray-700 mb-2">地形图例</h3>
+          <div class="space-y-2">
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 rounded" style="background-color: rgb(40, 80, 160);"></div>
+              <span class="text-sm text-gray-600">水域 (0-30%)</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 rounded" style="background-color: rgb(210, 190, 140);"></div>
+              <span class="text-sm text-gray-600">沙滩 (30-35%)</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 rounded" style="background-color: rgb(34, 139, 34);"></div>
+              <span class="text-sm text-gray-600">草地 (35-60%)</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 rounded" style="background-color: rgb(20, 80, 20);"></div>
+              <span class="text-sm text-gray-600">森林 (60-75%)</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 rounded" style="background-color: rgb(139, 137, 137);"></div>
+              <span class="text-sm text-gray-600">岩石 (75-90%)</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 rounded border" style="background-color: white;"></div>
+              <span class="text-sm text-gray-600">雪山 (90-100%)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-sidenav>
+
+    <!-- Main Canvas Area -->
+    <mat-sidenav-content>
+      <div class="h-full relative">
+        <canvas
+          #terrainCanvas
+          class="w-full h-full cursor-grab active:cursor-grabbing"
+          (mousedown)="onMouseDown($event)"
+          (mousemove)="onMouseMove($event)"
+          (mouseup)="onMouseUp()"
+          (mouseleave)="onMouseLeave()"
+          (wheel)="onWheel($event)"
+        ></canvas>
+
+        <!-- Status Bar -->
+        <div class="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-3">
+          <div class="text-sm text-gray-600">
+            <div>位置: ({{ viewOffsetX | number:'1.0' }}, {{ viewOffsetY | number:'1.0' }})</div>
+            <div>缩放: {{ zoomLevel | number:'1.1' }}x</div>
+          </div>
+        </div>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

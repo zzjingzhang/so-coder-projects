@@ -1,0 +1,116 @@
+<div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-white mb-2">🪐 Planet Generator</h1>
+      <p class="text-slate-400">Create unique planets with customizable terrain, oceans, and atmospheres</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2">
+        <p-card class="planet-card">
+          <ng-template pTemplate="header">
+            <div class="px-6 py-4 bg-slate-800 border-b border-slate-700">
+              <div class="flex items-center justify-between">
+                <span class="text-lg font-semibold text-white">Planet Preview</span>
+                <span class="text-sm text-slate-400">Seed: {{ planetParams.seed }}</span>
+              </div>
+            </div>
+          </ng-template>
+
+          <div class="flex justify-center items-center p-8 planet-container">
+            <div class="relative">
+              <canvas
+                #planetCanvas
+                width="400"
+                height="400"
+                class="planet-canvas rounded-full shadow-2xl"
+                [class.opacity-50]="isGenerating"
+              ></canvas>
+              @if (isGenerating) {
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="text-white text-lg font-medium">Generating...</div>
+                </div>
+              }
+            </div>
+          </div>
+        </p-card>
+
+        <p-card class="mt-6">
+          <ng-template pTemplate="header">
+            <div class="px-6 py-4 bg-slate-800 border-b border-slate-700">
+              <span class="text-lg font-semibold text-white">Quick Controls</span>
+            </div>
+          </ng-template>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2">Preset Planets</label>
+              <div class="flex gap-2">
+                <p-select
+                  [options]="presetOptions"
+                  [(ngModel)]="selectedPreset"
+                  optionLabel="label"
+                  optionValue="value"
+                  class="flex-1"
+                  [style]="{ width: '100%' }"
+                />
+                <p-button
+                  label="Apply"
+                  (click)="applyPreset()"
+                  severity="secondary"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2">Randomize</label>
+              <p-button
+                label="🎲 Randomize Seed"
+                (click)="randomizeSeed()"
+                class="w-full"
+                [style]="{ width: '100%' }"
+              />
+            </div>
+          </div>
+
+          <div class="px-4 pb-4">
+            <p-button
+              label="🔄 Regenerate Planet"
+              (click)="generatePlanet()"
+              class="w-full"
+              [loading]="isGenerating"
+              size="large"
+            />
+          </div>
+        </p-card>
+      </div>
+
+      <div class="lg:col-span-1">
+        <app-properties-panel
+          [planetParams]="planetParams"
+          (paramsChange)="onParamChange()"
+        ></app-properties-panel>
+
+        <p-card class="mt-6">
+          <ng-template pTemplate="header">
+            <div class="px-6 py-4 bg-slate-800 border-b border-slate-700">
+              <span class="text-lg font-semibold text-white">Terrain Legend</span>
+            </div>
+          </ng-template>
+
+          <div class="p-4 space-y-2">
+            @for (item of terrainLegend; track item.type) {
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-6 h-6 rounded border border-slate-600"
+                  [style.backgroundColor]="item.color"
+                ></div>
+                <span class="text-sm text-slate-300">{{ item.label }}</span>
+              </div>
+            }
+          </div>
+        </p-card>
+      </div>
+    </div>
+  </div>
+</div>
