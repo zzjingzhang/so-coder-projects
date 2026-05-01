@@ -1,0 +1,70 @@
+<div class="min-h-screen flex items-center justify-center p-4">
+  <nz-card class="w-full max-w-2xl shadow-2xl rounded-2xl overflow-hidden">
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent mb-2">
+        🧩 拼图游戏
+      </h1>
+      <p class="text-gray-500 text-lg">选择难度和图片，开始你的拼图之旅！</p>
+    </div>
+
+    <div class="mb-8">
+      <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2">
+        <span nz-icon nzType="picture" nzTheme="outline"></span>
+        选择图片
+      </h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        @for (image of images(); track $index) {
+          <div
+            class="relative cursor-pointer rounded-lg overflow-hidden transition-all duration-300 hover:scale-105"
+            [class.ring-4]="selectedImage() === $index"
+            [class.ring-purple-500]="selectedImage() === $index"
+            (click)="selectImage($index)"
+          >
+            <img
+              [src]="image"
+              alt="图片 {{ $index + 1 }}"
+              class="w-full h-24 object-cover"
+            />
+            @if (selectedImage() === $index) {
+              <div class="absolute inset-0 bg-purple-500 bg-opacity-30 flex items-center justify-center">
+                <span nz-icon nzType="check" nzTheme="outline" class="text-white text-2xl"></span>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="mb-8">
+      <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2">
+        <span nz-icon nzType="swap" nzTheme="outline"></span>
+        选择难度
+      </h3>
+      <nz-radio-group [(ngModel)]="gridSize" class="flex flex-col md:flex-row gap-4">
+        @for (option of gridOptions; track option.value) {
+          <label
+            nz-radio
+            [nzValue]="option.value"
+            class="flex-1 p-4 border-2 rounded-lg cursor-pointer transition-all duration-300 hover:border-purple-300"
+            [class.border-purple-500]="gridSize() === option.value"
+            [class.bg-purple-50]="gridSize() === option.value"
+          >
+            <span class="font-medium text-gray-700">{{ option.label }}</span>
+          </label>
+        }
+      </nz-radio-group>
+    </div>
+
+    <div class="text-center">
+      <button
+        nz-button
+        nzType="primary"
+        class="w-full md:w-auto h-14 px-12 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-purple-600 to-blue-500 border-none flex items-center justify-center"
+        (click)="startGame()"
+      >
+        <span nz-icon nzType="play-circle" nzTheme="outline" class="mr-2"></span>
+        开始游戏
+      </button>
+    </div>
+  </nz-card>
+</div>

@@ -1,0 +1,73 @@
+<div class="min-h-screen flex items-center justify-center p-4">
+  <nz-card class="w-full max-w-lg shadow-2xl rounded-2xl overflow-hidden">
+    <div class="text-center mb-8">
+      <div class="text-8xl mb-4 animate-bounce">🏆</div>
+      <h1 class="text-4xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent mb-2">
+        恭喜完成！
+      </h1>
+      <p class="text-gray-500 text-lg">你成功完成了拼图挑战！</p>
+    </div>
+
+    <div class="flex justify-center mb-8">
+      <div class="w-48 h-48 rounded-lg overflow-hidden shadow-lg border-4 border-yellow-300">
+        <img
+          [src]="currentImage()"
+          alt="完成的图片"
+          class="w-full h-full object-cover"
+        />
+      </div>
+    </div>
+
+    <div class="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl p-6 mb-8">
+      <div class="grid grid-cols-3 gap-4 text-center">
+        <div>
+          <div class="text-2xl font-bold text-purple-600 mb-1">
+            {{ formatTime(gameState().time) }}
+          </div>
+          <div class="text-gray-500 text-sm flex items-center justify-center gap-1">
+            <span nz-icon nzType="clock-circle" nzTheme="outline"></span>
+            用时
+          </div>
+        </div>
+        <div>
+          <div class="text-2xl font-bold text-blue-600 mb-1">
+            {{ gameState().moves }}
+          </div>
+          <div class="text-gray-500 text-sm flex items-center justify-center gap-1">
+            <span nz-icon nzType="swap" nzTheme="outline"></span>
+            步数
+          </div>
+        </div>
+        <div>
+          <div class="text-2xl font-bold text-green-600 mb-1">
+            {{ getDifficultyLabel(gameState().gridSize) }}
+          </div>
+          <div class="text-gray-500 text-sm flex items-center justify-center gap-1">
+            <span nz-icon nzType="trophy" nzTheme="outline"></span>
+            难度
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-4">
+      <button
+        nz-button
+        nzType="primary"
+        class="flex-1 h-14 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-purple-600 to-blue-500 border-none flex items-center justify-center"
+        (click)="playAgain()"
+      >
+        <span nz-icon nzType="play-circle" nzTheme="outline" class="mr-2"></span>
+        再玩一次
+      </button>
+      <button
+        nz-button
+        class="flex-1 h-14 text-lg font-semibold rounded-full shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center"
+        (click)="goHome()"
+      >
+        <span nz-icon nzType="home" nzTheme="outline" class="mr-2"></span>
+        返回首页
+      </button>
+    </div>
+  </nz-card>
+</div>

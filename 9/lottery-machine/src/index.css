@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+#root {
+  width: 100%;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+@keyframes spin-shadow {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 165, 0, 0.6), 0 0 30px rgba(255, 255, 0, 0.4);
+  }
+  25% {
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.8), 0 0 25px rgba(0, 0, 255, 0.6), 0 0 35px rgba(75, 0, 130, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(238, 130, 238, 0.8), 0 0 20px rgba(255, 105, 180, 0.6), 0 0 30px rgba(255, 192, 203, 0.4);
+  }
+  75% {
+    box-shadow: 0 0 15px rgba(255, 99, 71, 0.8), 0 0 25px rgba(255, 215, 0, 0.6), 0 0 35px rgba(50, 205, 50, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 165, 0, 0.6), 0 0 30px rgba(255, 255, 0, 0.4);
+  }
+}
+
+.spin-animation {
+  animation: spin-shadow 0.5s linear infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 1), 0 0 25px rgba(255, 215, 0, 0.8), 0 0 35px rgba(255, 215, 0, 0.6);
+  }
+}
+
+.glow-pulse {
+  animation: glow-pulse 1s ease-in-out infinite;
+}
+
+@keyframes unfold {
+  0% {
+    transform: scale(0.3) rotate(-10deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.unfold-animation {
+  animation: unfold 1.5s ease-out forwards;
+}
+
+@keyframes pop-out {
+  0% {
+    transform: translateX(-100px) scale(0.5);
+    opacity: 0;
+  }
+  60% {
+    transform: translateX(20px) scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.pop-out-animation {
+  animation: pop-out 0.8s ease-out forwards;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.rotate-animation {
+  animation: spin 2s linear infinite;
+}

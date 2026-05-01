@@ -1,0 +1,36 @@
+.puzzle-piece {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.puzzle-piece:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.puzzle-piece.selected {
+  box-shadow: 0 0 0 3px #facc15, 0 0 0 6px rgba(250, 204, 21, 0.3);
+  transform: scale(0.95);
+}
+
+.puzzle-piece.correct {
+  box-shadow: 0 0 0 2px #22c55e;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
