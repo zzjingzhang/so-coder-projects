@@ -1,0 +1,57 @@
+<div class="canvas-wrapper relative" [style.width.px]="width" [style.height.px]="height">
+  <div
+    #canvasContainer
+    class="canvas-container relative overflow-hidden bg-white shadow-lg"
+    [style.width.px]="width"
+    [style.height.px]="height"
+    (click)="deselectImage()"
+    (drop)="onCanvasDrop($event)"
+    (dragover)="onCanvasDragOver($event)"
+  >
+    @if (background) {
+      <img
+        [src]="background.src"
+        class="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        alt="Background"
+      />
+    }
+
+    @for (image of images; track image.id) {
+      <div
+        class="canvas-image absolute cursor-move"
+        [class.selected]="selectedImageId === image.id"
+        [class.hover-shadow]="selectedImageId !== image.id"
+        [style.left.px]="image.x"
+        [style.top.px]="image.y"
+        [style.width.px]="image.width"
+        [style.height.px]="image.height"
+        [style.z-index]="image.zIndex"
+        [style.transform]="'rotate(' + image.rotation + 'deg)'"
+        (click)="selectImage(image, $event)"
+        (mousedown)="onImageMouseDown($event, image, 'move')"
+      >
+        <img
+          [src]="image.src"
+          class="w-full h-full object-cover pointer-events-none"
+          draggable="false"
+        />
+
+        @if (selectedImageId === image.id) {
+          <div class="selection-box">
+            <div class="resize-handle nw" (mousedown)="onImageMouseDown($event, image, 'resize')"></div>
+            <div class="resize-handle ne" (mousedown)="onImageMouseDown($event, image, 'resize')"></div>
+            <div class="resize-handle sw" (mousedown)="onImageMouseDown($event, image, 'resize')"></div>
+            <div class="resize-handle se" (mousedown)="onImageMouseDown($event, image, 'resize')"></div>
+            <div class="rotate-handle" (mousedown)="onImageMouseDown($event, image, 'rotate')"></div>
+            <button
+              class="delete-btn"
+              (click)="deleteImage(image.id); $event.stopPropagation()"
+            >
+              ×
+            </button>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

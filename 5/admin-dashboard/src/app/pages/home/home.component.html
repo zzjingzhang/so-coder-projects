@@ -1,0 +1,44 @@
+<nz-table #basicTable [nzData]="listOfData" [nzScroll]="{ x: '1000px' }">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Address</th>
+      <th>Tags</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td>
+        <a>{{ data.name }}</a>
+      </td>
+      <td>{{ data.age }}</td>
+      <td>{{ data.address }}</td>
+      <td>
+        <nz-tag
+          *ngFor="let tag of data.tags"
+          [nzColor]="getTagColor(tag)"
+        >
+          {{ tag }}
+        </nz-tag>
+      </td>
+      <td>
+        <a (click)="invite()">Invite</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a (click)="delete(data.key)">Delete</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a nz-dropdown [nzDropdownMenu]="menu">
+          More
+          <span nz-icon nzType="down"></span>
+        </a>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item (click)="more()">Action 1</li>
+            <li nz-menu-item (click)="more()">Action 2</li>
+          </ul>
+        </nz-dropdown-menu>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

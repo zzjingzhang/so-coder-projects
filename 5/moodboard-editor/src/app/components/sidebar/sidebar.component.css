@@ -1,0 +1,48 @@
+.sidebar {
+  width: 280px;
+  min-width: 280px;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+  min-width: 60px;
+}
+
+.sidebar.mobile {
+  width: 100%;
+  min-width: 100%;
+  height: auto;
+  max-height: 300px;
+  flex-direction: row;
+}
+
+.sidebar-tabs {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-tabs :deep(.ant-tabs-nav) {
+  margin-bottom: 0;
+  padding: 0 12px;
+}
+
+.sidebar-tabs :deep(.ant-tabs-content) {
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar-tabs :deep(.ant-tabs-tabpane) {
+  height: 100%;
+}
+
+.photo-item,
+.bg-item,
+.upload-item {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.photo-item:hover,
+.bg-item:hover,
+.upload-item:hover {
+  transform: scale(1.02);
+}

@@ -1,0 +1,79 @@
+<mat-toolbar color="primary" class="sticky top-0 z-50 shadow-lg">
+  <mat-icon class="mr-2">shield</mat-icon>
+  <span class="text-xl font-bold">{{ title }}</span>
+</mat-toolbar>
+
+<div class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+  <section class="py-20 px-4">
+    <div class="max-w-6xl mx-auto text-center">
+      <div class="scroll-animate">
+        <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-lg">
+          超级英雄
+          <span class="bg-gradient-to-r from-yellow-400 to-red-500 bg-clip-text text-transparent">
+            滚动展示
+          </span>
+        </h1>
+        <p class="text-xl text-gray-300 max-w-2xl mx-auto mb-10">
+          滚动页面，体验神奇的动画效果，认识这些守护世界的英雄们
+        </p>
+        <div class="animate-bounce">
+          <mat-icon class="text-5xl text-yellow-400">arrow_downward</mat-icon>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-12 scroll-animate">
+        <h2 class="text-4xl font-bold text-white mb-4">英雄团队</h2>
+        <div class="w-24 h-1 bg-gradient-to-r from-yellow-400 to-red-500 mx-auto rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+        <app-hero-card 
+          *ngFor="let hero of heroes; let i = index" 
+          [hero]="hero" 
+          [delay]="getDelay(i)"
+        ></app-hero-card>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 px-4 bg-black/30">
+    <div class="max-w-4xl mx-auto text-center scroll-animate">
+      <h2 class="text-3xl font-bold text-white mb-6">为什么选择我们</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="p-6">
+          <mat-icon class="text-5xl text-yellow-400 mb-4">security</mat-icon>
+          <h3 class="text-xl font-semibold text-white mb-2">安全守护</h3>
+          <p class="text-gray-400">24/7保护世界和平</p>
+        </div>
+        <div class="p-6">
+          <mat-icon class="text-5xl text-red-400 mb-4">flash_on</mat-icon>
+          <h3 class="text-xl font-semibold text-white mb-2">快速响应</h3>
+          <p class="text-gray-400">闪电般的反应速度</p>
+        </div>
+        <div class="p-6">
+          <mat-icon class="text-5xl text-blue-400 mb-4">favorite</mat-icon>
+          <h3 class="text-xl font-semibold text-white mb-2">全心全意</h3>
+          <p class="text-gray-400">为正义而战</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 px-4">
+    <div class="max-w-4xl mx-auto text-center scroll-animate">
+      <h2 class="text-3xl font-bold text-white mb-6">准备好加入我们了吗？</h2>
+      <p class="text-gray-300 mb-8">一起守护这个美好的世界</p>
+      <button mat-raised-button color="accent" class="text-lg px-8 py-3">
+        立即加入
+      </button>
+    </div>
+  </section>
+
+  <footer class="py-8 px-4 bg-black/50 text-center">
+    <p class="text-gray-400">© 2024 Superhero Scroll Showcase. All rights reserved.</p>
+  </footer>
+</div>

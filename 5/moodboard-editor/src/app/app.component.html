@@ -1,0 +1,24 @@
+<div class="h-screen w-screen flex flex-col overflow-hidden bg-gray-100">
+  <div class="flex flex-1 overflow-hidden">
+    <app-sidebar
+      [collapsed]="sidebarCollapsed"
+      (toggleCollapse)="toggleSidebar()"
+      (imageAdded)="onImageAdded($event)"
+      (backgroundChanged)="onBackgroundChanged($event)"
+      (exportRequest)="onExportRequest()"
+    ></app-sidebar>
+
+    <div class="flex-1 flex items-center justify-center p-4 overflow-hidden">
+      <app-canvas
+        #canvas
+        [images]="images"
+        [background]="background"
+        [width]="canvasWidth"
+        [height]="canvasHeight"
+        (imageUpdated)="onImageUpdated($event)"
+        (imageRemoved)="onImageRemoved($event)"
+        (exportCanvas)="onExportCanvas($event)"
+      ></app-canvas>
+    </div>
+  </div>
+</div>

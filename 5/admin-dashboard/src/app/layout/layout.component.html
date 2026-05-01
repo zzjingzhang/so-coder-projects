@@ -1,0 +1,31 @@
+<nz-layout>
+  <nz-sider [nzCollapsible]="true" [(nzCollapsed)]="isCollapsed">
+    <app-logo [isCollapsed]="isCollapsed"></app-logo>
+    <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
+      <li
+        nz-menu-item
+        *ngFor="let item of menuItems"
+        nzMatchRouter
+        [routerLink]="item.path"
+      >
+        <span nz-icon [nzType]="item.icon"></span>
+        <span>{{ item.title }}</span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout [style]="{ marginLeft: isCollapsed ? '80px' : '200px', transition: 'margin-left 0.2s' }">
+    <nz-header>
+      <span
+        class="trigger"
+        nz-icon
+        [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+        (click)="isCollapsed = !isCollapsed"
+      ></span>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

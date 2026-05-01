@@ -1,0 +1,178 @@
+<div
+  class="sidebar h-full flex flex-col transition-all duration-300 ease-in-out bg-white shadow-lg"
+  [class.collapsed]="collapsed"
+  [class.mobile]="isMobile"
+>
+  @if (!collapsed) {
+    <div class="flex-1 flex flex-col overflow-hidden">
+      <div class="p-4 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-800">Moodboard Editor</h2>
+      </div>
+
+      <nz-tabset class="sidebar-tabs flex-1 overflow-hidden" [(nzSelectedIndex)]="selectedTab">
+        <nz-tab nzTitle="Photos">
+          <div class="p-3 overflow-y-auto h-full">
+            <div class="mb-3">
+              <nz-select
+                [(ngModel)]="selectedCategory"
+                class="w-full"
+                nzPlaceHolder="Filter by category"
+              >
+                @for (cat of categories; track cat) {
+                  <nz-option [nzValue]="cat" [nzLabel]="cat === 'all' ? 'All' : cat"></nz-option>
+                }
+              </nz-select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              @for (photo of filteredPhotos; track photo.src) {
+                <div
+                  class="photo-item aspect-square cursor-pointer rounded overflow-hidden shadow hover:shadow-md transition-shadow"
+                  draggable="true"
+                  (dragstart)="onPhotoDragStart($event, photo.src)"
+                  (click)="onPhotoClick(photo.src)"
+                >
+                  <img [src]="photo.src" class="w-full h-full object-cover" alt="Photo" />
+                </div>
+              }
+            </div>
+          </div>
+        </nz-tab>
+
+        <nz-tab nzTitle="Backgrounds">
+          <div class="p-3 overflow-y-auto h-full">
+            <button
+              nz-button
+              nzType="default"
+              nzBlock
+              class="mb-3"
+              (click)="clearBackground()"
+            >
+              Clear Background
+            </button>
+
+            <div class="grid grid-cols-2 gap-2">
+              @for (bg of presetBackgrounds; track bg.src) {
+                <div
+                  class="bg-item aspect-video cursor-pointer rounded overflow-hidden shadow hover:shadow-md transition-shadow"
+                  (click)="onBackgroundClick(bg)"
+                >
+                  <img [src]="bg.src" class="w-full h-full object-cover" [alt]="bg.name" />
+                </div>
+              }
+            </div>
+          </div>
+        </nz-tab>
+
+        <nz-tab nzTitle="Uploads">
+          <div class="p-3 overflow-y-auto h-full">
+            <nz-upload
+              nzType="drag"
+              [nzAccept]="'image/*'"
+              [nzBeforeUpload]="beforeUpload"
+              class="mb-3"
+            >
+              <p class="text-center p-4">
+                <span nz-icon nzType="upload"></span>
+                <span class="ml-2">Click or drag images here</span>
+              </p>
+            </nz-upload>
+
+            <div class="grid grid-cols-2 gap-2">
+              @for (url of uploadedImages; track url) {
+                <div class="upload-item relative group">
+                  <div
+                    class="aspect-square cursor-pointer rounded overflow-hidden shadow hover:shadow-md transition-shadow"
+                    draggable="true"
+                    (dragstart)="onUploadDragStart($event, url)"
+                    (click)="onUploadClick(url)"
+                  >
+                    <img [src]="url" class="w-full h-full object-cover" alt="Uploaded" />
+                  </div>
+                  <button
+                    class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity text-sm"
+                    (click)="onUploadRemove(url)"
+                  >
+                    ×
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+        </nz-tab>
+
+        <nz-tab nzTitle="Share">
+          <div class="p-4 flex flex-col items-center justify-center h-full">
+            <button
+              nz-button
+              nzType="primary"
+              nzSize="large"
+              (click)="onExportRequest()"
+            >
+              <span nz-icon nzType="download"></span>
+              Export as PNG
+            </button>
+            <p class="text-gray-500 text-sm mt-4 text-center">
+              Export your moodboard as a high-quality PNG image
+            </p>
+          </div>
+        </nz-tab>
+      </nz-tabset>
+    </div>
+
+    <div class="p-3 border-t border-gray-200">
+      <button
+        nz-button
+        nzType="text"
+        nzBlock
+        (click)="onToggle()"
+      >
+        <span nz-icon nzType="left"></span>
+        Collapse
+      </button>
+    </div>
+  } @else {
+    <div class="flex flex-col items-center py-4 gap-4">
+      <button
+        nz-button
+        nzType="text"
+        nz-tooltip
+        nzTooltipPlacement="right"
+        nzTooltipTitle="Photos"
+        (click)="onToggle()"
+      >
+        <span nz-icon nzType="picture" nzTheme="outline"></span>
+      </button>
+      <button
+        nz-button
+        nzType="text"
+        nz-tooltip
+        nzTooltipPlacement="right"
+        nzTooltipTitle="Backgrounds"
+        (click)="onToggle()"
+      >
+        <span nz-icon nzType="bg-colors" nzTheme="outline"></span>
+      </button>
+      <button
+        nz-button
+        nzType="text"
+        nz-tooltip
+        nzTooltipPlacement="right"
+        nzTooltipTitle="Uploads"
+        (click)="onToggle()"
+      >
+        <span nz-icon nzType="upload" nzTheme="outline"></span>
+      </button>
+      <button
+        nz-button
+        nzType="text"
+        nz-tooltip
+        nzTooltipPlacement="right"
+        nzTooltipTitle="Share"
+        (click)="onToggle()"
+      >
+        <span nz-icon nzType="share-alt" nzTheme="outline"></span>
+      </button>
+    </div>
+  }
+</div>
