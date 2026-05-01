@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.moon-glow {
+  box-shadow: 0 0 30px rgba(245, 245, 220, 0.6);
+}
+
+.moon-card {
+  @apply bg-white/10 backdrop-blur-md rounded-xl border border-white/20;
+}
+
+.stars-bg {
+  background-image: radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+                      radial-gradient(2px 2px at 60px 70px, #fff, transparent),
+                      radial-gradient(1px 1px at 50px 50px, #fff, transparent),
+                      radial-gradient(1px 1px at 130px 80px, #fff, transparent),
+                      radial-gradient(2px 2px at 90px 10px, #fff, transparent);
+  background-size: 200px 200px;
+}

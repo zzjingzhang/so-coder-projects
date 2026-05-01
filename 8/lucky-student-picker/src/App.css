@@ -1,0 +1,83 @@
+/* 自定义动画 */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fce7f3;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #f472b6;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ec4899;
+}
+
+/* 确保按钮样式不被覆盖 */
+.ant-btn-primary {
+  transition: all 0.3s ease;
+}
+
+.ant-btn-primary:hover {
+  transform: scale(1.05);
+}
+
+/* 滑块自定义样式 */
+.ant-slider-track {
+  background: linear-gradient(90deg, #f472b6, #c084fc) !important;
+}
+
+.ant-slider-handle::after {
+  box-shadow: 0 0 0 2px #f472b6 !important;
+}
+
+.ant-slider-handle:hover::after,
+.ant-slider-handle:active::after {
+  box-shadow: 0 0 0 2px #ec4899 !important;
+}
+
+/* 自定义间距样式 - 确保元素之间有足够的间距 */
+.spacing-section {
+  margin-bottom: 80px !important;
+}
+
+.spacing-title {
+  margin-bottom: 60px !important;
+}
+
+.spacing-name-card {
+  margin-bottom: 80px !important;
+}
+
+.spacing-slider {
+  margin-bottom: 80px !important;
+}
+
+.spacing-button {
+  margin-bottom: 80px !important;
+}
+
+/* 主容器样式 */
+.main-container {
+  padding-top: 60px !important;
+  padding-bottom: 60px !important;
+}

@@ -1,0 +1,68 @@
+<div class="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 flex flex-col items-center justify-center p-8">
+  <h1 class="text-4xl font-bold text-orange-800 mb-2">旋转披萨</h1>
+  <p class="text-orange-600 mb-8">拖动披萨旋转，旋转足够快时配料会飞走！</p>
+  
+  <div class="relative w-96 h-96 cursor-grab active:cursor-grabbing" (mousedown)="onMouseDown($event)">
+    <!-- 披萨主体 -->
+    <div 
+      class="absolute inset-0 rounded-full shadow-2xl transition-transform duration-75"
+      [style.transform]="'rotate(' + rotation + 'deg)'"
+    >
+      <!-- 披萨外壳 -->
+      <div class="absolute inset-0 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 border-8 border-amber-700"></div>
+      
+      <!-- 番茄酱层 -->
+      <div class="absolute inset-4 rounded-full bg-gradient-to-br from-red-500 to-red-700"></div>
+      
+      <!-- 奶酪层 -->
+      <div class="absolute inset-6 rounded-full bg-gradient-to-br from-yellow-200 to-yellow-400 opacity-90"></div>
+      
+      <!-- 配料 -->
+      <div 
+        *ngFor="let topping of toppings"
+        class="absolute w-6 h-6 transition-opacity duration-300"
+        [class.opacity-0]="topping.isFlying"
+        [style.left]="'calc(50% + ' + topping.x + 'px - 12px)'"
+        [style.top]="'calc(50% + ' + topping.y + 'px - 12px)'"
+        [style.transform]="'rotate(' + topping.rotation + 'deg)'"
+      >
+        <div [class]="getToppingClass(topping.type)"></div>
+      </div>
+    </div>
+    
+    <!-- 飞走的配料 -->
+    <div 
+      *ngFor="let topping of toppings"
+      class="absolute w-6 h-6 pointer-events-none"
+      [class.opacity-100]="topping.isFlying"
+      [class.opacity-0]="!topping.isFlying"
+      [style.left]="'calc(50% + ' + topping.x + 'px - 12px)'"
+      [style.top]="'calc(50% + ' + topping.y + 'px - 12px)'"
+      [style.transform]="'rotate(' + topping.rotation + 'deg)'"
+      [style.transition]="topping.isFlying ? 'none' : 'all 0.3s'"
+    >
+      <div [class]="getToppingClass(topping.type)"></div>
+    </div>
+  </div>
+  
+  <div class="mt-8 flex gap-4">
+    <button 
+      class="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg shadow-lg transition-all duration-200 transform hover:scale-105 active:scale-95 flex items-center gap-2"
+      (click)="resetPizza()"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+      </svg>
+      重置披萨
+    </button>
+  </div>
+  
+  <div class="mt-6 text-center text-orange-700">
+    <p *ngIf="absAngularVelocity > 0.1">
+      当前速度: {{ formattedSpeed }} 度/帧
+    </p>
+    <p *ngIf="isSpeedHigh" class="text-red-600 font-bold animate-pulse">
+      ⚠️ 配料正在飞走！
+    </p>
+  </div>
+</div>

@@ -1,0 +1,104 @@
+<div class="h-screen w-screen bg-gray-900 flex flex-col overflow-hidden">
+  <header class="bg-gray-800 border-b border-gray-700 px-6 py-4">
+    <h1 class="text-2xl font-bold text-cyan-400">六边形弹跳模拟</h1>
+    <p class="text-gray-400 text-sm mt-1">一个在旋转六边形内弹跳的球，具有真实的物理效果</p>
+  </header>
+
+  <div class="flex flex-1 overflow-hidden">
+    <aside class="w-80 bg-gray-800 border-r border-gray-700 p-6 overflow-y-auto">
+      <div class="space-y-6">
+        <div class="flex gap-3">
+          <button
+            nz-button
+            [nzType]="isRunning() ? 'default' : 'primary'"
+            (click)="toggleRunning()"
+            class="flex-1"
+          >
+            {{ isRunning() ? '暂停' : '开始' }}
+          </button>
+          <button
+            nz-button
+            nzType="default"
+            (click)="resetSimulation()"
+            class="flex-1"
+          >
+            重置
+          </button>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">
+              重力: {{ gravity() }}
+            </label>
+            <nz-slider
+              [ngModel]="gravity()"
+              (ngModelChange)="gravity.set($event)"
+              [nzMin]="0"
+              [nzMax]="2000"
+              [nzStep]="50"
+            ></nz-slider>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">
+              摩擦力: {{ friction() }}
+            </label>
+            <nz-slider
+              [ngModel]="friction()"
+              (ngModelChange)="friction.set($event)"
+              [nzMin]="0.5"
+              [nzMax]="1"
+              [nzStep]="0.01"
+            ></nz-slider>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">
+              弹性系数: {{ restitution() }}
+            </label>
+            <nz-slider
+              [ngModel]="restitution()"
+              (ngModelChange)="restitution.set($event)"
+              [nzMin]="0"
+              [nzMax]="1"
+              [nzStep]="0.05"
+            ></nz-slider>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">
+              旋转速度: {{ rotationSpeed() }} rad/s
+            </label>
+            <nz-slider
+              [ngModel]="rotationSpeed()"
+              (ngModelChange)="rotationSpeed.set($event)"
+              [nzMin]="-3"
+              [nzMax]="3"
+              [nzStep]="0.1"
+            ></nz-slider>
+          </div>
+        </div>
+
+        <div class="bg-gray-700 rounded-lg p-4">
+          <h3 class="text-sm font-semibold text-cyan-400 mb-2">物理特性说明</h3>
+          <ul class="text-xs text-gray-400 space-y-1">
+            <li>• <strong>重力</strong>: 控制球下落的加速度</li>
+            <li>• <strong>摩擦力</strong>: 球与墙壁接触时的减速</li>
+            <li>• <strong>弹性系数</strong>: 碰撞时能量保留的比例</li>
+            <li>• <strong>旋转速度</strong>: 六边形的旋转角速度</li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
+    <main class="flex-1 relative bg-gray-900">
+      <canvas
+        #canvas
+        class="absolute inset-0 w-full h-full"
+      ></canvas>
+    </main>
+  </div>
+</div>
+
+<router-outlet />

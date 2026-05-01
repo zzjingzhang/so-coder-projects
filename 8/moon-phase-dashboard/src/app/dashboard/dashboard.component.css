@@ -1,0 +1,92 @@
+mat-card {
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+mat-card-title, mat-card-subtitle {
+  color: white !important;
+}
+
+::ng-deep .mdc-tab {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+::ng-deep .mdc-tab--active {
+  color: white !important;
+}
+
+::ng-deep .mdc-tab-indicator__content--underline {
+  border-color: #3f51b5 !important;
+}
+
+button.mat-mdc-raised-button {
+  background: rgba(63, 81, 181, 0.8) !important;
+}
+
+button.mat-mdc-raised-button:hover {
+  background: rgba(63, 81, 181, 1) !important;
+}
+
+.day-button {
+  @apply p-2 rounded-lg text-center transition-all duration-200 min-h-[80px] flex flex-col items-center justify-center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid transparent;
+}
+
+.day-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.05);
+}
+
+.day-button.today {
+  background: rgba(63, 81, 181, 0.4);
+  border-color: rgba(63, 81, 181, 0.8);
+}
+
+.day-button.selected {
+  background: rgba(63, 81, 181, 0.6);
+  border-color: #3f51b5;
+  box-shadow: 0 0 15px rgba(63, 81, 181, 0.5);
+}
+
+.day-button .text-xs {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.day-button.today .text-xs,
+.day-button.selected .text-xs {
+  color: white;
+  font-weight: bold;
+}
+
+::ng-deep .mat-mdc-progress-bar {
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+::ng-deep .mat-mdc-progress-bar-bar {
+  border-radius: 4px;
+}
+
+mat-tooltip {
+  background: rgba(0, 0, 0, 0.9) !important;
+}
+
+::ng-deep .mdc-chip {
+  background: rgba(63, 81, 181, 0.3) !important;
+  color: white !important;
+}
+
+::ng-deep .mat-mdc-tab-header {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 8px 8px 0 0;
+}
+
+::ng-deep .mat-mdc-tab-body-wrapper {
+  padding: 8px;
+}
+
+.mat-icon {
+  vertical-align: middle;
+}

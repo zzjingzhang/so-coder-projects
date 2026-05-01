@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* 确保主容器有足够的间距 */
+.main-container {
+  padding-top: 100px !important;
+  padding-bottom: 100px !important;
+  padding-left: 80px !important;
+  padding-right: 80px !important;
+}
+
+/* 确保各个区域之间有足够的间距 */
+.section-spacing {
+  margin-bottom: 120px !important;
+}
+
+.title-section {
+  margin-bottom: 100px !important;
+}
+
+.name-card-section {
+  margin-bottom: 120px !important;
+}
+
+.slider-section {
+  margin-bottom: 120px !important;
+}
+
+.button-section {
+  margin-bottom: 120px !important;
+}
