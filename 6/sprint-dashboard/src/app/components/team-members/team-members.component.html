@@ -1,0 +1,39 @@
+<div class="team-members-container bg-[#1a1a2e] rounded-xl p-6 text-white">
+  <h3 class="section-title text-lg font-semibold mb-4 flex items-center gap-2">
+    <fa-icon [icon]="'users'" class="text-[#49D9A0]"></fa-icon>
+    Team Members
+  </h3>
+  <div class="members-grid grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div *ngFor="let member of teamMembers" class="member-card flex items-center gap-4 p-3 rounded-lg bg-[#16213e] hover:bg-[#0f3460] transition-colors cursor-pointer">
+      <div class="member-avatar relative">
+        <div
+          class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-white"
+          [style.backgroundColor]="getAvatarColor(member.avatar)"
+        >
+          {{ member.avatar }}
+        </div>
+        <span
+          class="online-badge absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-[#1a1a2e]"
+          [class.bg-green-500]="member.isOnline"
+          [class.bg-gray-500]="!member.isOnline"
+        ></span>
+      </div>
+      <div class="member-info flex-1">
+        <div class="member-name text-sm font-medium">{{ member.name }}</div>
+        <div class="member-sp flex items-center gap-1 text-xs text-gray-400">
+          <fa-icon [icon]="'star'" class="text-[#FFE66D]"></fa-icon>
+          {{ member.storyPoints }} SP
+        </div>
+      </div>
+      <span
+        class="status-badge px-2 py-1 rounded text-xs"
+        [class.bg-green-500/20]="member.isOnline"
+        [class.text-green-400]="member.isOnline"
+        [class.bg-gray-500/20]="!member.isOnline"
+        [class.text-gray-400]="!member.isOnline"
+      >
+        {{ member.isOnline ? 'Online' : 'Offline' }}
+      </span>
+    </div>
+  </div>
+</div>

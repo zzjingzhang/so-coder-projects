@@ -1,0 +1,83 @@
+<div class="about-container h-full flex flex-col bg-[#EEEEEE]">
+  <div class="top-toolbar flex items-center justify-between px-6 py-4 bg-[#1a1a2e] text-white shadow-lg">
+    <div class="toolbar-left flex items-center gap-4">
+      <button class="sidebar-toggle-btn w-10 h-10 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition-colors mr-4" (click)="toggleLeftSidebar.emit()">
+        <fa-icon [icon]="'bars'" class="text-gray-400"></fa-icon>
+      </button>
+      <div class="page-info">
+        <h1 class="page-title text-xl font-bold text-[#49D9A0]">About</h1>
+        <p class="page-subtitle text-xs text-gray-400">Learn more about SprintHub</p>
+      </div>
+    </div>
+    <div class="toolbar-right flex items-center gap-3">
+      <button class="sidebar-toggle-btn w-10 h-10 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition-colors mr-2" (click)="toggleRightSidebar.emit()">
+        <fa-icon [icon]="'columns'" class="text-gray-400"></fa-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="main-content flex-1 overflow-y-auto p-6">
+    <div class="content-wrapper max-w-5xl mx-auto space-y-8">
+      <div class="hero-section bg-[#1a1a2e] rounded-2xl p-8 text-white text-center">
+        <div class="hero-icon w-20 h-20 rounded-full bg-[#49D9A0] flex items-center justify-center mx-auto mb-6">
+          <fa-icon [icon]="'tachometer-alt'" class="text-4xl text-gray-900"></fa-icon>
+        </div>
+        <h1 class="hero-title text-4xl font-bold mb-4">SprintHub</h1>
+        <p class="hero-subtitle text-xl text-gray-400 mb-6">Agile Sprint Dashboard</p>
+        <p class="hero-description text-gray-300 max-w-2xl mx-auto">
+          A modern, feature-rich dashboard for managing your agile sprints. Track progress, 
+          monitor team performance, and deliver projects on time with intuitive visualizations.
+        </p>
+      </div>
+
+      <div class="features-section">
+        <h2 class="section-title text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+          <fa-icon [icon]="'star'" class="text-[#49D9A0]"></fa-icon>
+          Features
+        </h2>
+        <div class="features-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div *ngFor="let feature of features" class="feature-card bg-[#1a1a2e] rounded-xl p-6 text-white hover:shadow-xl transition-shadow">
+            <div class="feature-icon w-12 h-12 rounded-lg bg-[#49D9A0]/20 flex items-center justify-center mb-4">
+              <fa-icon [icon]="feature.icon" class="text-[#49D9A0] text-xl"></fa-icon>
+            </div>
+            <h3 class="feature-title text-lg font-semibold mb-2">{{ feature.title }}</h3>
+            <p class="feature-description text-gray-400 text-sm">{{ feature.description }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-stack-section">
+        <h2 class="section-title text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+          <fa-icon [icon]="'code'" class="text-[#49D9A0]"></fa-icon>
+          Technology Stack
+        </h2>
+        <div class="tech-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div *ngFor="let tech of techStack" class="tech-card bg-[#1a1a2e] rounded-xl p-4 text-center text-white">
+            <h3 class="tech-name text-sm font-semibold text-[#49D9A0]">{{ tech.name }}</h3>
+            <p class="tech-version text-xs text-gray-400">{{ tech.version }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section bg-[#1a1a2e] rounded-2xl p-8 text-white">
+        <h2 class="section-title text-2xl font-bold mb-6 flex items-center gap-3">
+          <fa-icon [icon]="'info-circle'" class="text-[#49D9A0]"></fa-icon>
+          Getting Started
+        </h2>
+        <div class="info-content space-y-4 text-gray-300">
+          <p>
+            <strong class="text-[#49D9A0]">Note:</strong> All data in this dashboard is currently 
+            hardcoded for demonstration purposes. In a production environment, you would 
+            connect to a backend API to fetch real-time data.
+          </p>
+          <div class="api-info bg-gray-800/50 rounded-lg p-4">
+            <p class="text-sm">
+              <fa-icon [icon]="'database'" class="text-[#49D9A0] mr-2"></fa-icon>
+              Data sources are located in <code class="bg-gray-700 px-2 py-1 rounded text-[#49D9A0]">src/app/services/dashboard.service.ts</code>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+<div class="story-table-container bg-[#1a1a2e] rounded-xl p-6 text-white">
+  <h3 class="table-title text-lg font-semibold mb-4 flex items-center gap-2">
+    <fa-icon [icon]="'list-alt'" class="text-[#49D9A0]"></fa-icon>
+    Sprint Stories
+  </h3>
+  <div class="table-wrapper overflow-x-auto">
+    <table mat-table [dataSource]="stories" class="w-full">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef class="text-gray-400 font-semibold">ID</th>
+        <td mat-cell *matCellDef="let story" class="text-[#49D9A0] font-mono">{{ story.id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef class="text-gray-400 font-semibold">Title</th>
+        <td mat-cell *matCellDef="let story" class="text-white max-w-xs truncate">{{ story.title }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef class="text-gray-400 font-semibold">Status</th>
+        <td mat-cell *matCellDef="let story">
+          <span class="status-chip px-3 py-1 rounded-full text-xs font-medium" [ngClass]="getStatusChipClass(story.status)">
+            {{ getStatusLabel(story.status) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="count">
+        <th mat-header-cell *matHeaderCellDef class="text-gray-400 font-semibold">SP</th>
+        <td mat-cell *matCellDef="let story">
+          <span class="story-points bg-gray-700 px-2 py-1 rounded text-sm">{{ story.count }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="text-gray-400 font-semibold">Actions</th>
+        <td mat-cell *matCellDef="let story">
+          <div class="actions flex gap-2">
+            <button class="action-btn w-8 h-8 rounded bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors" (click)="onView(story)" matTooltip="View">
+              <fa-icon [icon]="'eye'" class="text-gray-400 text-sm"></fa-icon>
+            </button>
+            <button class="action-btn w-8 h-8 rounded bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors" (click)="onEdit(story)" matTooltip="Edit">
+              <fa-icon [icon]="'edit'" class="text-gray-400 text-sm"></fa-icon>
+            </button>
+            <button class="action-btn w-8 h-8 rounded bg-gray-700 hover:bg-red-500/20 flex items-center justify-center transition-colors" (click)="onDelete(story)" matTooltip="Delete">
+              <fa-icon [icon]="'trash'" class="text-gray-400 hover:text-red-400 text-sm"></fa-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns" class="border-b border-gray-700"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="border-b border-gray-800 hover:bg-gray-800/50 transition-colors cursor-pointer"></tr>
+    </table>
+  </div>
+</div>

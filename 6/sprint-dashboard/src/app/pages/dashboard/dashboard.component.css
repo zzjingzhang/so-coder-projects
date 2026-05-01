@@ -1,0 +1,24 @@
+.dashboard-container {
+  height: 100%;
+}
+
+.top-toolbar {
+  min-height: 64px;
+}
+
+.nav-btn,
+.sidebar-toggle-btn {
+  transition: background-color 0.2s ease;
+}
+
+.complete-sprint-btn {
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.complete-sprint-btn:hover {
+  transform: translateY(-1px);
+}
+
+.main-content {
+  background-color: #EEEEEE;
+}

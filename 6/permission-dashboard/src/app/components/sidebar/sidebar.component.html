@@ -1,0 +1,63 @@
+<mat-sidenav #sidenav mode="side" opened class="sidenav-container">
+  <div class="sidebar-header">
+    <h2 class="sidebar-title">权限管理系统</h2>
+  </div>
+  
+  <mat-nav-list>
+    <ng-container *ngFor="let item of menuItems">
+      <mat-list-item 
+        class="menu-item"
+        [class.active]="activeMenuId === item.id"
+        (click)="selectMenu(item)"
+      >
+        <div class="menu-item-content" (click)="hasChildren(item) ? toggleExpand(item) : null">
+          <mat-icon *ngIf="item.icon" class="menu-icon">{{item.icon}}</mat-icon>
+          <span class="menu-name">{{item.name}}</span>
+          <mat-icon *ngIf="hasChildren(item)" class="expand-icon">
+            {{item.isExpanded ? 'expand_more' : 'chevron_right'}}
+          </mat-icon>
+        </div>
+      </mat-list-item>
+      
+      <ng-container *ngIf="hasChildren(item) && item.isExpanded">
+        <div class="submenu">
+          <ng-container *ngFor="let child of item.children">
+            <mat-list-item 
+              class="submenu-item"
+              [class.active]="activeMenuId === child.id"
+              (click)="selectMenu(child)"
+            >
+              <div class="menu-item-content" (click)="hasChildren(child) ? toggleExpand(child) : null">
+                <mat-icon *ngIf="child.icon" class="submenu-icon">{{child.icon}}</mat-icon>
+                <span class="submenu-name">{{child.name}}</span>
+                <mat-icon *ngIf="hasChildren(child)" class="expand-icon">
+                  {{child.isExpanded ? 'expand_more' : 'chevron_right'}}
+                </mat-icon>
+              </div>
+            </mat-list-item>
+            
+            <ng-container *ngIf="hasChildren(child) && child.isExpanded">
+              <div class="submenu-level-2">
+                <ng-container *ngFor="let grandChild of child.children">
+                  <mat-list-item 
+                    class="submenu-item level-2"
+                    [class.active]="activeMenuId === grandChild.id"
+                    (click)="selectMenu(grandChild)"
+                  >
+                    <div class="menu-item-content">
+                      <mat-icon class="submenu-icon">{{getMenuTypeIcon(grandChild.type)}}</mat-icon>
+                      <span class="submenu-name">{{grandChild.name}}</span>
+                      <span class="type-badge" [ngClass]="grandChild.type">
+                        {{grandChild.type === 'menu' ? '菜单' : grandChild.type === 'button' ? '按钮' : '接口'}}
+                      </span>
+                    </div>
+                  </mat-list-item>
+                </ng-container>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+      </ng-container>
+    </ng-container>
+  </mat-nav-list>
+</mat-sidenav>

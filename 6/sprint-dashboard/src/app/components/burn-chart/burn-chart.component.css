@@ -1,0 +1,15 @@
+.burn-chart-container {
+  min-height: 300px;
+}
+
+.chart-content {
+  justify-content: center;
+}
+
+.legend-item {
+  transition: transform 0.2s ease;
+}
+
+.legend-item:hover {
+  transform: translateX(4px);
+}

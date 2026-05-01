@@ -1,0 +1,11 @@
+.app-container {
+  height: 100vh;
+}
+
+.main-content {
+  overflow: hidden;
+}
+
+::ng-deep .mat-mdc-sidenav-container {
+  height: 100% !important;
+}

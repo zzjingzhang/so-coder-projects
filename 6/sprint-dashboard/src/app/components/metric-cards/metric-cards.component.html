@@ -1,0 +1,22 @@
+<div class="metric-cards-container">
+  <div class="metric-cards-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+    <div
+      *ngFor="let metric of metrics"
+      class="metric-card p-4 rounded-xl cursor-pointer transition-all duration-300"
+      [class.bg-[#49D9A0]]="activeMetricId === metric.id"
+      [class.bg-[#1a1a2e]]="activeMetricId !== metric.id"
+      [class.text-gray-900]="activeMetricId === metric.id"
+      [class.text-white]="activeMetricId !== metric.id"
+      [class.ring-2]="activeMetricId === metric.id"
+      [class.ring-[#49D9A0]]="activeMetricId === metric.id"
+      (click)="selectMetric(metric.id)"
+    >
+      <div class="metric-icon mb-3" [class.text-gray-800]="activeMetricId === metric.id" [class.text-[#49D9A0]]="activeMetricId !== metric.id">
+        <fa-icon [icon]="metric.icon" class="text-2xl"></fa-icon>
+      </div>
+      <div class="metric-value text-2xl font-bold mb-1">{{ metric.value }}</div>
+      <div class="metric-title text-sm font-medium mb-1" [class.text-gray-700]="activeMetricId === metric.id" [class.text-gray-300]="activeMetricId !== metric.id">{{ metric.title }}</div>
+      <div class="metric-subtitle text-xs" [class.text-gray-600]="activeMetricId === metric.id" [class.text-gray-500]="activeMetricId !== metric.id">{{ metric.subtitle }}</div>
+    </div>
+  </div>
+</div>

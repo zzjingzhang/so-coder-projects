@@ -1,0 +1,128 @@
+.sidenav-container {
+  width: 280px;
+  background: linear-gradient(180deg, #1e3a5f 0%, #0d1f3c 100%);
+  color: white;
+}
+
+.sidebar-header {
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+}
+
+.menu-item {
+  color: rgba(255, 255, 255, 0.8);
+  height: auto;
+  padding: 0;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.menu-item.active {
+  background: rgba(99, 102, 241, 0.3);
+  color: white;
+}
+
+.menu-item-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 12px 20px;
+  cursor: pointer;
+}
+
+.menu-icon {
+  margin-right: 12px;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.menu-name {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.expand-icon {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.submenu {
+  margin-left: 20px;
+  border-left: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.submenu-item {
+  color: rgba(255, 255, 255, 0.7);
+  height: auto;
+  padding: 0;
+}
+
+.submenu-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.submenu-item.active {
+  background: rgba(99, 102, 241, 0.2);
+  color: white;
+}
+
+.submenu-icon {
+  margin-right: 12px;
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.submenu-name {
+  flex: 1;
+  font-size: 13px;
+}
+
+.submenu-level-2 {
+  margin-left: 20px;
+}
+
+.submenu-item.level-2 {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.type-badge {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+}
+
+.type-badge.menu {
+  background: rgba(59, 130, 246, 0.3);
+  color: #60a5fa;
+}
+
+.type-badge.button {
+  background: rgba(34, 197, 94, 0.3);
+  color: #4ade80;
+}
+
+.type-badge.api {
+  background: rgba(249, 115, 22, 0.3);
+  color: #fb923c;
+}
+
+::ng-deep .mat-list-item {
+  height: auto !important;
+}
+
+::ng-deep .mat-mdc-list-item {
+  height: auto !important;
+}

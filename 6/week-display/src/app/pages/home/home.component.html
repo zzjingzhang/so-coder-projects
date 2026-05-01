@@ -1,0 +1,78 @@
+<div class="min-h-screen bg-gradient-to-br {{ backgroundGradient }} flex items-center justify-center p-4">
+  <div class="w-full max-w-4xl">
+    <nz-card 
+      class="text-center shadow-2xl {{ cardShadow }} border-4 {{ cardBorderColor }} rounded-3xl overflow-hidden"
+      nzBordered="false"
+    >
+      <div class="p-8 md:p-12">
+        <div class="mb-8">
+          <h2 class="text-lg md:text-xl font-semibold text-gray-600 mb-2">
+            Heute ist der {{ currentDate | date: 'dd.MM.yyyy' }}
+          </h2>
+          <nz-divider></nz-divider>
+        </div>
+
+        <div class="mb-8">
+          <div class="inline-block px-8 py-4 rounded-full bg-white shadow-lg mb-4">
+            <span class="text-gray-500 text-lg">Kalenderwoche</span>
+            <span class="text-6xl md:text-8xl font-bold {{ displayColor }} ml-4">
+              {{ weekNumber }}
+            </span>
+          </div>
+        </div>
+
+        <nz-divider></nz-divider>
+
+        <div class="py-8">
+          <h1 
+            class="text-5xl md:text-7xl lg:text-8xl font-extrabold {{ displayColor }} tracking-tight leading-tight"
+            nz-typography
+          >
+            {{ displayText }}
+          </h1>
+        </div>
+
+        <div class="mt-8 pt-8 border-t border-gray-200">
+          <div class="flex justify-center gap-4">
+            <nz-tag 
+              [nzColor]="isEvenWeek ? 'blue' : 'green'" 
+              class="text-lg px-6 py-2 rounded-full"
+            >
+              @if (isEvenWeek) {
+                <span>Gerade Woche</span>
+              } @else {
+                <span>Ungerade Woche</span>
+              }
+            </nz-tag>
+            
+            <nz-tag 
+              nzColor="default" 
+              class="text-lg px-6 py-2 rounded-full"
+            >
+              Jahr {{ currentDate | date: 'yyyy' }}
+            </nz-tag>
+          </div>
+        </div>
+
+        <div class="mt-8">
+          <button 
+            nz-button 
+            nzType="primary"
+            (click)="ngOnInit()"
+            nzSize="large"
+            class="px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+            [nzGhost]="!isEvenWeek"
+            [nzDanger]="isEvenWeek ? false : false"
+          >
+            <span nz-icon nzType="reload" nzTheme="outline" class="inline-flex items-center"></span>
+            Aktualisieren
+          </button>
+        </div>
+      </div>
+    </nz-card>
+
+    <div class="text-center mt-8 text-gray-500">
+      <p class="text-sm">Week Display App - Angular + Tailwind CSS + NG-ZORRO</p>
+    </div>
+  </div>
+</div>

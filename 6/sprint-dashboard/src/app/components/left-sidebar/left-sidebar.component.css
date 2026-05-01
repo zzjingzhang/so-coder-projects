@@ -1,0 +1,30 @@
+.left-sidebar {
+  width: 256px;
+  transition: width 0.3s ease;
+}
+
+.left-sidebar.collapsed {
+  width: 72px;
+}
+
+.nav-item {
+  color: #9ca3af;
+}
+
+.nav-item:hover {
+  background-color: #374151;
+  color: #e5e7eb;
+}
+
+.nav-item.active {
+  background-color: rgba(73, 217, 160, 0.15);
+  color: #49D9A0;
+}
+
+.nav-item.active fa-icon {
+  color: #49D9A0;
+}
+
+.notification-badge {
+  font-size: 10px;
+}

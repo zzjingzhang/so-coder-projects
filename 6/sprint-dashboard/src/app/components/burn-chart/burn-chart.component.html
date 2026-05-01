@@ -1,0 +1,29 @@
+<div class="burn-chart-container bg-[#1a1a2e] rounded-xl p-6 text-white">
+  <h3 class="chart-title text-lg font-semibold mb-6 flex items-center gap-2">
+    <fa-icon [icon]="'fire'" class="text-[#49D9A0]"></fa-icon>
+    Burnsown chart
+  </h3>
+  <div class="chart-content flex flex-col lg:flex-row items-center gap-6">
+    <div class="chart-svg-container relative">
+      <svg width="240" height="240" viewBox="0 0 240 240">
+        <circle cx="120" cy="120" r="100" fill="#2d2d2d" />
+        <path
+          *ngFor="let item of chartData; let i = index"
+          [attr.d]="getPathForItem(i)"
+          [attr.fill]="item.color"
+          class="transition-all duration-500 hover:opacity-80 cursor-pointer"
+        />
+        <circle cx="120" cy="120" r="60" fill="#1a1a2e" />
+        <text x="120" y="115" text-anchor="middle" class="text-white fill-white font-bold text-xl">{{ totalValue }}%</text>
+        <text x="120" y="135" text-anchor="middle" class="text-gray-400 fill-gray-400 text-sm">Total</text>
+      </svg>
+    </div>
+    <div class="chart-legend flex flex-col gap-3">
+      <div *ngFor="let item of chartData" class="legend-item flex items-center gap-3">
+        <div class="legend-color w-4 h-4 rounded" [style.backgroundColor]="item.color"></div>
+        <span class="legend-name text-gray-300">{{ item.name }}</span>
+        <span class="legend-percentage text-[#49D9A0] font-semibold">{{ getPercentage(item.value) }}%</span>
+      </div>
+    </div>
+  </div>
+</div>

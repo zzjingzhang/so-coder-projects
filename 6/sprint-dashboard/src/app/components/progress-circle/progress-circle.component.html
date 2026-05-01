@@ -1,0 +1,30 @@
+<div class="progress-circle-container flex flex-col items-center">
+  <div class="relative">
+    <svg [attr.width]="size" [attr.height]="size" class="transform -rotate-90">
+      <circle
+        [attr.cx]="center"
+        [attr.cy]="center"
+        [attr.r]="radius"
+        fill="none"
+        stroke="#2d2d2d"
+        [attr.stroke-width]="8"
+      />
+      <circle
+        [attr.cx]="center"
+        [attr.cy]="center"
+        [attr.r]="radius"
+        fill="none"
+        [attr.stroke]="color"
+        [attr.stroke-width]="8"
+        [attr.stroke-linecap]="'round'"
+        [attr.stroke-dasharray]="circumference"
+        [attr.stroke-dashoffset]="strokeDashoffset"
+        class="transition-all duration-1000 ease-out"
+      />
+    </svg>
+    <div class="absolute inset-0 flex items-center justify-center">
+      <span class="text-2xl font-bold text-white">{{ percentage }}%</span>
+    </div>
+  </div>
+  <span class="mt-2 text-sm text-gray-400 text-center">{{ label }}</span>
+</div>

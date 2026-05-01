@@ -1,0 +1,7 @@
+.progress-circle-container {
+  transition: transform 0.3s ease;
+}
+
+.progress-circle-container:hover {
+  transform: scale(1.05);
+}

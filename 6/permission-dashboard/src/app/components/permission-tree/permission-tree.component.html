@@ -1,0 +1,76 @@
+<div class="permission-tree-container">
+  <div class="tree-toolbar">
+    <div class="toolbar-actions">
+      <button mat-icon-button (click)="expandAll()" matTooltip="全部展开">
+        <mat-icon>unfold_more</mat-icon>
+      </button>
+      <button mat-icon-button (click)="collapseAll()" matTooltip="全部收起">
+        <mat-icon>unfold_less</mat-icon>
+      </button>
+      <mat-divider vertical></mat-divider>
+      <button mat-icon-button (click)="selectAll()" matTooltip="全选">
+        <mat-icon>checklist</mat-icon>
+      </button>
+      <button mat-icon-button (click)="deselectAll()" matTooltip="取消全选">
+        <mat-icon>checklist_rtl</mat-icon>
+      </button>
+    </div>
+    <div class="selection-info">
+      已选择 <span class="count">{{selectedPermissionIds.length}}</span> 项权限
+    </div>
+  </div>
+
+  <div class="tree-content">
+    <ng-container *ngIf="filteredTree.length > 0; else noResults">
+      <ng-template #treeNode let-nodes>
+        <ng-container *ngFor="let node of nodes">
+          <div class="tree-node" [class.has-children]="hasChildren(node)">
+            <div class="node-row" [class.disabled]="disabled">
+              <button 
+                mat-icon-button 
+                class="expand-btn"
+                *ngIf="hasChildren(node)"
+                (click)="toggleExpand(node)"
+              >
+                <mat-icon>{{node.isExpanded ? 'expand_more' : 'chevron_right'}}</mat-icon>
+              </button>
+              <span class="expand-placeholder" *ngIf="!hasChildren(node)"></span>
+              
+              <mat-checkbox 
+                [checked]="node.isSelected"
+                [indeterminate]="node.isIndeterminate"
+                [disabled]="disabled"
+                (change)="toggleSelection(node, $event.checked)"
+              ></mat-checkbox>
+              
+              <mat-icon 
+                class="type-icon" 
+                [ngClass]="node.type"
+              >{{getTypeIcon(node.type)}}</mat-icon>
+              
+              <span class="node-name">{{node.name}}</span>
+              <span class="node-code">{{node.code}}</span>
+              
+              <span class="type-badge" [ngClass]="node.type">
+                {{getTypeLabel(node.type)}}
+              </span>
+            </div>
+            
+            <div class="node-children" *ngIf="hasChildren(node) && node.isExpanded">
+              <ng-container *ngTemplateOutlet="treeNode; context: {$implicit: node.children}"></ng-container>
+            </div>
+          </div>
+        </ng-container>
+      </ng-template>
+      
+      <ng-container *ngTemplateOutlet="treeNode; context: {$implicit: filteredTree}"></ng-container>
+    </ng-container>
+    
+    <ng-template #noResults>
+      <div class="no-results">
+        <mat-icon>search_off</mat-icon>
+        <p>未找到匹配的权限</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

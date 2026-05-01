@@ -1,0 +1,31 @@
+.about-container {
+  height: 100%;
+}
+
+.top-toolbar {
+  min-height: 64px;
+}
+
+.sidebar-toggle-btn {
+  transition: background-color 0.2s ease;
+}
+
+.feature-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+}
+
+.tech-card {
+  transition: transform 0.2s ease;
+}
+
+.tech-card:hover {
+  transform: scale(1.05);
+}
+
+.main-content {
+  background-color: #EEEEEE;
+}

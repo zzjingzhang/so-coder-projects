@@ -1,0 +1,46 @@
+<div class="right-sidebar h-full flex flex-col bg-[#1a1a2e] text-white overflow-y-auto">
+  <div class="epics-section p-4 border-b border-gray-700">
+    <h3 class="epics-title text-lg font-semibold mb-4 flex items-center gap-2">
+      <fa-icon [icon]="'lightbulb'" class="text-[#49D9A0]"></fa-icon>
+      Epics
+    </h3>
+    <div class="epics-list space-y-3">
+      <div *ngFor="let epic of epics" class="epic-item flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 cursor-pointer transition-colors">
+        <div class="epic-icon w-10 h-10 rounded-lg flex items-center justify-center" [style.backgroundColor]="epic.color + '20'">
+          <fa-icon [icon]="epic.icon" [style.color]="epic.color"></fa-icon>
+        </div>
+        <div class="epic-info flex-1 min-w-0">
+          <div class="epic-title text-sm font-medium truncate">{{ epic.title }}</div>
+          <div class="epic-subtitle text-xs text-gray-400 truncate">{{ epic.subtitle }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-section p-4 border-b border-gray-700">
+    <h3 class="progress-title text-lg font-semibold mb-4 flex items-center gap-2">
+      <fa-icon [icon]="'chart-pie'" class="text-[#49D9A0]"></fa-icon>
+      Progress Overview
+    </h3>
+    <div class="progress-cards grid grid-cols-1 gap-4">
+      <div *ngFor="let data of progressData" class="progress-card bg-[#16213e] rounded-xl p-4 flex flex-col items-center">
+        <app-progress-circle
+          [percentage]="data.percentage"
+          [color]="data.color"
+          [label]="data.label"
+          [size]="100"
+        ></app-progress-circle>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions-section p-4">
+    <button
+      class="project-details-btn w-full py-3 px-4 bg-[#49D9A0] text-gray-900 font-semibold rounded-lg hover:bg-[#3bc48e] transition-colors flex items-center justify-center gap-2"
+      (click)="onProjectDetailsClick()"
+    >
+      <fa-icon [icon]="'info-circle'"></fa-icon>
+      Project Details
+    </button>
+  </div>
+</div>

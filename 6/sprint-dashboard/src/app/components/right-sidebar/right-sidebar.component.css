@@ -1,0 +1,15 @@
+.right-sidebar {
+  width: 320px;
+}
+
+.epic-item {
+  transition: background-color 0.2s ease;
+}
+
+.epic-item:hover {
+  background-color: #374151;
+}
+
+.project-details-btn {
+  transition: background-color 0.2s ease;
+}

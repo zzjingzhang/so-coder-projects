@@ -1,0 +1,36 @@
+<div class="app-layout" [class.left-collapsed]="isLeftSidebarCollapsed" [class.left-closed]="!leftDrawerOpen" [class.right-closed]="!rightDrawerOpen">
+  <mat-sidenav-container class="app-container" autosize>
+    <mat-sidenav
+      #leftDrawer
+      mode="side"
+      [opened]="leftDrawerOpen"
+      class="left-drawer"
+      fixedInViewport
+      fixedTopGap="0"
+      fixedBottomGap="0"
+    >
+      <app-left-sidebar (collapsed)="onLeftSidebarCollapsed($event)"></app-left-sidebar>
+    </mat-sidenav>
+
+    <mat-sidenav
+      #rightDrawer
+      mode="side"
+      position="end"
+      [opened]="rightDrawerOpen"
+      class="right-drawer"
+      fixedInViewport
+      fixedTopGap="0"
+      fixedBottomGap="0"
+    >
+      <app-right-sidebar></app-right-sidebar>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="main-content-wrapper">
+      <div class="main-content-inner">
+        <router-outlet
+          (activate)="onRouterActivate($event)"
+        ></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

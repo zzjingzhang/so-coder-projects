@@ -1,0 +1,438 @@
+.permission-management-container {
+  padding: 24px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header-title h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.subtitle {
+  margin: 8px 0 0 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.page-content {
+  display: flex;
+  gap: 24px;
+  height: calc(100vh - 140px);
+}
+
+.roles-section {
+  flex: 0 0 50%;
+  min-width: 650px;
+  transition: flex 0.3s ease;
+}
+
+.roles-section.with-selection {
+  flex: 0 0 45%;
+  min-width: 600px;
+}
+
+.roles-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.roles-card mat-card-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 0;
+}
+
+.roles-card mat-card-title {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.roles-card mat-card-title mat-icon {
+  margin-right: 8px;
+  color: #6366f1;
+}
+
+.roles-card mat-card-subtitle {
+  margin-top: 4px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.roles-card mat-card-content {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px;
+}
+
+.search-box {
+  margin-bottom: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.roles-table-container {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  min-width: 600px;
+}
+
+.roles-table {
+  width: 100%;
+  min-width: 700px;
+  table-layout: auto;
+}
+
+::ng-deep .roles-table th.mat-mdc-header-cell,
+::ng-deep .roles-table td.mat-mdc-cell {
+  padding: 12px 16px;
+  white-space: nowrap;
+}
+
+::ng-deep .roles-table th.mat-mdc-header-cell:first-child,
+::ng-deep .roles-table td.mat-mdc-cell:first-child {
+  padding-left: 24px;
+}
+
+::ng-deep .roles-table th.mat-mdc-header-cell:last-child,
+::ng-deep .roles-table td.mat-mdc-cell:last-child {
+  padding-right: 24px;
+}
+
+.role-name-cell {
+  display: flex;
+  align-items: center;
+}
+
+.role-icon {
+  margin-right: 10px;
+  color: #94a3b8;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.role-icon.system {
+  color: #f59e0b;
+}
+
+.role-name {
+  font-weight: 500;
+  color: #1e293b;
+  margin-right: 8px;
+}
+
+.system-chip {
+  font-size: 10px;
+  height: 20px;
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.role-code {
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.role-description {
+  font-size: 13px;
+  color: #64748b;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.role-description:hover {
+  white-space: normal;
+  max-width: none;
+}
+
+.count-text {
+  font-weight: 600;
+  color: #6366f1;
+}
+
+.status-badge {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.status-active {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.status-inactive {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.type-text {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.selected-row {
+  background: #eef2ff !important;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  color: #64748b;
+}
+
+.loading-container p {
+  margin-top: 16px;
+}
+
+.permissions-section {
+  flex: 1;
+  min-width: 600px;
+}
+
+.permissions-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.permissions-card mat-card-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 0;
+}
+
+.header-with-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.permissions-card mat-card-title {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.permissions-card mat-card-title mat-icon {
+  margin-right: 8px;
+  color: #8b5cf6;
+}
+
+.permissions-card mat-card-subtitle {
+  margin-top: 4px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.card-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.permissions-card mat-card-content {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px;
+}
+
+.permission-search-box {
+  margin-bottom: 20px;
+}
+
+.stats-cards {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  flex: 1;
+  padding: 16px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon.total {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+}
+
+.stat-icon.total mat-icon {
+  color: #2563eb;
+}
+
+.stat-icon.selected {
+  background: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 100%);
+}
+
+.stat-icon.selected mat-icon {
+  color: #7c3aed;
+}
+
+.stat-icon.percentage {
+  background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+}
+
+.stat-icon.percentage mat-icon {
+  color: #db2777;
+}
+
+.stat-icon mat-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.2;
+}
+
+.stat-value.primary {
+  color: #6366f1;
+}
+
+.stat-value.accent {
+  color: #a855f7;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.no-selection-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-selection-content {
+  text-align: center;
+  padding: 48px;
+}
+
+.no-selection-icon {
+  font-size: 80px;
+  width: 80px;
+  height: 80px;
+  color: #94a3b8;
+  margin-bottom: 24px;
+}
+
+.no-selection-content h2 {
+  margin: 0 0 12px 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.no-selection-content p {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #64748b;
+}
+
+.arrow-icon {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  color: #c4b5fd;
+  transform: rotate(-45deg);
+}
+
+::ng-deep .mat-mdc-header-row {
+  background: #f8fafc !important;
+}
+
+::ng-deep .mat-mdc-header-cell {
+  font-weight: 600 !important;
+  color: #475569 !important;
+}
+
+::ng-deep .mat-mdc-row {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+::ng-deep .mat-mdc-row:hover {
+  background-color: #f1f5f9;
+}
+
+::ng-deep .snackbar-success {
+  --mdc-snackbar-container-color: #16a34a;
+  --mat-snack-bar-button-color: #ffffff;
+}
+
+::ng-deep .snackbar-warning {
+  --mdc-snackbar-container-color: #ca8a04;
+  --mat-snack-bar-button-color: #ffffff;
+}
+
+::ng-deep .snackbar-error {
+  --mdc-snackbar-container-color: #dc2626;
+  --mat-snack-bar-button-color: #ffffff;
+}

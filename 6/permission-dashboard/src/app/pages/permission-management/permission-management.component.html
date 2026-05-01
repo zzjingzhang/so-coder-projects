@@ -1,0 +1,227 @@
+<div class="permission-management-container">
+  <div class="page-header">
+    <div class="header-title">
+      <h1>权限管理</h1>
+      <p class="subtitle">配置角色权限，控制系统访问权限</p>
+    </div>
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="exportRoles()">
+        <mat-icon>file_download</mat-icon>
+        导出角色
+      </button>
+      <button mat-raised-button color="accent" (click)="exportPermissions()">
+        <mat-icon>file_download</mat-icon>
+        导出权限
+      </button>
+    </div>
+  </div>
+
+  <div class="page-content">
+    <div class="roles-section" [class.with-selection]="selectedRole">
+      <mat-card class="roles-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>people</mat-icon>
+            角色列表
+          </mat-card-title>
+          <mat-card-subtitle>
+            共 {{filteredRoles.length}} 个角色
+          </mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div class="search-box">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>搜索角色</mat-label>
+              <input matInput [formControl]="searchControl" placeholder="输入角色名称或编码搜索...">
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="roles-table-container" *ngIf="!isLoading; else loading">
+            <table mat-table [dataSource]="filteredRoles" class="roles-table">
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> 角色名称 </th>
+                <td mat-cell *matCellDef="let role" (click)="selectRole(role)">
+                  <div class="role-name-cell">
+                    <mat-icon class="role-icon" [class.system]="role.isSystem">
+                      {{role.isSystem ? 'shield' : 'person'}}
+                    </mat-icon>
+                    <span class="role-name">{{role.name}}</span>
+                    <mat-chip *ngIf="role.isSystem" class="system-chip">系统</mat-chip>
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="code">
+                <th mat-header-cell *matHeaderCellDef> 角色编码 </th>
+                <td mat-cell *matCellDef="let role" (click)="selectRole(role)">
+                  <span class="role-code">{{role.code}}</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef> 描述 </th>
+                <td mat-cell *matCellDef="let role" (click)="selectRole(role)">
+                  <span class="role-description">{{role.description || '-'}}</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="permissionCount">
+                <th mat-header-cell *matHeaderCellDef> 权限数量 </th>
+                <td mat-cell *matCellDef="let role" (click)="selectRole(role)">
+                  <span 
+                    class="count-badge" 
+                    [matBadge]="role.permissionIds.length" 
+                    matBadgeSize="small" 
+                    matBadgeColor="primary"
+                    matBadgePosition="above after"
+                  >
+                    <span class="count-text">{{role.permissionIds.length}}</span>
+                  </span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef> 状态 </th>
+                <td mat-cell *matCellDef="let role" (click)="selectRole(role)">
+                  <span class="status-badge" [ngClass]="getStatusClass(role.status)">
+                    {{getStatusLabel(role.status)}}
+                  </span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="isSystem">
+                <th mat-header-cell *matHeaderCellDef> 类型 </th>
+                <td mat-cell *matCellDef="let role" (click)="selectRole(role)">
+                  <span class="type-text">{{role.isSystem ? '系统角色' : '自定义角色'}}</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> 操作 </th>
+                <td mat-cell *matCellDef="let role">
+                  <button mat-icon-button color="primary" (click)="selectRole(role)" matTooltip="配置权限">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
+                  [class.selected-row]="selectedRole?.id === row.id"></tr>
+            </table>
+          </div>
+
+          <ng-template #loading>
+            <div class="loading-container">
+              <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+              <p>加载中...</p>
+            </div>
+          </ng-template>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="permissions-section" *ngIf="selectedRole; else noSelection">
+      <mat-card class="permissions-card">
+        <mat-card-header>
+          <div class="header-with-actions">
+            <div>
+              <mat-card-title>
+                <mat-icon>lock</mat-icon>
+                权限配置 - {{selectedRole.name}}
+              </mat-card-title>
+              <mat-card-subtitle>
+                已选择 {{getSelectedPermissionsCount()}} / {{getTotalPermissions()}} 项权限
+              </mat-card-subtitle>
+            </div>
+            <div class="card-actions">
+              <button mat-raised-button (click)="clearSelection()">
+                <mat-icon>close</mat-icon>
+                取消选择
+              </button>
+              <button mat-raised-button color="accent" (click)="exportCurrentRolePermissions()">
+                <mat-icon>file_download</mat-icon>
+                导出配置
+              </button>
+              <button mat-raised-button color="primary" (click)="saveRolePermissions()" [disabled]="isLoading">
+                <mat-icon *ngIf="!isLoading">save</mat-icon>
+                <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+                保存配置
+              </button>
+            </div>
+          </div>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div class="permission-search-box">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>搜索权限</mat-label>
+              <input matInput [formControl]="permissionSearchControl" placeholder="输入权限名称、编码或描述搜索...">
+              <mat-icon matSuffix>search</mat-icon>
+              <button mat-icon-button matSuffix *ngIf="permissionFilterKeyword" (click)="permissionSearchControl.setValue('')">
+                <mat-icon>clear</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+
+          <div class="stats-cards">
+            <mat-card class="stat-card">
+              <div class="stat-icon total">
+                <mat-icon>folder_open</mat-icon>
+              </div>
+              <div class="stat-content">
+                <div class="stat-value">{{getTotalPermissions()}}</div>
+                <div class="stat-label">总权限数</div>
+              </div>
+            </mat-card>
+            
+            <mat-card class="stat-card">
+              <div class="stat-icon selected">
+                <mat-icon>check_circle</mat-icon>
+              </div>
+              <div class="stat-content">
+                <div class="stat-value primary">{{getSelectedPermissionsCount()}}</div>
+                <div class="stat-label">已选权限</div>
+              </div>
+            </mat-card>
+            
+            <mat-card class="stat-card">
+              <div class="stat-icon percentage">
+                <mat-icon>pie_chart</mat-icon>
+              </div>
+              <div class="stat-content">
+                <div class="stat-value accent">
+                  {{getTotalPermissions() > 0 ? ((getSelectedPermissionsCount() / getTotalPermissions() * 100) | number: '1.0-0') : 0}}%
+                </div>
+                <div class="stat-label">权限覆盖率</div>
+              </div>
+            </mat-card>
+          </div>
+
+          <app-permission-tree
+            [selectedPermissionIds]="selectedPermissionIds"
+            [filterKeyword]="permissionFilterKeyword"
+            (selectionChange)="onPermissionSelectionChange($event)"
+          ></app-permission-tree>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <ng-template #noSelection>
+      <div class="no-selection-card">
+        <mat-card>
+          <mat-card-content>
+            <div class="no-selection-content">
+              <mat-icon class="no-selection-icon">admin_panel_settings</mat-icon>
+              <h2>选择角色进行权限配置</h2>
+              <p>从左侧角色列表中选择一个角色，即可查看和配置该角色的权限</p>
+              <mat-icon class="arrow-icon">trending_flat</mat-icon>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </ng-template>
+  </div>
+</div>
