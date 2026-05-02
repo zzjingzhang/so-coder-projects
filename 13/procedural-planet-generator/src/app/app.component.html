@@ -1,0 +1,39 @@
+<div class="app-container">
+  <header class="app-header">
+    <div class="header-content">
+      <div class="logo">
+        <span class="logo-icon">🌍</span>
+        <h1 class="app-title">{{ title }}</h1>
+      </div>
+      <div class="header-info">
+        <span class="info-text">使用 Perlin 噪声算法生成独特的行星</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="planet-section">
+      <app-planet-generator
+        [seed]="planetParams.seed"
+        [noiseLevel]="planetParams.noiseLevel"
+        [waterLevel]="planetParams.waterLevel"
+        [octaves]="planetParams.octaves"
+        [persistence]="planetParams.persistence"
+        [lacunarity]="planetParams.lacunarity"
+        [scale]="planetParams.scale"
+      ></app-planet-generator>
+    </div>
+
+    <div class="control-section">
+      <app-control-panel
+        (paramsChange)="onParamsChange($event)"
+      ></app-control-panel>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-content">
+      <p>© 2025 程序性行星生成器 | 基于 Perlin 噪声算法</p>
+    </div>
+  </footer>
+</div>

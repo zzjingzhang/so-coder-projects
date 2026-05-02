@@ -1,0 +1,82 @@
+<div class="config-container">
+  @if (node) {
+    <div class="config-header">
+      <h3 class="config-title">Node Configuration</h3>
+    </div>
+    
+    <div class="node-info">
+      <div class="flex items-center justify-between mb-3">
+        <h4 class="font-semibold text-gray-800">{{ node.label }}</h4>
+        <span 
+          class="px-2 py-1 text-xs font-medium rounded-full"
+          [ngClass]="getNodeTypeColor(node.type)"
+        >
+          {{ getNodeTypeLabel(node.type) }}
+        </span>
+      </div>
+      <div class="text-xs text-gray-500">
+        ID: {{ node.id }}
+      </div>
+    </div>
+
+    <mat-divider class="my-4"></mat-divider>
+
+    <form [formGroup]="configForm" (ngSubmit)="onSubmit()" class="config-form">
+      @for (field of formFields; track field.key) {
+        <mat-form-field appearance="outline" class="w-full mb-4">
+          <mat-label>{{ field.label }}</mat-label>
+          
+          @if (field.type === 'text') {
+            <input 
+              matInput 
+              [formControlName]="field.key"
+              placeholder="Enter {{ field.label | lowercase }}"
+            />
+          } @else if (field.type === 'textarea') {
+            <textarea 
+              matInput 
+              [formControlName]="field.key"
+              placeholder="Enter {{ field.label | lowercase }}"
+              rows="4"
+            ></textarea>
+          } @else if (field.type === 'select') {
+            <mat-select [formControlName]="field.key">
+              @for (option of field.options; track option.value) {
+                <mat-option [value]="option.value">{{ option.label }}</mat-option>
+              }
+            </mat-select>
+          }
+        </mat-form-field>
+      }
+
+      <div class="flex gap-2 mt-4">
+        <button 
+          type="submit" 
+          mat-raised-button 
+          color="primary"
+          class="flex-1"
+          [disabled]="!configForm.valid"
+        >
+          <mat-icon>save</mat-icon>
+          Save Changes
+        </button>
+        <button 
+          type="button" 
+          mat-button 
+          (click)="onReset()"
+          class="flex-1"
+        >
+          <mat-icon>refresh</mat-icon>
+          Reset
+        </button>
+      </div>
+    </form>
+  } @else {
+    <div class="empty-state">
+      <mat-icon class="text-6xl mb-4 text-gray-300">settings</mat-icon>
+      <p class="text-gray-500 text-center">
+        Select a node on the canvas to view and edit its configuration
+      </p>
+    </div>
+  }
+</div>

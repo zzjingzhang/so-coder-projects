@@ -1,0 +1,64 @@
+<div class="editor-container">
+  <mat-toolbar color="primary" class="editor-toolbar">
+    <div class="flex items-center gap-2">
+      <button 
+        mat-icon-button 
+        (click)="createNewWorkflow()"
+        matTooltip="New Pipeline"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+      <button 
+        mat-raised-button 
+        color="accent"
+        (click)="saveWorkflow()"
+      >
+        <mat-icon>save</mat-icon>
+        Save
+      </button>
+      <button 
+        mat-button 
+        (click)="loadWorkflow()"
+      >
+        <mat-icon>folder_open</mat-icon>
+        Load
+      </button>
+    </div>
+    
+    <div class="spacer"></div>
+    
+    <div class="flex items-center">
+      <mat-icon class="mr-2">description</mat-icon>
+      <span class="font-medium">{{ currentWorkflowName || 'Untitled Pipeline' }}</span>
+    </div>
+  </mat-toolbar>
+
+  <div class="editor-content">
+    <div class="palette-panel">
+      <app-node-palette></app-node-palette>
+    </div>
+
+    <div class="canvas-panel">
+      <app-canvas
+        #canvasComponent
+        [nodes]="nodes"
+        [connections]="connections"
+        [selectedNodeId]="selectedNodeId"
+        (nodeAdded)="onNodeAdded($event)"
+        (nodeSelected)="onNodeSelected($event)"
+        (nodeMoved)="onNodeMoved($event)"
+        (nodeDeleted)="onNodeDeleted($event)"
+        (connectionAdded)="onConnectionAdded($event)"
+        (connectionDeleted)="onConnectionDeleted($event)"
+        (canvasClicked)="onCanvasClicked()"
+      ></app-canvas>
+    </div>
+
+    <div class="config-panel">
+      <app-node-config
+        [node]="selectedNode"
+        (nodeUpdated)="onNodeUpdated($event)"
+      ></app-node-config>
+    </div>
+  </div>
+</div>

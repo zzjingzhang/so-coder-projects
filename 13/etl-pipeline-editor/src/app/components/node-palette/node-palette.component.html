@@ -1,0 +1,92 @@
+<div class="palette-container">
+  <h3 class="palette-title">Node Palette</h3>
+  
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="expandedPanels['source']">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon class="source-icon">input</mat-icon>
+          <span>Source Nodes</span>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      
+      <div class="node-list">
+        @for (template of NodeTemplates.source; track template.name) {
+          <div 
+            cdkDrag
+            class="palette-item bg-white rounded-lg shadow-sm border border-gray-200 p-3 mb-2"
+            (cdkDragStarted)="onDragStart($event, 'source', template)"
+          >
+            <div class="flex items-center">
+              <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
+                <mat-icon class="text-white">input</mat-icon>
+              </div>
+              <div>
+                <div class="font-medium text-gray-800">{{ template.label }}</div>
+                <div class="text-xs text-gray-500">Data source</div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="expandedPanels['transform']">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon class="transform-icon">swap_horiz</mat-icon>
+          <span>Transform Nodes</span>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      
+      <div class="node-list">
+        @for (template of NodeTemplates.transform; track template.name) {
+          <div 
+            cdkDrag
+            class="palette-item bg-white rounded-lg shadow-sm border border-gray-200 p-3 mb-2"
+            (cdkDragStarted)="onDragStart($event, 'transform', template)"
+          >
+            <div class="flex items-center">
+              <div class="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center mr-3">
+                <mat-icon class="text-white">swap_horiz</mat-icon>
+              </div>
+              <div>
+                <div class="font-medium text-gray-800">{{ template.label }}</div>
+                <div class="text-xs text-gray-500">Data transform</div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="expandedPanels['sink']">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon class="sink-icon">output</mat-icon>
+          <span>Sink Nodes</span>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      
+      <div class="node-list">
+        @for (template of NodeTemplates.sink; track template.name) {
+          <div 
+            cdkDrag
+            class="palette-item bg-white rounded-lg shadow-sm border border-gray-200 p-3 mb-2"
+            (cdkDragStarted)="onDragStart($event, 'sink', template)"
+          >
+            <div class="flex items-center">
+              <div class="w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center mr-3">
+                <mat-icon class="text-white">output</mat-icon>
+              </div>
+              <div>
+                <div class="font-medium text-gray-800">{{ template.label }}</div>
+                <div class="text-xs text-gray-500">Data destination</div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

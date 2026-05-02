@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: linear-gradient(135deg, #fef3c7 0%, #fce7f3 50%, #e0e7ff 100%);
+  min-height: 100vh;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+.rabbit-bounce {
+  animation: bounce 0.5s ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.stair {
+  transition: all 0.3s ease;
+}
+
+.stair.active {
+  background-color: #fbbf24;
+  transform: scale(1.05);
+}
+
+.rabbit-icon {
+  transition: all 0.3s ease;
+}
+
+.rabbit-jump {
+  animation: rabbitJump 0.5s ease-out;
+}
+
+@keyframes rabbitJump {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-30px) rotate(5deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+.path-card {
+  transition: all 0.3s ease;
+}
+
+.path-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.btn-jump {
+  transition: all 0.2s ease;
+}
+
+.btn-jump:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+.btn-jump:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.confetti {
+  position: absolute;
+  animation: confetti-fall 2s ease-in-out forwards;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(300px) rotate(360deg);
+    opacity: 0;
+  }
+}

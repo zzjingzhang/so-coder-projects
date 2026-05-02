@@ -1,0 +1,80 @@
+<div 
+  #canvasContainer
+  class="canvas-container"
+  (click)="onCanvasClick($event)"
+>
+  <svg 
+    class="absolute inset-0 w-full h-full pointer-events-none"
+    style="z-index: 1;"
+  >
+    <g class="pointer-events-auto">
+      @for (connection of connections; track connection.id) {
+        <path
+          class="connection-line"
+          [attr.d]="getConnectionPath(connection)"
+          (click)="onConnectionClick($event, connection.id)"
+        />
+      }
+      
+      @if (isCreatingConnection) {
+        <path
+          class="connection-line-temp"
+          [attr.d]="getTempConnectionPath()"
+        />
+      }
+    </g>
+  </svg>
+
+  <div style="position: relative; z-index: 2;">
+    @for (node of nodes; track node.id) {
+      <div
+        class="node"
+        [class.selected]="selectedNodeId === node.id"
+        [class]="getNodeColor(node.type)"
+        [style.left.px]="node.x"
+        [style.top.px]="node.y"
+        (mousedown)="onNodeMouseDown($event, node)"
+      >
+        @if (node.inputPort) {
+          <div 
+            class="node-port input"
+            (click)="onPortClick($event, node.id, 'input')"
+          ></div>
+        }
+        
+        <div class="node-header">
+          <span>{{ node.label }}</span>
+          <button 
+            class="text-white hover:text-red-200 transition-colors"
+            (click)="$event.stopPropagation(); deleteNode(node.id)"
+            mat-icon-button
+          >
+            <mat-icon class="text-lg">close</mat-icon>
+          </button>
+        </div>
+        
+        <div class="node-body">
+          <div class="text-xs text-gray-500">
+            {{ node.name }}
+          </div>
+        </div>
+        
+        @if (node.outputPort) {
+          <div 
+            class="node-port output"
+            (click)="onPortClick($event, node.id, 'output')"
+          ></div>
+        }
+      </div>
+    }
+  </div>
+
+  @if (nodes.length === 0) {
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div class="text-center text-gray-400">
+        <mat-icon class="text-6xl mb-4">drag_indicator</mat-icon>
+        <p class="text-lg">Drag nodes from the palette to start building your pipeline</p>
+      </div>
+    </div>
+  }
+</div>

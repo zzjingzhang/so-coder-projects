@@ -1,0 +1,197 @@
+<div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-4 md:p-8">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-gray-800 mb-2">🎨 像素画板</h1>
+      <p class="text-gray-600">创建你的像素艺术作品</p>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-6">
+      <!-- Toolbar -->
+      <div class="lg:w-72 bg-white rounded-2xl shadow-lg p-6">
+        <!-- Current Color -->
+        <div class="mb-6">
+          <label class="block text-sm font-semibold text-gray-700 mb-3">当前颜色</label>
+          <div class="flex items-center gap-4">
+            <div 
+              class="w-16 h-16 rounded-xl border-4 border-gray-200 shadow-inner"
+              [style.background-color]="selectedColor"
+            ></div>
+            <div class="flex-1">
+              <input 
+                type="color" 
+                [(ngModel)]="selectedColor"
+                class="w-full h-10 cursor-pointer rounded-lg border-2 border-gray-200"
+                (change)="selectColor(selectedColor)"
+              />
+              <p class="text-xs text-gray-500 mt-2 text-center font-mono">{{ selectedColor }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Colors -->
+        <div class="mb-6">
+          <label class="block text-sm font-semibold text-gray-700 mb-3">最近使用</label>
+          <div class="grid grid-cols-4 gap-2">
+            @for (color of recentColors; track color) {
+              <button
+                class="w-12 h-12 rounded-lg border-2 border-gray-200 hover:border-gray-400 transition-all hover:scale-105 flex items-center justify-center"
+                [style.background-color]="color"
+                [class.ring-2]="color === selectedColor && !isErasing"
+                [class.ring-indigo-500]="color === selectedColor && !isErasing"
+                (click)="selectColor(color)"
+                [matTooltip]="color"
+              ></button>
+            }
+          </div>
+        </div>
+
+        <!-- Color Palette -->
+        <div class="mb-6">
+          <label class="block text-sm font-semibold text-gray-700 mb-3">颜色面板</label>
+          <div class="grid grid-cols-5 gap-1.5">
+            @for (color of paletteColors; track color) {
+              <button
+                class="w-10 h-10 rounded-md border border-gray-200 hover:border-gray-400 transition-all hover:scale-105"
+                [style.background-color]="color"
+                [class.ring-2]="color === selectedColor && !isErasing"
+                [class.ring-indigo-500]="color === selectedColor && !isErasing"
+                (click)="selectColor(color)"
+                [matTooltip]="color"
+              ></button>
+            }
+          </div>
+        </div>
+
+        <!-- Tools -->
+        <div class="mb-6">
+          <label class="block text-sm font-semibold text-gray-700 mb-3">工具</label>
+          <div class="grid grid-cols-2 gap-3">
+            <button
+              mat-raised-button
+              color="primary"
+              [class.bg-indigo-600]="!isErasing"
+              [class.bg-gray-200]="isErasing"
+              [class.text-white]="!isErasing"
+              [class.text-gray-600]="isErasing"
+              class="flex items-center justify-center gap-2 py-3 font-medium"
+              (click)="isErasing = false"
+            >
+              <mat-icon>brush</mat-icon>
+              <span>画笔</span>
+            </button>
+            <button
+              mat-raised-button
+              [class.bg-indigo-600]="isErasing"
+              [class.bg-gray-200]="!isErasing"
+              [class.text-white]="isErasing"
+              [class.text-gray-600]="!isErasing"
+              class="flex items-center justify-center gap-2 py-3 font-medium"
+              (click)="toggleEraser()"
+            >
+              <mat-icon>delete</mat-icon>
+              <span>橡皮</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="mb-6">
+          <label class="block text-sm font-semibold text-gray-700 mb-3">操作</label>
+          <div class="grid grid-cols-2 gap-3">
+            <button
+              mat-raised-button
+              color="accent"
+              class="flex items-center justify-center gap-2 py-3 font-medium bg-purple-600 hover:bg-purple-700"
+              (click)="fillCanvas()"
+            >
+              <mat-icon>format_color_fill</mat-icon>
+              <span>填充</span>
+            </button>
+            <button
+              mat-raised-button
+              color="warn"
+              class="flex items-center justify-center gap-2 py-3 font-medium"
+              (click)="clearCanvas()"
+            >
+              <mat-icon>restart_alt</mat-icon>
+              <span>清空</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Grid Size -->
+        <div class="mb-6">
+          <label class="block text-sm font-semibold text-gray-700 mb-3">
+            画布尺寸: {{ gridSize }} x {{ gridSize }}
+          </label>
+          <mat-slider
+            class="w-full"
+            [min]="4"
+            [max]="64"
+            [step]="4"
+            [(ngModel)]="gridSize"
+            (input)="resizeGrid()"
+            discrete
+            showTickMarks
+          >
+            <input matSliderThumb>
+          </mat-slider>
+          <div class="flex justify-between text-xs text-gray-500 mt-1">
+            <span>4x4</span>
+            <span>32x32</span>
+            <span>64x64</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Canvas Area -->
+      <div class="flex-1">
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <div class="flex items-center justify-center">
+            <div 
+              #pixelCanvas
+              class="canvas-container border-4 border-gray-300 bg-gray-100 p-1 rounded-lg shadow-inner"
+              [style.width.px]="gridSize * getPixelSize() + 8"
+              [style.height.px]="gridSize * getPixelSize() + 8"
+            >
+              <div 
+                class="grid"
+                [style.gridTemplateColumns]="'repeat(' + gridSize + ', 1fr)'"
+                [style.gridTemplateRows]="'repeat(' + gridSize + ', 1fr)'"
+              >
+                @for (row of pixels; track row; let rowIndex = $index) {
+                  @for (pixel of row; track pixel; let colIndex = $index) {
+                    <div
+                      class="pixel-cell cursor-crosshair border border-gray-200 transition-all"
+                      [style.width.px]="getPixelSize()"
+                      [style.height.px]="getPixelSize()"
+                      [style.backgroundColor]="pixel"
+                      [style.border]="gridSize > 32 ? 'none' : '1px solid rgba(0,0,0,0.1)'"
+                      (mousedown)="onMouseDown(rowIndex, colIndex, $event)"
+                      (mouseenter)="onMouseEnter(rowIndex, colIndex)"
+                      [matTooltip]="'(' + rowIndex + ', ' + colIndex + '): ' + pixel"
+                      matTooltipPosition="above"
+                    ></div>
+                  }
+                }
+              </div>
+            </div>
+          </div>
+          
+          <!-- Instructions -->
+          <div class="mt-6 p-4 bg-gray-50 rounded-xl">
+            <h3 class="font-semibold text-gray-700 mb-2">📖 使用说明</h3>
+            <ul class="text-sm text-gray-600 space-y-1">
+              <li>• 点击并拖动鼠标来绘制像素</li>
+              <li>• 点击颜色面板选择颜色，或使用颜色选择器</li>
+              <li>• 点击橡皮工具切换到擦除模式</li>
+              <li>• 使用滑块调整画布尺寸 (4x4 到 64x64)</li>
+              <li>• 填充按钮会用当前颜色填满整个画布</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

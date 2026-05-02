@@ -1,0 +1,66 @@
+.editor-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.editor-toolbar {
+  height: 56px;
+  min-height: 56px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.editor-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.palette-panel {
+  width: 280px;
+  min-width: 280px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.canvas-panel {
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+}
+
+.config-panel {
+  width: 320px;
+  min-width: 320px;
+  height: 100%;
+  overflow: hidden;
+}
+
+::ng-deep .mat-mdc-raised-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+}
+
+::ng-deep .mat-mdc-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+}
+
+::ng-deep .mat-mdc-icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,18 @@
+<div class="planet-container relative flex items-center justify-center h-full">
+  <canvas 
+    #planetCanvas 
+    width="800" 
+    height="800"
+    class="planet-canvas max-w-full max-h-full"
+  ></canvas>
+  
+  <div class="minimap-container absolute bottom-4 right-4 bg-space-blue/80 rounded-lg p-2 backdrop-blur-sm border border-white/10">
+    <div class="text-white/70 text-xs mb-1 text-center">地形图预览</div>
+    <canvas 
+      #miniMapCanvas 
+      width="150" 
+      height="75"
+      class="minimap rounded"
+    ></canvas>
+  </div>
+</div>

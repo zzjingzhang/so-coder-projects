@@ -1,0 +1,22 @@
+.app-toolbar {
+  height: 64px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar-title {
+  margin-left: 12px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.app-container {
+  height: calc(100vh - 64px);
+  overflow: hidden;
+}
