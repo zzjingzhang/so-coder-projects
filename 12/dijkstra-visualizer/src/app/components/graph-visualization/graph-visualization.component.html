@@ -1,0 +1,91 @@
+<div class="graph-container bg-white rounded-lg shadow-lg p-6">
+  <svg [attr.width]="svgWidth" [attr.height]="svgHeight" class="border border-gray-200 rounded-lg">
+    <defs>
+      <marker
+        id="arrowhead"
+        markerWidth="10"
+        markerHeight="7"
+        refX="9"
+        refY="3.5"
+        orient="auto"
+      >
+        <polygon points="0 0, 10 3.5, 0 7" fill="#999" />
+      </marker>
+    </defs>
+
+    <g *ngFor="let edge of edges">
+      <line
+        [attr.x1]="getNodeById(edge.from)?.x"
+        [attr.y1]="getNodeById(edge.from)?.y"
+        [attr.x2]="getNodeById(edge.to)?.x"
+        [attr.y2]="getNodeById(edge.to)?.y"
+        [attr.stroke]="getEdgeColor(edge)"
+        [attr.stroke-width]="getEdgeWidth(edge)"
+        [attr.opacity]="getEdgeOpacity(edge)"
+        class="transition-all duration-500 ease-in-out"
+      />
+      <text
+        [attr.x]="getEdgeMidpoint(edge).x"
+        [attr.y]="getEdgeMidpoint(edge).y - 8"
+        text-anchor="middle"
+        class="text-sm font-bold fill-gray-700"
+      >
+        {{ edge.weight }}
+      </text>
+    </g>
+
+    <g *ngFor="let node of nodes" class="transition-all duration-500 ease-in-out">
+      <circle
+        [attr.cx]="node.x"
+        [attr.cy]="node.y"
+        [attr.r]="nodeRadius"
+        [attr.fill]="getNodeColor(node)"
+        [attr.stroke]="getNodeStroke(node)"
+        [attr.stroke-width]="currentStep?.currentNode === node.id ? 3 : 2"
+        class="transition-all duration-500 ease-in-out"
+        [class.animate-pulse]="currentStep?.currentNode === node.id"
+      />
+      <text
+        [attr.x]="node.x"
+        [attr.y]="node.y - 5"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        class="text-lg font-bold fill-gray-800 pointer-events-none"
+      >
+        {{ node.label }}
+      </text>
+      <text
+        [attr.x]="node.x"
+        [attr.y]="node.y + 12"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        class="text-xs font-medium fill-gray-600 pointer-events-none"
+      >
+        {{ getNodeDistance(node) }}
+      </text>
+    </g>
+  </svg>
+
+  <div class="mt-4 flex flex-wrap gap-4 justify-center">
+    <div class="flex items-center gap-2">
+      <div class="w-4 h-4 rounded-full" style="background-color: #45B7D1;"></div>
+      <span class="text-sm text-gray-600">起始节点</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="w-4 h-4 rounded-full" style="background-color: #96CEB4;"></div>
+      <span class="text-sm text-gray-600">目标节点</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="w-4 h-4 rounded-full" style="background-color: #FF6B6B;"></div>
+      <span class="text-sm text-gray-600">当前处理节点</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="w-4 h-4 rounded-full" style="background-color: #4ECDC4;"></div>
+      <span class="text-sm text-gray-600">已访问节点</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="w-4 h-4 rounded-full" style="background-color: #F0E68C;"></div>
+      <span class="text-sm text-gray-600">未访问节点</span>
+    </div>
+  </div>
+</div>

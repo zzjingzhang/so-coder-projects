@@ -1,0 +1,63 @@
+<nz-layout class="app-layout">
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="220" nzTheme="dark">
+    <div class="logo">
+      <div class="logo-icon" nz-typography>
+        <i nz-icon nzType="project" nzTheme="fill"></i>
+      </div>
+      <span *ngIf="!isCollapsed" class="logo-text">TaskFlow</span>
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzSelectedKeys]="[selectedMenu]">
+      <li
+        nz-menu-item
+        *ngFor="let menu of menus"
+        [nzSelected]="selectedMenu === menu.key"
+        [routerLink]="menu.path"
+        (click)="selectedMenu = menu.key"
+      >
+        <i nz-icon [nzType]="menu.icon" nzTheme="outline"></i>
+        <span>{{ menu.label }}</span>
+      </li>
+    </ul>
+  </nz-sider>
+
+  <nz-layout>
+    <nz-header class="app-header">
+      <div class="flex items-center justify-between h-full">
+        <button nz-button nzType="text" (click)="toggleCollapsed()">
+          <i nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" nzTheme="outline"></i>
+        </button>
+        <div class="flex items-center gap-4">
+          <nz-badge [nzCount]="3" nzSize="small">
+            <button nz-button nzType="text">
+              <i nz-icon nzType="bell" nzTheme="outline" class="text-lg"></i>
+            </button>
+          </nz-badge>
+          <nz-dropdown>
+            <div class="flex items-center cursor-pointer">
+              <nz-avatar nzSize="default" nzStyle="backgroundColor: #f56a00">
+                <i nz-icon nzType="user" nzTheme="outline"></i>
+              </nz-avatar>
+              <span class="ml-2 text-gray-700">管理员</span>
+            </div>
+            <ul nz-menu>
+              <li nz-menu-item>
+                <i nz-icon nzType="user" nzTheme="outline" class="mr-2"></i>个人信息
+              </li>
+              <li nz-menu-item>
+                <i nz-icon nzType="setting" nzTheme="outline" class="mr-2"></i>设置
+              </li>
+              <li nz-menu-divider></li>
+              <li nz-menu-item nzDanger>
+                <i nz-icon nzType="logout" nzTheme="outline" class="mr-2"></i>退出登录
+              </li>
+            </ul>
+          </nz-dropdown>
+        </div>
+      </div>
+    </nz-header>
+
+    <nz-content class="app-content">
+      <router-outlet></router-outlet>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

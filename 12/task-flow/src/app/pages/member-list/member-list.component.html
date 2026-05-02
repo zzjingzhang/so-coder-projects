@@ -1,0 +1,177 @@
+<nz-spin [nzSpinning]="loading">
+  <div class="member-list-container">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-2">成员管理</h2>
+        <p class="text-gray-500">管理团队成员</p>
+      </div>
+      <button nz-button nzType="primary" (click)="openCreateModal()">
+        <i nz-icon nzType="plus" nzTheme="outline"></i>
+        <span class="ml-1">添加成员</span>
+      </button>
+    </div>
+
+    <nz-card>
+      <nz-table [nzData]="members" [nzPageSize]="10" nzBordered>
+        <thead>
+          <tr>
+            <th>成员</th>
+            <th>邮箱</th>
+            <th>角色</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let member of members">
+            <td>
+              <div class="flex items-center">
+                <nz-avatar
+                  [nzSize]="'default'"
+                  [nzStyle]="{ backgroundColor: member.color }"
+                  class="mr-3"
+                >
+                  {{ member.name.charAt(0) }}
+                </nz-avatar>
+                <span class="font-medium">{{ member.name }}</span>
+              </div>
+            </td>
+            <td>{{ member.email }}</td>
+            <td>
+              <nz-tag [nzColor]="getRoleTagColor(member.role)">
+                {{ MEMBER_ROLE_LABELS[member.role] }}
+              </nz-tag>
+            </td>
+            <td>
+              <button nz-button nzType="link" (click)="openEditModal(member)">
+                <i nz-icon nzType="edit" nzTheme="outline"></i>
+                编辑
+              </button>
+              <button nz-button nzType="link" nzDanger (click)="confirmDelete(member)">
+                <i nz-icon nzType="delete" nzTheme="outline"></i>
+                删除
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-card>
+  </div>
+</nz-spin>
+
+<nz-modal
+  [(nzVisible)]="isCreateModalVisible"
+  nzTitle="添加成员"
+  nzWidth="500"
+  (nzOnCancel)="handleCreateCancel()"
+  (nzOnOk)="handleCreateOk()"
+>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzRequired>姓名</nz-form-label>
+    <nz-form-control [nzSpan]="18">
+      <input
+        nz-input
+        [(ngModel)]="memberForm.name"
+        placeholder="请输入成员姓名"
+        maxlength="20"
+      />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzRequired>邮箱</nz-form-label>
+    <nz-form-control [nzSpan]="18">
+      <input
+        nz-input
+        [(ngModel)]="memberForm.email"
+        placeholder="请输入邮箱地址"
+        type="email"
+        maxlength="100"
+      />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">角色</nz-form-label>
+    <nz-form-control [nzSpan]="18">
+      <nz-select [(ngModel)]="memberForm.role" style="width: 100%">
+        <nz-option [nzLabel]="MEMBER_ROLE_LABELS['admin']" [nzValue]="'admin'"></nz-option>
+        <nz-option [nzLabel]="MEMBER_ROLE_LABELS['member']" [nzValue]="'member'"></nz-option>
+        <nz-option [nzLabel]="MEMBER_ROLE_LABELS['guest']" [nzValue]="'guest'"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">头像颜色</nz-form-label>
+    <nz-form-control [nzSpan]="18">
+      <div class="flex flex-wrap gap-2">
+        <div
+          *ngFor="let color of AVATAR_COLORS"
+          class="w-10 h-10 rounded-full cursor-pointer border-2"
+          [style.backgroundColor]="color"
+          [style.borderColor]="memberForm.color === color ? '#000' : 'transparent'"
+          (click)="memberForm.color = color"
+        ></div>
+      </div>
+    </nz-form-control>
+  </nz-form-item>
+</nz-modal>
+
+<nz-modal
+  [(nzVisible)]="isEditModalVisible"
+  nzTitle="编辑成员"
+  nzWidth="500"
+  (nzOnCancel)="handleEditCancel()"
+  (nzOnOk)="handleEditOk()"
+>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzRequired>姓名</nz-form-label>
+    <nz-form-control [nzSpan]="18">
+      <input
+        nz-input
+        [(ngModel)]="memberForm.name"
+        placeholder="请输入成员姓名"
+        maxlength="20"
+      />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzRequired>邮箱</nz-form-label>
+    <nz-form-control [nzSpan]="18">
+      <input
+        nz-input
+        [(ngModel)]="memberForm.email"
+        placeholder="请输入邮箱地址"
+        type="email"
+        maxlength="100"
+      />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">角色</nz-form-label>
+    <nz-form-control [nzSpan]="18">
+      <nz-select [(ngModel)]="memberForm.role" style="width: 100%">
+        <nz-option [nzLabel]="MEMBER_ROLE_LABELS['admin']" [nzValue]="'admin'"></nz-option>
+        <nz-option [nzLabel]="MEMBER_ROLE_LABELS['member']" [nzValue]="'member'"></nz-option>
+        <nz-option [nzLabel]="MEMBER_ROLE_LABELS['guest']" [nzValue]="'guest'"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">头像颜色</nz-form-label>
+    <nz-form-control [nzSpan]="18">
+      <div class="flex flex-wrap gap-2">
+        <div
+          *ngFor="let color of AVATAR_COLORS"
+          class="w-10 h-10 rounded-full cursor-pointer border-2"
+          [style.backgroundColor]="color"
+          [style.borderColor]="memberForm.color === color ? '#000' : 'transparent'"
+          (click)="memberForm.color = color"
+        ></div>
+      </div>
+    </nz-form-control>
+  </nz-form-item>
+</nz-modal>

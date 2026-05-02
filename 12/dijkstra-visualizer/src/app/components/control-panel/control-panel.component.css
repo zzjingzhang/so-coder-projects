@@ -1,0 +1,26 @@
+.control-panel {
+  min-width: 300px;
+}
+
+button {
+  transition: all 0.3s ease;
+}
+
+button:hover:not([disabled]) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+button:active:not([disabled]) {
+  transform: translateY(0);
+}
+
+[nz-button] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+nz-slider {
+  margin: 0 10px;
+}

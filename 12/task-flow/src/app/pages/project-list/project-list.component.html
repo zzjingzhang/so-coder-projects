@@ -1,0 +1,130 @@
+<nz-spin [nzSpinning]="loading">
+  <div class="project-list-container">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-2">项目列表</h2>
+        <p class="text-gray-500">管理所有项目</p>
+      </div>
+      <button nz-button nzType="primary" (click)="openCreateModal()">
+        <i nz-icon nzType="plus" nzTheme="outline"></i>
+        <span class="ml-1">新建项目</span>
+      </button>
+    </div>
+
+    <nz-empty *ngIf="projects.length === 0 && !loading" nzNotFoundContent="暂无项目，点击上方按钮创建">
+    </nz-empty>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" *ngIf="projects.length > 0">
+      <nz-card
+        *ngFor="let project of projects"
+        class="task-card h-full"
+        [nzActions]="[
+          <span nz-tooltip nzTooltipTitle='查看详情' (click)='void'>
+            <i nz-icon nzType='eye' nzTheme='outline'></i>
+          </span>,
+          <span nz-tooltip nzTooltipTitle='删除项目' (click)='confirmDelete(project)'>
+            <i nz-icon nzType='delete' nzTheme='outline' class='text-red-500'></i>
+          </span>
+        ]"
+      >
+        <div class="cursor-pointer" [routerLink]="['/projects', project.id]">
+          <div class="flex items-center mb-4">
+            <div
+              class="w-12 h-12 rounded-lg flex items-center justify-center text-white text-xl font-semibold"
+              [style.backgroundColor]="project.color"
+            >
+              {{ project.name.charAt(0) }}
+            </div>
+            <div class="ml-4">
+              <h3 class="text-lg font-semibold text-gray-800 m-0">{{ project.name }}</h3>
+              <p class="text-gray-400 text-sm m-0">{{ project.memberIds.length }} 位成员</p>
+            </div>
+          </div>
+
+          <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ project.description }}</p>
+
+          <div class="mb-4">
+            <div class="flex justify-between mb-1 text-sm">
+              <span class="text-gray-500">任务进度</span>
+              <span class="text-gray-700">{{ getTaskCount(project.id).done }}/{{ getTaskCount(project.id).total }}</span>
+            </div>
+            <nz-progress
+              [nzPercent]="getTaskCount(project.id).total > 0 ? (getTaskCount(project.id).done / getTaskCount(project.id).total) * 100 : 0"
+              [nzStrokeWidth]="8"
+              [nzShowInfo]="false"
+            ></nz-progress>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <div class="flex -space-x-2">
+              <nz-avatar
+                *ngFor="let memberId of project.memberIds.slice(0, 4)"
+                [nzSize]="'small'"
+                [nzStyle]="{ backgroundColor: getMemberById(memberId)?.color, border: '2px solid white' }"
+              >
+                {{ getMemberById(memberId)?.name.charAt(0) }}
+              </nz-avatar>
+              <div
+                *ngIf="project.memberIds.length > 4"
+                class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-xs text-gray-600 border-2 border-white"
+              >
+                +{{ project.memberIds.length - 4 }}
+              </div>
+            </div>
+            <span class="text-gray-400 text-xs">
+              {{ project.createdAt | date: 'yyyy-MM-dd' }}
+            </span>
+          </div>
+        </div>
+      </nz-card>
+    </div>
+  </div>
+</nz-spin>
+
+<nz-modal
+  [(nzVisible)]="isCreateModalVisible"
+  nzTitle="新建项目"
+  nzWidth="500"
+  (nzOnCancel)="handleCreateCancel()"
+  (nzOnOk)="handleCreateOk()"
+>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzRequired>项目名称</nz-form-label>
+    <nz-form-control [nzSpan]="18">
+      <input
+        nz-input
+        [(ngModel)]="newProject.name"
+        placeholder="请输入项目名称"
+        maxlength="50"
+      />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">项目描述</nz-form-label>
+    <nz-form-control [nzSpan]="18">
+      <textarea
+        nz-input
+        [(ngModel)]="newProject.description"
+        placeholder="请输入项目描述（选填）"
+        rows="3"
+        maxlength="200"
+      ></textarea>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">项目颜色</nz-form-label>
+    <nz-form-control [nzSpan]="18">
+      <div class="flex flex-wrap gap-2">
+        <div
+          *ngFor="let color of ['#1890ff', '#52c41a', '#faad14', '#ff4d4f', '#722ed1', '#13c2c2', '#eb2f96', '#fa8c16']"
+          class="w-10 h-10 rounded-lg cursor-pointer border-2"
+          [style.backgroundColor]="color"
+          [style.borderColor]="newProject.color === color ? '#000' : 'transparent'"
+          (click)="newProject.color = color"
+        ></div>
+      </div>
+    </nz-form-control>
+  </nz-form-item>
+</nz-modal>

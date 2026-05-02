@@ -1,0 +1,443 @@
+<nz-spin [nzSpinning]="loading">
+  <div class="project-detail-container" *ngIf="project">
+    <div class="project-header mb-6">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <button nz-button nzType="text" (click)="goBack()" class="mr-4">
+            <i nz-icon nzType="arrow-left" nzTheme="outline"></i>
+          </button>
+          <div
+            class="w-12 h-12 rounded-lg flex items-center justify-center text-white text-xl font-semibold"
+            [style.backgroundColor]="project.color"
+          >
+            {{ project.name.charAt(0) }}
+          </div>
+          <div class="ml-4">
+            <h2 class="text-2xl font-semibold text-gray-800 m-0">{{ project.name }}</h2>
+            <p class="text-gray-500 text-sm m-0 mt-1">{{ project.description }}</p>
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <button nz-button (click)="openEditProjectModal()">
+            <i nz-icon nzType="edit" nzTheme="outline"></i>
+            <span class="ml-1">编辑</span>
+          </button>
+          <button nz-button nzType="primary" (click)="openCreateTaskModal()">
+            <i nz-icon nzType="plus" nzTheme="outline"></i>
+            <span class="ml-1">新建任务</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <nz-row [nzGutter]="[16, 16]">
+      <nz-col [nzSpan]="24" [nzLg]="6">
+        <nz-card nzTitle="项目成员" [nzExtra]="extraTemplate">
+          <div class="space-y-3">
+            <div *ngFor="let member of getProjectMembers()" class="flex items-center justify-between">
+              <div class="flex items-center">
+                <nz-avatar
+                  [nzSize]="'small'"
+                  [nzStyle]="{ backgroundColor: member.color }"
+                >
+                  {{ member.name.charAt(0) }}
+                </nz-avatar>
+                <div class="ml-2">
+                  <div class="text-sm font-medium text-gray-800">{{ member.name }}</div>
+                  <div class="text-xs text-gray-400">{{ member.email }}</div>
+                </div>
+              </div>
+              <button
+                nz-button
+                nzType="text"
+                nzSize="small"
+                nzDanger
+                (click)="removeMemberFromProject(member.id)"
+              >
+                <i nz-icon nzType="close" nzTheme="outline"></i>
+              </button>
+            </div>
+            <nz-empty
+              *ngIf="getProjectMembers().length === 0"
+              nzNotFoundContent="暂无成员"
+              class="py-4"
+            ></nz-empty>
+          </div>
+        </nz-card>
+      </nz-col>
+
+      <nz-col [nzSpan]="24" [nzLg]="18">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="task-column">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center">
+                <span class="w-2 h-2 rounded-full bg-yellow-500 mr-2"></span>
+                <span class="font-medium text-gray-700">待办</span>
+                <nz-badge [nzCount]="getTasksByStatus('todo').length" class="ml-2"></nz-badge>
+              </div>
+            </div>
+            <div class="space-y-3">
+              <div
+                *ngFor="let task of getTasksByStatus('todo')"
+                class="task-card bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-all"
+              >
+                <div class="flex items-start justify-between mb-2">
+                  <h4 class="font-medium text-gray-800 m-0 flex-1">{{ task.title }}</h4>
+                  <nz-dropdown>
+                    <a nz-dropdown nz-tooltip nzTooltipTitle="更多操作">
+                      <i nz-icon nzType="ellipsis" nzTheme="outline"></i>
+                    </a>
+                    <ul nz-menu>
+                      <li nz-menu-item (click)="openEditTaskModal(task)">
+                        <i nz-icon nzType="edit" nzTheme="outline" class="mr-2"></i>编辑
+                      </li>
+                      <li nz-menu-item (click)="updateTaskStatus(task, 'in_progress')">
+                        <i nz-icon nzType="play-circle" nzTheme="outline" class="mr-2"></i>开始
+                      </li>
+                      <li nz-menu-item nzDanger (click)="confirmDeleteTask(task)">
+                        <i nz-icon nzType="delete" nzTheme="outline" class="mr-2"></i>删除
+                      </li>
+                    </ul>
+                  </nz-dropdown>
+                </div>
+
+                <p *ngIf="task.description" class="text-gray-500 text-sm mb-3 line-clamp-2">
+                  {{ task.description }}
+                </p>
+
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <nz-tag
+                      [nzColor]="getPriorityColor(task.priority)"
+                      nzSize="small"
+                    >
+                      {{ TASK_PRIORITY_LABELS[task.priority] }}
+                    </nz-tag>
+                    <span *ngIf="task.dueDate" class="text-gray-400 text-xs">
+                      <i nz-icon nzType="calendar" nzTheme="outline" class="mr-1"></i>
+                      {{ task.dueDate | date: 'MM-dd' }}
+                    </span>
+                  </div>
+                  <div *ngIf="getMemberById(task.assigneeId)">
+                    <nz-avatar
+                      [nzSize]="'small'"
+                      [nzStyle]="{ backgroundColor: getMemberById(task.assigneeId)?.color }"
+                      nz-tooltip
+                      [nzTooltipTitle]="getMemberById(task.assigneeId)?.name"
+                    >
+                      {{ getMemberById(task.assigneeId)?.name.charAt(0) }}
+                    </nz-avatar>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="task-column">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center">
+                <span class="w-2 h-2 rounded-full bg-blue-500 mr-2"></span>
+                <span class="font-medium text-gray-700">进行中</span>
+                <nz-badge [nzCount]="getTasksByStatus('in_progress').length" class="ml-2"></nz-badge>
+              </div>
+            </div>
+            <div class="space-y-3">
+              <div
+                *ngFor="let task of getTasksByStatus('in_progress')"
+                class="task-card bg-white rounded-lg border border-blue-200 p-4 hover:shadow-md transition-all bg-blue-50"
+              >
+                <div class="flex items-start justify-between mb-2">
+                  <h4 class="font-medium text-gray-800 m-0 flex-1">{{ task.title }}</h4>
+                  <nz-dropdown>
+                    <a nz-dropdown nz-tooltip nzTooltipTitle="更多操作">
+                      <i nz-icon nzType="ellipsis" nzTheme="outline"></i>
+                    </a>
+                    <ul nz-menu>
+                      <li nz-menu-item (click)="openEditTaskModal(task)">
+                        <i nz-icon nzType="edit" nzTheme="outline" class="mr-2"></i>编辑
+                      </li>
+                      <li nz-menu-item (click)="updateTaskStatus(task, 'todo')">
+                        <i nz-icon nzType="pause" nzTheme="outline" class="mr-2"></i>暂停
+                      </li>
+                      <li nz-menu-item (click)="updateTaskStatus(task, 'done')">
+                        <i nz-icon nzType="check" nzTheme="outline" class="mr-2"></i>完成
+                      </li>
+                      <li nz-menu-item nzDanger (click)="confirmDeleteTask(task)">
+                        <i nz-icon nzType="delete" nzTheme="outline" class="mr-2"></i>删除
+                      </li>
+                    </ul>
+                  </nz-dropdown>
+                </div>
+
+                <p *ngIf="task.description" class="text-gray-500 text-sm mb-3 line-clamp-2">
+                  {{ task.description }}
+                </p>
+
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <nz-tag
+                      [nzColor]="getPriorityColor(task.priority)"
+                      nzSize="small"
+                    >
+                      {{ TASK_PRIORITY_LABELS[task.priority] }}
+                    </nz-tag>
+                    <span *ngIf="task.dueDate" class="text-gray-400 text-xs">
+                      <i nz-icon nzType="calendar" nzTheme="outline" class="mr-1"></i>
+                      {{ task.dueDate | date: 'MM-dd' }}
+                    </span>
+                  </div>
+                  <div *ngIf="getMemberById(task.assigneeId)">
+                    <nz-avatar
+                      [nzSize]="'small'"
+                      [nzStyle]="{ backgroundColor: getMemberById(task.assigneeId)?.color }"
+                      nz-tooltip
+                      [nzTooltipTitle]="getMemberById(task.assigneeId)?.name"
+                    >
+                      {{ getMemberById(task.assigneeId)?.name.charAt(0) }}
+                    </nz-avatar>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="task-column">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center">
+                <span class="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                <span class="font-medium text-gray-700">已完成</span>
+                <nz-badge [nzCount]="getTasksByStatus('done').length" class="ml-2"></nz-badge>
+              </div>
+            </div>
+            <div class="space-y-3">
+              <div
+                *ngFor="let task of getTasksByStatus('done')"
+                class="task-card bg-white rounded-lg border border-green-200 p-4 hover:shadow-md transition-all opacity-75"
+              >
+                <div class="flex items-start justify-between mb-2">
+                  <h4 class="font-medium text-gray-500 m-0 flex-1 line-through">{{ task.title }}</h4>
+                  <nz-dropdown>
+                    <a nz-dropdown nz-tooltip nzTooltipTitle="更多操作">
+                      <i nz-icon nzType="ellipsis" nzTheme="outline"></i>
+                    </a>
+                    <ul nz-menu>
+                      <li nz-menu-item (click)="openEditTaskModal(task)">
+                        <i nz-icon nzType="edit" nzTheme="outline" class="mr-2"></i>编辑
+                      </li>
+                      <li nz-menu-item (click)="updateTaskStatus(task, 'in_progress')">
+                        <i nz-icon nzType="undo" nzTheme="outline" class="mr-2"></i>重新开始
+                      </li>
+                      <li nz-menu-item nzDanger (click)="confirmDeleteTask(task)">
+                        <i nz-icon nzType="delete" nzTheme="outline" class="mr-2"></i>删除
+                      </li>
+                    </ul>
+                  </nz-dropdown>
+                </div>
+
+                <p *ngIf="task.description" class="text-gray-400 text-sm mb-3 line-clamp-2">
+                  {{ task.description }}
+                </p>
+
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <nz-tag
+                      [nzColor]="getPriorityColor(task.priority)"
+                      nzSize="small"
+                    >
+                      {{ TASK_PRIORITY_LABELS[task.priority] }}
+                    </nz-tag>
+                  </div>
+                  <div *ngIf="getMemberById(task.assigneeId)">
+                    <nz-avatar
+                      [nzSize]="'small'"
+                      [nzStyle]="{ backgroundColor: getMemberById(task.assigneeId)?.color }"
+                      nz-tooltip
+                      [nzTooltipTitle]="getMemberById(task.assigneeId)?.name"
+                    >
+                      {{ getMemberById(task.assigneeId)?.name.charAt(0) }}
+                    </nz-avatar>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nz-col>
+    </nz-row>
+  </div>
+</nz-spin>
+
+<ng-template #extraTemplate>
+  <button nz-button nzSize="small" nzType="primary" nzGhost (click)="openAddMemberModal()">
+    <i nz-icon nzType="plus" nzTheme="outline"></i>
+    <span class="ml-1">添加</span>
+  </button>
+</ng-template>
+
+<nz-modal
+  [(nzVisible)]="isTaskModalVisible"
+  [nzTitle]="isCreating ? '新建任务' : '编辑任务'"
+  nzWidth="600"
+  (nzOnCancel)="handleTaskModalCancel()"
+  (nzOnOk)="handleTaskModalOk()"
+>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzRequired>任务标题</nz-form-label>
+    <nz-form-control [nzSpan]="18">
+      <input
+        nz-input
+        [(ngModel)]="taskForm.title"
+        placeholder="请输入任务标题"
+        maxlength="100"
+      />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">任务描述</nz-form-label>
+    <nz-form-control [nzSpan]="18">
+      <textarea
+        nz-input
+        [(ngModel)]="taskForm.description"
+        placeholder="请输入任务描述（选填）"
+        rows="3"
+        maxlength="500"
+      ></textarea>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-row [nzGutter]="16">
+    <nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="12">状态</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <nz-select [(ngModel)]="taskForm.status" style="width: 100%">
+            <nz-option [nzLabel]="TASK_STATUS_LABELS['todo']" [nzValue]="'todo'"></nz-option>
+            <nz-option [nzLabel]="TASK_STATUS_LABELS['in_progress']" [nzValue]="'in_progress'"></nz-option>
+            <nz-option [nzLabel]="TASK_STATUS_LABELS['done']" [nzValue]="'done'"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="12">优先级</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <nz-select [(ngModel)]="taskForm.priority" style="width: 100%">
+            <nz-option [nzLabel]="TASK_PRIORITY_LABELS['low']" [nzValue]="'low'"></nz-option>
+            <nz-option [nzLabel]="TASK_PRIORITY_LABELS['medium']" [nzValue]="'medium'"></nz-option>
+            <nz-option [nzLabel]="TASK_PRIORITY_LABELS['high']" [nzValue]="'high'"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+
+  <nz-row [nzGutter]="16">
+    <nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="12">分配给</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <nz-select
+            [(ngModel)]="taskForm.assigneeId"
+            style="width: 100%"
+            nzAllowClear
+            nzPlaceHolder="选择成员"
+          >
+            <nz-option *ngFor="let member of getProjectMembers()" [nzLabel]="member.name" [nzValue]="member.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="12">截止日期</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <nz-date-picker
+            [(ngModel)]="taskForm.dueDate"
+            style="width: 100%"
+            nzAllowClear
+          ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+</nz-modal>
+
+<nz-modal
+  [(nzVisible)]="isMemberModalVisible"
+  nzTitle="添加成员"
+  nzWidth="500"
+  (nzOnCancel)="handleMemberModalCancel()"
+  (nzOnOk)="handleMemberModalOk()"
+>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzRequired>选择成员</nz-form-label>
+    <nz-form-control [nzSpan]="18">
+      <nz-select
+        [(ngModel)]="selectedMemberId"
+        style="width: 100%"
+        nzPlaceHolder="请选择要添加的成员"
+      >
+        <nz-option
+          *ngFor="let member of getAvailableMembers()"
+          [nzLabel]="member.name"
+          [nzValue]="member.id"
+        ></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-empty
+    *ngIf="getAvailableMembers().length === 0"
+    nzNotFoundContent="暂无可用成员，所有成员都已添加到项目中"
+  ></nz-empty>
+</nz-modal>
+
+<nz-modal
+  [(nzVisible)]="isEditProjectModalVisible"
+  nzTitle="编辑项目"
+  nzWidth="500"
+  (nzOnCancel)="handleEditProjectModalCancel()"
+  (nzOnOk)="handleEditProjectModalOk()"
+>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzRequired>项目名称</nz-form-label>
+    <nz-form-control [nzSpan]="18">
+      <input
+        nz-input
+        [(ngModel)]="editProjectForm.name"
+        placeholder="请输入项目名称"
+        maxlength="50"
+      />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">项目描述</nz-form-label>
+    <nz-form-control [nzSpan]="18">
+      <textarea
+        nz-input
+        [(ngModel)]="editProjectForm.description"
+        placeholder="请输入项目描述（选填）"
+        rows="3"
+        maxlength="200"
+      ></textarea>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">项目颜色</nz-form-label>
+    <nz-form-control [nzSpan]="18">
+      <div class="flex flex-wrap gap-2">
+        <div
+          *ngFor="let color of ['#1890ff', '#52c41a', '#faad14', '#ff4d4f', '#722ed1', '#13c2c2', '#eb2f96', '#fa8c16']"
+          class="w-10 h-10 rounded-lg cursor-pointer border-2"
+          [style.backgroundColor]="color"
+          [style.borderColor]="editProjectForm.color === color ? '#000' : 'transparent'"
+          (click)="editProjectForm.color = color"
+        ></div>
+      </div>
+    </nz-form-control>
+  </nz-form-item>
+</nz-modal>

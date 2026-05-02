@@ -1,0 +1,103 @@
+<div class="visualizer-container min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+  <header class="header bg-white shadow-md py-6 px-4">
+    <div class="max-w-7xl mx-auto">
+      <h1 class="text-3xl font-bold text-center bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+        Dijkstra 最短路径算法可视化
+      </h1>
+      <p class="text-center text-gray-600 mt-2">
+        实时观察算法的执行过程，理解最短路径是如何计算的
+      </p>
+    </div>
+  </header>
+
+  <main class="main-content max-w-7xl mx-auto py-8 px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2">
+        <app-graph-visualization
+          [nodes]="graph.nodes"
+          [edges]="graph.edges"
+          [currentStep]="currentStep"
+        ></app-graph-visualization>
+
+        <div class="step-info bg-white rounded-lg shadow-lg p-6 mt-6" *ngIf="currentStep">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-gray-800">
+              步骤 {{ currentStep.stepNumber }}
+            </h3>
+            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+              {{ currentStep.currentNode ? '处理中' : '初始化' }}
+            </span>
+          </div>
+          <p class="text-gray-700 leading-relaxed text-lg">
+            {{ currentStep.description }}
+          </p>
+
+          <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4" *ngIf="currentStep.distances.size > 0">
+            <div *ngFor="let node of graph.nodes" class="bg-gray-50 rounded-lg p-3">
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-gray-600">节点 {{ node.label }}</span>
+                <span class="text-lg font-bold text-blue-600">
+                  {{ currentStep.distances.get(node.id) === Infinity ? '∞' : currentStep.distances.get(node.id) }}
+                </span>
+              </div>
+              <div class="text-xs text-gray-500 mt-1">
+                前驱: {{ currentStep.previous.get(node.id) || '无' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-1">
+        <app-control-panel
+          [isRunning]="isRunning"
+          [currentStep]="currentStepIndex"
+          [totalSteps]="totalSteps - 1"
+          [animationSpeed]="animationSpeed"
+          (start)="start()"
+          (step)="step()"
+          (reset)="reset()"
+          (pause)="pause()"
+          (speedChange)="onSpeedChange($event)"
+        ></app-control-panel>
+
+        <div class="algorithm-info bg-white rounded-lg shadow-lg p-6 mt-6">
+          <h3 class="text-lg font-bold text-gray-800 mb-4">算法说明</h3>
+          
+          <div class="space-y-4">
+            <div class="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+              <h4 class="font-semibold text-blue-800 mb-2">Dijkstra 算法</h4>
+              <p class="text-sm text-blue-700">
+                用于在加权图中找到从起始节点到目标节点的最短路径的经典算法。
+              </p>
+            </div>
+
+            <div class="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+              <h4 class="font-semibold text-green-800 mb-2">时间复杂度</h4>
+              <p class="text-sm text-green-700">
+                O(V²) 或 O(E log V)（使用优先队列优化），其中 V 是节点数，E 是边数。
+              </p>
+            </div>
+
+            <div class="p-4 bg-purple-50 rounded-lg border-l-4 border-purple-500">
+              <h4 class="font-semibold text-purple-800 mb-2">核心步骤</h4>
+              <ol class="text-sm text-purple-700 space-y-1 list-decimal list-inside">
+                <li>初始化距离数组，起始节点为 0，其他为无穷大</li>
+                <li>选择距离最小的未访问节点</li>
+                <li>松弛该节点的所有邻居（更新距离）</li>
+                <li>标记当前节点为已访问</li>
+                <li>重复直到目标节点被访问</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer bg-white border-t border-gray-200 py-4 mt-8">
+    <div class="max-w-7xl mx-auto px-4 text-center text-gray-600 text-sm">
+      <p>© 2026 Dijkstra 算法可视化工具 | 使用 Angular + Tailwind CSS + NG-ZORRO 构建</p>
+    </div>
+  </footer>
+</div>

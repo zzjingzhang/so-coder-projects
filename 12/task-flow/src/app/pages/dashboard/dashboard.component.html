@@ -1,0 +1,174 @@
+<nz-spin [nzSpinning]="loading">
+  <div class="dashboard-container">
+    <div class="mb-6">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-2">仪表盘</h2>
+      <p class="text-gray-500">查看项目和任务的整体概览</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <nz-card class="hover:shadow-lg transition-shadow">
+        <div class="flex items-center justify-between">
+          <div>
+            <nz-statistic
+              [nzValue]="stats.totalProjects"
+              [nzTitle]="'项目总数'"
+              [nzValueStyle]="{ color: '#1890ff' }"
+            ></nz-statistic>
+          </div>
+          <div class="text-4xl text-primary opacity-20">
+            <i nz-icon nzType="folder" nzTheme="outline"></i>
+          </div>
+        </div>
+      </nz-card>
+
+      <nz-card class="hover:shadow-lg transition-shadow">
+        <div class="flex items-center justify-between">
+          <div>
+            <nz-statistic
+              [nzValue]="stats.totalTasks"
+              [nzTitle]="'任务总数'"
+              [nzValueStyle]="{ color: '#722ed1' }"
+            ></nz-statistic>
+          </div>
+          <div class="text-4xl text-purple-500 opacity-20">
+            <i nz-icon nzType="file-text" nzTheme="outline"></i>
+          </div>
+        </div>
+      </nz-card>
+
+      <nz-card class="hover:shadow-lg transition-shadow">
+        <div class="flex items-center justify-between">
+          <div>
+            <nz-statistic
+              [nzValue]="stats.inProgressTasks"
+              [nzTitle]="'进行中'"
+              [nzValueStyle]="{ color: '#1890ff' }"
+            ></nz-statistic>
+          </div>
+          <div class="text-4xl text-blue-500 opacity-20">
+            <i nz-icon nzType="loading" nzTheme="outline"></i>
+          </div>
+        </div>
+      </nz-card>
+
+      <nz-card class="hover:shadow-lg transition-shadow">
+        <div class="flex items-center justify-between">
+          <div>
+            <nz-statistic
+              [nzValue]="stats.doneTasks"
+              [nzTitle]="'已完成'"
+              [nzValueStyle]="{ color: '#52c41a' }"
+            ></nz-statistic>
+          </div>
+          <div class="text-4xl text-green-500 opacity-20">
+            <i nz-icon nzType="check-circle" nzTheme="outline"></i>
+          </div>
+        </div>
+      </nz-card>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <nz-card nzTitle="任务进度" class="h-full">
+        <div class="mb-6">
+          <div class="flex justify-between mb-2">
+            <span class="text-gray-600">整体完成度</span>
+            <span class="text-gray-800 font-semibold">{{ getProgressPercentage() }}%</span>
+          </div>
+          <nz-progress [nzPercent]="getProgressPercentage()" [nzStatus]="'active'" [nzStrokeWidth]="16"></nz-progress>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4 mt-6">
+          <div class="text-center p-3 bg-yellow-50 rounded-lg">
+            <div class="text-2xl font-bold text-yellow-600">{{ stats.todoTasks }}</div>
+            <div class="text-sm text-gray-500 mt-1">待办</div>
+          </div>
+          <div class="text-center p-3 bg-blue-50 rounded-lg">
+            <div class="text-2xl font-bold text-blue-600">{{ stats.inProgressTasks }}</div>
+            <div class="text-sm text-gray-500 mt-1">进行中</div>
+          </div>
+          <div class="text-center p-3 bg-green-50 rounded-lg">
+            <div class="text-2xl font-bold text-green-600">{{ stats.doneTasks }}</div>
+            <div class="text-sm text-gray-500 mt-1">已完成</div>
+          </div>
+        </div>
+      </nz-card>
+
+      <nz-card nzTitle="最近任务" class="h-full">
+        <nz-list [nzDataSource]="getRecentTasks()" [nzRenderItem]="item">
+          <ng-template #item let-task>
+            <nz-list-item>
+              <nz-list-item-meta>
+                <nz-list-item-meta-title>
+                  <span class="font-medium">{{ task.title }}</span>
+                  <nz-tag
+                    class="ml-2"
+                    [nzColor]="task.status === 'done' ? 'success' : task.status === 'in_progress' ? 'processing' : 'warning'"
+                  >
+                    {{ task.status === 'done' ? '已完成' : task.status === 'in_progress' ? '进行中' : '待办' }}
+                  </nz-tag>
+                </nz-list-item-meta-title>
+                <nz-list-item-meta-description>
+                  <span class="text-gray-500 text-sm">
+                    {{ getProjectById(task.projectId)?.name }}
+                    <span class="mx-2">|</span>
+                    <span *ngIf="getMemberById(task.assigneeId)">
+                      <nz-avatar [nzSize]="'small'" [nzStyle]="{ backgroundColor: getMemberById(task.assigneeId)?.color, 'vertical-align': 'middle' }">
+                        {{ getMemberById(task.assigneeId)?.name.charAt(0) }}
+                      </nz-avatar>
+                      <span class="ml-1">{{ getMemberById(task.assigneeId)?.name }}</span>
+                    </span>
+                    <span *ngIf="!getMemberById(task.assigneeId)" class="text-gray-400">未分配</span>
+                  </span>
+                </nz-list-item-meta-description>
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+      </nz-card>
+    </div>
+
+    <nz-card nzTitle="项目概览" class="mt-6">
+      <nz-row [nzGutter]="[16, 16]">
+        <nz-col [nzSpan]="24" [nzMd]="12" [nzLg]="8" *ngFor="let project of projects">
+          <nz-card class="h-full hover:shadow-lg transition-shadow cursor-pointer" [routerLink]="['/projects', project.id]">
+            <div class="flex items-center mb-3">
+              <div
+                class="w-10 h-10 rounded-lg flex items-center justify-center text-white font-semibold"
+                [style.backgroundColor]="project.color"
+              >
+                {{ project.name.charAt(0) }}
+              </div>
+              <div class="ml-3">
+                <h4 class="font-semibold text-gray-800 m-0">{{ project.name }}</h4>
+                <p class="text-gray-400 text-sm m-0">{{ project.memberIds.length }} 位成员</p>
+              </div>
+            </div>
+            <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ project.description }}</p>
+            <div class="flex items-center justify-between">
+              <div class="flex -space-x-2">
+                <nz-avatar
+                  *ngFor="let memberId of project.memberIds.slice(0, 3)"
+                  [nzSize]="'small'"
+                  [nzStyle]="{ backgroundColor: getMemberById(memberId)?.color, border: '2px solid white' }"
+                >
+                  {{ getMemberById(memberId)?.name.charAt(0) }}
+                </nz-avatar>
+                <div
+                  *ngIf="project.memberIds.length > 3"
+                  class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-xs text-gray-600 border-2 border-white"
+                >
+                  +{{ project.memberIds.length - 3 }}
+                </div>
+              </div>
+              <div class="text-gray-400 text-sm">
+                {{ tasks.filter(t => t.projectId === project.id && t.status === 'done').length }}
+                /
+                {{ tasks.filter(t => t.projectId === project.id).length }}
+              </div>
+            </div>
+          </nz-card>
+        </nz-col>
+      </nz-row>
+    </nz-card>
+  </div>
+</nz-spin>
