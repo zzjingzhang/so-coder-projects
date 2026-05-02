@@ -1,0 +1,17 @@
+<div class="viewer-container">
+  <canvas 
+    #canvas 
+    class="molecule-canvas"
+    (mousedown)="onMouseDown($event)"
+    (mousemove)="onMouseMove($event)"
+    (mouseup)="onMouseUp()"
+    (mouseleave)="onMouseLeave()">
+  </canvas>
+  
+  @if (!currentMolecule) {
+    <div class="loading-overlay">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>加载分子数据中...</p>
+    </div>
+  }
+</div>

@@ -1,0 +1,277 @@
+.match-progress-container {
+  padding: 1rem;
+}
+
+.section-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.section-subheader h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.live-match-card {
+  background: linear-gradient(145deg, #1e293b, #0f172a);
+  border: 1px solid #334155;
+  border-radius: 1rem;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.live-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05));
+  border-bottom: 1px solid #334155;
+}
+
+.live-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.live-dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  background: #ef4444;
+  border-radius: 9999px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+.match-content {
+  padding: 1.5rem;
+}
+
+.teams-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.team {
+  flex: 1;
+  text-align: center;
+}
+
+.team-logo {
+  font-size: 3.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.animate-bounce {
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.team-name {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #f1f5f9;
+  margin-bottom: 0.5rem;
+}
+
+.team-players {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.score-display {
+  padding: 0 2rem;
+}
+
+.score-flex {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.score-value {
+  font-size: 3.75rem;
+  font-weight: 700;
+}
+
+.score-divider {
+  font-size: 1.875rem;
+  color: #94a3b8;
+}
+
+.progress-section {
+  margin-top: 1.5rem;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.progress-bar-container {
+  height: 0.75rem;
+  background: #334155;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 1s ease-out;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6, #a78bfa);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+}
+
+.progress-markers {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.match-actions {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: #0f172a;
+  border-top: 1px solid #334155;
+}
+
+.match-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.matches-section {
+  margin-top: 2rem;
+}
+
+.match-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.match-card:hover {
+  border-color: #f59e0b;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.match-card.finished {
+  opacity: 0.8;
+}
+
+.match-card.finished:hover {
+  border-color: #334155;
+  opacity: 1;
+}
+
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.match-teams {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.match-teams .team {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.vs {
+  color: #94a3b8;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.match-footer {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #334155;
+}
+
+.finished .match-teams .score-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.finished .match-teams .score-display .score-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .teams-display {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .score-display {
+    order: -1;
+    padding: 0;
+  }
+
+  .score-flex {
+    justify-content: center;
+  }
+
+  .team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .match-teams {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .match-teams .team {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .match-actions {
+    flex-direction: column;
+  }
+}

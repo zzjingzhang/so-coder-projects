@@ -1,0 +1,271 @@
+.properties-panel {
+  width: 320px;
+  min-width: 280px;
+  max-width: 400px;
+  background-color: #f8fafc;
+  border-left: 1px solid #e2e8f0;
+}
+
+.panel-header {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.panel-header span {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.panel-content {
+  padding: 16px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+}
+
+mat-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+mat-expansion-panel {
+  border-radius: 8px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+mat-expansion-panel-header {
+  height: 48px !important;
+}
+
+mat-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.info-section,
+.control-section,
+.detail-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.info-item,
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 8px 12px;
+  background-color: #ffffff;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.info-item.description {
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-weight: 500;
+  color: #475569;
+  font-size: 0.875rem;
+}
+
+.value {
+  color: #1e293b;
+  font-size: 0.875rem;
+}
+
+.value.formula {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #3b82f6;
+}
+
+.slider-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background-color: #ffffff;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.slider-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.slider-label span:first-child {
+  font-weight: 500;
+  color: #475569;
+}
+
+.slider-value {
+  font-weight: 600;
+  color: #3b82f6;
+  background-color: #dbeafe;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.custom-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, #3b82f6 0%, #3b82f6 var(--slider-progress, 50%), #e2e8f0 var(--slider-progress, 50%), #e2e8f0 100%);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.custom-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.custom-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.custom-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.custom-slider::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: #e2e8f0;
+}
+
+.custom-slider::-moz-range-progress {
+  height: 6px;
+  border-radius: 3px;
+  background: #3b82f6;
+}
+
+.atom-list,
+.bond-list {
+  padding: 0;
+}
+
+.atom-item,
+.bond-item {
+  cursor: pointer;
+  border-radius: 6px;
+  margin: 4px 0;
+  transition: background-color 0.2s ease;
+}
+
+.atom-item:hover,
+.bond-item:hover {
+  background-color: #f1f5f9;
+}
+
+.atom-item.selected,
+.bond-item.selected {
+  background-color: #dbeafe;
+  border: 1px solid #3b82f6;
+}
+
+.atom-info,
+.bond-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 0;
+}
+
+.atom-symbol {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.atom-details,
+.bond-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.atom-name,
+.bond-atoms {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: #1e293b;
+}
+
+.atom-number,
+.bond-length {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.bond-type {
+  padding: 4px 10px;
+  background-color: #e0e7ff;
+  color: #4f46e5;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 960px) {
+  .properties-panel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    z-index: 1000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .properties-panel.opened {
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .properties-panel {
+    width: 100%;
+    max-width: none;
+  }
+}

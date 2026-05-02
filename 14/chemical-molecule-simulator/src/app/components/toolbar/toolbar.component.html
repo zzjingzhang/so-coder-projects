@@ -1,0 +1,66 @@
+<mat-toolbar color="primary" class="toolbar">
+  <div class="toolbar-content">
+    <div class="left-section">
+      <span class="title">🧪 化学分子结构模拟器</span>
+    </div>
+
+    <div class="center-section">
+      <mat-form-field appearance="fill" class="molecule-selector">
+        <mat-label>选择分子</mat-label>
+        <mat-select [(value)]="selectedMoleculeId" (valueChange)="onMoleculeChange($event)">
+          @for (molecule of presetMolecules; track molecule.id) {
+            <mat-option [value]="molecule.id">
+              {{ molecule.name }} ({{ molecule.formula }})
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="right-section">
+      <div class="button-group">
+        <button 
+          mat-raised-button 
+          color="{{ animationState?.isPlaying ? 'warn' : 'accent' }}"
+          (click)="togglePlay()"
+          class="control-button">
+          @if (animationState?.isPlaying) {
+            <mat-icon>pause</mat-icon>
+            <span>暂停</span>
+          } @else {
+            <mat-icon>play_arrow</mat-icon>
+            <span>播放</span>
+          }
+        </button>
+
+        <button 
+          mat-raised-button 
+          (click)="reset()"
+          class="control-button">
+          <mat-icon>refresh</mat-icon>
+          <span>重置</span>
+        </button>
+      </div>
+
+      <div class="toggle-group">
+        <button 
+          mat-raised-button 
+          [color]="animationState?.vibrationEnabled ? 'primary' : ''"
+          (click)="toggleVibration()"
+          class="toggle-button">
+          <mat-icon>vibration</mat-icon>
+          <span>振动</span>
+        </button>
+
+        <button 
+          mat-raised-button 
+          [color]="animationState?.rotationEnabled ? 'primary' : ''"
+          (click)="toggleRotation()"
+          class="toggle-button">
+          <mat-icon>rotate_right</mat-icon>
+          <span>旋转</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</mat-toolbar>

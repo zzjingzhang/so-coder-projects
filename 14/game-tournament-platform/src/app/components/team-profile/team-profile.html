@@ -1,0 +1,171 @@
+<div class="team-profile-container">
+  <div class="section-header flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold text-text-primary flex items-center gap-3">
+      <mat-icon class="text-secondary">groups</mat-icon>
+      参赛战队
+    </h2>
+    <div class="action-buttons flex gap-2">
+      <button mat-stroked-button color="primary" (click)="expandAll()" class="text-sm">
+        全部展开
+      </button>
+      <button mat-stroked-button color="accent" (click)="collapseAll()" class="text-sm">
+        全部收起
+      </button>
+    </div>
+  </div>
+
+  <div class="teams-grid">
+    @for (team of teams; track team.id) {
+      <div 
+        class="team-card bg-dark-card rounded-2xl border border-dark-border overflow-hidden transition-all duration-300 hover:shadow-xl"
+        [class.expanded]="team.isExpanded"
+      >
+        <div 
+          class="team-header cursor-pointer p-6 flex items-center justify-between"
+          [style.background]="'linear-gradient(135deg, ' + team.colors.primary + '20, ' + team.colors.secondary + '10)'"
+          (click)="toggleTeam(team)"
+        >
+          <div class="team-info flex items-center gap-4">
+            <div 
+              class="team-logo text-5xl w-16 h-16 flex items-center justify-center rounded-xl"
+              [style.background]="'linear-gradient(135deg, ' + team.colors.primary + '40, ' + team.colors.secondary + '30)'"
+            >
+              {{ team.logo }}
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-text-primary flex items-center gap-2">
+                {{ team.name }}
+                <span 
+                  class="text-xs px-2 py-1 rounded-full"
+                  [style.background]="team.colors.primary + '30'"
+                  [style.color]="team.colors.primary"
+                >
+                  {{ team.region }}
+                </span>
+              </h3>
+              <p class="text-text-secondary text-sm mt-1">{{ team.tagline }}</p>
+            </div>
+          </div>
+
+          <div class="expand-icon" [@rotateIcon]="team.isExpanded ? 'expanded' : 'collapsed'">
+            <mat-icon class="text-text-secondary">expand_more</mat-icon>
+          </div>
+        </div>
+
+        <div class="team-stats-summary px-6 py-4 bg-dark-bg/50 flex justify-around">
+          <div class="stat-item text-center">
+            <div class="stat-value text-2xl font-bold text-primary">{{ team.totalWins }}</div>
+            <div class="stat-label text-xs text-text-secondary">胜场</div>
+          </div>
+          <div class="stat-item text-center">
+            <div class="stat-value text-2xl font-bold text-accent">{{ team.totalLosses }}</div>
+            <div class="stat-label text-xs text-text-secondary">败场</div>
+          </div>
+          <div class="stat-item text-center">
+            <div class="stat-value text-2xl font-bold text-secondary">{{ getWinRate(team.totalWins, team.totalLosses) }}%</div>
+            <div class="stat-label text-xs text-text-secondary">胜率</div>
+          </div>
+          <div class="stat-item text-center">
+            <div class="stat-value text-2xl font-bold" [style.color]="team.colors.primary">🏆 {{ team.championships }}</div>
+            <div class="stat-label text-xs text-text-secondary">冠军</div>
+          </div>
+        </div>
+
+        <div 
+          class="team-details"
+          [@expandCollapse]="team.isExpanded ? 'expanded' : 'collapsed'"
+        >
+          <div class="details-content px-6 py-6">
+            <div class="description-section mb-6">
+              <h4 class="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">战队简介</h4>
+              <p class="text-text-primary leading-relaxed">
+                {{ team.description }}
+              </p>
+              <div class="team-meta flex gap-4 mt-4 text-sm">
+                <span class="text-text-secondary">
+                  <mat-icon class="text-sm mr-1 align-middle">calendar_today</mat-icon>
+                  成立于 {{ team.founded }}
+                </span>
+                <span class="text-text-secondary">
+                  <mat-icon class="text-sm mr-1 align-middle">public</mat-icon>
+                  {{ team.region }}赛区
+                </span>
+              </div>
+            </div>
+
+            <mat-divider class="my-6"></mat-divider>
+
+            <div class="members-section">
+              <h4 class="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-4">战队成员</h4>
+              <div class="members-grid grid gap-4">
+                @for (member of team.members; track member.id) {
+                  <div 
+                    class="member-card bg-dark-bg rounded-xl p-4 border border-dark-border hover:border-primary transition-all duration-300"
+                  >
+                    <div class="member-header flex items-center gap-3 mb-3">
+                      <span class="member-avatar text-3xl">{{ member.avatar }}</span>
+                      <div class="member-info">
+                        <div class="member-name font-semibold text-text-primary">{{ member.name }}</div>
+                        <div class="member-role text-sm flex items-center gap-1" [style.color]="team.colors.primary">
+                          <span>{{ getRoleIcon(member.role) }}</span>
+                          <span>{{ member.role }}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="member-stats grid grid-cols-4 gap-2 text-center">
+                      <div class="stat p-2 bg-dark-card rounded-lg">
+                        <div class="stat-value text-sm font-bold text-primary">{{ member.stats.wins }}</div>
+                        <div class="stat-label text-xs text-text-secondary">胜</div>
+                      </div>
+                      <div class="stat p-2 bg-dark-card rounded-lg">
+                        <div class="stat-value text-sm font-bold text-accent">{{ member.stats.losses }}</div>
+                        <div class="stat-label text-xs text-text-secondary">负</div>
+                      </div>
+                      <div class="stat p-2 bg-dark-card rounded-lg">
+                        <div class="stat-value text-sm font-bold text-secondary">{{ member.stats.winRate }}%</div>
+                        <div class="stat-label text-xs text-text-secondary">胜率</div>
+                      </div>
+                      <div class="stat p-2 bg-dark-card rounded-lg">
+                        <div class="stat-value text-sm font-bold" [style.color]="team.colors.primary">{{ member.stats.kda }}</div>
+                        <div class="stat-label text-xs text-text-secondary">KDA</div>
+                      </div>
+                    </div>
+
+                    @if (member.social.twitch || member.social.twitter) {
+                      <div class="member-social flex gap-2 mt-3 pt-3 border-t border-dark-border">
+                        @if (member.social.twitch) {
+                          <button mat-icon-button color="primary" class="w-8 h-8" title="Twitch">
+                            <mat-icon class="text-sm">live_tv</mat-icon>
+                          </button>
+                        }
+                        @if (member.social.twitter) {
+                          <button mat-icon-button color="accent" class="w-8 h-8" title="Twitter">
+                            <mat-icon class="text-sm">tag</mat-icon>
+                          </button>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="team-actions p-4 bg-dark-bg border-t border-dark-border flex gap-3">
+            <button mat-raised-button color="primary" class="flex-1">
+              <mat-icon class="mr-2">visibility</mat-icon>
+              查看详情
+            </button>
+            <button mat-stroked-button color="accent">
+              <mat-icon>star_border</mat-icon>
+            </button>
+            <button mat-stroked-button color="primary">
+              <mat-icon>share</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

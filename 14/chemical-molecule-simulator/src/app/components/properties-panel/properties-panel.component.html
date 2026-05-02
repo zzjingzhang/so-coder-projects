@@ -1,0 +1,203 @@
+<mat-sidenav #sidenav mode="side" opened="true" class="properties-panel">
+  <mat-toolbar color="primary" class="panel-header">
+    <mat-icon>settings</mat-icon>
+    <span>属性面板</span>
+  </mat-toolbar>
+
+  <div class="panel-content">
+    @if (currentMolecule) {
+      <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mat-icon>science</mat-icon>
+              <span>分子信息</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          
+          <div class="info-section">
+            <div class="info-item">
+              <span class="label">名称:</span>
+              <span class="value">{{ currentMolecule.name }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">分子式:</span>
+              <span class="value formula">{{ currentMolecule.formula }}</span>
+            </div>
+            <div class="info-item description">
+              <span class="label">描述:</span>
+              <span class="value">{{ currentMolecule.description }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">原子数量:</span>
+              <span class="value">{{ currentMolecule.atoms.length }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">化学键数量:</span>
+              <span class="value">{{ currentMolecule.bonds.length }}</span>
+            </div>
+          </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mat-icon>tune</mat-icon>
+              <span>动画控制</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="control-section">
+            <div class="slider-wrapper">
+              <div class="slider-label">
+                <span>振动速度</span>
+                <span class="slider-value">{{ animationState?.vibrationSpeed || 1 }}</span>
+              </div>
+              <input 
+                type="range"
+                class="custom-slider"
+                [value]="animationState?.vibrationSpeed || 1"
+                (input)="onVibrationSpeedChange($event)"
+                min="0.1"
+                max="3"
+                step="0.1">
+            </div>
+
+            <div class="slider-wrapper">
+              <div class="slider-label">
+                <span>旋转速度</span>
+                <span class="slider-value">{{ animationState?.rotationSpeed || 1 }}</span>
+              </div>
+              <input 
+                type="range"
+                class="custom-slider"
+                [value]="animationState?.rotationSpeed || 1"
+                (input)="onRotationSpeedChange($event)"
+                min="0.1"
+                max="3"
+                step="0.1">
+            </div>
+
+            <div class="slider-wrapper">
+              <div class="slider-label">
+                <span>振动幅度</span>
+                <span class="slider-value">{{ animationState?.vibrationAmplitude || 5 }}</span>
+              </div>
+              <input 
+                type="range"
+                class="custom-slider"
+                [value]="animationState?.vibrationAmplitude || 5"
+                (input)="onVibrationAmplitudeChange($event)"
+                min="1"
+                max="20"
+                step="1">
+            </div>
+          </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mat-icon>radio_button_checked</mat-icon>
+              <span>原子列表</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <mat-list role="list" class="atom-list">
+            @for (atom of currentMolecule.atoms; track atom.id) {
+              <mat-list-item 
+                role="listitem" 
+                class="atom-item"
+                [class.selected]="selectedAtom?.id === atom.id"
+                (click)="selectAtom(atom)">
+                <div class="atom-info">
+                  <span 
+                    class="atom-symbol" 
+                    [style.background-color]="atom.color"
+                    [style.color]="atom.color === '#FFFFFF' ? '#333' : '#fff'">
+                    {{ atom.symbol }}
+                  </span>
+                  <div class="atom-details">
+                    <span class="atom-name">{{ atom.name }}</span>
+                    <span class="atom-number">原子序数: {{ atom.atomicNumber }}</span>
+                  </div>
+                </div>
+              </mat-list-item>
+            }
+          </mat-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mat-icon>link</mat-icon>
+              <span>化学键列表</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <mat-list role="list" class="bond-list">
+            @for (bond of currentMolecule.bonds; track bond.id) {
+              <mat-list-item 
+                role="listitem" 
+                class="bond-item"
+                [class.selected]="selectedBond?.id === bond.id"
+                (click)="selectBond(bond)">
+                <div class="bond-info">
+                  <span class="bond-type">{{ getBondTypeLabel(bond.type) }}</span>
+                  <div class="bond-details">
+                    <span class="bond-atoms">
+                      {{ getAtomSymbol(bond.atom1Id) }} - {{ getAtomSymbol(bond.atom2Id) }}
+                    </span>
+                    <span class="bond-length">键长: {{ bond.bondLength }} pm</span>
+                  </div>
+                </div>
+              </mat-list-item>
+            }
+          </mat-list>
+        </mat-expansion-panel>
+
+        @if (selectedAtom) {
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon>info</mat-icon>
+                <span>选中原子详情</span>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="detail-section">
+              <div class="detail-item">
+                <span class="label">元素符号:</span>
+                <span class="value">{{ selectedAtom.symbol }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">元素名称:</span>
+                <span class="value">{{ selectedAtom.name }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">原子序数:</span>
+                <span class="value">{{ selectedAtom.atomicNumber }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">原子质量:</span>
+                <span class="value">{{ selectedAtom.mass }} u</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">位置 X:</span>
+                <span class="value">{{ selectedAtom.x | number:'1.2-2' }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">位置 Y:</span>
+                <span class="value">{{ selectedAtom.y | number:'1.2-2' }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">位置 Z:</span>
+                <span class="value">{{ selectedAtom.z | number:'1.2-2' }}</span>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        }
+      </mat-accordion>
+    }
+  </div>
+</mat-sidenav>
