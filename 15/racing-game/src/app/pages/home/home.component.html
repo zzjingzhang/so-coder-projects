@@ -1,0 +1,59 @@
+<div class="min-h-screen bg-gradient-to-b from-racing-dark via-racing-blue to-racing-dark flex flex-col items-center justify-center p-4">
+  <div class="text-center mb-8">
+    <div class="text-6xl mb-4">🏎️</div>
+    <h1 class="text-5xl font-bold text-white mb-2 tracking-wider">
+      <span class="text-racing-red">RACING</span>
+      <span class="text-racing-yellow">GAME</span>
+    </h1>
+    <p class="text-gray-300 text-lg">高速赛道 · 极限挑战</p>
+  </div>
+
+  <nz-card class="w-full max-w-md bg-white/10 backdrop-blur-sm border-none shadow-2xl">
+    <div class="flex flex-col gap-6">
+      <div class="text-center">
+        <p class="text-gray-400 text-sm mb-1">HIGH SCORE</p>
+        <p class="text-4xl font-bold text-racing-yellow">{{ highScore }}</p>
+      </div>
+
+      <button
+        nz-button
+        nzType="primary"
+        nzSize="large"
+        (click)="startGame()"
+        class="h-16 text-xl font-bold bg-gradient-to-r from-racing-red to-red-600 hover:from-red-500 hover:to-red-700 border-none shadow-lg shadow-racing-red/30 transform transition-all duration-300 hover:scale-105 active:scale-95"
+      >
+        <span nz-icon nzType="play-circle" nzTheme="outline" class="mr-2"></span>
+        开始游戏
+      </button>
+
+      <div class="bg-white/5 rounded-lg p-4">
+        <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+          <span nz-icon nzType="info-circle" nzTheme="outline" class="text-racing-blue"></span>
+          游戏说明
+        </h3>
+        <ul class="text-gray-300 text-sm space-y-2">
+          <li class="flex items-start gap-2">
+            <span nz-icon nzType="arrow-left" class="text-racing-green mt-0.5"></span>
+            <span>使用 <kbd class="bg-gray-700 px-2 py-0.5 rounded text-xs">←</kbd> <kbd class="bg-gray-700 px-2 py-0.5 rounded text-xs">→</kbd> 方向键或点击按钮控制赛车左右移动</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span nz-icon nzType="car" class="text-racing-red mt-0.5"></span>
+            <span>躲避前方驶来的车辆</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span nz-icon nzType="heart" class="text-red-400 mt-0.5"></span>
+            <span>你有 3 条命，碰撞会减少生命</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span nz-icon nzType="trophy" class="text-racing-yellow mt-0.5"></span>
+            <span>坚持越久，分数越高，难度也会增加</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nz-card>
+
+  <footer class="mt-8 text-gray-500 text-sm">
+    <p>使用 Angular + Tailwind CSS + NG-ZORRO 构建</p>
+  </footer>
+</div>

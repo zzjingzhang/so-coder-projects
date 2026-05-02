@@ -1,0 +1,13 @@
+:host {
+  display: block;
+}
+
+button[nz-button] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+kbd {
+  font-family: monospace;
+}

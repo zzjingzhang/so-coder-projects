@@ -1,0 +1,44 @@
+<div *ngIf="!isLoading" class="container mx-auto px-4 py-8">
+  <div *ngIf="category" class="mb-8">
+    <div class="bg-gradient-to-r from-primary-600 to-primary-700 rounded-2xl p-8 text-white">
+      <div class="flex items-center space-x-4">
+        <div class="text-5xl">{{ category.icon }}</div>
+        <div>
+          <h1 class="text-3xl font-bold">{{ category.name }}</h1>
+          <p class="text-primary-100 mt-1">{{ category.description }}</p>
+          <p class="text-primary-200 text-sm mt-2">{{ category.articleCount }} 篇文章</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="articles.length > 0; else noArticles">
+    <div class="mb-6 flex items-center justify-between">
+      <h2 class="text-xl font-semibold text-secondary-800">
+        全部文章
+      </h2>
+    </div>
+
+    <div class="space-y-6">
+      <app-news-card 
+        *ngFor="let article of articles"
+        [article]="article"
+        variant="horizontal"
+      ></app-news-card>
+    </div>
+  </div>
+
+  <ng-template #noArticles>
+    <div class="text-center py-16">
+      <div class="text-6xl mb-4">📰</div>
+      <h3 class="text-xl font-semibold text-secondary-800 mb-2">暂无文章</h3>
+      <p class="text-secondary-500">该分类下暂时没有文章，请稍后再查看。</p>
+      <a 
+        routerLink="/" 
+        class="btn btn-primary mt-6 inline-flex"
+      >
+        返回首页
+      </a>
+    </div>
+  </ng-template>
+</div>
