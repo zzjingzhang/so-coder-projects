@@ -1,0 +1,44 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+mat-toolbar {
+  border-radius: 16px !important;
+  padding: 0 24px;
+}
+
+.mat-mdc-tab-header {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 8px;
+}
+
+.mat-mdc-tab-label {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-weight: 500;
+}
+
+.mat-mdc-tab-label-active {
+  color: #ffffff !important;
+}
+
+.mat-mdc-tab-ink-bar {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%) !important;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.mat-mdc-tab-labels {
+  gap: 8px;
+}
+
+.mat-mdc-tab {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.mat-mdc-tab:hover .mat-mdc-tab-label {
+  color: #ffffff !important;
+}

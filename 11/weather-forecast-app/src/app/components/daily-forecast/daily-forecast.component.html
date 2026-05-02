@@ -1,0 +1,103 @@
+<div class="daily-forecast-container">
+  @if (isLoading()) {
+    <div class="loading-container">
+      <mat-spinner diameter="50" color="accent"></mat-spinner>
+      <p class="text-white mt-4">Loading forecast...</p>
+    </div>
+  } @else {
+    <div class="main-forecast-card">
+      @if (selectedDay()) {
+        <mat-card class="w-full bg-white/90 backdrop-blur-md">
+          <mat-card-header class="pb-4">
+            <div mat-card-avatar class="weather-icon-large">
+              <mat-icon class="icon-large">{{ weatherIcons[selectedDay()!.condition] }}</mat-icon>
+            </div>
+            <mat-card-title class="text-2xl font-bold">{{ selectedDay()!.dayName }}</mat-card-title>
+            <mat-card-subtitle class="text-gray-600">
+              {{ formatDate(selectedDay()!.date) }} • {{ selectedDay()!.description }}
+            </mat-card-subtitle>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <div class="main-temp-section">
+              <div class="temperature-display">
+                <span class="temp-high">{{ selectedDay()!.highTemp }}°</span>
+                <span class="temp-low">{{ selectedDay()!.lowTemp }}°</span>
+              </div>
+              <div class="temp-label">
+                <span class="text-gray-500">High</span>
+                <span class="text-gray-500 ml-8">Low</span>
+              </div>
+            </div>
+            
+            <mat-divider class="my-6"></mat-divider>
+            
+            <div class="weather-details grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div class="detail-item flex flex-col items-center p-4 bg-gray-50 rounded-xl">
+                <mat-icon class="text-blue-500 mb-2">water_drop</mat-icon>
+                <span class="text-2xl font-semibold">{{ selectedDay()!.humidity }}%</span>
+                <span class="text-sm text-gray-500">Humidity</span>
+              </div>
+              
+              <div class="detail-item flex flex-col items-center p-4 bg-gray-50 rounded-xl">
+                <mat-icon class="text-teal-500 mb-2">air</mat-icon>
+                <span class="text-2xl font-semibold">{{ selectedDay()!.windSpeed }} km/h</span>
+                <span class="text-sm text-gray-500">Wind</span>
+              </div>
+              
+              <div class="detail-item flex flex-col items-center p-4 bg-gray-50 rounded-xl">
+                <mat-icon class="text-cyan-500 mb-2">beach_access</mat-icon>
+                <span class="text-2xl font-semibold">{{ selectedDay()!.precipitation }}%</span>
+                <span class="text-sm text-gray-500">Rain</span>
+              </div>
+              
+              <div class="detail-item flex flex-col items-center p-4 bg-gray-50 rounded-xl">
+                <mat-icon class="text-amber-500 mb-2">thermostat</mat-icon>
+                <span class="text-2xl font-semibold">{{ selectedDay()!.highTemp - selectedDay()!.lowTemp }}°</span>
+                <span class="text-sm text-gray-500">Variance</span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+
+    <div class="days-list mt-6">
+      <h3 class="text-white text-lg font-semibold mb-4 flex items-center">
+        <mat-icon class="mr-2">calendar_view_week</mat-icon>
+        7-Day Forecast
+      </h3>
+      
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-3">
+        @for (day of forecasts(); track day.dayName) {
+          <mat-card 
+            class="day-card cursor-pointer transition-all duration-300 hover:scale-105"
+            [class.selected]="selectedDay()?.dayName === day.dayName"
+            (click)="selectDay(day)"
+          >
+            <mat-card-content class="p-3 text-center">
+              <div class="day-name font-semibold text-sm mb-2"
+                   [class.text-purple-600]="selectedDay()?.dayName === day.dayName">
+                {{ day.dayName === 'Today' ? 'Today' : day.dayName.slice(0, 3) }}
+              </div>
+              
+              <div class="weather-icon-small mb-2"
+                   [ngClass]="'bg-gradient-to-br ' + weatherGradients[day.condition]">
+                <mat-icon class="text-white">{{ weatherIcons[day.condition] }}</mat-icon>
+              </div>
+              
+              <div class="temp-range">
+                <span class="font-bold text-gray-800">{{ day.highTemp }}°</span>
+                <span class="text-gray-500 text-sm ml-1">{{ day.lowTemp }}°</span>
+              </div>
+              
+              <div class="condition-desc text-xs text-gray-500 mt-1 truncate">
+                {{ day.description }}
+              </div>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    </div>
+  }
+</div>

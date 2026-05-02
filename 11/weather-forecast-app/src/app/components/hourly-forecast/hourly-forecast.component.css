@@ -1,0 +1,224 @@
+.hourly-forecast-container {
+  width: 100%;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.toggle-btn {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-btn:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.toggle-btn.active {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.selected-hour-card {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.weather-icon-container {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+}
+
+.weather-icon-container mat-icon {
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
+}
+
+.temp-display {
+  line-height: 1;
+}
+
+.detail-item {
+  transition: transform 0.2s ease;
+}
+
+.detail-item:hover {
+  transform: translateY(-2px);
+}
+
+.chart-container {
+  height: 200px;
+  padding: 20px 10px 40px 10px;
+}
+
+.chart-grid {
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.chart-bar-container {
+  flex: 1;
+  min-width: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+  transition: all 0.3s ease;
+}
+
+.chart-bar-container:hover {
+  transform: scale(1.05);
+}
+
+.chart-bar-container.current {
+  transform: scale(1.1);
+}
+
+.chart-bar {
+  width: 24px;
+  min-height: 20px;
+  border-radius: 8px 8px 4px 4px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.chart-bar::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+}
+
+.chart-temp {
+  margin-top: 8px;
+  color: #4B5563;
+}
+
+.chart-time {
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+.hours-scroll-container {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 16px;
+  scroll-behavior: smooth;
+}
+
+.hours-scroll-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.hours-scroll-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.hours-scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.hours-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.hour-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 2px solid transparent;
+  transition: all 0.3s ease !important;
+}
+
+.hour-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+  transform: translateY(-4px);
+}
+
+.hour-card.selected {
+  border-color: #667eea;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3) !important;
+}
+
+.hour-card.current-hour {
+  border-color: #10B981;
+}
+
+.hour-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.hour-icon mat-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.time-display {
+  display: flex;
+  align-items: center;
+}
+
+.condition-text {
+  margin-top: 4px;
+}
+
+::ng-deep .mat-mdc-card-header {
+  padding: 16px 16px 0 16px;
+}
+
+::ng-deep .mat-mdc-card-content {
+  padding: 16px;
+}
+
+.icon-small {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.icon-tiny {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+}

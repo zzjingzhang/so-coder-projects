@@ -1,0 +1,121 @@
+<div class="game-container">
+  <!-- 顶部导航栏 -->
+  <mat-toolbar class="futuristic-toolbar">
+    <span class="futuristic-text app-title">生命游戏</span>
+    <span class="spacer"></span>
+    <div class="toolbar-controls">
+      <button 
+        mat-icon-button 
+        (click)="toggle()"
+        class="control-button"
+        [class.active]="isRunning"
+      >
+        <mat-icon>{{ isRunning ? 'pause' : 'play_arrow' }}</mat-icon>
+      </button>
+      <button 
+        mat-icon-button 
+        (click)="reset()"
+        class="control-button"
+      >
+        <mat-icon>refresh</mat-icon>
+      </button>
+      <button 
+        mat-icon-button 
+        (click)="randomize()"
+        class="control-button"
+      >
+        <mat-icon>shuffle</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+
+  <!-- 主游戏区域 -->
+  <div class="main-content">
+    <!-- 游戏画布 -->
+    <div class="canvas-container">
+      <canvas #canvas class="game-canvas"></canvas>
+    </div>
+
+    <!-- 控制面板 -->
+    <mat-card class="control-panel">
+      <mat-card-header>
+        <mat-card-title class="panel-title">控制面板</mat-card-title>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <!-- 速度控制 -->
+        <div class="control-group">
+          <div class="control-label">
+            <mat-icon>speed</mat-icon>
+            <span>速度: {{ speed }}</span>
+          </div>
+          <input
+            type="range"
+            [min]="1"
+            [max]="100"
+            [step]="1"
+            [(ngModel)]="speed"
+            class="custom-slider"
+          />
+        </div>
+
+        <!-- 随机化频率控制 -->
+        <div class="control-group">
+          <div class="control-label">
+            <mat-icon>shuffle</mat-icon>
+            <span>随机化频率: {{ randomizationFrequency }}%</span>
+          </div>
+          <input
+            type="range"
+            [min]="0"
+            [max]="50"
+            [step]="1"
+            [(ngModel)]="randomizationFrequency"
+            class="custom-slider"
+          />
+        </div>
+
+        <!-- GPU 模式指示 -->
+        <div class="control-group">
+          <div class="control-label">
+            <mat-icon>{{ useGPU ? 'memory' : 'computer' }}</mat-icon>
+            <span>渲染模式: {{ useGPU ? 'GPU (WebGL)' : 'CPU' }}</span>
+          </div>
+        </div>
+
+        <!-- 游戏状态 -->
+        <div class="control-group">
+          <div class="control-label">
+            <mat-icon>{{ isRunning ? 'play_circle' : 'pause_circle' }}</mat-icon>
+            <span>状态: {{ isRunning ? '运行中' : '已暂停' }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button 
+          mat-raised-button 
+          color="primary"
+          (click)="toggle()"
+          class="action-button"
+        >
+          <mat-icon>{{ isRunning ? 'pause' : 'play_arrow' }}</mat-icon>
+          {{ isRunning ? '暂停' : '开始' }}
+        </button>
+        <button 
+          mat-raised-button 
+          (click)="randomize()"
+          class="action-button secondary"
+        >
+          <mat-icon>shuffle</mat-icon>
+          随机化
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <!-- 底部信息栏 -->
+  <div class="info-bar">
+    <span>高分辨率生命游戏 | 支持 GPU 加速 | 未来感配色方案</span>
+  </div>
+</div>

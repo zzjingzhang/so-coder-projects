@@ -1,0 +1,101 @@
+.course-card {
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.course-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.image-container {
+  position: relative;
+}
+
+.image-container img {
+  height: 180px;
+  object-fit: cover;
+}
+
+.completed-chip {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.course-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+  color: #1a1a1a;
+}
+
+.course-instructor {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 12px 0;
+}
+
+.course-instructor mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.course-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #888;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.stat mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.progress-section {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.progress-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+}
+
+.lessons-count {
+  font-size: 13px;
+  color: #888;
+}

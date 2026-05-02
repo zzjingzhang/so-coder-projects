@@ -1,0 +1,133 @@
+.daily-forecast-container {
+  width: 100%;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.main-forecast-card {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.weather-icon-large {
+  width: 72px !important;
+  height: 72px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  color: white;
+}
+
+.weather-icon-large .icon-large {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+}
+
+.temperature-display {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.temp-high {
+  font-size: 5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.temp-low {
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: #9CA3AF;
+}
+
+.temp-label {
+  display: flex;
+  justify-content: center;
+  margin-top: -0.5rem;
+}
+
+.main-temp-section {
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.weather-details {
+  margin-top: 1rem;
+}
+
+.detail-item {
+  transition: transform 0.2s ease;
+}
+
+.detail-item:hover {
+  transform: translateY(-2px);
+}
+
+.day-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 2px solid transparent;
+  transition: all 0.3s ease !important;
+}
+
+.day-card.selected {
+  border-color: #667eea;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3) !important;
+}
+
+.day-card:hover {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+.weather-icon-small {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.weather-icon-small mat-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+.temp-range {
+  font-size: 0.95rem;
+}
+
+::ng-deep .mat-mdc-card-header {
+  padding: 20px 20px 0 20px;
+}
+
+::ng-deep .mat-mdc-card-content {
+  padding: 20px;
+}

@@ -1,0 +1,197 @@
+<div class="hourly-forecast-container">
+  @if (isLoading()) {
+    <div class="loading-container">
+      <mat-spinner diameter="50" color="accent"></mat-spinner>
+      <p class="text-white mt-4">Loading hourly forecast...</p>
+    </div>
+  } @else {
+    <div class="view-toggle mb-6">
+      <div class="flex gap-2 bg-white/10 backdrop-blur-md rounded-xl p-1.5">
+        <button 
+          class="toggle-btn px-4 py-2 rounded-lg text-sm font-medium transition-all"
+          [class.active]="viewMode() === 'all'"
+          [class.bg-white]="viewMode() === 'all'"
+          [class.text-gray-800]="viewMode() === 'all'"
+          [class.text-white]="viewMode() !== 'all'"
+          (click)="setViewMode('all')"
+        >
+          <mat-icon class="mr-1 icon-small">view_agenda</mat-icon>
+          All Hours
+        </button>
+        <button 
+          class="toggle-btn px-4 py-2 rounded-lg text-sm font-medium transition-all"
+          [class.active]="viewMode() === 'day'"
+          [class.bg-white]="viewMode() === 'day'"
+          [class.text-gray-800]="viewMode() === 'day'"
+          [class.text-white]="viewMode() !== 'day'"
+          (click)="setViewMode('day')"
+        >
+          <mat-icon class="mr-1 icon-small">wb_sunny</mat-icon>
+          Day
+        </button>
+        <button 
+          class="toggle-btn px-4 py-2 rounded-lg text-sm font-medium transition-all"
+          [class.active]="viewMode() === 'night'"
+          [class.bg-white]="viewMode() === 'night'"
+          [class.text-gray-800]="viewMode() === 'night'"
+          [class.text-white]="viewMode() !== 'night'"
+          (click)="setViewMode('night')"
+        >
+          <mat-icon class="mr-1 icon-small">nights_stay</mat-icon>
+          Night
+        </button>
+      </div>
+    </div>
+
+    @if (selectedHour()) {
+      <mat-card class="selected-hour-card bg-white/90 backdrop-blur-md mb-6">
+        <mat-card-content class="p-6">
+          <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-4">
+              <div class="weather-icon-container"
+                   [ngClass]="'bg-gradient-to-br ' + weatherGradients[selectedHour()!.condition]">
+                <mat-icon class="text-white">{{ weatherIcons[selectedHour()!.condition] }}</mat-icon>
+              </div>
+              <div>
+                <div class="time-display text-2xl font-bold text-gray-800">
+                  {{ selectedHour()!.time }}
+                  @if (isCurrentHour(selectedHour()!.hour)) {
+                    <span class="ml-2 px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">Now</span>
+                  }
+                </div>
+                <div class="condition-text text-gray-600">{{ selectedHour()!.description }}</div>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-8">
+              <div class="text-center">
+                <div class="temp-display text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  {{ selectedHour()!.temperature }}°
+                </div>
+                <div class="text-sm text-gray-500">Temperature</div>
+              </div>
+              <div class="text-center">
+                <div class="text-2xl font-semibold text-gray-700">
+                  {{ selectedHour()!.feelsLike }}°
+                </div>
+                <div class="text-sm text-gray-500">Feels Like</div>
+              </div>
+            </div>
+          </div>
+          
+          <mat-divider class="my-4"></mat-divider>
+          
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="detail-item flex items-center gap-3 p-3 bg-blue-50 rounded-xl">
+              <mat-icon class="text-blue-500">water_drop</mat-icon>
+              <div>
+                <div class="font-semibold text-gray-800">{{ selectedHour()!.humidity }}%</div>
+                <div class="text-xs text-gray-500">Humidity</div>
+              </div>
+            </div>
+            <div class="detail-item flex items-center gap-3 p-3 bg-teal-50 rounded-xl">
+              <mat-icon class="text-teal-500">air</mat-icon>
+              <div>
+                <div class="font-semibold text-gray-800">{{ selectedHour()!.windSpeed }} km/h</div>
+                <div class="text-xs text-gray-500">Wind</div>
+              </div>
+            </div>
+            <div class="detail-item flex items-center gap-3 p-3 bg-cyan-50 rounded-xl">
+              <mat-icon class="text-cyan-500">beach_access</mat-icon>
+              <div>
+                <div class="font-semibold text-gray-800">{{ selectedHour()!.precipitation }}%</div>
+                <div class="text-xs text-gray-500">Chance of Rain</div>
+              </div>
+            </div>
+            <div class="detail-item flex items-center gap-3 p-3 bg-amber-50 rounded-xl">
+              <mat-icon class="text-amber-500">{{ isDaytime(selectedHour()!.hour) ? 'wb_sunny' : 'nights_stay' }}</mat-icon>
+              <div>
+                <div class="font-semibold text-gray-800">{{ isDaytime(selectedHour()!.hour) ? 'Day' : 'Night' }}</div>
+                <div class="text-xs text-gray-500">Time of Day</div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    <div class="temperature-chart-card mb-6">
+      <mat-card class="bg-white/90 backdrop-blur-md">
+        <mat-card-header class="pb-2">
+          <mat-card-title class="text-lg font-semibold flex items-center">
+            <mat-icon class="mr-2">show_chart</mat-icon>
+            Temperature Trend
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="chart-container">
+            <div class="chart-grid">
+              @for (hour of filteredForecasts(); track hour.hour) {
+                <div class="chart-bar-container"
+                     [class.current]="isCurrentHour(hour.hour)">
+                  <div class="chart-bar"
+                       [ngStyle]="{ height: getTemperaturePercent(hour.temperature) + '%' }"
+                       [ngClass]="'bg-gradient-to-t ' + weatherGradients[hour.condition]">
+                  </div>
+                  <div class="chart-temp text-xs font-semibold">
+                    {{ hour.temperature }}°
+                  </div>
+                  <div class="chart-time text-xs text-gray-500">
+                    {{ hour.time }}
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="hours-list">
+      <h3 class="text-white text-lg font-semibold mb-4 flex items-center">
+        <mat-icon class="mr-2">schedule</mat-icon>
+        Hourly Breakdown
+      </h3>
+      
+      <div class="hours-scroll-container">
+        @for (hour of filteredForecasts(); track hour.hour) {
+          <mat-card 
+            class="hour-card cursor-pointer transition-all duration-300 flex-shrink-0"
+            [class.selected]="selectedHour()?.hour === hour.hour"
+            [class.current-hour]="isCurrentHour(hour.hour)"
+            (click)="selectHour(hour)"
+          >
+            <mat-card-content class="p-4 text-center min-w-[100px]">
+              <div class="hour-time font-semibold text-sm mb-2"
+                   [class.text-purple-600]="selectedHour()?.hour === hour.hour">
+                {{ hour.time }}
+              </div>
+              
+              <div class="hour-icon mb-2 mx-auto"
+                   [ngClass]="'bg-gradient-to-br ' + weatherGradients[hour.condition]">
+                <mat-icon class="text-white">{{ weatherIcons[hour.condition] }}</mat-icon>
+              </div>
+              
+              <div class="hour-temp text-xl font-bold text-gray-800 mb-1">
+                {{ hour.temperature }}°
+              </div>
+              
+              <div class="hour-details text-xs text-gray-500 space-y-1">
+                <div class="flex items-center justify-center gap-1">
+                  <mat-icon class="icon-tiny">water_drop</mat-icon>
+                  {{ hour.humidity }}%
+                </div>
+              </div>
+              
+              @if (isCurrentHour(hour.hour)) {
+                <div class="mt-2">
+                  <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full font-medium">Now</span>
+                </div>
+              }
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,37 @@
+<div class="min-h-screen py-8 px-4">
+  <header class="max-w-4xl mx-auto mb-8">
+    <mat-toolbar class="bg-white/20 backdrop-blur-md rounded-2xl shadow-lg">
+      <span class="text-2xl font-bold text-white">
+        <mat-icon class="mr-2">wb_sunny</mat-icon>
+        {{ title() }}
+      </span>
+    </mat-toolbar>
+  </header>
+
+  <main class="max-w-4xl mx-auto">
+    <nav class="mb-6">
+      <mat-tab-group [selectedIndex]="selectedTab" (selectedIndexChange)="onTabChange($event)">
+        <mat-tab label="Daily Forecast" routerLink="/daily" routerLinkActive="active">
+          <ng-template mat-tab-label>
+            <mat-icon class="mr-2">calendar_today</mat-icon>
+            Daily
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Hourly Forecast" routerLink="/hourly" routerLinkActive="active">
+          <ng-template mat-tab-label>
+            <mat-icon class="mr-2">schedule</mat-icon>
+            Hourly
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </nav>
+
+    <div class="transition-all duration-300">
+      <router-outlet />
+    </div>
+  </main>
+
+  <footer class="max-w-4xl mx-auto mt-12 text-center text-white/70 text-sm">
+    <p>© 2026 Weather Forecast App. Built with Angular, Tailwind CSS & Angular Material.</p>
+  </footer>
+</div>

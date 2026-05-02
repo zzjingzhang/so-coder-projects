@@ -1,0 +1,40 @@
+<mat-card class="course-card" [routerLink]="['/courses', course.id]">
+  <div class="image-container">
+    <img mat-card-image [src]="course.image" [alt]="course.title">
+    <mat-chip *ngIf="isCompleted" class="completed-chip" color="accent">
+      <mat-icon>check_circle</mat-icon>
+      已完成
+    </mat-chip>
+  </div>
+  
+  <mat-card-content>
+    <h3 class="course-title">{{ course.title }}</h3>
+    <p class="course-instructor">
+      <mat-icon>person</mat-icon>
+      {{ course.instructor }}
+    </p>
+    
+    <div class="course-stats">
+      <span class="stat">
+        <mat-icon>star</mat-icon>
+        {{ course.rating }}
+      </span>
+      <span class="stat">
+        <mat-icon>people</mat-icon>
+        {{ course.studentsCount }} 人
+      </span>
+      <span class="stat">
+        <mat-icon>play_circle</mat-icon>
+        {{ course.totalLessons }} 节课
+      </span>
+    </div>
+    
+    <div *ngIf="showProgress" class="progress-section">
+      <div class="progress-header">
+        <span class="progress-label">学习进度</span>
+        <span class="lessons-count">{{ course.completedLessons }}/{{ course.totalLessons }} 课</span>
+      </div>
+      <app-progress-bar [progress]="course.progress"></app-progress-bar>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,45 @@
+# This file is used to ignore files which should not be added to git.
+
+node_modules/
+dist/
+.angular/
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-project
+*.sublime-workspace
+.vscode/
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+# Miscellaneous
+/.angular/cache
+.sass-cache/
+connect.lock
+coverage/
+libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System files
+.DS_Store
+Thumbs.db

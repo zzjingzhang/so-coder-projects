@@ -1,0 +1,134 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- 搜索和分类区域 -->
+  <div class="bg-white shadow-sm sticky top-0 z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <!-- 搜索框 -->
+      <div class="mb-6">
+        <div class="relative">
+          <input
+            type="text"
+            [(ngModel)]="searchKeyword"
+            (keyup.enter)="onSearch()"
+            placeholder="搜索食谱..."
+            class="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
+          />
+          <mat-icon class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">search</mat-icon>
+        </div>
+      </div>
+
+      <!-- 分类标签 -->
+      <div class="flex flex-wrap gap-2">
+        <button
+          mat-raised-button
+          [class.bg-orange-500]="selectedCategory === 'all'"
+          [class.text-white]="selectedCategory === 'all'"
+          [class.bg-gray-100]="selectedCategory !== 'all'"
+          [class.text-gray-700]="selectedCategory !== 'all'"
+          (click)="filterByCategory('all')"
+          class="transition-all hover:shadow-md"
+        >
+          全部
+        </button>
+        <button
+          *ngFor="let category of categories"
+          mat-raised-button
+          [class.bg-orange-500]="selectedCategory === category"
+          [class.text-white]="selectedCategory === category"
+          [class.bg-gray-100]="selectedCategory !== category"
+          [class.text-gray-700]="selectedCategory !== category"
+          (click)="filterByCategory(category)"
+          class="transition-all hover:shadow-md"
+        >
+          {{ category }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 食谱列表 -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- 结果计数 -->
+    <div class="mb-6">
+      <p class="text-gray-600">
+        共找到 <span class="font-semibold text-orange-600">{{ filteredRecipes.length }}</span> 个食谱
+      </p>
+    </div>
+
+    <!-- 空状态 -->
+    <div *ngIf="filteredRecipes.length === 0" class="text-center py-16">
+      <mat-icon class="text-6xl text-gray-300 mb-4">no_meals</mat-icon>
+      <h3 class="text-xl font-semibold text-gray-600 mb-2">没有找到相关食谱</h3>
+      <p class="text-gray-400">尝试更换关键词或分类</p>
+    </div>
+
+    <!-- 食谱卡片网格 -->
+    <div *ngIf="filteredRecipes.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <mat-card
+        *ngFor="let recipe of filteredRecipes"
+        class="overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
+        (click)="viewRecipe(recipe.id)"
+      >
+        <!-- 图片 -->
+        <div class="relative h-48 overflow-hidden">
+          <img
+            [src]="recipe.imageUrl"
+            [alt]="recipe.title"
+            class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+            loading="lazy"
+          />
+          <div class="absolute top-3 right-3">
+            <span
+              class="px-3 py-1 rounded-full text-xs font-medium"
+              [ngClass]="getDifficultyColor(recipe.difficulty)"
+            >
+              {{ getDifficultyLabel(recipe.difficulty) }}
+            </span>
+          </div>
+        </div>
+
+        <mat-card-content class="p-5">
+          <!-- 分类和评分 -->
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-sm text-orange-600 font-medium">{{ recipe.category }}</span>
+            <div class="flex items-center gap-1">
+              <mat-icon class="text-yellow-500 text-sm">star</mat-icon>
+              <span class="text-sm text-gray-600">{{ recipe.rating }}</span>
+            </div>
+          </div>
+
+          <!-- 标题 -->
+          <h3 class="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
+            {{ recipe.title }}
+          </h3>
+
+          <!-- 描述 -->
+          <p class="text-sm text-gray-500 mb-4 line-clamp-2">
+            {{ recipe.description }}
+          </p>
+
+          <!-- 时间和分量 -->
+          <div class="flex items-center gap-4 text-sm text-gray-500">
+            <div class="flex items-center gap-1">
+              <mat-icon class="text-xs">schedule</mat-icon>
+              <span>{{ recipe.totalTime }}</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <mat-icon class="text-xs">restaurant</mat-icon>
+              <span>{{ recipe.servings }}人份</span>
+            </div>
+          </div>
+
+          <!-- 标签 -->
+          <div class="mt-4 flex flex-wrap gap-1">
+            <mat-chip
+              *ngFor="let tag of recipe.tags | slice:0:3"
+              class="text-xs bg-gray-100 text-gray-600 h-6"
+            >
+              {{ tag }}
+            </mat-chip>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

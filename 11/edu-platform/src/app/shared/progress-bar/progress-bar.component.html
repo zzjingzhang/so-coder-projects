@@ -1,0 +1,9 @@
+<div class="progress-container">
+  <mat-progress-bar 
+    [mode]="'determinate'" 
+    [value]="progress"
+    [color]="progressColor"
+    class="progress-bar">
+  </mat-progress-bar>
+  <span *ngIf="showPercentage" class="percentage">{{ progress }}%</span>
+</div>

@@ -1,0 +1,233 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- 加载状态 -->
+  <div *ngIf="loading" class="flex items-center justify-center min-h-screen">
+    <mat-spinner color="accent"></mat-spinner>
+  </div>
+
+  <!-- 食谱不存在 -->
+  <div *ngIf="!loading && !recipe" class="flex flex-col items-center justify-center min-h-screen">
+    <mat-icon class="text-6xl text-gray-300 mb-4">error_outline</mat-icon>
+    <h3 class="text-xl font-semibold text-gray-600 mb-2">食谱不存在</h3>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="goBack()"
+    >
+      返回列表
+    </button>
+  </div>
+
+  <!-- 食谱详情内容 -->
+  <div *ngIf="!loading && recipe" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- 返回按钮 -->
+    <button
+      mat-button
+      (click)="goBack()"
+      class="mb-6 text-orange-600 hover:text-orange-700"
+    >
+      <mat-icon class="mr-1">arrow_back</mat-icon>
+      返回食谱列表
+    </button>
+
+    <!-- 头部信息 -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2">
+        <!-- 图片 -->
+        <div class="h-64 lg:h-auto relative">
+          <img
+            [src]="recipe.imageUrl"
+            [alt]="recipe.title"
+            class="w-full h-full object-cover"
+          />
+          <div class="absolute top-4 left-4">
+            <span
+              class="px-4 py-2 rounded-full text-sm font-medium shadow-lg"
+              [ngClass]="getDifficultyColor(recipe.difficulty)"
+            >
+              {{ getDifficultyLabel(recipe.difficulty) }}
+            </span>
+          </div>
+        </div>
+
+        <!-- 信息 -->
+        <div class="p-8">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-sm text-orange-600 font-medium px-3 py-1 bg-orange-50 rounded-full">
+              {{ recipe.category }}
+            </span>
+            <div class="flex items-center gap-1">
+              <mat-icon class="text-yellow-500">star</mat-icon>
+              <span class="text-gray-700 font-medium">{{ recipe.rating }}</span>
+            </div>
+          </div>
+
+          <h1 class="text-3xl font-bold text-gray-900 mb-4">
+            {{ recipe.title }}
+          </h1>
+
+          <p class="text-gray-600 mb-6 leading-relaxed">
+            {{ recipe.description }}
+          </p>
+
+          <!-- 时间和分量 -->
+          <div class="grid grid-cols-3 gap-4 mb-6">
+            <div class="text-center p-4 bg-gray-50 rounded-xl">
+              <mat-icon class="text-orange-500 mb-1">schedule</mat-icon>
+              <div class="text-sm text-gray-500 mb-1">准备时间</div>
+              <div class="font-semibold text-gray-800">{{ recipe.prepTime }}</div>
+            </div>
+            <div class="text-center p-4 bg-gray-50 rounded-xl">
+              <mat-icon class="text-orange-500 mb-1">kitchen</mat-icon>
+              <div class="text-sm text-gray-500 mb-1">烹饪时间</div>
+              <div class="font-semibold text-gray-800">{{ recipe.cookTime }}</div>
+            </div>
+            <div class="text-center p-4 bg-gray-50 rounded-xl">
+              <mat-icon class="text-orange-500 mb-1">restaurant</mat-icon>
+              <div class="text-sm text-gray-500 mb-1">份量</div>
+              <div class="font-semibold text-gray-800">{{ recipe.servings }}人份</div>
+            </div>
+          </div>
+
+          <!-- 标签 -->
+          <div class="flex flex-wrap gap-2">
+            <mat-chip
+              *ngFor="let tag of recipe.tags"
+              class="bg-orange-50 text-orange-700"
+            >
+              {{ tag }}
+            </mat-chip>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 食材和步骤 -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- 食材部分 -->
+      <div class="lg:col-span-1">
+        <mat-card class="sticky top-8">
+          <mat-card-header class="pb-4">
+            <mat-card-title class="text-xl font-bold text-gray-800">
+              食材清单
+            </mat-card-title>
+            <mat-card-subtitle>
+              共 {{ recipe.ingredients.length }} 种食材
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-divider></mat-divider>
+          <mat-card-content class="pt-4">
+            <!-- 按分类分组的食材 -->
+            <div
+              *ngFor="let category of ingredientCategories"
+              class="mb-6 last:mb-0"
+            >
+              <div
+              class="flex items-center gap-2 mb-3 p-3 rounded-lg"
+              [ngClass]="getIngredientCategoryColor(category)"
+            >
+              <mat-icon class="text-gray-600">{{ getCategoryIcon(category) }}</mat-icon>
+              <span class="font-semibold text-gray-700">{{ category }}</span>
+              <span class="text-sm text-gray-500">
+                ({{ groupedIngredients[category].length }}种)
+              </span>
+            </div>
+
+            <mat-list>
+              <mat-list-item
+                *ngFor="let ingredient of groupedIngredients[category]"
+                class="!py-2"
+              >
+                <div class="flex items-center justify-between w-full">
+                  <span class="text-gray-700">{{ ingredient.name }}</span>
+                  <span class="text-gray-500 text-sm font-medium">
+                    {{ ingredient.amount }} {{ ingredient.unit }}
+                  </span>
+                </div>
+              </mat-list-item>
+            </mat-list>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- 步骤部分 -->
+      <div class="lg:col-span-2">
+        <mat-card>
+          <mat-card-header class="pb-4">
+            <mat-card-title class="text-xl font-bold text-gray-800">
+              烹饪步骤
+            </mat-card-title>
+            <mat-card-subtitle>
+              共 {{ recipe.steps.length }} 个步骤
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-divider></mat-divider>
+          <mat-card-content class="pt-6">
+            <div class="space-y-6">
+              <div
+                *ngFor="let step of recipe.steps; let i = index"
+                class="flex gap-4 relative"
+              >
+                <!-- 步骤序号 -->
+                <div class="flex-shrink-0">
+                  <div
+                    class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-bold shadow-md"
+                  >
+                    {{ step.order }}
+                  </div>
+                  <!-- 连接线 -->
+                  <div
+                    *ngIf="i < recipe.steps.length - 1"
+                    class="absolute left-5 top-10 w-0.5 h-full bg-gradient-to-b from-orange-300 to-orange-100"
+                  ></div>
+                </div>
+
+                <!-- 步骤内容 -->
+                <div class="flex-grow pb-6">
+                  <div class="bg-gray-50 rounded-xl p-5 hover:bg-gray-100 transition-colors">
+                    <p class="text-gray-700 leading-relaxed">
+                      {{ step.description }}
+                    </p>
+                    <div
+                      *ngIf="step.duration"
+                      class="flex items-center gap-1 mt-3 text-sm text-gray-500"
+                    >
+                      <mat-icon class="text-xs">schedule</mat-icon>
+                      <span>约 {{ step.duration }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- 小贴士 -->
+        <mat-card class="mt-6">
+          <mat-card-header class="pb-2">
+            <mat-icon class="text-orange-500 mr-2">tips_and_updates</mat-icon>
+            <mat-card-title class="text-lg font-bold text-gray-800">
+              温馨提示
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul class="space-y-2 text-gray-600">
+              <li class="flex items-start gap-2">
+                <mat-icon class="text-orange-400 text-sm mt-0.5">check_circle</mat-icon>
+                <span>食材的新鲜度直接影响菜品口感，建议选用当季新鲜食材。</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <mat-icon class="text-orange-400 text-sm mt-0.5">check_circle</mat-icon>
+                <span>可根据个人口味调整调料用量，喜欢辣的可以适当增加辣椒用量。</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <mat-icon class="text-orange-400 text-sm mt-0.5">check_circle</mat-icon>
+                <span>烹饪过程中注意火候控制，避免食材过熟影响口感。</span>
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

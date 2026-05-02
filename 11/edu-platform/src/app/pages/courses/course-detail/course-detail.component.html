@@ -1,0 +1,144 @@
+<div class="course-detail-container" *ngIf="course">
+  <div class="course-header">
+    <button mat-button routerLink="/courses" class="back-btn">
+      <mat-icon>arrow_back</mat-icon>
+      返回课程列表
+    </button>
+    
+    <div class="header-content">
+      <div class="course-info">
+        <img [src]="course.image" [alt]="course.title" class="course-image">
+        <div class="info-text">
+          <h1>{{ course.title }}</h1>
+          <p class="instructor">
+            <mat-icon>person</mat-icon>
+            讲师：{{ course.instructor }}
+          </p>
+          <div class="stats">
+            <span class="stat">
+              <mat-icon>star</mat-icon>
+              {{ course.rating }} 评分
+            </span>
+            <span class="stat">
+              <mat-icon>people</mat-icon>
+              {{ course.studentsCount }} 学员
+            </span>
+            <span class="stat">
+              <mat-icon>timer</mat-icon>
+              {{ totalDuration }}
+            </span>
+            <span class="stat">
+              <mat-icon>play_circle</mat-icon>
+              {{ course.totalLessons }} 节课
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="progress-card">
+        <div class="progress-header">
+          <h3>学习进度</h3>
+          <span class="progress-text">{{ course.completedLessons }}/{{ course.totalLessons }} 课已完成</span>
+        </div>
+        <app-progress-bar [progress]="course.progress"></app-progress-bar>
+      </div>
+    </div>
+  </div>
+
+  <div class="course-content">
+    <div class="main-content">
+      <mat-card class="lesson-player" *ngIf="currentLesson">
+        <mat-card-header>
+          <mat-card-title>{{ currentLesson.title }}</mat-card-title>
+          <mat-card-subtitle>{{ currentChapter?.title }}</mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div class="video-placeholder">
+            <mat-icon class="play-icon">play_circle</mat-icon>
+            <p>视频播放区域</p>
+            <span class="duration">时长：{{ currentLesson.duration }}</span>
+          </div>
+          
+          <div class="lesson-actions">
+            <mat-checkbox 
+              [checked]="currentLesson.completed"
+              (change)="toggleLessonCompletion(currentChapter!, currentLesson)">
+              标记为已完成
+            </mat-checkbox>
+          </div>
+        </mat-card-content>
+        
+        <mat-card-actions class="navigation-actions">
+          <button 
+            mat-button 
+            [disabled]="!hasPreviousLesson"
+            (click)="goToPreviousLesson()">
+            <mat-icon>skip_previous</mat-icon>
+            上一节
+          </button>
+          <span class="spacer"></span>
+          <button 
+            mat-button 
+            color="primary"
+            [disabled]="!hasNextLesson"
+            (click)="goToNextLesson()">
+            下一节
+            <mat-icon>skip_next</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <mat-card class="course-description">
+        <mat-card-title>课程简介</mat-card-title>
+        <mat-card-content>
+          <p>{{ course.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="sidebar">
+      <mat-card class="course-nav">
+        <mat-card-title>
+          <mat-icon>menu_book</mat-icon>
+          课程目录
+        </mat-card-title>
+        
+        <mat-accordion multi>
+          <mat-expansion-panel 
+            *ngFor="let chapter of course.chapters"
+            [expanded]="chapter.expanded"
+            (opened)="toggleChapterExpansion(chapter)"
+            (closed)="toggleChapterExpansion(chapter)">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <span class="chapter-title">{{ chapter.title }}</span>
+              </mat-panel-title>
+              <mat-panel-description>
+                <span class="lesson-count">
+                  {{ chapter.lessons.filter(l => l.completed).length }}/{{ chapter.lessons.length }} 课
+                </span>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            
+            <div class="lesson-list">
+              <div 
+                *ngFor="let lesson of chapter.lessons"
+                class="lesson-item"
+                [class.active]="currentLesson?.id === lesson.id"
+                (click)="selectLesson(chapter, lesson)">
+                <div class="lesson-indicator">
+                  <mat-icon *ngIf="lesson.completed" class="completed">check_circle</mat-icon>
+                  <mat-icon *ngIf="!lesson.completed && currentLesson?.id === lesson.id" class="active-icon">play_circle</mat-icon>
+                  <span *ngIf="!lesson.completed && currentLesson?.id !== lesson.id" class="circle"></span>
+                </div>
+                <span class="lesson-title">{{ lesson.title }}</span>
+                <span class="lesson-duration">{{ lesson.duration }}</span>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+<div class="courses-container">
+  <div class="page-header">
+    <h1>我的课程</h1>
+    <p class="subtitle">继续您的学习之旅</p>
+  </div>
+
+  <mat-tab-group [(selectedIndex)]="activeTabIndex" animationDuration="0ms">
+    <mat-tab label="进行中">
+      <ng-template mat-tab-label>
+        <mat-icon>incomplete_circle</mat-icon>
+        进行中 ({{ inProgressCourses.length }})
+      </ng-template>
+      <div class="courses-grid" *ngIf="inProgressCourses.length > 0; else noInProgress">
+        <app-course-card 
+          *ngFor="let course of inProgressCourses" 
+          [course]="course">
+        </app-course-card>
+      </div>
+      <ng-template #noInProgress>
+        <div class="empty-state">
+          <mat-icon>library_books</mat-icon>
+          <h3>还没有进行中的课程</h3>
+          <p>选择一门课程开始您的学习之旅吧！</p>
+        </div>
+      </ng-template>
+    </mat-tab>
+
+    <mat-tab label="已完成">
+      <ng-template mat-tab-label>
+        <mat-icon>check_circle</mat-icon>
+        已完成 ({{ completedCourses.length }})
+      </ng-template>
+      <div class="courses-grid" *ngIf="completedCourses.length > 0; else noCompleted">
+        <app-course-card 
+          *ngFor="let course of completedCourses" 
+          [course]="course">
+        </app-course-card>
+      </div>
+      <ng-template #noCompleted>
+        <div class="empty-state">
+          <mat-icon>emoji_events</mat-icon>
+          <h3>还没有完成的课程</h3>
+          <p>继续学习，完成您的第一门课程！</p>
+        </div>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</div>

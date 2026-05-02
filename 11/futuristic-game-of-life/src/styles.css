@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+/* 自定义未来感配色方案 */
+@theme {
+  --color-futuristic-black: #0a0a0f;
+  --color-futuristic-dark: #12121a;
+  --color-futuristic-blue: #00f0ff;
+  --color-futuristic-purple: #9d00ff;
+  --color-futuristic-pink: #ff00e6;
+  --color-futuristic-green: #00ff87;
+  --color-futuristic-yellow: #f0ff00;
+  --color-futuristic-red: #ff0055;
+  --color-futuristic-orange: #ff6b00;
+  --color-futuristic-cyan: #00f0ff;
+}
+
+/* 全局样式 */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-futuristic-black);
+  color: white;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* 未来感文字效果 */
+.futuristic-text {
+  background: linear-gradient(90deg, var(--color-futuristic-blue), var(--color-futuristic-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 霓虹发光效果 */
+.neon-glow {
+  box-shadow: 0 0 10px var(--color-futuristic-blue), 
+              0 0 20px var(--color-futuristic-blue), 
+              0 0 30px var(--color-futuristic-blue);
+}
+
+.neon-glow-purple {
+  box-shadow: 0 0 10px var(--color-futuristic-purple), 
+              0 0 20px var(--color-futuristic-purple), 
+              0 0 30px var(--color-futuristic-purple);
+}
+
+/* 动画效果 */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--color-futuristic-blue), 
+                0 0 10px var(--color-futuristic-blue);
+  }
+  50% {
+    box-shadow: 0 0 15px var(--color-futuristic-blue), 
+                0 0 25px var(--color-futuristic-blue);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
