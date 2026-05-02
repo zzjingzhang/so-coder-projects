@@ -1,0 +1,13 @@
+/* Control Panel Component Styles */
+::ng-deep .p-slider {
+  width: 100% !important;
+}
+
+::ng-deep .p-slider-handle {
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
+::ng-deep .p-inputnumber-input {
+  width: 80px;
+}

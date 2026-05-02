@@ -1,0 +1,63 @@
+<div class="animate-fade-in">
+  <h1 class="text-3xl font-bold text-blue-600 mb-6">直角三角形介绍</h1>
+  
+  <nz-card class="mb-6">
+    <div class="flex justify-center mb-8">
+      <svg width="300" height="250" viewBox="0 0 300 250">
+        <polygon 
+          points="50,200 250,200 50,50" 
+          fill="none" 
+          stroke="#3b82f6" 
+          stroke-width="3"
+          class="animate-fade-in"
+        />
+        <rect x="50" y="175" width="25" height="25" fill="none" stroke="#3b82f6" stroke-width="2" />
+        <text x="40" y="220" class="text-sm font-bold" fill="#3b82f6">a</text>
+        <text x="145" y="220" class="text-sm font-bold" fill="#3b82f6">b</text>
+        <text x="145" y="120" class="text-sm font-bold" fill="#3b82f6">c</text>
+        <text x="60" y="40" class="text-sm" fill="#666">直角</text>
+      </svg>
+    </div>
+
+    <nz-steps [nzCurrent]="currentStep" (nzIndexChange)="goToStep($event)">
+      @for (step of steps; track step) {
+        <nz-step [nzTitle]="step.title"></nz-step>
+      }
+    </nz-steps>
+  </nz-card>
+
+  <nz-card class="mb-6">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ steps[currentStep].title }}</h2>
+    <div class="text-gray-700 leading-relaxed whitespace-pre-line animate-slide-up">
+      @if (currentStep === 3) {
+        <div class="math-formula text-center text-2xl my-4 p-4 bg-blue-50 rounded-lg">
+          a² + b² = c²
+        </div>
+      }
+      {{ steps[currentStep].content }}
+    </div>
+  </nz-card>
+
+  <div class="flex justify-between">
+    <button 
+      nz-button 
+      nzType="default" 
+      (click)="prevStep()" 
+      [disabled]="currentStep === 0"
+      class="px-6"
+    >
+      <span nz-icon nzType="left" nzTheme="outline"></span>
+      上一步
+    </button>
+    <button 
+      nz-button 
+      nzType="primary" 
+      (click)="nextStep()" 
+      [disabled]="currentStep === steps.length - 1"
+      class="px-6"
+    >
+      下一步
+      <span nz-icon nzType="right" nzTheme="outline"></span>
+    </button>
+  </div>
+</div>

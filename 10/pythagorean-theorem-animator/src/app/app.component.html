@@ -1,0 +1,39 @@
+<nz-layout class="h-screen">
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="250">
+    <div class="logo flex items-center justify-center h-16 bg-blue-600 text-white text-xl font-bold">
+      <span *ngIf="!isCollapsed">勾股定理教学</span>
+      <span *ngIf="isCollapsed">勾股</span>
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <li nz-menu-item nzMatchRouter>
+        <span nz-icon nzType="info-circle" nzTheme="outline"></span>
+        <a routerLink="/introduction">直角三角形介绍</a>
+      </li>
+      <li nz-menu-item nzMatchRouter>
+        <span nz-icon nzType="play-circle" nzTheme="outline"></span>
+        <a routerLink="/animation">动画展示</a>
+      </li>
+      <li nz-menu-item nzMatchRouter>
+        <span nz-icon nzType="form" nzTheme="outline"></span>
+        <a routerLink="/formula">公式讲解</a>
+      </li>
+      <li nz-menu-item nzMatchRouter>
+        <span nz-icon nzType="rocket" nzTheme="outline"></span>
+        <a routerLink="/application">实际应用</a>
+      </li>
+      <li nz-menu-item nzMatchRouter>
+        <span nz-icon nzType="question-circle" nzTheme="outline"></span>
+        <a routerLink="/quiz">互动练习</a>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header class="bg-white shadow-md flex items-center px-6">
+      <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" (click)="isCollapsed = !isCollapsed" class="text-xl cursor-pointer"></span>
+      <span class="ml-4 text-lg font-medium text-gray-700">{{ title }}</span>
+    </nz-header>
+    <nz-content class="m-4 p-6 bg-white rounded-lg shadow-sm min-h-[280px] overflow-auto">
+      <router-outlet></router-outlet>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

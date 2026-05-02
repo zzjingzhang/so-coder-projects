@@ -1,0 +1,13 @@
+/* Data Display Component Styles */
+::ng-deep .p-progressbar {
+  height: 1.5rem !important;
+  border-radius: 0.5rem !important;
+}
+
+::ng-deep .p-progressbar-value {
+  border-radius: 0.5rem !important;
+}
+
+::ng-deep .p-progressbar-label {
+  line-height: 1.5rem !important;
+}

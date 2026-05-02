@@ -1,0 +1,309 @@
+<div class="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-100 p-4 md:p-8">
+  <div class="max-w-6xl mx-auto">
+    <!-- 标题 -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-indigo-900 mb-2">杠杆平衡模拟器</h1>
+      <p class="text-lg text-gray-600">探索力矩平衡原理，体验物理实验的乐趣</p>
+    </div>
+
+    <!-- 主内容区域 -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- 左侧控制面板 -->
+      <div class="lg:col-span-1">
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">实验控制</h2>
+          
+          <!-- 力值选择 -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-3">选择重物（力值）</label>
+            <div class="flex flex-wrap gap-3">
+              @for (force of availableForces; track force) {
+                <button
+                  (click)="selectedForce.set(force)"
+                  class="w-16 h-16 text-xl font-bold rounded-xl transition-all duration-200 border-2 flex items-center justify-center"
+                  [class]="selectedForce() === force 
+                    ? 'bg-indigo-600 text-white border-indigo-700 shadow-md transform scale-105' 
+                    : 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200 hover:border-gray-400'"
+                >
+                  {{ force }}N
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- 左侧重物放置区域 -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-3">左侧重物位置（米）</label>
+            <div class="grid grid-cols-5 gap-2">
+              @for (pos of [1, 2, 3, 4, 5]; track pos) {
+                <button
+                  (click)="addLeftWeight(pos)"
+                  class="py-3 px-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                >
+                  {{ pos }}m
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- 右侧重物放置区域 -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-3">右侧重物位置（米）</label>
+            <div class="grid grid-cols-5 gap-2">
+              @for (pos of [1, 2, 3, 4, 5]; track pos) {
+                <button
+                  (click)="addRightWeight(pos)"
+                  class="py-3 px-2 bg-green-500 hover:bg-green-600 text-white text-sm font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                >
+                  {{ pos }}m
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- 重置按钮 -->
+          <button
+            (click)="resetAll()"
+            class="w-full py-3 px-4 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+          >
+            <i class="pi pi-refresh"></i>
+            重置实验
+          </button>
+        </div>
+      </div>
+
+      <!-- 中间杠杆模拟区域 -->
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">杠杆模拟</h2>
+          
+          <!-- 杠杆状态显示 -->
+          <div class="text-center mb-6">
+            @if (isBalanced() && (leftWeights().length > 0 || rightWeights().length > 0)) {
+              <span class="inline-block px-6 py-2 bg-green-100 text-green-800 rounded-full font-semibold text-lg border border-green-300">
+                ✅ 杠杆平衡！
+              </span>
+            } @else if (!isBalanced() && (leftWeights().length > 0 || rightWeights().length > 0)) {
+              <span class="inline-block px-6 py-2 bg-yellow-100 text-yellow-800 rounded-full font-semibold text-lg border border-yellow-300">
+                ⚠️ {{ torqueDifference() > 0 ? '杠杆向左倾斜' : '杠杆向右倾斜' }}
+              </span>
+            } @else {
+              <span class="inline-block px-6 py-2 bg-blue-100 text-blue-800 rounded-full font-semibold text-lg border border-blue-300">
+                ℹ️ 请在杠杆上放置重物开始实验
+              </span>
+            }
+          </div>
+
+          <!-- 杠杆可视化 -->
+          <div class="relative h-80 bg-gradient-to-b from-sky-100 to-sky-200 rounded-xl overflow-hidden shadow-inner">
+            <!-- 支点 -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+              <div class="w-0 h-0 border-l-[40px] border-r-[40px] border-b-[60px] border-l-transparent border-r-transparent border-b-gray-700 drop-shadow-md"></div>
+            </div>
+
+            <!-- 杠杆 -->
+            <div
+              class="absolute bottom-20 left-1/2 transform -translate-x-1/2 lever-tilt"
+              [style.transform]="'translateX(-50%) rotate(' + leverAngle() + 'deg)'"
+            >
+              <!-- 杠杆主体 -->
+              <div class="relative w-[600px] h-4 bg-gradient-to-r from-amber-700 via-amber-600 to-amber-700 rounded-full shadow-lg">
+                <!-- 刻度线 -->
+                <div class="absolute top-0 left-0 w-full h-full flex justify-between items-center px-2">
+                  @for (i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track i) {
+                    <div class="flex flex-col items-center">
+                      <div class="w-0.5 h-6 bg-gray-800"></div>
+                      <span class="text-xs font-bold text-gray-800 mt-1">{{ i - 5 }}</span>
+                    </div>
+                  }
+                </div>
+
+                <!-- 左侧重物 -->
+                @for (weight of leftWeights(); track weight.id) {
+                  <div
+                    class="absolute bottom-4 cursor-pointer hover:scale-110 transition-transform"
+                    [style.left]="'calc(50% - ' + getWeightPositionPercent(weight.position) + '% - 20px)'"
+                    (click)="removeLeftWeight(weight.id)"
+                    title="点击移除"
+                  >
+                    <div class="flex flex-col items-center">
+                      <div class="w-1 h-8 bg-gray-600"></div>
+                      <div
+                        class="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold shadow-md"
+                        [class]="weight.force === 1 ? 'bg-blue-500' : weight.force === 2 ? 'bg-blue-600' : weight.force === 3 ? 'bg-blue-700' : weight.force === 4 ? 'bg-blue-800' : 'bg-blue-900'"
+                      >
+                        {{ weight.force }}N
+                      </div>
+                      <span class="text-xs text-gray-700 mt-1">{{ weight.position }}m</span>
+                    </div>
+                  </div>
+                }
+
+                <!-- 右侧重物 -->
+                @for (weight of rightWeights(); track weight.id) {
+                  <div
+                    class="absolute bottom-4 cursor-pointer hover:scale-110 transition-transform"
+                    [style.left]="'calc(50% + ' + getWeightPositionPercent(weight.position) + '% - 20px)'"
+                    (click)="removeRightWeight(weight.id)"
+                    title="点击移除"
+                  >
+                    <div class="flex flex-col items-center">
+                      <div class="w-1 h-8 bg-gray-600"></div>
+                      <div
+                        class="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold shadow-md"
+                        [class]="weight.force === 1 ? 'bg-green-500' : weight.force === 2 ? 'bg-green-600' : weight.force === 3 ? 'bg-green-700' : weight.force === 4 ? 'bg-green-800' : 'bg-green-900'"
+                      >
+                        {{ weight.force }}N
+                      </div>
+                      <span class="text-xs text-gray-700 mt-1">{{ weight.position }}m</span>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- 使用说明 -->
+          <div class="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <p class="text-sm text-gray-600">
+              <strong class="text-gray-800">使用说明：</strong>
+              1. 选择重物的力值（1N-5N）；
+              2. 点击左侧或右侧的位置按钮将重物放在杠杆上；
+              3. 观察杠杆是否平衡；
+              4. 点击杠杆上的重物可以移除它。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 力矩计算区域 -->
+    <div class="mt-6">
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">力矩计算</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- 左侧力矩计算 -->
+          <div class="p-5 bg-blue-50 rounded-xl border-l-4 border-blue-500 shadow-sm">
+            <h3 class="text-lg font-semibold text-blue-800 mb-3 flex items-center gap-2">
+              <span class="w-3 h-3 bg-blue-500 rounded-full"></span>
+              左侧力矩
+            </h3>
+            <div class="torque-display text-sm text-gray-700">
+              <p class="mb-2 leading-relaxed">{{ getTorqueCalculationText('left') }}</p>
+              <p class="text-xl font-bold text-blue-600 mt-3">
+                总力矩: <span class="text-2xl">{{ leftTorque() }}</span> N·m
+              </p>
+            </div>
+          </div>
+
+          <!-- 力矩平衡分析 -->
+          <div class="p-5 bg-gray-50 rounded-xl border-l-4 border-gray-500 shadow-sm">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <span class="w-3 h-3 bg-gray-500 rounded-full"></span>
+              平衡分析
+            </h3>
+            <div class="torque-display text-sm text-gray-700">
+              <p class="mb-2">力矩公式: τ = F × d</p>
+              <p class="mb-2">其中: τ = 力矩 (N·m), F = 力 (N), d = 力臂 (m)</p>
+              <p class="mb-3">平衡条件: 左侧力矩 = 右侧力矩</p>
+              <p class="text-xl font-bold py-2 px-4 rounded-lg" [class]="isBalanced() ? 'bg-green-100 text-green-700 border border-green-300' : 'bg-red-100 text-red-700 border border-red-300'">
+                {{ isBalanced() ? '✓ 力矩平衡' : '✗ 力矩不平衡' }}
+              </p>
+              @if (!isBalanced()) {
+                <p class="text-sm text-gray-600 mt-3 p-2 bg-white rounded border">
+                  力矩差: <span class="font-bold text-red-600">{{ torqueDifferenceAbs() }}</span> N·m
+                </p>
+              }
+            </div>
+          </div>
+
+          <!-- 右侧力矩计算 -->
+          <div class="p-5 bg-green-50 rounded-xl border-l-4 border-green-500 shadow-sm">
+            <h3 class="text-lg font-semibold text-green-800 mb-3 flex items-center gap-2">
+              <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+              右侧力矩
+            </h3>
+            <div class="torque-display text-sm text-gray-700">
+              <p class="mb-2 leading-relaxed">{{ getTorqueCalculationText('right') }}</p>
+              <p class="text-xl font-bold text-green-600 mt-3">
+                总力矩: <span class="text-2xl">{{ rightTorque() }}</span> N·m
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 物理原理说明 -->
+    <div class="mt-6">
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">杠杆平衡原理</h2>
+        
+        <div class="space-y-6">
+          <div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center text-sm font-bold">1</span>
+              什么是杠杆平衡？
+            </h3>
+            <p class="text-gray-700 leading-relaxed pl-10">
+              杠杆平衡是物理学中的一个基本原理。当杠杆两侧的力矩相等时，杠杆就会保持平衡状态。力矩是力乘以力臂（从支点到力的作用线的垂直距离）。
+            </p>
+          </div>
+          
+          <div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center text-sm font-bold">2</span>
+              力矩公式
+            </h3>
+            <div class="bg-gradient-to-r from-gray-50 to-indigo-50 p-6 rounded-xl border border-indigo-100 ml-10">
+              <p class="text-center text-3xl font-mono font-bold text-indigo-700 mb-2">τ = F × d</p>
+              <p class="text-center text-sm text-gray-600">
+                其中：τ = 力矩（牛顿·米，N·m），F = 力（牛顿，N），d = 力臂（米，m）
+              </p>
+            </div>
+          </div>
+          
+          <div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center text-sm font-bold">3</span>
+              平衡条件
+            </h3>
+            <p class="text-gray-700 leading-relaxed pl-10 mb-3">
+              当杠杆平衡时，左侧的总力矩等于右侧的总力矩：
+            </p>
+            <div class="bg-gradient-to-r from-gray-50 to-indigo-50 p-6 rounded-xl border border-indigo-100 ml-10">
+              <p class="text-center text-2xl font-mono font-bold text-indigo-700 mb-2">
+                τ<sub>左</sub> = τ<sub>右</sub>
+              </p>
+              <p class="text-center text-xl font-mono font-bold text-indigo-700">
+                F<sub>左1</sub> × d<sub>左1</sub> + F<sub>左2</sub> × d<sub>左2</sub> + ... = F<sub>右1</sub> × d<sub>右1</sub> + F<sub>右2</sub> × d<sub>右2</sub> + ...
+              </p>
+            </div>
+          </div>
+          
+          <div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center text-sm font-bold">4</span>
+              实验建议
+            </h3>
+            <ul class="list-none pl-10 space-y-3">
+              <li class="flex items-start gap-2">
+                <span class="text-green-500 mt-1">💡</span>
+                <span class="text-gray-700">尝试在左侧放置一个2N的重物在3m处，右侧放置一个3N的重物在2m处，观察杠杆是否平衡</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-green-500 mt-1">💡</span>
+                <span class="text-gray-700">探索不同的力和力臂组合，找出能够使杠杆平衡的多种方式</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-green-500 mt-1">💡</span>
+                <span class="text-gray-700">注意观察：当力矩不平衡时，杠杆会向力矩较大的一侧倾斜</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

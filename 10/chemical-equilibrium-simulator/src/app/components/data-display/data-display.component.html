@@ -1,0 +1,145 @@
+<p-card class="w-full">
+  <ng-template pTemplate="header">
+    <div class="bg-purple-600 text-white p-4 rounded-t-lg">
+      <h2 class="text-xl font-bold">数据监控面板</h2>
+      <p class="text-sm opacity-90">实时监测反应平衡状态</p>
+    </div>
+  </ng-template>
+
+  <div class="space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg border border-blue-200">
+        <div class="text-sm text-blue-600 font-medium">当前温度</div>
+        <div class="text-2xl font-bold text-blue-800 mt-1">
+          {{ state.temperature.toFixed(0) }} K
+        </div>
+        <div class="text-sm text-blue-600 mt-1">
+          ({{ getTemperatureInCelsius() }} °C)
+        </div>
+      </div>
+
+      <div class="p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg border border-green-200">
+        <div class="text-sm text-green-600 font-medium">平衡常数 K</div>
+        <div class="text-2xl font-bold text-green-800 mt-1">
+          {{ formatNumber(state.equilibriumConstant) }}
+        </div>
+        <div class="text-xs text-green-600 mt-1">
+          K = [N₂O₄]/[NO₂]²
+        </div>
+      </div>
+
+      <div class="p-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg border border-orange-200">
+        <div class="text-sm text-orange-600 font-medium">反应商 Q</div>
+        <div class="text-2xl font-bold text-orange-800 mt-1">
+          {{ formatNumber(state.reactionQuotient) }}
+        </div>
+        <div class="text-xs text-orange-600 mt-1">
+          与 K 比较确定反应方向
+        </div>
+      </div>
+    </div>
+
+    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+      <div class="flex items-center justify-between mb-3">
+        <span class="font-semibold text-gray-700">反应状态</span>
+        <span class="text-lg font-bold" [ngClass]="getEquilibriumStatusColor()">
+          {{ getEquilibriumStatus() }}
+        </span>
+      </div>
+      <div class="text-sm text-gray-600">
+        <span *ngIf="!isAtEquilibrium()">
+          Q {{ state.reactionQuotient > state.equilibriumConstant ? '>' : '<' }} K，
+          平衡向{{ state.isForwardReaction ? '正' : '逆'}}向移动
+        </span>
+        <span *ngIf="isAtEquilibrium()">
+          Q ≈ K，系统处于平衡状态
+        </span>
+      </div>
+    </div>
+
+    <div class="space-y-3">
+      <h3 class="font-semibold text-gray-700">浓度分布</h3>
+      
+      <div class="space-y-2">
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-red-700 font-medium">NO₂ 浓度</span>
+          <span class="font-mono text-red-800">{{ state.no2Concentration.toFixed(1) }} 分子</span>
+        </div>
+        <p-progressBar 
+          [value]="getNo2Percentage()" 
+          styleClass="h-4"
+        >
+          <ng-template let-value>
+            <span class="text-white text-xs font-bold px-2">{{ value.toFixed(1) }}%</span>
+          </ng-template>
+        </p-progressBar>
+      </div>
+
+      <div class="space-y-2">
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-gray-700 font-medium">N₂O₄ 浓度</span>
+          <span class="font-mono text-gray-800">{{ state.n2o4Concentration.toFixed(1) }} 分子</span>
+        </div>
+        <p-progressBar 
+          [value]="getN2o4Percentage()" 
+          styleClass="h-4 bg-gray-200"
+          [style]="{ backgroundColor: '#e5e7eb' }"
+        >
+          <ng-template let-value>
+            <span class="text-gray-800 text-xs font-bold px-2">{{ value.toFixed(1) }}%</span>
+          </ng-template>
+        </p-progressBar>
+      </div>
+    </div>
+
+    <div class="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+      <h3 class="font-semibold text-yellow-800 mb-2">
+        <i class="pi pi-lightbulb mr-2"></i>颜色变化说明
+      </h3>
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2">
+          <div 
+            class="w-10 h-10 rounded-full border-2 border-gray-400"
+            [style.background]="'rgba(139, 69, 19, ' + (state.colorIntensity / 200) + ')'"
+          ></div>
+          <span class="text-sm text-yellow-700">
+            当前颜色强度: {{ state.colorIntensity.toFixed(1) }}%
+          </span>
+        </div>
+      </div>
+      <p class="text-sm text-yellow-700 mt-2">
+        颜色越深表示 NO₂ 浓度越高。升高温度使平衡逆向移动，NO₂ 增加，颜色变深；
+        降低温度使平衡正向移动，N₂O₄ 增加，颜色变浅。
+      </p>
+    </div>
+
+    <div class="border rounded-lg overflow-hidden">
+      <table class="w-full text-sm">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-4 py-3 text-left font-semibold text-gray-700">参数</th>
+            <th class="px-4 py-3 text-left font-semibold text-gray-700">数值</th>
+            <th class="px-4 py-3 text-left font-semibold text-gray-700">说明</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <tr>
+            <td class="px-4 py-2 text-gray-600">2NO₂ ⇌ N₂O₄</td>
+            <td class="px-4 py-2 font-mono">放热反应</td>
+            <td class="px-4 py-2 text-gray-500">ΔH = -57.2 kJ/mol</td>
+          </tr>
+          <tr>
+            <td class="px-4 py-2 text-gray-600">标准状态 K (298K)</td>
+            <td class="px-4 py-2 font-mono">210</td>
+            <td class="px-4 py-2 text-gray-500">平衡常数</td>
+          </tr>
+          <tr>
+            <td class="px-4 py-2 text-gray-600">分子总数</td>
+            <td class="px-4 py-2 font-mono">{{ getTotalMolecules() }}</td>
+            <td class="px-4 py-2 text-gray-500">N 原子守恒</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</p-card>

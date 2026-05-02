@@ -1,0 +1,424 @@
+<div class="animate-fade-in">
+  <h1 class="text-3xl font-bold text-blue-600 mb-6">勾股定理实际应用</h1>
+  
+  <!-- 应用场景介绍 -->
+  <nz-card class="mb-6">
+    <h2 class="text-xl font-bold text-gray-800 mb-4">勾股定理的应用领域</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      @for (app of applications; track app) {
+        <nz-card class="hover:shadow-lg transition-shadow">
+          <h3 class="text-lg font-semibold text-blue-600 mb-2">{{ app.title }}</h3>
+          <p class="text-gray-600 text-sm mb-3">{{ app.description }}</p>
+          <div class="space-y-1">
+            @for (example of app.examples; track example) {
+              <div class="flex items-center text-sm text-gray-500">
+                <span nz-icon nzType="check-circle" nzTheme="outline" class="text-green-500 mr-2"></span>
+                {{ example }}
+              </div>
+            }
+          </div>
+        </nz-card>
+      }
+    </div>
+  </nz-card>
+
+  <!-- 交互式计算器 -->
+  <nz-card class="mb-6">
+    <h2 class="text-xl font-bold text-gray-800 mb-4">交互式应用计算器</h2>
+    
+    <nz-tabset [(nzSelectedIndex)]="activeTabIndex">
+      <!-- 梯子问题 -->
+      <nz-tab nzTitle="🪜 梯子问题">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">问题描述</h3>
+            <p class="text-gray-600 mb-4">
+              一架梯子靠在墙上，已知梯子底部距离墙的水平距离和梯子顶端到达的高度，
+              求梯子的长度。
+            </p>
+            
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <label class="text-gray-700">梯子高度 (米):</label>
+                <nz-input-number 
+                  [(ngModel)]="ladderHeight" 
+                  [nzMin]="0" 
+                  [nzStep]="0.5"
+                  class="w-32"
+                ></nz-input-number>
+              </div>
+              
+              <div class="flex items-center justify-between">
+                <label class="text-gray-700">底部距离 (米):</label>
+                <nz-input-number 
+                  [(ngModel)]="ladderDistance" 
+                  [nzMin]="0" 
+                  [nzStep]="0.5"
+                  class="w-32"
+                ></nz-input-number>
+              </div>
+              
+              <button 
+                nz-button 
+                nzType="primary" 
+                (click)="calculateLadderLength()"
+                class="w-full"
+              >
+                计算梯子长度
+              </button>
+            </div>
+            
+            @if (ladderLength !== null) {
+              <div class="mt-6 p-4 bg-green-50 rounded-lg">
+                <h4 class="font-semibold text-green-700 mb-2">计算结果:</h4>
+                <p class="text-green-600">
+                  梯子长度 = √({{ ladderHeight }}² + {{ ladderDistance }}²) = 
+                  <span class="font-bold text-xl">{{ ladderLength.toFixed(2) }} 米</span>
+                </p>
+              </div>
+            }
+          </div>
+          
+          <div class="flex justify-center items-center">
+            <svg width="300" height="300" viewBox="0 0 300 300">
+              <!-- 墙 -->
+              <rect x="50" y="50" width="10" height="200" fill="#8B4513" />
+              <!-- 地面 -->
+              <rect x="50" y="250" width="200" height="10" fill="#8B4513" />
+              <!-- 梯子 -->
+              <line 
+                [attr.x1]="50 + ladderDistance * 40" 
+                [attr.y1]="250" 
+                [attr.x2]="50" 
+                [attr.y2]="250 - ladderHeight * 40" 
+                stroke="#3b82f6" 
+                stroke-width="6"
+                stroke-linecap="round"
+              />
+              <!-- 直角标记 -->
+              <rect x="50" y="230" width="20" height="20" fill="none" stroke="#3b82f6" stroke-width="2" />
+              <!-- 标签 -->
+              <text x="30" y="175" text-anchor="middle" class="text-sm font-bold" fill="#3b82f6">{{ ladderHeight }}m</text>
+              <text [attr.x]="50 + ladderDistance * 20" y="270" text-anchor="middle" class="text-sm font-bold" fill="#3b82f6">{{ ladderDistance }}m</text>
+              @if (ladderLength !== null) {
+                <text 
+                  [attr.x]="25 + ladderDistance * 20" 
+                  [attr.y]="250 - ladderHeight * 20" 
+                  text-anchor="middle" 
+                  class="text-sm font-bold" 
+                  fill="#ef4444"
+                >
+                  {{ ladderLength.toFixed(1) }}m
+                </text>
+              }
+            </svg>
+          </div>
+        </div>
+      </nz-tab>
+      
+      <!-- 屏幕尺寸问题 -->
+      <nz-tab nzTitle="📺 屏幕尺寸">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">问题描述</h3>
+            <p class="text-gray-600 mb-4">
+              已知屏幕的宽高比，计算屏幕的对角线长度。电视和显示器的尺寸通常以对角线英寸数表示。
+            </p>
+            
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <label class="text-gray-700">宽度比例:</label>
+                <nz-input-number 
+                  [(ngModel)]="screenWidth" 
+                  [nzMin]="1" 
+                  [nzStep]="1"
+                  class="w-32"
+                ></nz-input-number>
+              </div>
+              
+              <div class="flex items-center justify-between">
+                <label class="text-gray-700">高度比例:</label>
+                <nz-input-number 
+                  [(ngModel)]="screenHeight" 
+                  [nzMin]="1" 
+                  [nzStep]="1"
+                  class="w-32"
+                ></nz-input-number>
+              </div>
+              
+              <button 
+                nz-button 
+                nzType="primary" 
+                (click)="calculateScreenDiagonal()"
+                class="w-full"
+              >
+                计算对角线比例
+              </button>
+            </div>
+            
+            @if (screenDiagonal !== null) {
+              <div class="mt-6 p-4 bg-green-50 rounded-lg">
+                <h4 class="font-semibold text-green-700 mb-2">计算结果:</h4>
+                <p class="text-green-600">
+                  对角线比例 = √({{ screenWidth }}² + {{ screenHeight }}²) = 
+                  <span class="font-bold text-xl">{{ screenDiagonal.toFixed(2) }}</span>
+                </p>
+                <p class="text-green-600 text-sm mt-2">
+                  宽高比 {{ screenWidth }}:{{ screenHeight }} 的屏幕，对角线与宽度比例为 {{ screenDiagonal.toFixed(2) }}:{{ screenWidth }}
+                </p>
+              </div>
+            }
+          </div>
+          
+          <div class="flex justify-center items-center">
+            <svg width="300" height="300" viewBox="0 0 300 300">
+              <!-- 屏幕 -->
+              <rect 
+                x="50" 
+                y="80" 
+                [attr.width]="screenWidth * 40" 
+                [attr.height]="screenHeight * 40" 
+                fill="#1a1a2e" 
+                stroke="#3b82f6" 
+                stroke-width="4"
+                rx="8"
+              />
+              <!-- 对角线 -->
+              <line 
+                x1="50" 
+                [attr.y1]="80 + screenHeight * 40" 
+                [attr.x2]="50 + screenWidth * 40" 
+                y1="80" 
+                stroke="#ef4444" 
+                stroke-width="3"
+                stroke-dasharray="5,5"
+              />
+              <!-- 标签 -->
+              <text 
+                [attr.x]="50 + screenWidth * 20" 
+                [attr.y]="300 - 20" 
+                text-anchor="middle" 
+                class="text-sm font-bold" 
+                fill="#3b82f6"
+              >
+                {{ screenWidth }}
+              </text>
+              <text 
+                x="30" 
+                [attr.y]="80 + screenHeight * 20" 
+                text-anchor="middle" 
+                class="text-sm font-bold" 
+                fill="#3b82f6"
+              >
+                {{ screenHeight }}
+              </text>
+              @if (screenDiagonal !== null) {
+                <text 
+                  [attr.x]="50 + screenWidth * 20" 
+                  [attr.y]="80 + screenHeight * 20" 
+                  text-anchor="middle" 
+                  class="text-sm font-bold" 
+                  fill="#ef4444"
+                >
+                  {{ screenDiagonal.toFixed(1) }}
+                </text>
+              }
+            </svg>
+          </div>
+        </div>
+      </nz-tab>
+      
+      <!-- 两点距离问题 -->
+      <nz-tab nzTitle="📍 两点距离">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">问题描述</h3>
+            <p class="text-gray-600 mb-4">
+              在平面直角坐标系中，已知两点的坐标，计算两点之间的直线距离。这是勾股定理在解析几何中的直接应用。
+            </p>
+            
+            <div class="space-y-4">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="text-gray-700 block mb-1">点 A: x 坐标</label>
+                  <nz-input-number 
+                    [(ngModel)]="point1X" 
+                    [nzStep]="1"
+                    class="w-full"
+                  ></nz-input-number>
+                </div>
+                <div>
+                  <label class="text-gray-700 block mb-1">点 A: y 坐标</label>
+                  <nz-input-number 
+                    [(ngModel)]="point1Y" 
+                    [nzStep]="1"
+                    class="w-full"
+                  ></nz-input-number>
+                </div>
+              </div>
+              
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="text-gray-700 block mb-1">点 B: x 坐标</label>
+                  <nz-input-number 
+                    [(ngModel)]="point2X" 
+                    [nzStep]="1"
+                    class="w-full"
+                  ></nz-input-number>
+                </div>
+                <div>
+                  <label class="text-gray-700 block mb-1">点 B: y 坐标</label>
+                  <nz-input-number 
+                    [(ngModel)]="point2Y" 
+                    [nzStep]="1"
+                    class="w-full"
+                  ></nz-input-number>
+                </div>
+              </div>
+              
+              <button 
+                nz-button 
+                nzType="primary" 
+                (click)="calculateDistance()"
+                class="w-full"
+              >
+                计算两点距离
+              </button>
+            </div>
+            
+            @if (distanceBetweenPoints !== null) {
+              <div class="mt-6 p-4 bg-green-50 rounded-lg">
+                <h4 class="font-semibold text-green-700 mb-2">计算结果:</h4>
+                <p class="text-green-600 text-sm mb-1">
+                  横坐标差: {{ point2X - point1X }}, 纵坐标差: {{ point2Y - point1Y }}
+                </p>
+                <p class="text-green-600">
+                  距离 = √({{ point2X - point1X }}² + {{ point2Y - point1Y }}²) = 
+                  <span class="font-bold text-xl">{{ distanceBetweenPoints.toFixed(2) }}</span>
+                </p>
+              </div>
+            }
+          </div>
+          
+          <div class="flex justify-center items-center">
+            <svg width="300" height="300" viewBox="0 0 300 300">
+              <!-- 坐标轴 -->
+              <line x1="50" y1="250" x2="250" y2="250" stroke="#ccc" stroke-width="2" />
+              <line x1="50" y1="50" x2="50" y2="250" stroke="#ccc" stroke-width="2" />
+              <text x="260" y="255" class="text-sm text-gray-500">x</text>
+              <text x="45" y="40" class="text-sm text-gray-500">y</text>
+              
+              <!-- 点 A -->
+              <circle 
+                [attr.cx]="50 + point1X * 30" 
+                [attr.cy]="250 - point1Y * 30" 
+                r="6" 
+                fill="#ef4444"
+              />
+              <text 
+                [attr.x]="50 + point1X * 30" 
+                [attr.y]="250 - point1Y * 30 - 10" 
+                text-anchor="middle" 
+                class="text-sm font-bold" 
+                fill="#ef4444"
+              >
+                A ({{ point1X }}, {{ point1Y }})
+              </text>
+              
+              <!-- 点 B -->
+              <circle 
+                [attr.cx]="50 + point2X * 30" 
+                [attr.cy]="250 - point2Y * 30" 
+                r="6" 
+                fill="#3b82f6"
+              />
+              <text 
+                [attr.x]="50 + point2X * 30" 
+                [attr.y]="250 - point2Y * 30 - 10" 
+                text-anchor="middle" 
+                class="text-sm font-bold" 
+                fill="#3b82f6"
+              >
+                B ({{ point2X }}, {{ point2Y }})
+              </text>
+              
+              <!-- 连接线 -->
+              <line 
+                [attr.x1]="50 + point1X * 30" 
+                [attr.y1]="250 - point1Y * 30" 
+                [attr.x2]="50 + point2X * 30" 
+                [attr.y2]="250 - point2Y * 30" 
+                stroke="#22c55e" 
+                stroke-width="3"
+                stroke-dasharray="5,5"
+              />
+              
+              @if (distanceBetweenPoints !== null) {
+                <text 
+                  [attr.x]="50 + (point1X + point2X) * 15" 
+                  [attr.y]="250 - (point1Y + point2Y) * 15" 
+                  text-anchor="middle" 
+                  class="text-sm font-bold" 
+                  fill="#22c55e"
+                >
+                  {{ distanceBetweenPoints.toFixed(1) }}
+                </text>
+              }
+            </svg>
+          </div>
+        </div>
+      </nz-tab>
+    </nz-tabset>
+  </nz-card>
+
+  <!-- 实际案例 -->
+  <nz-card class="mb-6 bg-gradient-to-r from-blue-50 to-purple-50">
+    <h2 class="text-xl font-bold text-gray-800 mb-4">💡 真实世界案例</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <nz-card class="border-l-4 border-blue-500">
+        <h3 class="font-semibold text-blue-600 mb-2">🏀 篮球架高度</h3>
+        <p class="text-gray-600 text-sm">
+          标准篮球架高度为3.05米。如果你站在离篮筐底部4米处，
+          你到篮筐的直线距离是多少？
+        </p>
+        <p class="text-green-600 text-sm mt-2 font-medium">
+          答案: √(3.05² + 4²) ≈ 5.04米
+        </p>
+      </nz-card>
+      
+      <nz-card class="border-l-4 border-green-500">
+        <h3 class="font-semibold text-green-600 mb-2">📱 手机屏幕</h3>
+        <p class="text-gray-600 text-sm">
+          一款6.7英寸的手机，宽高比为20:9。屏幕的实际宽度和高度是多少？
+          (提示: 先计算对角线比例，再按比例分配)
+        </p>
+        <p class="text-green-600 text-sm mt-2 font-medium">
+          计算: 对角线比例 = √(20² + 9²) ≈ 21.93，宽度 = 6.7 × 20 ÷ 21.93 ≈ 6.11英寸
+        </p>
+      </nz-card>
+      
+      <nz-card class="border-l-4 border-purple-500">
+        <h3 class="font-semibold text-purple-600 mb-2">🏠 屋顶斜坡</h3>
+        <p class="text-gray-600 text-sm">
+          一栋房子宽度为12米，屋顶最高点比屋檐高3米。
+          屋顶斜坡的长度是多少？
+        </p>
+        <p class="text-green-600 text-sm mt-2 font-medium">
+          答案: √(6² + 3²) = √45 ≈ 6.71米（注意：只计算一半宽度）
+        </p>
+      </nz-card>
+      
+      <nz-card class="border-l-4 border-orange-500">
+        <h3 class="font-semibold text-orange-600 mb-2">🚗 倒车雷达</h3>
+        <p class="text-gray-600 text-sm">
+          汽车倒车雷达检测到后方左角3米处有障碍物，
+          右角4米处也有障碍物。两个障碍物之间的距离是多少？
+        </p>
+        <p class="text-green-600 text-sm mt-2 font-medium">
+          答案: √(3² + 4²) = 5米（假设车宽形成直角）
+        </p>
+      </nz-card>
+    </div>
+  </nz-card>
+</div>

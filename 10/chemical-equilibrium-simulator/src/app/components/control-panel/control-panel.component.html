@@ -1,0 +1,96 @@
+<p-card class="w-full">
+  <ng-template pTemplate="header">
+    <div class="bg-blue-600 text-white p-4 rounded-t-lg">
+      <h2 class="text-xl font-bold">控制面板</h2>
+    </div>
+  </ng-template>
+
+  <div class="space-y-6">
+    <div class="border-b pb-4">
+      <h3 class="text-lg font-semibold mb-3 text-gray-700">
+        <i class="pi pi-thermometer mr-2"></i>温度控制
+      </h3>
+      <div class="grid grid-cols-1 gap-4">
+        <div class="flex items-center gap-4">
+          <span class="text-sm text-gray-600 w-24">开尔文:</span>
+          <span class="font-mono text-lg font-bold text-blue-600">{{ temperature }} K</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="text-sm text-gray-600 w-24">摄氏度:</span>
+          <span class="font-mono text-lg font-bold text-blue-600">{{ getTemperatureInCelsius() }} °C</span>
+        </div>
+        <div class="pt-2">
+          <p-slider 
+            [(ngModel)]="temperature" 
+            [min]="minTemperature" 
+            [max]="maxTemperature" 
+            (onSlideEnd)="onTemperatureChange()"
+            [step]="1"
+            class="w-full"
+          ></p-slider>
+        </div>
+        <div class="flex justify-between text-xs text-gray-500">
+          <span>{{ minTemperature }} K (低温)</span>
+          <span>298 K (标准)</span>
+          <span>{{ maxTemperature }} K (高温)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-b pb-4">
+      <h3 class="text-lg font-semibold mb-3 text-gray-700">
+        <i class="pi pi-flask mr-2"></i>浓度控制
+      </h3>
+      
+      <div class="space-y-4">
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-gray-600 w-20">添加 NO₂:</span>
+          <p-inputNumber 
+            [(ngModel)]="no2ToAdd" 
+            [min]="1" 
+            [max]="50" 
+            [showButtons]="true"
+            buttonLayout="horizontal"
+            inputId="horizontal"
+            incrementButtonClass="p-button-success"
+            decrementButtonClass="p-button-danger"
+          ></p-inputNumber>
+          <p-button 
+            label="添加" 
+            (click)="addNo2()" 
+            styleClass="p-button-sm"
+            [style]="{ backgroundColor: '#8B0000' }"
+          ></p-button>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-gray-600 w-20">添加 N₂O₄:</span>
+          <p-inputNumber 
+            [(ngModel)]="n2o4ToAdd" 
+            [min]="1" 
+            [max]="30" 
+            [showButtons]="true"
+            buttonLayout="horizontal"
+            inputId="horizontal2"
+            incrementButtonClass="p-button-success"
+            decrementButtonClass="p-button-danger"
+          ></p-inputNumber>
+          <p-button 
+            label="添加" 
+            (click)="addN2o4()" 
+            styleClass="p-button-sm p-button-secondary"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-2">
+      <p-button 
+        label="重置模拟" 
+        icon="pi pi-refresh" 
+        (click)="reset()"
+        styleClass="w-full p-button-outlined"
+      ></p-button>
+    </div>
+  </div>
+</p-card>

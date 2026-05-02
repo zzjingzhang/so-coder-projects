@@ -1,0 +1,35 @@
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-8">
+  <header class="mb-8 text-center">
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
+      化学平衡原理可视化模拟
+    </h1>
+    <h2 class="text-xl md:text-2xl text-blue-600 font-semibold mb-4">
+      2NO₂ ⇌ N₂O₄ 反应的勒沙特列原理演示
+    </h2>
+    <p class="text-gray-600 max-w-3xl mx-auto">
+      通过交互式模拟，观察温度和浓度变化对化学平衡的影响。
+      棕红色的 NO₂ 与无色的 N₂O₄ 之间的平衡会随条件变化而移动。
+    </p>
+  </header>
+
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-1">
+        <app-control-panel></app-control-panel>
+      </div>
+
+      <div class="lg:col-span-2 space-y-6">
+        <app-molecule-visualization></app-molecule-visualization>
+        <app-data-display></app-data-display>
+      </div>
+    </div>
+  </div>
+
+  <footer class="mt-12 text-center text-gray-500 text-sm">
+    <p>化学平衡模拟系统 | 基于 Angular + PrimeNG + Tailwind CSS</p>
+    <p class="mt-1">
+      <span class="inline-block px-2 py-1 bg-red-100 text-red-700 rounded text-xs mr-2">NO₂ 棕红色</span>
+      <span class="inline-block px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">N₂O₄ 无色</span>
+    </p>
+  </footer>
+</div>

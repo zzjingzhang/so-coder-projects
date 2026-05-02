@@ -1,0 +1,158 @@
+<div class="animate-fade-in">
+  <h1 class="text-3xl font-bold text-blue-600 mb-6">勾股定理互动练习</h1>
+  
+  <!-- 结果页面 -->
+  @if (showResult) {
+    <nz-result
+      [nzStatus]="score >= questions.length * 0.7 ? 'success' : score >= questions.length * 0.5 ? 'warning' : 'error'"
+      [nzTitle]="score >= questions.length * 0.7 ? '🎉 太棒了！' : score >= questions.length * 0.5 ? '👍 还不错！' : '💪 继续加油！'"
+      [nzSubTitle]="'你答对了 ' + score + ' 题，共 ' + questions.length + ' 题'"
+    >
+      <div nz-result-extra>
+        <nz-progress 
+          [nzPercent]="(score / questions.length) * 100" 
+          [nzStatus]="score >= questions.length * 0.7 ? 'success' : score >= questions.length * 0.5 ? 'active' : 'exception'"
+          [nzStrokeWidth]="14"
+        ></nz-progress>
+        
+        <div class="mt-6 text-gray-600">
+          @if (score >= questions.length * 0.8) {
+            <p class="text-lg">🌟 优秀！你对勾股定理的掌握非常好！</p>
+          } @else if (score >= questions.length * 0.6) {
+            <p class="text-lg">👍 良好！继续练习可以做得更好！</p>
+          } @else {
+            <p class="text-lg">📚 建议复习一下公式和例题，然后再试一次！</p>
+          }
+        </div>
+        
+        <div class="mt-6 space-x-4">
+          <button nz-button nzType="primary" (click)="restartQuiz()">
+            <span nz-icon nzType="reload" nzTheme="outline"></span>
+            重新开始
+          </button>
+          <button nz-button nzType="default" routerLink="/animation">
+            <span nz-icon nzType="play-circle" nzTheme="outline"></span>
+            复习动画
+          </button>
+        </div>
+      </div>
+    </nz-result>
+  } @else {
+    <!-- 进度条 -->
+    <nz-card class="mb-6">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-gray-600">进度: 第 {{ currentQuestionIndex + 1 }} 题 / 共 {{ questions.length }} 题</span>
+        <span class="text-gray-600">得分: {{ score }} / {{ totalAnswered }}</span>
+      </div>
+      <nz-progress [nzPercent]="progress" nzShowInfo="false"></nz-progress>
+    </nz-card>
+
+    <!-- 问题卡片 -->
+    <nz-card class="mb-6">
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">
+          <span class="inline-block w-8 h-8 rounded-full bg-blue-500 text-white text-center leading-8 mr-2">
+            {{ currentQuestionIndex + 1 }}
+          </span>
+          {{ currentQuestion.question }}
+        </h2>
+      </div>
+      
+      <!-- 选项 -->
+      <div class="space-y-3 mb-6">
+        @for (option of currentQuestion.options; track option; let i = $index) {
+          <div 
+            class="p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md"
+            [ngClass]="getOptionClass(i)"
+            (click)="selectAnswer(i)"
+          >
+            <div class="flex items-center">
+              <span class="inline-block w-8 h-8 rounded-full bg-gray-100 text-gray-700 text-center leading-8 mr-3 font-bold">
+                {{ String.fromCharCode(65 + i) }}
+              </span>
+              <span class="text-gray-700">{{ option }}</span>
+              
+              @if (isAnswerChecked) {
+                @if (i === currentQuestion.correctAnswer) {
+                  <span nz-icon nzType="check-circle" nzTheme="fill" class="ml-auto text-green-500 text-xl"></span>
+                } @else if (selectedAnswer === i && i !== currentQuestion.correctAnswer) {
+                  <span nz-icon nzType="close-circle" nzTheme="fill" class="ml-auto text-red-500 text-xl"></span>
+                }
+              }
+            </div>
+          </div>
+        }
+      </div>
+      
+      <!-- 答案反馈 -->
+      @if (isAnswerChecked) {
+        <div 
+          class="p-4 rounded-lg mb-4"
+          [ngClass]="isCorrect ? 'bg-green-50 border-2 border-green-200' : 'bg-red-50 border-2 border-red-200'"
+        >
+          <div class="flex items-start">
+            <span 
+              nz-icon 
+              [nzType]="isCorrect ? 'check-circle' : 'close-circle'" 
+              nzTheme="fill"
+              class="text-2xl mr-3 mt-0.5"
+              [ngClass]="isCorrect ? 'text-green-500' : 'text-red-500'"
+            ></span>
+            <div>
+              <h3 class="font-semibold mb-2" [ngClass]="isCorrect ? 'text-green-700' : 'text-red-700'">
+                {{ isCorrect ? '✓ 回答正确！' : '✗ 回答错误' }}
+              </h3>
+              <p class="text-gray-700 leading-relaxed">
+                <strong>解析：</strong>{{ currentQuestion.explanation }}
+              </p>
+            </div>
+          </div>
+        </div>
+      }
+      
+      <!-- 操作按钮 -->
+      <div class="flex justify-between">
+        @if (!isAnswerChecked) {
+          <button 
+            nz-button 
+            nzType="primary" 
+            (click)="checkAnswer()"
+            [disabled]="selectedAnswer === null"
+            class="px-8"
+          >
+            <span nz-icon nzType="check" nzTheme="outline"></span>
+            检查答案
+          </button>
+        } @else {
+          <button 
+            nz-button 
+            nzType="primary" 
+            (click)="nextQuestion()"
+            class="px-8"
+          >
+            {{ currentQuestionIndex < questions.length - 1 ? '下一题' : '查看结果' }}
+            <span nz-icon nzType="right" nzTheme="outline"></span>
+          </button>
+        }
+      </div>
+    </nz-card>
+
+    <!-- 提示信息 -->
+    <nz-card class="bg-yellow-50 border-l-4 border-yellow-400">
+      <div class="flex items-start">
+        <span nz-icon nzType="bulb" nzTheme="fill" class="text-yellow-500 text-xl mr-3 mt-1"></span>
+        <div>
+          <h3 class="font-semibold text-yellow-800 mb-1">💡 学习提示</h3>
+          <p class="text-yellow-700 text-sm">
+            勾股定理的核心公式是：<span class="font-bold">a² + b² = c²</span>。
+            记住以下变形形式：
+            <span class="font-bold">c = √(a² + b²)</span>、
+            <span class="font-bold">a = √(c² - b²)</span>、
+            <span class="font-bold">b = √(c² - a²)</span>。
+            常见的勾股数有 (3,4,5)、(5,12,13)、(8,15,17) 等，记住它们可以帮助快速解题！
+          </p>
+        </div>
+      </div>
+    </nz-card>
+  }
+</div>

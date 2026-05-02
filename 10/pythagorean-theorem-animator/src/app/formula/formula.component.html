@@ -1,0 +1,93 @@
+<div class="animate-fade-in">
+  <h1 class="text-3xl font-bold text-blue-600 mb-6">勾股定理公式讲解</h1>
+  
+  <!-- 核心公式展示 -->
+  <nz-card class="mb-6 bg-gradient-to-r from-blue-50 to-purple-50">
+    <div class="text-center">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">勾股定理核心公式</h2>
+      
+      <div class="math-formula text-4xl mb-8 text-center">
+        <span class="text-red-500">a²</span> + <span class="text-green-500">b²</span> = <span class="text-purple-500">c²</span>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+        <nz-card class="border-l-4 border-red-500">
+          <h3 class="text-lg font-semibold text-red-600 mb-2">a (直角边)</h3>
+          <p class="text-gray-600">垂直的直角边，也称为"勾"</p>
+        </nz-card>
+        
+        <nz-card class="border-l-4 border-green-500">
+          <h3 class="text-lg font-semibold text-green-600 mb-2">b (直角边)</h3>
+          <p class="text-gray-600">水平的直角边，也称为"股"</p>
+        </nz-card>
+        
+        <nz-card class="border-l-4 border-purple-500">
+          <h3 class="text-lg font-semibold text-purple-600 mb-2">c (斜边)</h3>
+          <p class="text-gray-600">直角所对的边，也称为"弦"</p>
+        </nz-card>
+      </div>
+    </div>
+  </nz-card>
+
+  <!-- 公式详细讲解 -->
+  <nz-card class="mb-6">
+    <nz-tabset [(nzSelectedIndex)]="activeTabIndex">
+      @for (tab of tabs; track tab; let i = $index) {
+        <nz-tab [nzTitle]="tab.title">
+          <div class="whitespace-pre-line text-gray-700 leading-relaxed animate-slide-up">
+            @if (i === 0) {
+              <div class="math-formula text-2xl my-4 p-4 bg-blue-50 rounded-lg text-center">
+                a² + b² = c²
+              </div>
+            } @else if (i === 1) {
+              <div class="space-y-4">
+                <div class="math-formula text-xl p-3 bg-red-50 rounded-lg text-center">
+                  c = √(a² + b²)
+                </div>
+                <div class="math-formula text-xl p-3 bg-green-50 rounded-lg text-center">
+                  a = √(c² - b²)
+                </div>
+                <div class="math-formula text-xl p-3 bg-purple-50 rounded-lg text-center">
+                  b = √(c² - a²)
+                </div>
+              </div>
+            } @else if (i === 3) {
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                @for (group of [['3, 4, 5'], ['5, 12, 13'], ['8, 15, 17'], ['7, 24, 25']]; track group) {
+                  <div class="p-3 bg-blue-50 rounded-lg text-center">
+                    <span class="math-formula text-xl">{{ group[0] }}</span>
+                  </div>
+                }
+              </div>
+            }
+            <p class="mt-4">{{ tab.content }}</p>
+          </div>
+        </nz-tab>
+      }
+    </nz-tabset>
+  </nz-card>
+
+  <!-- 例题解析 -->
+  <nz-card class="mb-6">
+    <h2 class="text-xl font-bold text-gray-800 mb-4">典型例题解析</h2>
+    <nz-collapse>
+      @for (panel of panels; track panel) {
+        <nz-collapse-panel [nzHeader]="panel.name" [(nzActive)]="panel.active">
+          <div class="whitespace-pre-line text-gray-700 leading-relaxed">
+            {{ panel.content }}
+          </div>
+        </nz-collapse-panel>
+      }
+    </nz-collapse>
+  </nz-card>
+
+  <!-- 记忆口诀 -->
+  <nz-card class="mb-6 bg-yellow-50">
+    <h2 class="text-xl font-bold text-gray-800 mb-4">💡 记忆口诀</h2>
+    <div class="text-center">
+      <p class="text-lg text-gray-700 mb-4">勾三股四弦五</p>
+      <p class="text-sm text-gray-600">这是中国古代对勾股定理的简洁表述</p>
+      <p class="text-sm text-gray-600 mt-2">"勾"指较短的直角边，"股"指较长的直角边，"弦"指斜边</p>
+    </div>
+  </nz-card>
+</div>
