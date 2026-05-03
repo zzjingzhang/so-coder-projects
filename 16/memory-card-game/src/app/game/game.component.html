@@ -1,0 +1,125 @@
+<div class="min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100 p-4 md:p-8">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-8">
+      <h1 class="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 mb-2">
+        🃏 扑克牌记忆游戏
+      </h1>
+      <p class="text-gray-600 text-base md:text-lg">记住牌的位置，然后按从小到大的顺序翻开它们！</p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-lg p-4 md:p-6 mb-6">
+      <div class="grid grid-cols-3 gap-4 text-center">
+        <div class="bg-blue-50 rounded-xl p-3 md:p-4">
+          <div class="text-sm md:text-base text-gray-500 mb-1">📚 记忆时间</div>
+          <div class="text-2xl md:text-3xl font-bold text-blue-600">{{ formatTime(memorizeTime) }}</div>
+        </div>
+        <div class="bg-green-50 rounded-xl p-3 md:p-4">
+          <div class="text-sm md:text-base text-gray-500 mb-1">⏱️ 游戏时间</div>
+          <div class="text-2xl md:text-3xl font-bold text-green-600">{{ formatTime(gameTime) }}</div>
+        </div>
+        <div class="bg-purple-50 rounded-xl p-3 md:p-4">
+          <div class="text-sm md:text-base text-gray-500 mb-1">🎯 翻牌次数</div>
+          <div class="text-2xl md:text-3xl font-bold text-purple-600">{{ flipCount }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-lg p-4 md:p-6 mb-6 text-center">
+      @if (isIdle) {
+        <div class="space-y-4">
+          <p class="text-gray-600 text-base md:text-lg">准备好挑战你的记忆力了吗？</p>
+          <button 
+            nz-button 
+            nzType="primary" 
+            nzSize="large"
+            (click)="dealCards()"
+            class="w-full md:w-auto px-8 py-3 text-lg font-semibold bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 rounded-xl flex items-center justify-center h-12"
+          >
+            🎴 开始发牌
+          </button>
+        </div>
+      }
+
+      @if (isMemorizing) {
+        <div class="space-y-4">
+          <p class="text-orange-600 text-lg md:text-xl font-semibold animate-pulse">
+            🧠 记住这些牌的位置！（记忆时间：{{ formatTime(memorizeTime) }}）
+          </p>
+          <button 
+            nz-button 
+            nzType="primary" 
+            nzSize="large"
+            (click)="startPlaying()"
+            class="w-full md:w-auto px-8 py-3 text-lg font-semibold bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 rounded-xl flex items-center justify-center h-12"
+          >
+            🎮 开始游戏
+          </button>
+        </div>
+      }
+
+      @if (isPlaying) {
+        <div class="space-y-2">
+          <p class="text-blue-600 text-base md:text-lg">
+            👆 请按从小到大的顺序翻牌，下一张应该是：<span class="font-bold text-xl md:text-2xl">{{ getValueDisplay(nextExpectedValue) }}</span>
+          </p>
+        </div>
+      }
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-lg p-4 md:p-6">
+      @if (cards.length > 0) {
+        <div class="grid grid-cols-3 gap-3 md:gap-4 justify-items-center">
+          @for (card of cards; track card.id) {
+            <div 
+              class="relative w-20 h-28 md:w-28 md:h-40 cursor-pointer perspective-1000"
+              (click)="flipCard(card)"
+            >
+              <div 
+                class="w-full h-full transition-transform duration-500 transform-style-preserve-3d"
+                [class.rotate-y-180]="!card.isFlipped && !card.isMatched"
+              >
+                <div class="absolute w-full h-full backface-hidden rounded-xl shadow-lg border-2 border-gray-200 bg-white">
+                  <div class="absolute top-1 left-1 md:top-2 md:left-2 flex flex-col items-center" [class]="getSuitColor(card.suit)">
+                    <span class="text-base md:text-xl font-bold leading-none">{{ card.display }}</span>
+                    <span class="text-lg md:text-2xl leading-none">{{ card.suitSymbol }}</span>
+                  </div>
+                  
+                  <div class="absolute inset-0 flex items-center justify-center" [class]="getSuitColor(card.suit)">
+                    <span class="text-3xl md:text-5xl">{{ card.suitSymbol }}</span>
+                  </div>
+                  
+                  <div class="absolute bottom-1 right-1 md:bottom-2 md:right-2 flex flex-col items-center rotate-180" [class]="getSuitColor(card.suit)">
+                    <span class="text-base md:text-xl font-bold leading-none">{{ card.display }}</span>
+                    <span class="text-lg md:text-2xl leading-none">{{ card.suitSymbol }}</span>
+                  </div>
+                </div>
+
+                <div class="absolute w-full h-full backface-hidden rounded-xl shadow-lg border-2 border-blue-300 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center rotate-y-180">
+                  <div class="text-white text-3xl md:text-5xl font-bold opacity-30">
+                    ?
+                  </div>
+                </div>
+              </div>
+
+              @if (card.isMatched) {
+                <div class="absolute inset-0 bg-green-400 bg-opacity-50 rounded-xl flex items-center justify-center">
+                  <span class="text-4xl md:text-6xl">✓</span>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="text-center py-16 text-gray-400">
+          <div class="text-6xl md:text-8xl mb-4">🎴</div>
+          <p class="text-lg md:text-xl">点击"开始发牌"按钮开始游戏！</p>
+        </div>
+      }
+    </div>
+
+    <div class="mt-6 text-center text-gray-500 text-sm md:text-base">
+      <p>💡 游戏规则：先记住9张牌的位置，然后按从小到大的顺序（A→K）依次翻开它们</p>
+      <p class="mt-1">翻错的牌会自动翻回去，加油！💪</p>
+    </div>
+  </div>
+</div>

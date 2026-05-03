@@ -1,0 +1,77 @@
+/* Dashboard 组件样式 */
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .data-card {
+    padding: 15px;
+  }
+  
+  .stat-value {
+    font-size: 24px;
+  }
+  
+  .section-title {
+    font-size: 16px;
+  }
+}
+
+/* 动画效果 */
+.data-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 数字滚动效果 */
+.stat-value {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 进度条动画 */
+.progress-value {
+  animation: progressGrow 1s ease-out;
+}
+
+@keyframes progressGrow {
+  from {
+    width: 0;
+  }
+}
+
+/* 按钮悬停效果 */
+button[mat-raised-button],
+button[mat-stroked-button] {
+  min-height: 48px;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* 表格滚动 */
+.overflow-x-auto {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 状态标签圆角 */
+.status-tag {
+  white-space: nowrap;
+}
+
+/* 图标垂直居中 */
+mat-icon {
+  vertical-align: middle;
+}
