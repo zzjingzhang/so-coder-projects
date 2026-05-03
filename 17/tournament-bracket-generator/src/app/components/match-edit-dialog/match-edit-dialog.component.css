@@ -1,0 +1,230 @@
+.dialog-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1976d2;
+  margin: 0;
+  padding: 16px 24px 0;
+}
+
+.title-icon {
+  font-size: 28px;
+  height: 28px;
+  width: 28px;
+}
+
+.dialog-content {
+  padding: 24px !important;
+}
+
+.match-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.team-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.team-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #424242;
+  margin: 0;
+}
+
+.form-field {
+  width: 100%;
+}
+
+.vs-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.vs-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
+}
+
+.vs-icon {
+  font-size: 28px;
+  height: 28px;
+  width: 28px;
+  color: white;
+}
+
+.vs-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #757575;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.date-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.score-section {
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.score-section.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #424242;
+  margin: 0 0 16px 0;
+}
+
+.section-icon {
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+  color: #1976d2;
+}
+
+.score-inputs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.score-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+}
+
+.score-team-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #616161;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.score-field {
+  width: 100px;
+}
+
+::ng-deep .score-field .mat-mdc-form-field-infix {
+  padding: 8px 0;
+}
+
+::ng-deep .score-field input {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1976d2;
+}
+
+.score-divider {
+  display: flex;
+  align-items: center;
+  padding-top: 24px;
+}
+
+.colon {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #757575;
+}
+
+.hint-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  padding: 8px 12px;
+  background-color: #fff3e0;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #e65100;
+}
+
+.hint-text mat-icon {
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+}
+
+.dialog-actions {
+  padding: 16px 24px 24px !important;
+  gap: 12px;
+}
+
+.cancel-btn,
+.save-btn {
+  height: 44px;
+  min-width: 100px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-transform: none;
+}
+
+.cancel-btn {
+  color: #757575;
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+}
+
+.save-btn:disabled {
+  background-color: #bdbdbd !important;
+  background-image: none !important;
+}
+
+@media (max-width: 500px) {
+  .score-inputs {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .score-divider {
+    padding-top: 0;
+  }
+
+  .colon {
+    transform: rotate(90deg);
+  }
+}

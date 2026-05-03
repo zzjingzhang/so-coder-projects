@@ -1,0 +1,122 @@
+<h2 mat-dialog-title class="dialog-title">
+  <mat-icon class="title-icon">edit</mat-icon>
+  编辑比赛 - {{ getRoundName() }}
+</h2>
+
+<mat-dialog-content class="dialog-content">
+  <form [formGroup]="matchForm" class="match-form">
+    <!-- 队伍1信息 -->
+    <div class="team-section">
+      <h3 class="team-label">队伍 1</h3>
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>队伍名称</mat-label>
+        <input matInput formControlName="team1Name" placeholder="请输入队伍名称" required>
+        <mat-error *ngIf="team1NameControl.invalid && team1NameControl.touched">
+          <span *ngIf="team1NameControl.errors?.['required']">请输入队伍名称</span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- VS 分隔 -->
+    <div class="vs-section">
+      <div class="vs-icon-wrapper">
+        <mat-icon class="vs-icon">swap_horiz</mat-icon>
+      </div>
+      <span class="vs-text">VS</span>
+    </div>
+
+    <!-- 队伍2信息 -->
+    <div class="team-section">
+      <h3 class="team-label">队伍 2</h3>
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>队伍名称</mat-label>
+        <input matInput formControlName="team2Name" placeholder="请输入队伍名称" required>
+        <mat-error *ngIf="team2NameControl.invalid && team2NameControl.touched">
+          <span *ngIf="team2NameControl.errors?.['required']">请输入队伍名称</span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- 比赛日期 -->
+    <div class="date-section">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>比赛日期</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="matchDate">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <!-- 比分输入 -->
+    <div class="score-section" [class.disabled]="!canEnterScores()">
+      <h3 class="section-label">
+        <mat-icon inline="true" class="section-icon">scoreboard</mat-icon>
+        比赛结果
+      </h3>
+      
+      <div class="score-inputs">
+        <div class="score-input-wrapper">
+          <span class="score-team-label">{{ team1NameControl.value || '队伍 1' }}</span>
+          <mat-form-field appearance="outline" class="score-field">
+            <input 
+              matInput 
+              type="number" 
+              formControlName="score1" 
+              min="0"
+              placeholder="0"
+            >
+            <mat-error *ngIf="score1Control.invalid && score1Control.touched">
+              请输入有效分数
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="score-divider">
+          <span class="colon">:</span>
+        </div>
+
+        <div class="score-input-wrapper">
+          <span class="score-team-label">{{ team2NameControl.value || '队伍 2' }}</span>
+          <mat-form-field appearance="outline" class="score-field">
+            <input 
+              matInput 
+              type="number" 
+              formControlName="score2" 
+              min="0"
+              placeholder="0"
+            >
+            <mat-error *ngIf="score2Control.invalid && score2Control.touched">
+              请输入有效分数
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <mat-hint *ngIf="!canEnterScores()" class="hint-text">
+        <mat-icon inline="true">info</mat-icon>
+        请先填写两支队伍名称后再输入比分
+      </mat-hint>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button 
+    mat-stroked-button 
+    (click)="onCancel()"
+    class="cancel-btn"
+  >
+    <mat-icon>close</mat-icon>
+    取消
+  </button>
+  <button 
+    mat-raised-button 
+    color="primary" 
+    (click)="onSave()"
+    [disabled]="matchForm.invalid"
+    class="save-btn"
+  >
+    <mat-icon>save</mat-icon>
+    保存
+  </button>
+</mat-dialog-actions>

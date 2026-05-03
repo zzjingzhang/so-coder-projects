@@ -1,0 +1,517 @@
+<nz-layout class="h-screen w-full overflow-hidden">
+  <nz-sider 
+    [nzCollapsed]="isSidebarCollapsed()" 
+    [nzCollapsible]="true"
+    [nzTrigger]="null"
+    class="border-r border-gray-200 dark:border-gray-700"
+    style="background: var(--bg-primary); min-width: 256px;"
+    [nzWidth]="256"
+    [nzCollapsedWidth]="0"
+  >
+    <div class="h-full flex flex-col" style="background: var(--bg-primary);">
+      <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+        <div class="flex items-center justify-between">
+          @if (!isSidebarCollapsed()) {
+            <h1 class="text-lg font-bold" style="color: var(--text-primary);">Markdown 笔记</h1>
+          }
+          <button 
+            nz-button 
+            nzType="text"
+            nz-tooltip
+            nzTooltipTitle="切换侧边栏"
+            (click)="toggleSidebar()"
+            class="flex items-center justify-center"
+          >
+            <span nz-icon [nzType]="isSidebarCollapsed() ? 'menu-unfold' : 'menu-fold'"></span>
+          </button>
+        </div>
+      </div>
+
+      @if (!isSidebarCollapsed()) {
+        <div class="flex-1 overflow-y-auto p-2">
+          <div class="mb-4">
+            <button 
+              nz-button 
+              nzType="primary"
+              (click)="createNewNote()"
+              class="w-full flex items-center justify-center gap-2 h-10"
+            >
+              <span nz-icon nzType="plus"></span>
+              新建笔记
+            </button>
+          </div>
+
+          <div class="mb-4">
+            <ul nz-menu nzMode="inline" class="border-0" style="background: var(--bg-primary);">
+              <li 
+                nz-menu-item 
+                [nzSelected]="!selectedFolderId() && !selectedTagId() && !showFavorites()"
+                (click)="selectAllNotes()"
+                class="flex items-center gap-2 rounded-lg my-1"
+              >
+                <span nz-icon nzType="inbox"></span>
+                <span>所有笔记</span>
+              </li>
+              <li 
+                nz-menu-item 
+                [nzSelected]="showFavorites()"
+                (click)="selectFavorites()"
+                class="flex items-center gap-2 rounded-lg my-1"
+              >
+                <span nz-icon nzType="star"></span>
+                <span>收藏夹</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="mb-4">
+            <div class="flex items-center justify-between px-3 py-2">
+              <span class="text-sm font-medium" style="color: var(--text-secondary);">文件夹</span>
+              <button 
+                nz-button 
+                nzType="text" 
+                nzSize="small"
+                (click)="showNewFolderInput.set(!showNewFolderInput())"
+                class="flex items-center justify-center"
+              >
+                <span nz-icon nzType="plus"></span>
+              </button>
+            </div>
+            
+            @if (showNewFolderInput()) {
+              <div class="flex gap-2 px-3 py-2">
+                <input 
+                  nz-input 
+                  placeholder="文件夹名称"
+                  [(ngModel)]="newFolderName"
+                  (keyup.enter)="createNewFolder()"
+                  class="flex-1"
+                />
+                <button 
+                  nz-button 
+                  nzType="primary"
+                  nzSize="small"
+                  (click)="createNewFolder()"
+                >
+                  添加
+                </button>
+              </div>
+            }
+
+            <ul nz-menu nzMode="inline" class="border-0" style="background: var(--bg-primary);">
+              @for (folder of folderService.folders(); track folder.id) {
+                <li 
+                  nz-menu-item 
+                  [nzSelected]="selectedFolderId() === folder.id"
+                  (click)="selectFolder(folder.id)"
+                  class="flex items-center justify-between rounded-lg my-1 group"
+                >
+                  <div class="flex items-center gap-2 flex-1 min-w-0">
+                    <span nz-icon nzType="folder"></span>
+                    <span class="truncate">{{ folder.name }}</span>
+                    <span class="text-xs ml-auto" style="color: var(--text-tertiary);">
+                      {{ noteService.getNotesByFolder(folder.id).length }}
+                    </span>
+                  </div>
+                  @if (folderService.folders().length > 1) {
+                    <button
+                      nz-button
+                      nzType="text"
+                      nzSize="small"
+                      nz-popconfirm
+                      nzPopconfirmTitle="确定删除此文件夹？"
+                      nzPopconfirmPlacement="top"
+                      (nzOnConfirm)="deleteFolder(folder.id)"
+                      class="opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
+                      style="color: #ff4d4f;"
+                    >
+                      <span nz-icon nzType="delete"></span>
+                    </button>
+                  }
+                </li>
+              }
+            </ul>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between px-3 py-2">
+              <span class="text-sm font-medium" style="color: var(--text-secondary);">标签</span>
+              <button 
+                nz-button 
+                nzType="text" 
+                nzSize="small"
+                (click)="showNewTagInput.set(!showNewTagInput())"
+                class="flex items-center justify-center"
+              >
+                <span nz-icon nzType="plus"></span>
+              </button>
+            </div>
+            
+            @if (showNewTagInput()) {
+              <div class="p-3 space-y-2">
+                <input 
+                  nz-input 
+                  placeholder="标签名称"
+                  [(ngModel)]="newTagName"
+                  (keyup.enter)="createNewTag()"
+                />
+                <div class="flex gap-1 flex-wrap">
+                  @for (color of tagColors; track color) {
+                    <button
+                      class="w-6 h-6 rounded-full border-2 transition-transform hover:scale-110"
+                      [class.border-gray-800]="newTagColor() === color"
+                      [class.border-transparent]="newTagColor() !== color"
+                      [style.background-color]="color"
+                      (click)="newTagColor.set(color)"
+                    ></button>
+                  }
+                </div>
+                <button 
+                  nz-button 
+                  nzType="primary"
+                  nzSize="small"
+                  (click)="createNewTag()"
+                  class="w-full"
+                >
+                  创建标签
+                </button>
+              </div>
+            }
+
+            <div class="flex flex-wrap gap-2 px-3 py-2">
+              @for (tag of tagService.tags(); track tag.id) {
+                <nz-tag
+                  [nzColor]="tag.color"
+                  class="cursor-pointer transition-all hover:opacity-80 px-3 py-1 group relative"
+                  [class.border-2]="selectedTagId() === tag.id"
+                  (click)="selectTag(tag.id)"
+                >
+                  {{ tag.name }}
+                  <button
+                    nz-button
+                    nzType="text"
+                    nzSize="small"
+                    class="opacity-0 group-hover:opacity-100 transition-opacity ml-1 absolute right-1 top-1/2 -translate-y-1/2"
+                    (click)="$event.stopPropagation(); deleteTag(tag.id)"
+                  >
+                    <span class="text-xs text-white">×</span>
+                  </button>
+                </nz-tag>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+          <div class="flex items-center justify-between">
+            <span class="text-sm" style="color: var(--text-secondary);">
+              {{ isDark() ? '深色模式' : '浅色模式' }}
+            </span>
+            <button 
+              nz-button 
+              nzType="text"
+              nz-tooltip
+              nzTooltipTitle="切换主题"
+              (click)="toggleTheme()"
+              class="flex items-center justify-center"
+            >
+              <span nz-icon [nzType]="isDark() ? 'sun' : 'moon'"></span>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </nz-sider>
+
+  <nz-layout class="flex flex-col" style="background: var(--bg-secondary);">
+    <nz-header 
+      class="flex items-center justify-between px-4 border-b border-gray-200 dark:border-gray-700"
+      style="background: var(--bg-primary); height: 64px; padding: 0 24px;"
+    >
+      <div class="flex items-center gap-4">
+        @if (isSidebarCollapsed()) {
+          <button 
+            nz-button 
+            nzType="text"
+            (click)="toggleSidebar()"
+            class="flex items-center justify-center"
+          >
+            <span nz-icon nzType="menu-unfold"></span>
+          </button>
+        }
+        <div class="relative">
+          <span 
+            nz-icon 
+            nzType="search" 
+            class="absolute left-3 top-1/2 -translate-y-1/2"
+            style="color: var(--text-tertiary);"
+          ></span>
+          <input 
+            nz-input
+            placeholder="搜索笔记..."
+            [(ngModel)]="searchQuery"
+            class="pl-10 pr-4 w-64"
+            style="background: var(--bg-secondary);"
+          />
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        @if (currentNote()) {
+          <nz-select 
+            [(ngModel)]="noteFolderId"
+            nzPlaceHolder="选择文件夹"
+            class="w-40"
+            style="background: var(--bg-secondary);"
+          >
+            @for (folder of folderService.folders(); track folder.id) {
+              <nz-option [nzValue]="folder.id" [nzLabel]="folder.name"></nz-option>
+            }
+          </nz-select>
+
+          <nz-select 
+            [(ngModel)]="noteTags"
+            nzMode="multiple"
+            nzPlaceHolder="添加标签"
+            class="w-48"
+            style="background: var(--bg-secondary);"
+          >
+            @for (tag of tagService.tags(); track tag.id) {
+              <nz-option [nzValue]="tag.id" [nzLabel]="tag.name"></nz-option>
+            }
+          </nz-select>
+
+          <div nz-dropdown [nzDropdownMenu]="exportMenu">
+            <button 
+              nz-button
+              nz-tooltip
+              nzTooltipTitle="导出"
+              class="flex items-center justify-center"
+            >
+              <span nz-icon nzType="download"></span>
+            </button>
+          </div>
+          <nz-dropdown-menu #exportMenu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item (click)="exportCurrentNote('md')">
+                <span class="flex items-center gap-2">
+                  <span nz-icon nzType="code"></span>
+                  导出为 Markdown
+                </span>
+              </li>
+              <li nz-menu-item (click)="exportCurrentNote('html')">
+                <span class="flex items-center gap-2">
+                  <span nz-icon nzType="eye"></span>
+                  导出为 HTML
+                </span>
+              </li>
+            </ul>
+          </nz-dropdown-menu>
+
+          <button 
+            nz-button 
+            nzType="primary"
+            (click)="saveCurrentNote()"
+            class="flex items-center justify-center gap-2"
+          >
+            <span nz-icon nzType="save"></span>
+            保存
+          </button>
+        }
+      </div>
+    </nz-header>
+
+    <nz-content class="flex flex-1 overflow-hidden">
+      <div 
+        class="w-80 border-r border-gray-200 dark:border-gray-700 overflow-y-auto"
+        style="background: var(--bg-primary);"
+      >
+        <div class="p-3 border-b border-gray-200 dark:border-gray-700">
+          <h2 class="text-sm font-medium" style="color: var(--text-secondary);">
+            @if (showFavorites()) {
+              收藏夹
+            } @else if (selectedFolderId()) {
+              {{ folderService.getFolderById(selectedFolderId()!)?.name }}
+            } @else if (selectedTagId()) {
+              标签: {{ tagService.getTagById(selectedTagId()!)?.name }}
+            } @else {
+              所有笔记
+            }
+            <span class="ml-2" style="color: var(--text-tertiary);">
+              ({{ filteredNotes().length }})
+            </span>
+          </h2>
+        </div>
+
+        @if (filteredNotes().length === 0) {
+          <div class="flex flex-col items-center justify-center h-64 gap-4">
+            <span nz-icon nzType="file" class="text-4xl" style="color: var(--text-tertiary);"></span>
+            <p style="color: var(--text-secondary);">暂无笔记</p>
+            <button 
+              nz-button 
+              nzType="primary"
+              (click)="createNewNote()"
+            >
+              创建第一个笔记
+            </button>
+          </div>
+        } @else {
+          <div class="divide-y divide-gray-100 dark:divide-gray-800">
+            @for (note of filteredNotes(); track note.id) {
+              <div 
+                class="p-4 cursor-pointer transition-colors group"
+                [class.bg-blue-50]="currentNoteId() === note.id && !isDark()"
+                [class.bg-gray-800]="currentNoteId() === note.id && isDark()"
+                (click)="selectNote(note.id)"
+              >
+                <div class="flex items-start justify-between gap-2 mb-2">
+                  <h3 
+                    class="font-medium truncate flex-1"
+                    style="color: var(--text-primary);"
+                  >
+                    {{ note.title }}
+                  </h3>
+                  <div class="flex items-center gap-1 flex-shrink-0">
+                    <button
+                      nz-button
+                      nzType="text"
+                      nzSize="small"
+                      nz-tooltip
+                      nzTooltipTitle="{{ note.isFavorite ? '取消收藏' : '添加收藏' }}"
+                      (click)="toggleNoteFavorite(note.id, $event)"
+                      class="flex items-center justify-center"
+                    >
+                      <span 
+                        nz-icon 
+                        [nzType]="note.isFavorite ? 'star' : 'star'"
+                        [nzTheme]="note.isFavorite ? 'fill' : 'outline'"
+                        [style.color]="note.isFavorite ? '#faad14' : 'inherit'"
+                      ></span>
+                    </button>
+                    <button
+                      nz-button
+                      nzType="text"
+                      nzSize="small"
+                      nz-tooltip
+                      nzTooltipTitle="删除笔记"
+                      (click)="$event.stopPropagation(); deleteNote(note.id)"
+                      class="flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      style="color: #ff4d4f;"
+                    >
+                      <span nz-icon nzType="delete"></span>
+                    </button>
+                  </div>
+                </div>
+                
+                @if (note.tags.length > 0) {
+                  <div class="flex flex-wrap gap-1 mb-2">
+                    @for (tag of note.tags; track tag.id) {
+                      <nz-tag [nzColor]="tag.color" class="text-xs px-2 py-0">
+                        {{ tag.name }}
+                      </nz-tag>
+                    }
+                  </div>
+                }
+                
+                <p 
+                  class="text-sm line-clamp-2 mb-2"
+                  style="color: var(--text-secondary);"
+                >
+                  {{ getNotePreview(note.content) }}
+                </p>
+                
+                <p class="text-xs" style="color: var(--text-tertiary);">
+                  {{ formatDate(note.updatedAt) }}
+                </p>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="flex-1 flex flex-col overflow-hidden" style="background: var(--bg-primary);">
+        @if (!currentNote()) {
+          <div class="flex-1 flex flex-col items-center justify-center gap-4">
+            <span nz-icon nzType="file" class="text-6xl" style="color: var(--text-tertiary);"></span>
+            <p class="text-lg" style="color: var(--text-secondary);">选择一个笔记开始编辑</p>
+            <button 
+              nz-button 
+              nzType="primary"
+              (click)="createNewNote()"
+              class="flex items-center justify-center gap-2"
+            >
+              <span nz-icon nzType="plus"></span>
+              创建新笔记
+            </button>
+          </div>
+        } @else {
+          <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+            <input 
+              nz-input
+              [(ngModel)]="noteTitle"
+              placeholder="笔记标题"
+              class="text-2xl font-bold border-0 shadow-none focus:ring-0 p-0"
+              style="background: transparent; color: var(--text-primary);"
+            />
+            <div class="flex items-center gap-2">
+              <button 
+                nz-button
+                nzType="text"
+                [class.bg-blue-100]="!isPreviewMode()"
+                [class.bg-gray-800]="isPreviewMode() && isDark()"
+                nz-tooltip
+                nzTooltipTitle="编辑模式"
+                (click)="isPreviewMode.set(false)"
+                class="flex items-center justify-center"
+              >
+                <span nz-icon nzType="code"></span>
+              </button>
+              <button 
+                nz-button
+                nzType="text"
+                [class.bg-blue-100]="isPreviewMode()"
+                [class.bg-gray-800]="isPreviewMode() && isDark()"
+                nz-tooltip
+                nzTooltipTitle="预览模式"
+                (click)="isPreviewMode.set(true)"
+                class="flex items-center justify-center"
+              >
+                <span nz-icon nzType="eye"></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="flex-1 overflow-hidden flex">
+            @if (!isPreviewMode()) {
+              <div class="flex-1 p-6 overflow-hidden">
+                <textarea 
+                  #editor
+                  [(ngModel)]="noteContent"
+                  class="w-full h-full resize-none border-0 outline-none font-mono text-base leading-relaxed"
+                  style="background: var(--bg-primary); color: var(--text-primary);"
+                  placeholder="在这里编写 Markdown 内容..."
+                ></textarea>
+              </div>
+              <div 
+                class="flex-1 p-6 overflow-y-auto border-l border-gray-200 dark:border-gray-700 markdown-preview"
+                style="background: var(--bg-secondary); color: var(--text-primary);"
+              >
+                <div [innerHTML]="renderedContent()"></div>
+              </div>
+            } @else {
+              <div 
+                class="flex-1 p-12 overflow-y-auto markdown-preview"
+                style="background: var(--bg-primary); color: var(--text-primary); max-width: 900px; margin: 0 auto;"
+              >
+                <h1 class="text-3xl font-bold mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
+                  {{ noteTitle() }}
+                </h1>
+                <div [innerHTML]="renderedContent()"></div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

@@ -1,0 +1,157 @@
+<div class="bracket-container">
+  <!-- 赛事信息头部 -->
+  <div class="tournament-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">emoji_events</mat-icon>
+      <div class="tournament-info">
+        <h2 class="tournament-name">{{ tournament.name }}</h2>
+        <p class="tournament-dates">
+          比赛时间: {{ formatDate(tournament.startDate) }} - {{ formatDate(tournament.endDate) }}
+        </p>
+        <p class="team-count">参赛队伍: {{ tournament.teamCount }} 支</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 冠军显示区 -->
+  <div *ngIf="championName" class="champion-section">
+    <div class="champion-card">
+      <div class="trophy-icon">
+        <mat-icon>emoji_events</mat-icon>
+      </div>
+      <h3 class="champion-title">冠军</h3>
+      <div class="champion-name">{{ getChampionTeam()?.name }}</div>
+      <div *ngIf="getRunnerUpTeam()" class="runner-up">
+        <span class="runner-up-label">亚军:</span>
+        <span class="runner-up-name">{{ getRunnerUpTeam()?.name }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 分组图表容器 -->
+  <div class="bracket-chart">
+    <!-- 轮次标题 -->
+    <div class="rounds-header">
+      <div 
+        class="round-title" 
+        *ngFor="let round of rounds; let i = index"
+        [style.width.%]="100 / rounds.length"
+      >
+        <span class="round-name">{{ getRoundName(i + 1) }}</span>
+        <span class="match-count">({{ round.length }} 场比赛)</span>
+      </div>
+      
+      <!-- 冠军列标题 -->
+      <div class="round-title champion-column" *ngIf="rounds.length > 0">
+        <span class="round-name">冠军</span>
+      </div>
+    </div>
+
+    <!-- 比赛对阵图 -->
+    <div class="bracket-content">
+      <div class="matches-container">
+        <div 
+          class="round-column" 
+          *ngFor="let round of rounds; let roundIndex = index"
+          [style.width.%]="100 / (rounds.length + 1)"
+        >
+          <div class="matches-list" [style.gap.px]="getMatchSpacing(roundIndex + 1)">
+            <div 
+              class="match-card-wrapper"
+              *ngFor="let match of round; let matchIndex = index"
+            >
+              <div 
+                class="match-card"
+                [class.completed]="isMatchComplete(match)"
+                [class.can-edit]="canEditMatch(match)"
+                (click)="canEditMatch(match) && openMatchEdit(match)"
+              >
+                <!-- 队伍1 -->
+                <div 
+                  class="team-row"
+                  [class.winner]="match.winner === 'team1'"
+                  [class.loser]="match.winner === 'team2'"
+                >
+                  <div class="team-info">
+                    <mat-icon *ngIf="match.winner === 'team1'" class="winner-icon">check_circle</mat-icon>
+                    <span class="team-name">
+                      {{ match.team1?.name || '待定' }}
+                    </span>
+                  </div>
+                  <span class="team-score" *ngIf="match.score1 !== null">
+                    {{ match.score1 }}
+                  </span>
+                </div>
+
+                <!-- VS 分隔线 -->
+                <div class="vs-divider">
+                  <span class="vs-text">VS</span>
+                </div>
+
+                <!-- 队伍2 -->
+                <div 
+                  class="team-row"
+                  [class.winner]="match.winner === 'team2'"
+                  [class.loser]="match.winner === 'team1'"
+                >
+                  <div class="team-info">
+                    <mat-icon *ngIf="match.winner === 'team2'" class="winner-icon">check_circle</mat-icon>
+                    <span class="team-name">
+                      {{ match.team2?.name || '待定' }}
+                    </span>
+                  </div>
+                  <span class="team-score" *ngIf="match.score2 !== null">
+                    {{ match.score2 }}
+                  </span>
+                </div>
+
+                <!-- 比赛日期 -->
+                <div *ngIf="match.matchDate" class="match-date">
+                  <mat-icon>event</mat-icon>
+                  {{ formatDate(match.matchDate) }}
+                </div>
+
+                <!-- 编辑按钮 -->
+                <div class="edit-hint" *ngIf="canEditMatch(match)">
+                  <mat-icon>edit</mat-icon>
+                  <span>点击编辑</span>
+                </div>
+              </div>
+
+              <!-- 连接线条 -->
+              <div 
+                *ngIf="match.nextMatchId && roundIndex < rounds.length - 1"
+                class="connector-line"
+                [style.height.px]="getMatchSpacing(roundIndex + 2) / 2"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 冠军列 -->
+        <div class="round-column champion-column" *ngIf="rounds.length > 0" [style.width.%]="100 / (rounds.length + 1)">
+          <div class="champion-placeholder" *ngIf="!championName">
+            <mat-icon class="placeholder-icon">trophy</mat-icon>
+            <span>等待决赛结果</span>
+          </div>
+          
+          <div *ngIf="championName" class="champion-display">
+            <div class="champion-badge">
+              <mat-icon class="trophy">emoji_events</mat-icon>
+              <span class="champion-name-small">{{ getChampionTeam()?.name }}</span>
+              <span class="champion-score" *ngIf="getChampionTeam()?.score !== null">
+                {{ getChampionTeam()?.score }} 分
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 操作提示 -->
+  <div class="action-hint">
+    <mat-icon>info</mat-icon>
+    <span>点击比赛卡片可编辑队伍名称、比赛日期和比分</span>
+  </div>
+</div>

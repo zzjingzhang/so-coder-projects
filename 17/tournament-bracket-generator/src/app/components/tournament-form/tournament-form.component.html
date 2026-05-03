@@ -1,0 +1,107 @@
+<mat-card class="form-card">
+  <mat-card-header>
+    <mat-card-title class="card-title">
+      <mat-icon class="title-icon">sports</mat-icon>
+      创建新赛事
+    </mat-card-title>
+    <mat-card-subtitle>请填写以下信息来生成赛事分组</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="tournamentForm" (ngSubmit)="onSubmit()" class="tournament-form">
+      
+      <div class="form-row">
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>锦标赛名称</mat-label>
+          <input matInput formControlName="name" placeholder="例如：2024年度篮球锦标赛" required>
+          <mat-error *ngIf="nameControl.invalid && nameControl.touched">
+            <span *ngIf="nameControl.errors?.['required']">请输入锦标赛名称</span>
+            <span *ngIf="nameControl.errors?.['minlength']">名称至少需要2个字符</span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row date-row">
+        <mat-form-field appearance="fill" class="form-field date-field">
+          <mat-label>开始日期</mat-label>
+          <input matInput [matDatepicker]="startPicker" formControlName="startDate" required>
+          <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+          <mat-error *ngIf="startDateControl.invalid && startDateControl.touched">
+            <span *ngIf="startDateControl.errors?.['required']">请选择开始日期</span>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-field date-field">
+          <mat-label>结束日期</mat-label>
+          <input matInput [matDatepicker]="endPicker" formControlName="endDate" required>
+          <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+          <mat-error *ngIf="endDateControl.invalid && endDateControl.touched">
+            <span *ngIf="endDateControl.errors?.['required']">请选择结束日期</span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>参赛队伍数量</mat-label>
+          <mat-select formControlName="teamCount" required>
+            <mat-option [value]="2">2 支队伍</mat-option>
+            <mat-option [value]="4">4 支队伍</mat-option>
+            <mat-option [value]="8">8 支队伍</mat-option>
+            <mat-option [value]="16">16 支队伍</mat-option>
+            <mat-option [value]="32">32 支队伍</mat-option>
+            <mat-option [value]="64">64 支队伍</mat-option>
+          </mat-select>
+          <mat-hint *ngIf="getTeamCountHint()" class="hint-text">
+            <mat-icon inline="true">info</mat-icon>
+            {{ getTeamCountHint() }}
+          </mat-hint>
+          <mat-error *ngIf="teamCountControl.invalid && teamCountControl.touched">
+            <span *ngIf="teamCountControl.errors?.['required']">请选择队伍数量</span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="quick-select-section">
+        <label class="quick-select-label">快速选择：</label>
+        <div class="quick-select-buttons">
+          <button 
+            mat-stroked-button 
+            *ngFor="let count of teamCountOptions"
+            [class.active]="teamCountControl.value === count"
+            (click)="selectTeamCount(count)"
+            type="button"
+            class="quick-select-btn"
+          >
+            {{ count }} 队
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="validationErrors.teamCount" class="error-message">
+        <mat-icon inline="true" class="error-icon">warning</mat-icon>
+        {{ validationErrors.teamCount }}
+      </div>
+
+      <div *ngIf="tournamentForm.errors?.['dateRangeInvalid'] || validationErrors.startDate" class="error-message">
+        <mat-icon inline="true" class="error-icon">warning</mat-icon>
+        {{ tournamentForm.errors?.['dateRangeInvalid'] ? '结束日期必须大于等于开始日期' : validationErrors.startDate }}
+      </div>
+
+      <div class="submit-section">
+        <button 
+          mat-raised-button 
+          color="primary" 
+          type="submit"
+          [disabled]="tournamentForm.invalid"
+          class="submit-btn"
+        >
+          <mat-icon>send</mat-icon>
+          生成赛事分组
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

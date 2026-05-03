@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #3b82f6;
+  --color-primary-dark: #2563eb;
+  --color-secondary: #8b5cf6;
+  --color-secondary-dark: #7c3aed;
+  --color-accent: #f59e0b;
+  --color-accent-dark: #d97706;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-info: #3b82f6;
+  
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-text: #1e293b;
+  --color-text-secondary: #64748b;
+  --color-border: #e2e8f0;
+  
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  min-height: 100vh;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 平滑过渡动画 */
+.bar-transition {
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-text-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text);
+}
+
+/* PrimeVue 组件覆盖 */
+.p-button {
+  @apply font-medium rounded-lg transition-all duration-200;
+}
+
+.p-button:hover {
+  @apply shadow-md;
+}
+
+.p-button:active {
+  @apply transform scale-95;
+}
+
+/* 成功按钮 - 播放 */
+.p-button-success {
+  @apply bg-success text-white border-success hover:bg-success/90 hover:border-success/90;
+}
+
+.p-button-success .p-button-icon {
+  @apply text-white;
+}
+
+/* 警告按钮 - 暂停 */
+.p-button-warning {
+  @apply bg-warning text-white border-warning hover:bg-warning/90 hover:border-warning/90;
+}
+
+.p-button-warning .p-button-icon {
+  @apply text-white;
+}
+
+/* 次要按钮 - 重置 */
+.p-button-secondary {
+  @apply bg-text-secondary text-white border-text-secondary hover:bg-text-secondary/90 hover:border-text-secondary/90;
+}
+
+.p-button-secondary .p-button-icon {
+  @apply text-white;
+}
+
+/* 主要按钮 - 选中状态 */
+.p-button-primary {
+  @apply bg-primary text-white border-primary shadow-lg ring-2 ring-primary/30;
+}
+
+.p-button-primary:hover {
+  @apply bg-primary-dark border-primary-dark shadow-xl;
+}
+
+.p-button-primary .p-button-icon {
+  @apply text-white;
+}
+
+/* 描边按钮 - 未选中状态 */
+.p-button-outlined {
+  @apply bg-surface text-text-secondary border-border;
+}
+
+.p-button-outlined:hover {
+  @apply bg-background border-primary text-primary;
+}
+
+.p-button-outlined .p-button-icon {
+  @apply text-text-secondary;
+}
+
+.p-button-outlined:hover .p-button-icon {
+  @apply text-primary;
+}
+
+/* 小按钮 */
+.p-button.p-button-sm {
+  @apply px-3 py-1.5 text-sm;
+}
+
+/* 进度条样式 */
+.p-progressbar {
+  @apply bg-border rounded-full overflow-hidden;
+}
+
+.p-progressbar .p-progressbar-value {
+  @apply bg-primary rounded-full transition-all duration-300;
+}
+
+/* 滑块样式 */
+.p-slider {
+  @apply w-full relative;
+}
+
+.p-slider .p-slider-range {
+  @apply bg-primary absolute;
+}
+
+.p-slider .p-slider-handle {
+  @apply absolute w-5 h-5 bg-white border-2 border-primary rounded-full cursor-pointer shadow-md transition-all duration-200;
+}
+
+.p-slider .p-slider-handle:hover {
+  @apply border-primary-dark shadow-lg;
+}
+
+.p-slider .p-slider-handle:focus {
+  @apply border-primary ring-2 ring-primary/30 outline-none;
+}
+
+/* 水平滑块 */
+.p-slider-horizontal {
+  @apply h-2;
+}
+
+.p-slider-horizontal .p-slider-range {
+  @apply h-full top-0 left-0;
+}
+
+.p-slider-horizontal .p-slider-handle {
+  @apply top-1/2 -translate-y-1/2 -translate-x-1/2;
+}
+
+/* 徽章样式 */
+.p-badge {
+  @apply inline-flex items-center justify-center px-2.5 py-0.5 text-xs font-medium rounded-full;
+}
+
+.p-badge.bg-success {
+  @apply bg-success text-white;
+}
+
+.p-badge.bg-text-secondary {
+  @apply bg-text-secondary text-white;
+}

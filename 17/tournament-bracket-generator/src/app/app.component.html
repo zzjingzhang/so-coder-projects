@@ -1,0 +1,71 @@
+<div class="app-container">
+  <!-- 顶部导航栏 -->
+  <header class="app-header">
+    <div class="header-content">
+      <div class="logo-section">
+        <mat-icon class="logo-icon">sports</mat-icon>
+        <h1 class="app-title">体育赛事分组生成器</h1>
+      </div>
+      
+      <div class="header-actions">
+        <button 
+          mat-raised-button 
+          (click)="onCreateNew()"
+          class="action-btn"
+        >
+          <mat-icon>add</mat-icon>
+          创建新赛事
+        </button>
+        
+        <ng-container *ngIf="hasSavedTournament">
+          <button 
+            *ngIf="showForm"
+            mat-raised-button 
+            (click)="onLoadSaved()"
+            class="action-btn"
+          >
+            <mat-icon>folder_open</mat-icon>
+            加载已保存
+          </button>
+          
+          <button 
+            mat-raised-button 
+            (click)="onClearSaved()"
+            class="action-btn clear-btn"
+          >
+            <mat-icon>delete</mat-icon>
+            清除数据
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主要内容区域 -->
+  <main class="main-content">
+    <!-- 表单页面 -->
+    <div *ngIf="showForm" class="form-page">
+      <app-tournament-form 
+        (formSubmit)="onFormSubmit($event)"
+      ></app-tournament-form>
+    </div>
+
+    <!-- 分组图表面板 -->
+    <div *ngIf="!showForm && tournament" class="bracket-page">
+      <app-bracket-display 
+        [tournament]="tournament"
+      ></app-bracket-display>
+    </div>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="app-footer">
+    <p class="footer-text">
+      <mat-icon class="footer-icon">favorite</mat-icon>
+      体育赛事分组生成器 - 让比赛更精彩
+    </p>
+  </footer>
+</div>
+
+<!-- 通知提示 -->
+<div class="notification-container"></div>
