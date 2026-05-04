@@ -1,0 +1,131 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="text-center mb-12">
+    <h1 class="text-4xl font-bold text-gray-800 mb-4">共享办公空间预订</h1>
+    <p class="text-xl text-gray-600">发现并预订适合您的完美工作空间</p>
+  </div>
+
+  <div *ngIf="loading" class="flex justify-center items-center py-20">
+    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+  </div>
+
+  <div *ngIf="!loading && rooms.length === 0" class="flex flex-col justify-center items-center py-20">
+    <mat-icon class="text-6xl text-gray-400 mb-4">meeting_room</mat-icon>
+    <h2 class="text-2xl font-bold text-gray-800 mb-2">暂无房间</h2>
+    <p class="text-gray-600">目前没有可预订的房间，请稍后再试</p>
+  </div>
+
+  <div *ngIf="!loading && rooms.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <mat-card 
+      *ngFor="let room of rooms; let i = index" 
+      class="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+      [@fadeIn]
+      [@availabilityPulse]="room.isAvailable ? 'available' : 'unavailable'"
+    >
+      <div class="relative">
+        <img 
+          [src]="room.image" 
+          [alt]="room.name" 
+          class="w-full h-56 object-cover"
+        >
+        <div class="absolute top-4 right-4">
+          <span 
+            class="px-3 py-1 rounded-full text-sm font-semibold"
+            [class.bg-green-500]="room.isAvailable"
+            [class.bg-red-500]="!room.isAvailable"
+            class="text-white"
+          >
+            {{ room.isAvailable ? '可预订' : '已占用' }}
+          </span>
+        </div>
+        <div class="absolute bottom-4 left-4">
+          <span 
+            class="px-3 py-1 rounded-full text-sm font-medium"
+            [ngClass]="getRoomTypeColor(room.type)"
+          >
+            {{ getRoomTypeLabel(room.type) }}
+          </span>
+        </div>
+      </div>
+
+      <mat-card-content class="p-6">
+        <div class="flex justify-between items-start mb-4">
+          <h2 class="text-xl font-bold text-gray-800">{{ room.name }}</h2>
+          <div class="text-right">
+            <div class="text-2xl font-bold text-blue-600">¥{{ room.pricePerHour }}</div>
+            <div class="text-sm text-gray-500">每小时</div>
+          </div>
+        </div>
+
+        <div class="flex items-center text-gray-600 mb-4">
+          <mat-icon class="mr-2">people</mat-icon>
+          <span>容纳 {{ room.capacity }} 人</span>
+          
+          <span *ngIf="!room.isAvailable && room.nextAvailableTime" class="ml-auto text-orange-600 flex items-center">
+            <mat-icon class="mr-1 text-sm">schedule</mat-icon>
+            预计 {{ room.nextAvailableTime }} 可用
+          </span>
+        </div>
+
+        <div class="flex flex-wrap gap-2 mb-4">
+          <mat-chip 
+            *ngFor="let amenity of room.amenities.slice(0, 3)" 
+            class="text-xs"
+          >
+            {{ amenity }}
+          </mat-chip>
+          <mat-chip *ngIf="room.amenities.length > 3" class="text-xs">
+            +{{ room.amenities.length - 3 }} 更多
+          </mat-chip>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions class="px-6 pb-6 flex gap-3">
+        <button 
+          mat-raised-button 
+          color="primary"
+          class="flex-1"
+          [disabled]="!room.isAvailable"
+          routerLink="/booking/{{ room.id }}"
+        >
+          {{ room.isAvailable ? '立即预订' : '暂不可用' }}
+        </button>
+        
+        <button 
+          mat-stroked-button 
+          (click)="toggleExpansion(room.id)"
+          class="flex items-center justify-center"
+        >
+          <mat-icon>{{ expandedRoomId === room.id ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </button>
+        
+        <button 
+          mat-icon-button 
+          (click)="toggleAvailability(room, $event)"
+          [color]="room.isAvailable ? 'warn' : 'primary'"
+          title="切换可用性（演示功能）"
+        >
+          <mat-icon>{{ room.isAvailable ? 'toggle_on' : 'toggle_off' }}</mat-icon>
+        </button>
+      </mat-card-actions>
+
+      <div 
+        *ngIf="expandedRoomId === room.id"
+        class="px-6 pb-6 border-t border-gray-200 pt-4"
+        [@fadeIn]
+      >
+        <h3 class="font-semibold text-gray-800 mb-3">设施详情</h3>
+        <div class="grid grid-cols-2 gap-3">
+          <div *ngFor="let amenity of room.amenities" class="flex items-center text-gray-600">
+            <mat-icon class="text-green-500 mr-2 text-sm">check_circle</mat-icon>
+            <span class="text-sm">{{ amenity }}</span>
+          </div>
+        </div>
+        
+        <div class="mt-4 pt-4 border-t border-gray-100">
+          <h3 class="font-semibold text-gray-800 mb-2">空间描述</h3>
+          <p class="text-gray-600 text-sm leading-relaxed">{{ room.description }}</p>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>

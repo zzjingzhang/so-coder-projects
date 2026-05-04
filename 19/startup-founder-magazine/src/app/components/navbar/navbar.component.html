@@ -1,0 +1,67 @@
+<mat-toolbar 
+  class="navbar" 
+  [class.scrolled]="isScrolled"
+  [class.mobile-menu-open]="isMobileMenuOpen"
+>
+  <div class="container navbar-container">
+    <a routerLink="/" class="logo" (click)="closeMobileMenu()">
+      <span class="logo-text">Founder</span>
+      <span class="logo-highlight">Mag</span>
+    </a>
+
+    <nav class="desktop-nav">
+      @for (item of navItems; track item.path) {
+        <button 
+          mat-button 
+          routerLink="{{item.path}}" 
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: item.path === '/' }"
+          class="nav-link"
+        >
+          <mat-icon>{{item.icon}}</mat-icon>
+          <span>{{item.label}}</span>
+        </button>
+      }
+      <button mat-raised-button color="primary" class="subscribe-btn">
+        订阅杂志
+      </button>
+    </nav>
+
+    <button 
+      mat-icon-button 
+      class="mobile-menu-btn"
+      (click)="toggleMobileMenu()"
+      aria-label="Toggle menu"
+    >
+      <mat-icon>{{ isMobileMenuOpen ? 'close' : 'menu' }}</mat-icon>
+    </button>
+  </div>
+
+  @if (isMobileMenuOpen) {
+    <div class="mobile-menu">
+      <div class="mobile-menu-items">
+        @for (item of navItems; track item.path) {
+          <button 
+            mat-button 
+            routerLink="{{item.path}}" 
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: item.path === '/' }"
+            class="mobile-nav-link"
+            (click)="closeMobileMenu()"
+          >
+            <mat-icon>{{item.icon}}</mat-icon>
+            <span>{{item.label}}</span>
+          </button>
+        }
+        <button 
+          mat-raised-button 
+          color="primary" 
+          class="mobile-subscribe-btn"
+          (click)="closeMobileMenu()"
+        >
+          订阅杂志
+        </button>
+      </div>
+    </div>
+  }
+</mat-toolbar>

@@ -1,0 +1,150 @@
+<!-- Page Header -->
+<section class="page-header">
+  <div class="container">
+    <div class="header-content">
+      <h1>成功故事</h1>
+      <p>从真实创业者的经历中学习，获取宝贵的经验和灵感</p>
+    </div>
+  </div>
+</section>
+
+<!-- Filter Section -->
+<section class="filter-section">
+  <div class="container">
+    <div class="category-filters">
+      @for (category of categories; track category.value) {
+        <button
+          mat-stroked-button
+          class="filter-btn"
+          [class.active]="selectedCategory === category.value"
+          (click)="filterByCategory(category.value)"
+        >
+          {{ category.label }}
+        </button>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Stories Grid -->
+<section class="stories-section">
+  <div class="container">
+    <div class="stories-grid">
+      @for (story of filteredStories; track story.id) {
+        <mat-card
+          #storyCard
+          class="story-card animate-on-scroll"
+          (click)="openStory(story)"
+        >
+          <div class="story-image">
+            <img [src]="story.image" [alt]="story.name" />
+            <div class="story-category">
+              <mat-chip>{{ story.category }}</mat-chip>
+            </div>
+          </div>
+          <mat-card-content>
+            <div class="story-meta">
+              <span class="story-date">{{ story.date }}</span>
+              <span class="story-read-time">
+                <mat-icon>schedule</mat-icon>
+                {{ story.readTime }}
+              </span>
+            </div>
+            <h3>{{ story.title }}</h3>
+            <p class="story-excerpt">{{ story.excerpt }}</p>
+            <div class="story-author">
+              <div class="author-info">
+                <span class="author-name">{{ story.name }}</span>
+                <span class="author-company">{{ story.company }}</span>
+              </div>
+              <button mat-icon-button class="read-more-btn">
+                <mat-icon>arrow_forward</mat-icon>
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Story Modal -->
+@if (isModalOpen && selectedStory) {
+  <div class="modal-overlay" (click)="closeStory()">
+    <div class="story-modal" (click)="$event.stopPropagation()">
+      <button mat-icon-button class="modal-close" (click)="closeStory()">
+        <mat-icon>close</mat-icon>
+      </button>
+
+      <div class="modal-header">
+        <div class="modal-image">
+          <img [src]="selectedStory.image" [alt]="selectedStory.name" />
+        </div>
+        <div class="modal-info">
+          <mat-chip>{{ selectedStory.category }}</mat-chip>
+          <h2>{{ selectedStory.title }}</h2>
+          <div class="modal-author">
+            <div class="author-details">
+              <h3>{{ selectedStory.name }}</h3>
+              <p>{{ selectedStory.company }}</p>
+            </div>
+          </div>
+          <div class="modal-meta">
+            <span>
+              <mat-icon>event</mat-icon>
+              {{ selectedStory.date }}
+            </span>
+            <span>
+              <mat-icon>schedule</mat-icon>
+              {{ selectedStory.readTime }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <!-- Quote -->
+        <div class="quote-section">
+          <mat-icon class="quote-icon">format_quote</mat-icon>
+          <blockquote>{{ selectedStory.quote }}</blockquote>
+        </div>
+
+        <!-- Story Content -->
+        <div class="story-content">
+          <h3>故事详情</h3>
+          @for (paragraph of selectedStory.fullStory; track paragraph; let i = $index) {
+            <p>{{ paragraph }}</p>
+          }
+        </div>
+
+        <!-- Key Insights -->
+        <div class="insights-section">
+          <h3>关键洞察</h3>
+          <div class="insights-list">
+            @for (insight of selectedStory.keyInsights; track insight; let i = $index) {
+              <div class="insight-item">
+                <span class="insight-number">{{ i + 1 }}</span>
+                <p>{{ insight }}</p>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="modal-navigation">
+        <button mat-stroked-button class="nav-btn" (click)="prevStory()">
+          <mat-icon>arrow_back</mat-icon>
+          上一篇
+        </button>
+        <button mat-raised-button color="primary" (click)="closeStory()">
+          关闭
+        </button>
+        <button mat-stroked-button class="nav-btn" (click)="nextStory()">
+          下一篇
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+}

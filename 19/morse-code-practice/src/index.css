@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* 确保首页卡片有正确的内边距 */
+.home-card {
+  padding: 2rem !important;
+  border-radius: 1rem !important;
+}
+
+/* 确保 Ant Design 的 Link 不会影响样式 */
+.ant-typography a {
+  text-decoration: none;
+}
+
+/* 修复 Ant Design Title 的默认 margin */
+.ant-typography {
+  margin-bottom: 0 !important;
+}
+
+/* 修复内容区域的最小高度 */
+.ant-layout-content {
+  min-height: calc(100vh - 64px);
+}

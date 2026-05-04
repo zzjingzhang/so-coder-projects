@@ -1,0 +1,288 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="container mx-auto px-4">
+    <button 
+      mat-stroked-button 
+      (click)="goBack()"
+      class="mb-6 flex items-center"
+      [@fadeInUp]
+    >
+      <mat-icon class="mr-2">arrow_back</mat-icon>
+      返回房间列表
+    </button>
+
+    <div *ngIf="loading" class="flex justify-center items-center py-20">
+      <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+    </div>
+
+    <div *ngIf="!loading && !room" class="flex flex-col justify-center items-center py-20">
+      <mat-icon class="text-6xl text-gray-400 mb-4">error_outline</mat-icon>
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">房间不存在</h2>
+      <p class="text-gray-600 mb-6">您访问的房间不存在或已被删除</p>
+      <button mat-raised-button color="primary" (click)="goBack()">
+        返回房间列表
+      </button>
+    </div>
+
+    <div *ngIf="!loading && room" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2 space-y-8" [@fadeInUp]>
+        <mat-card class="overflow-hidden">
+          <div class="relative">
+            <img 
+              [src]="room.image" 
+              [alt]="room.name" 
+              class="w-full h-72 object-cover"
+            >
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+              <h1 class="text-3xl font-bold text-white">{{ room.name }}</h1>
+              <p class="text-white/80 mt-2">{{ getRoomTypeLabel(room.type) }} · 容纳 {{ room.capacity }} 人</p>
+            </div>
+          </div>
+        </mat-card>
+
+        <mat-card class="p-6">
+          <h2 class="text-xl font-bold text-gray-800 mb-6">选择预订日期</h2>
+          
+          <div class="flex items-center gap-4 mb-4">
+            <button 
+              mat-raised-button 
+              color="primary"
+              (click)="toggleCalendar()"
+              class="flex items-center"
+            >
+              <mat-icon class="mr-2">calendar_today</mat-icon>
+              {{ selectedDate ? (selectedDate | date:'yyyy年MM月dd日') : '选择日期' }}
+            </button>
+            
+            <span *ngIf="selectedDate" class="text-gray-600">
+              已选择: {{ selectedDate | date:'yyyy年MM月dd日 EEEE' }}
+            </span>
+          </div>
+
+          <div [@calendarSlide]="calendarOpen ? 'open' : 'closed'" class="overflow-hidden">
+            <mat-card class="p-4 bg-gray-50">
+              <mat-form-field appearance="fill" class="w-full">
+                <mat-label>选择日期</mat-label>
+                <input 
+                  matInput 
+                  [matDatepicker]="picker"
+                  [min]="minDate"
+                  (dateChange)="onDateSelected($event)"
+                  readonly
+                >
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </mat-card>
+          </div>
+        </mat-card>
+
+        <mat-card *ngIf="selectedDate" class="p-6" [@fadeInUp]>
+          <h2 class="text-xl font-bold text-gray-800 mb-6">选择时间段</h2>
+          
+          <div class="mb-4">
+            <div class="flex items-center gap-4 text-sm">
+              <span class="flex items-center">
+                <span class="w-4 h-4 rounded bg-green-100 mr-2"></span>
+                可预订
+              </span>
+              <span class="flex items-center">
+                <span class="w-4 h-4 rounded bg-red-100 mr-2"></span>
+                已预订
+              </span>
+              <span class="flex items-center">
+                <span class="w-4 h-4 rounded bg-blue-500 mr-2"></span>
+                已选择
+              </span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2" [@listAnimation]="timeSlots">
+            <button
+              *ngFor="let slot of timeSlots"
+              [ngClass]="getSlotStatus(slot)"
+              class="px-2 py-3 rounded-lg text-sm font-medium text-center transition-all duration-200 hover:scale-105"
+              [disabled]="isSlotBooked(slot)"
+              (click)="toggleSlot(slot)"
+            >
+              {{ slot }}
+            </button>
+          </div>
+
+          <div *ngIf="selectedSlots.length > 0" class="mt-6 p-4 bg-blue-50 rounded-lg">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="font-medium text-blue-800">已选择时间段</p>
+                <p class="text-sm text-blue-600 mt-1">
+                  {{ selectedSlots[0] }} - {{ selectedSlots[selectedSlots.length - 1] }}
+                  (共 {{ selectedSlots.length * 0.5 }} 小时)
+                </p>
+              </div>
+              <button 
+                mat-stroked-button 
+                color="warn"
+                (click)="selectedSlots = []"
+              >
+                清除选择
+              </button>
+            </div>
+          </div>
+        </mat-card>
+
+        <mat-card *ngIf="selectedSlots.length > 0" class="p-6" [@fadeInUp]>
+          <h2 class="text-xl font-bold text-gray-800 mb-6">填写预订信息</h2>
+          
+          <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <mat-form-field appearance="fill" class="w-full">
+                <mat-label>预订人姓名</mat-label>
+                <input matInput formControlName="name" required>
+                <mat-error *ngIf="bookingForm.get('name')?.hasError('required')">
+                  请输入姓名
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" class="w-full">
+                <mat-label>联系电话</mat-label>
+                <input matInput formControlName="phone" required>
+                <mat-error *ngIf="bookingForm.get('phone')?.hasError('required')">
+                  请输入电话号码
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <mat-form-field appearance="fill" class="w-full">
+                <mat-label>电子邮箱</mat-label>
+                <input matInput formControlName="email" type="email" required>
+                <mat-error *ngIf="bookingForm.get('email')?.hasError('required')">
+                  请输入邮箱
+                </mat-error>
+                <mat-error *ngIf="bookingForm.get('email')?.hasError('email')">
+                  请输入有效的邮箱地址
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" class="w-full">
+                <mat-label>参会人数</mat-label>
+                <mat-select formControlName="attendees" required>
+                  <mat-option *ngFor="let num of getAttendeeOptions()" [value]="num">
+                    {{ num }} 人
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="bookingForm.get('attendees')?.hasError('required')">
+                  请选择人数
+                </mat-error>
+                <mat-error *ngIf="bookingForm.get('attendees')?.hasError('max')">
+                  超过房间最大容量 {{ room.capacity }} 人
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label>备注（可选）</mat-label>
+              <textarea matInput formControlName="notes" rows="3"></textarea>
+            </mat-form-field>
+          </form>
+        </mat-card>
+      </div>
+
+      <div class="lg:col-span-1" [@fadeInUp]>
+        <mat-card class="sticky top-8">
+          <mat-card-header>
+            <mat-card-title class="text-xl font-bold">预订摘要</mat-card-title>
+          </mat-card-header>
+          
+          <mat-card-content class="pt-4">
+            <div class="space-y-4">
+              <div class="flex items-start gap-4">
+                <img [src]="room.image" [alt]="room.name" class="w-20 h-20 rounded-lg object-cover">
+                <div>
+                  <h3 class="font-semibold text-gray-800">{{ room.name }}</h3>
+                  <p class="text-sm text-gray-500">{{ getRoomTypeLabel(room.type) }}</p>
+                </div>
+              </div>
+
+              <mat-divider></mat-divider>
+
+              <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600">日期</span>
+                  <span class="font-medium">
+                    {{ selectedDate ? (selectedDate | date:'MM月dd日') : '未选择' }}
+                  </span>
+                </div>
+
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600">时间</span>
+                  <span class="font-medium">
+                    {{ selectedSlots.length > 0 ? selectedSlots[0] + ' - ' + selectedSlots[selectedSlots.length - 1] : '未选择' }}
+                  </span>
+                </div>
+
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600">时长</span>
+                  <span class="font-medium">
+                    {{ selectedSlots.length > 0 ? (selectedSlots.length * 0.5) + ' 小时' : '0 小时' }}
+                  </span>
+                </div>
+
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600">人数</span>
+                  <span class="font-medium">
+                    {{ bookingForm.get('attendees')?.value || 0 }} 人
+                  </span>
+                </div>
+              </div>
+
+              <mat-divider></mat-divider>
+
+              <div class="space-y-2">
+                <div class="flex justify-between items-center text-sm">
+                  <span class="text-gray-600">单价</span>
+                  <span>¥{{ room.pricePerHour }} / 小时</span>
+                </div>
+
+                <div class="flex justify-between items-center text-sm">
+                  <span class="text-gray-600">时长费用</span>
+                  <span>¥{{ calculateTotal() }}</span>
+                </div>
+
+                <div class="flex justify-between items-center text-sm">
+                  <span class="text-gray-600">服务费</span>
+                  <span>¥0</span>
+                </div>
+              </div>
+
+              <mat-divider></mat-divider>
+
+              <div class="flex justify-between items-center">
+                <span class="text-lg font-bold text-gray-800">总计</span>
+                <span class="text-2xl font-bold text-blue-600">¥{{ calculateTotal() }}</span>
+              </div>
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions class="p-4">
+            <button 
+              mat-raised-button 
+              color="primary"
+              class="w-full h-14 text-lg font-medium"
+              [disabled]="!bookingForm.valid || selectedSlots.length === 0 || showSuccess"
+              (click)="onSubmit()"
+            >
+              {{ showSuccess ? '预订成功！' : '确认预订' }}
+            </button>
+            
+            <button 
+              mat-stroked-button 
+              class="w-full mt-3"
+              (click)="goBack()"
+            >
+              取消预订
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

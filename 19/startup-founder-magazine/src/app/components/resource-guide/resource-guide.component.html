@@ -1,0 +1,239 @@
+<!-- Page Header -->
+<section class="page-header">
+  <div class="container">
+    <div class="header-content">
+      <h1>资源指南</h1>
+      <p>为初创企业创始人精心准备的实用工具、模板和指南</p>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Resources -->
+<section class="featured-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>精选资源</h2>
+      <p>最受创始人欢迎的优质资源</p>
+    </div>
+
+    <div class="featured-grid">
+      @for (resource of featuredResources; track resource.id) {
+        <mat-card class="featured-card">
+          <div class="featured-badge">
+            <mat-icon>star</mat-icon>
+            精选
+          </div>
+          <div class="card-content">
+            <h3>{{ resource.title }}</h3>
+            <p>{{ resource.description }}</p>
+            <div class="card-meta">
+              <mat-chip>{{ resource.category }}</mat-chip>
+              <mat-chip>{{ resource.type }}</mat-chip>
+            </div>
+            <div class="card-footer">
+              <div class="rating">
+                @for (star of getRatingStars(resource.rating); track star) {
+                  <mat-icon>{{ star }}</mat-icon>
+                }
+                <span class="rating-value">{{ resource.rating }}</span>
+                <span class="review-count">({{ resource.reviews }})</span>
+              </div>
+              <button mat-raised-button color="primary" class="get-btn">
+                获取资源
+              </button>
+            </div>
+          </div>
+        </mat-card>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Main Content with Tabs -->
+<section class="main-content-section">
+  <div class="container">
+    <mat-tab-group class="main-tabs">
+      <!-- Resources Tab -->
+      <mat-tab label="资源库">
+        <ng-template matTabContent>
+          <div class="tab-content">
+            <!-- Search and Filters -->
+            <div class="search-filters">
+              <mat-form-field appearance="outline" class="search-field">
+                <mat-label>搜索资源</mat-label>
+                <input 
+                  matInput 
+                  type="text" 
+                  [formControl]="searchControl"
+                  placeholder="输入关键词搜索..."
+                />
+                <mat-icon matSuffix>search</mat-icon>
+              </mat-form-field>
+
+              <div class="filter-row">
+                <mat-form-field appearance="outline" class="filter-field">
+                  <mat-label>分类</mat-label>
+                  <mat-select [formControl]="categoryFilter">
+                    @for (category of categories; track category.value) {
+                      <mat-option [value]="category.value">{{ category.label }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="filter-field">
+                  <mat-label>类型</mat-label>
+                  <mat-select [formControl]="typeFilter">
+                    @for (type of types; track type.value) {
+                      <mat-option [value]="type.value">{{ type.label }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-checkbox 
+                  [(ngModel)]="showFavoritesOnly"
+                  class="favorite-filter"
+                >
+                  <mat-icon>favorite</mat-icon>
+                  仅显示收藏
+                </mat-checkbox>
+              </div>
+            </div>
+
+            <!-- Results Count -->
+            <div class="results-info">
+              <p>找到 <strong>{{ filteredResources.length }}</strong> 个资源</p>
+            </div>
+
+            <!-- Resources Grid -->
+            @if (filteredResources.length > 0) {
+              <div class="resources-grid">
+                @for (resource of filteredResources; track resource.id) {
+                  <mat-card class="resource-card">
+                    <div class="resource-header">
+                      <div class="resource-type-badge">
+                        {{ resource.type }}
+                      </div>
+                      <button 
+                        mat-icon-button 
+                        class="favorite-btn"
+                        (click)="toggleFavorite(resource)"
+                        [class.is-favorite]="resource.isFavorite"
+                      >
+                        <mat-icon>{{ resource.isFavorite ? 'favorite' : 'favorite_border' }}</mat-icon>
+                      </button>
+                    </div>
+
+                    <h3 class="resource-title">{{ resource.title }}</h3>
+                    <p class="resource-desc">{{ resource.description }}</p>
+
+                    <div class="resource-tags">
+                      @for (tag of resource.tags; track tag) {
+                        <mat-chip class="tag-chip">{{ tag }}</mat-chip>
+                      }
+                    </div>
+
+                    <div class="resource-footer">
+                      <div class="resource-rating">
+                        @for (star of getRatingStars(resource.rating); track star) {
+                          <mat-icon class="star-icon">{{ star }}</mat-icon>
+                        }
+                        <span class="rating-text">{{ resource.rating }}</span>
+                      </div>
+                      <span class="resource-category">{{ resource.category }}</span>
+                    </div>
+
+                    <button mat-stroked-button color="primary" class="resource-action-btn">
+                      查看详情
+                      <mat-icon>arrow_forward</mat-icon>
+                    </button>
+                  </mat-card>
+                }
+              </div>
+            } @else {
+              <div class="no-results">
+                <mat-icon>search_off</mat-icon>
+                <h3>没有找到匹配的资源</h3>
+                <p>请尝试调整搜索条件或筛选器</p>
+              </div>
+            }
+          </div>
+        </ng-template>
+      </mat-tab>
+
+      <!-- Tools Tab -->
+      <mat-tab label="推荐工具">
+        <ng-template matTabContent>
+          <div class="tab-content">
+            <div class="section-intro">
+              <h2>创始人必备工具</h2>
+              <p>提高效率、降低成本的实用工具推荐</p>
+            </div>
+
+            <div class="tools-container">
+              @for (category of toolCategories; track category) {
+                <div class="tool-category">
+                  <h3 class="category-title">
+                    <mat-icon>folder</mat-icon>
+                    {{ category }}
+                  </h3>
+                  <div class="tools-grid">
+                    @for (tool of toolsByCategory[category]; track tool.name) {
+                      <mat-card class="tool-card">
+                        <div class="tool-header">
+                          <h4 class="tool-name">{{ tool.name }}</h4>
+                          <span class="tool-pricing">{{ tool.pricing }}</span>
+                        </div>
+                        <p class="tool-desc">{{ tool.description }}</p>
+                        <button mat-button class="tool-link">
+                          了解更多
+                          <mat-icon>open_in_new</mat-icon>
+                        </button>
+                      </mat-card>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </ng-template>
+      </mat-tab>
+
+      <!-- FAQ Tab -->
+      <mat-tab label="常见问题">
+        <ng-template matTabContent>
+          <div class="tab-content">
+            <div class="section-intro">
+              <h2>创始人常见问题</h2>
+              <p>解答初创企业创始人最常遇到的问题</p>
+            </div>
+
+            <mat-accordion class="faq-accordion">
+              @for (faq of faqs; track faq.question; let i = $index) {
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <span class="faq-number">{{ i + 1 }}</span>
+                      <span class="faq-question">{{ faq.question }}</span>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="faq-answer">
+                    {{ faq.answer }}
+                  </div>
+                </mat-expansion-panel>
+              }
+            </mat-accordion>
+
+            <div class="contact-cta">
+              <h3>还有其他问题？</h3>
+              <p>我们的专家团队随时准备为您提供帮助</p>
+              <button mat-raised-button color="primary">
+                联系我们
+                <mat-icon>email</mat-icon>
+              </button>
+            </div>
+          </div>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</section>

@@ -1,0 +1,76 @@
+/* Custom styles for Morse Code Practice Tool */
+
+/* Ant Design overrides */
+.ant-card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ant-card-head {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.ant-btn {
+  border-radius: 8px;
+}
+
+/* Morse code display styles */
+.morse-char {
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 0.2em;
+}
+
+/* Telegraph key styles */
+.telegraph-key {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Animations */
+@keyframes pulse-signal {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.signal-active {
+  animation: pulse-signal 0.5s ease-in-out infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* Dark mode scrollbar */
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-track {
+    background: #2f2f2f;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #555;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #777;
+  }
+}

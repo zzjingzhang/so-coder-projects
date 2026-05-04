@@ -1,0 +1,164 @@
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="hero-slider">
+    @for (slide of heroSlides; track slide.title; let i = $index) {
+      <div 
+        class="hero-slide" 
+        [class.active]="i === currentSlide"
+        [class.previous]="i === (currentSlide - 1 + heroSlides.length) % heroSlides.length"
+      >
+        <div class="hero-content">
+          <div class="container">
+            <div class="hero-text">
+              <h1>{{ slide.title }}</h1>
+              <p>{{ slide.subtitle }}</p>
+              <button mat-raised-button color="primary" class="hero-cta">
+                {{ slide.ctaText }}
+                <mat-icon>arrow_forward</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Slider Controls -->
+    <button mat-icon-button class="slider-btn slider-prev" (click)="prevSlide()">
+      <mat-icon>arrow_back_ios</mat-icon>
+    </button>
+    <button mat-icon-button class="slider-btn slider-next" (click)="nextSlide()">
+      <mat-icon>arrow_forward_ios</mat-icon>
+    </button>
+
+    <!-- Slider Indicators -->
+    <div class="slider-indicators">
+      @for (slide of heroSlides; track slide.title; let i = $index) {
+        <button 
+          mat-icon-button 
+          class="indicator" 
+          [class.active]="i === currentSlide"
+          (click)="goToSlide(i)"
+          aria-label="Go to slide {{i + 1}}"
+        ></button>
+      }
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="scroll-indicator" (click)="scrollToSection('features')">
+    <span>向下滚动</span>
+    <mat-icon>keyboard_arrow_down</mat-icon>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="features-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>为什么选择 <span class="text-gradient">FounderMag</span></h2>
+      <p>我们为初创企业创始人提供最有价值的内容和资源</p>
+    </div>
+
+    <div class="features-grid">
+      @for (feature of features; track feature.title; let i = $index) {
+        <mat-card class="feature-card" [style.--feature-color]="feature.color">
+          <div class="feature-icon" [style.backgroundColor]="feature.color + '15'">
+            <mat-icon [style.color]="feature.color">{{ feature.icon }}</mat-icon>
+          </div>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
+        </mat-card>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Magazine Issues Section -->
+<section class="magazine-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>最新杂志</h2>
+      <p>探索我们最新的创业内容</p>
+    </div>
+
+    <div class="magazine-grid">
+      @for (issue of magazineIssues; track issue.id) {
+        <mat-card class="magazine-card card-hover">
+          <div class="magazine-image">
+            <img [src]="issue.image" [alt]="issue.title" />
+            <div class="magazine-overlay">
+              <button mat-raised-button color="primary">
+                阅读杂志
+                <mat-icon>arrow_forward</mat-icon>
+              </button>
+            </div>
+          </div>
+          <mat-card-content>
+            <div class="magazine-date">{{ issue.date }}</div>
+            <h3>{{ issue.title }}</h3>
+            <p>{{ issue.excerpt }}</p>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+
+    <div class="view-all-container">
+      <button mat-stroked-button color="primary" class="view-all-btn">
+        查看全部杂志
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Success Stories Preview -->
+<section class="stories-preview-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>成功故事</h2>
+      <p>从真实案例中学习创业经验</p>
+    </div>
+
+    <div class="stories-preview">
+      <div class="stories-text">
+        <h3>每一个成功背后都有故事</h3>
+        <p>
+          我们深入采访那些从零开始建立成功企业的创始人。
+          了解他们的挑战、决策和突破时刻。
+        </p>
+        <p>
+          从失败中学习，从成功中获得灵感。这些真实的故事将帮助你在创业旅程中做出更好的决策。
+        </p>
+        <button mat-raised-button color="primary" routerLink="/success-stories">
+          探索成功故事
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+      <div class="stories-image">
+        <img 
+          src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=successful%20entrepreneur%20celebrating%20success%20with%20clean%20white%20background%20orange%20and%20blue%20accents%20modern%20minimalist&image_size=square_hd" 
+          alt="成功故事" 
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <h2>准备好开始你的创业旅程了吗？</h2>
+      <p>加入我们的社区，获取最新的创业洞察和资源</p>
+      <div class="cta-buttons">
+        <button mat-raised-button color="primary" class="cta-primary-btn">
+          立即订阅
+          <mat-icon>email</mat-icon>
+        </button>
+        <button mat-stroked-button class="cta-secondary-btn">
+          了解更多
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

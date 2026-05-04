@@ -1,0 +1,68 @@
+<mat-toolbar color="primary" class="sticky top-0 z-50 shadow-md">
+  <div class="container mx-auto flex items-center justify-between">
+    <a routerLink="/" class="flex items-center gap-2 text-white hover:opacity-90 transition-opacity">
+      <mat-icon class="text-2xl">meeting_room</mat-icon>
+      <span class="text-xl font-bold">{{ title }}</span>
+    </a>
+    
+    <div class="flex items-center gap-4">
+      <button mat-button routerLink="/" class="text-white">
+        <mat-icon class="mr-2">home</mat-icon>
+        首页
+      </button>
+      <button mat-button class="text-white">
+        <mat-icon class="mr-2">help</mat-icon>
+        帮助
+      </button>
+    </div>
+  </div>
+</mat-toolbar>
+
+<main class="min-h-screen bg-gray-50">
+  <router-outlet />
+</main>
+
+<footer class="bg-gray-800 text-white py-8">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+          <mat-icon>meeting_room</mat-icon>
+          共享办公空间预订平台
+        </h3>
+        <p class="text-gray-400">为您提供舒适、高效的办公空间解决方案</p>
+      </div>
+      
+      <div>
+        <h3 class="text-lg font-bold mb-4">快速链接</h3>
+        <ul class="space-y-2">
+          <li><a routerLink="/" class="text-gray-400 hover:text-white transition-colors">首页</a></li>
+          <li><a href="#" class="text-gray-400 hover:text-white transition-colors">关于我们</a></li>
+          <li><a href="#" class="text-gray-400 hover:text-white transition-colors">联系我们</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h3 class="text-lg font-bold mb-4">联系方式</h3>
+        <ul class="space-y-2 text-gray-400">
+          <li class="flex items-center gap-2">
+            <mat-icon class="text-sm">phone</mat-icon>
+            400-123-4567
+          </li>
+          <li class="flex items-center gap-2">
+            <mat-icon class="text-sm">email</mat-icon>
+            contact@coworking.com
+          </li>
+          <li class="flex items-center gap-2">
+            <mat-icon class="text-sm">location_on</mat-icon>
+            北京市朝阳区科技园A座
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400">
+      <p>&copy; 2026 共享办公空间预订平台. 保留所有权利.</p>
+    </div>
+  </div>
+</footer>

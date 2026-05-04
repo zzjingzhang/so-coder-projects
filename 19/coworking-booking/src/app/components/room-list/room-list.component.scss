@@ -1,0 +1,18 @@
+/* Room list component styles */
+mat-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+mat-card-content {
+  flex: 1;
+}
+
+img {
+  transition: transform 0.3s ease;
+}
+
+mat-card:hover img {
+  transform: scale(1.02);
+}
