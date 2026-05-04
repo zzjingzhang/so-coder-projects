@@ -1,0 +1,45 @@
+<div class="min-h-screen flex flex-col bg-gray-50">
+  <mat-toolbar color="primary" class="shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="flex items-center">
+        <mat-icon class="mr-2">architecture</mat-icon>
+        <span class="text-xl font-bold">{{ title }}</span>
+      </div>
+      <div class="flex gap-2">
+        <button
+          mat-button
+          routerLink="/"
+          routerLinkActive="active"
+          class="flex items-center gap-1"
+        >
+          <mat-icon>play_circle</mat-icon>
+          <span>演示</span>
+        </button>
+        <button
+          mat-button
+          routerLink="/explanation"
+          routerLinkActive="active"
+          class="flex items-center gap-1"
+        >
+          <mat-icon>menu_book</mat-icon>
+          <span>定理解释</span>
+        </button>
+      </div>
+    </div>
+  </mat-toolbar>
+
+  <main class="flex-1">
+    <router-outlet />
+  </main>
+
+  <footer class="bg-gray-800 text-white py-4">
+    <div class="container mx-auto px-4 text-center">
+      <p class="text-sm text-gray-400">
+        泰勒斯定理演示工具 | 使用 Angular + Tailwind CSS + Angular Material 构建
+      </p>
+      <p class="text-xs text-gray-500 mt-1">
+        泰勒斯 (Thales of Miletus, 约公元前624年 - 公元前546年
+      </p>
+    </div>
+  </footer>
+</div>

@@ -1,0 +1,12 @@
+.canvas-container {
+  touch-action: none;
+}
+
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+::ng-deep .mat-mdc-slider {
+  width: 100% !important;
+}

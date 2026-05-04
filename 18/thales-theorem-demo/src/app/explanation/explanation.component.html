@@ -1,0 +1,131 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-2">泰勒斯定理详解</h1>
+    <p class="text-gray-600">了解定理的历史、定义和数学证明</p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+    <mat-card class="p-6 shadow-lg lg:col-span-2">
+      <mat-card-header class="mb-4">
+        <mat-card-title class="text-xl font-semibold text-blue-600">📜 定理定义</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-4">
+          <h3 class="font-bold text-blue-800 text-lg mb-2">泰勒斯定理 (Thales' Theorem)</h3>
+          <p class="text-gray-700 leading-relaxed">
+            如果 A、B 是圆的一条直径的两个端点，C 是圆上除 A、B 外的任意一点，
+            那么 <span class="font-bold text-purple-600">∠ACB = 90°</span>。
+          </p>
+        </div>
+        <div class="space-y-3">
+          <p class="text-gray-700 leading-relaxed">
+            泰勒斯定理是几何学中的一个重要定理，以古希腊数学家泰勒斯（Thales of Miletus）的名字命名。
+            泰勒斯生活在公元前624年至公元前546年，被认为是西方哲学和科学的奠基人之一。
+          </p>
+          <p class="text-gray-700 leading-relaxed">
+            这个定理是圆周角定理的一个特例。圆周角定理指出：同弧所对的圆周角是圆心角的一半。
+            对于直径来说，它所对的圆心角是 180°，因此对应的圆周角就是 90°。
+          </p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="p-6 shadow-lg">
+      <mat-card-header class="mb-4">
+        <mat-card-title class="text-xl font-semibold text-green-600">🎯 关键要点</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ul class="space-y-3">
+          <li class="flex items-start">
+            <span class="flex-shrink-0 w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-sm font-bold mr-3">1</span>
+            <span class="text-gray-700">直径所对的圆周角恒为 90°</span>
+          </li>
+          <li class="flex items-start">
+            <span class="flex-shrink-0 w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-sm font-bold mr-3">2</span>
+            <span class="text-gray-700">点 C 可以在半圆上任意移动（除 A、B 两点）</span>
+          </li>
+          <li class="flex items-start">
+            <span class="flex-shrink-0 w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-sm font-bold mr-3">3</span>
+            <span class="text-gray-700">△ABC 始终是直角三角形，直角在点 C</span>
+          </li>
+          <li class="flex items-start">
+            <span class="flex-shrink-0 w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-sm font-bold mr-3">4</span>
+            <span class="text-gray-700">逆定理也成立：如果直角三角形的直角顶点在圆上，则斜边是圆的直径</span>
+          </li>
+        </ul>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card class="p-6 shadow-lg mb-8">
+    <mat-card-header class="mb-4">
+      <mat-card-title class="text-xl font-semibold text-purple-600">📐 数学证明</mat-card-title>
+      <mat-card-subtitle>点击下方按钮逐步查看证明过程</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="flex flex-wrap gap-2 mb-6 justify-center">
+        <button
+          *ngFor="let step of proofSteps; let i = index"
+          mat-raised-button
+          [color]="currentStep === i ? 'primary' : ''"
+          (click)="goToStep(i)"
+          class="min-w-[48px]"
+        >
+          {{ i + 1 }}
+        </button>
+      </div>
+
+      <div class="bg-purple-50 rounded-lg p-6 min-h-[200px]">
+        <h3 class="text-lg font-bold text-purple-800 mb-3">
+          {{ proofSteps[currentStep].title }}
+        </h3>
+        <p class="text-gray-700 leading-relaxed mb-4">
+          {{ proofSteps[currentStep].content }}
+        </p>
+        <div class="bg-white border-2 border-purple-200 rounded-lg p-4">
+          <p class="font-mono text-purple-700 text-center text-lg">
+            {{ proofSteps[currentStep].formula }}
+          </p>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center mt-6">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="prevStep()"
+          [disabled]="currentStep === 0"
+          class="flex items-center"
+        >
+          <mat-icon>arrow_back</mat-icon>
+          <span>上一步</span>
+        </button>
+        <span class="text-gray-600 font-medium">
+          步骤 {{ currentStep + 1 }} / {{ proofSteps.length }}
+        </span>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="nextStep()"
+          [disabled]="currentStep === proofSteps.length - 1"
+          class="flex items-center"
+        >
+          <span>下一步</span>
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="text-center">
+    <button
+      mat-raised-button
+      color="accent"
+      routerLink="/"
+      class="px-8 py-3 text-lg"
+    >
+      <mat-icon class="mr-2">play_circle</mat-icon>
+      返回演示页面
+    </button>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-2">泰勒斯定理演示</h1>
+    <p class="text-gray-600">拖动点C，验证半圆中的内角始终为90度</p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <mat-card class="p-6 shadow-lg">
+      <mat-card-header class="mb-4">
+        <mat-card-title class="text-xl font-semibold text-blue-600">交互式演示</mat-card-title>
+        <mat-card-subtitle>拖动橙色的点C在半圆上移动</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="canvas-container flex justify-center items-center bg-gray-50 rounded-lg p-4 min-h-[280px]">
+          <canvas
+            #canvas
+            class="cursor-grab active:cursor-grabbing"
+            (mousedown)="onMouseDown($event)"
+            (mousemove)="onMouseMove($event)"
+            (mouseup)="onMouseUp()"
+            (mouseleave)="onMouseLeave()"
+            (touchstart)="onTouchStart($event)"
+            (touchmove)="onTouchMove($event)"
+            (touchend)="onTouchEnd()"
+          ></canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="space-y-6">
+      <mat-card class="p-6 shadow-lg">
+        <mat-card-header class="mb-4">
+          <mat-card-title class="text-xl font-semibold text-green-600">当前状态</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="bg-purple-50 rounded-lg p-4 text-center">
+              <p class="text-sm text-gray-600 mb-2">∠ACB 角度</p>
+              <p class="text-4xl font-bold text-purple-600">{{ angle() }}°</p>
+              <p class="text-xs text-green-600 mt-1 font-medium">✓ 恒为90°</p>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-4 text-center">
+              <p class="text-sm text-gray-600 mb-2">半圆半径</p>
+              <p class="text-4xl font-bold text-blue-600">{{ radius() }}px</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="p-6 shadow-lg">
+        <mat-card-header class="mb-4">
+          <mat-card-title class="text-xl font-semibold text-orange-600">调整半径</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="px-2">
+            <mat-slider
+              min="50"
+              max="180"
+              step="10"
+              discrete
+              [displayWith]="displayFn"
+              class="w-full"
+            >
+              <input matSliderThumb [(ngModel)]="sliderValue" (ngModelChange)="onRadiusChange($event)" />
+            </mat-slider>
+            <div class="flex justify-between text-sm text-gray-500 mt-2">
+              <span>50px</span>
+              <span>115px</span>
+              <span>180px</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="p-6 shadow-lg bg-gradient-to-r from-blue-50 to-purple-50">
+        <mat-card-content>
+          <div class="text-center">
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">💡 定理核心</h3>
+            <p class="text-gray-700 leading-relaxed">
+              无论点C在半圆上如何移动，<br />
+              <span class="font-bold text-purple-600">∠ACB 始终等于 90°</span>
+            </p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
