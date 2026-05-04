@@ -1,0 +1,99 @@
+<div *ngIf="visible && currentAnnouncement" class="announcement-popup" [class.mobile-popup]="isMobile">
+  <div class="announcement-popup-content" [class.mobile-content]="isMobile">
+    <div class="announcement-popup-header flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i class="pi pi-bell text-xl"></i>
+        <span class="announcement-popup-title">{{ currentAnnouncement.title }}</span>
+      </div>
+      <button 
+        *ngIf="!isMobile"
+        type="button" 
+        class="text-white hover:text-gray-200 transition-colors"
+        (click)="onClose()">
+        <i class="pi pi-times text-xl"></i>
+      </button>
+    </div>
+
+    <div class="announcement-popup-body">
+      <div *ngIf="hasMultipleAnnouncements" class="flex justify-center gap-2 mb-4">
+        <ng-container *ngFor="let ann of announcements; let i = index">
+          <button 
+            type="button"
+            class="w-2 h-2 rounded-full transition-all"
+            [class.bg-blue-600]="i === currentIndex"
+            [class.bg-gray-300]="i !== currentIndex"
+            (click)="goTo(i)"></button>
+        </ng-container>
+      </div>
+
+      <div class="text-sm text-gray-500 mb-3">
+        <span>发布时间: {{ formatDate(currentAnnouncement.publishTime) }}</span>
+        <span class="mx-2">|</span>
+        <span>有效期至: {{ formatDate(currentAnnouncement.validTo) }}</span>
+      </div>
+
+      <div class="prose max-w-none">
+        <p class="text-gray-700 leading-relaxed" [innerHTML]="currentAnnouncement.content"></p>
+      </div>
+    </div>
+
+    <div class="announcement-popup-footer">
+      <button 
+        *ngIf="hasMultipleAnnouncements && currentIndex > 0"
+        pButton 
+        type="button" 
+        label="上一条" 
+        icon="pi pi-chevron-left" 
+        class="btn btn-secondary"
+        (click)="previous()"></button>
+      
+      <button 
+        pButton 
+        type="button" 
+        label="关闭" 
+        icon="pi pi-times" 
+        class="btn btn-secondary"
+        (click)="onClose()"></button>
+      
+      <button 
+        pButton 
+        type="button" 
+        label="查看详情" 
+        icon="pi pi-external-link" 
+        class="btn btn-primary"
+        (click)="onViewDetail(currentAnnouncement!)"></button>
+      
+      <button 
+        *ngIf="hasMultipleAnnouncements && currentIndex < announcements.length - 1"
+        pButton 
+        type="button" 
+        label="下一条" 
+        icon="pi pi-chevron-right" 
+        iconPos="right"
+        class="btn btn-secondary"
+        (click)="next()"></button>
+    </div>
+  </div>
+</div>
+
+<!-- 移动端全屏弹窗样式 -->
+<style>
+.mobile-popup {
+  padding: 0;
+}
+
+.mobile-content {
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-content .announcement-popup-body {
+  flex: 1;
+  overflow-y: auto;
+}
+</style>

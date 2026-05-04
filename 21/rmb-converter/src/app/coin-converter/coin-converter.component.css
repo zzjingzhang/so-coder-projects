@@ -1,0 +1,44 @@
+:host {
+  display: block;
+}
+
+mat-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+mat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.border-yuan {
+  border-top: 4px solid #EAB308 !important;
+}
+
+.border-jiao {
+  border-top: 4px solid #22C55E !important;
+}
+
+.border-fen {
+  border-top: 4px solid #3B82F6 !important;
+}
+
+.text-yuan {
+  color: #CA8A04;
+}
+
+.text-jiao {
+  color: #16A34A;
+}
+
+.text-fen {
+  color: #2563EB;
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+.bounce-in {
+  animation: bounce-in 0.5s ease-out;
+}

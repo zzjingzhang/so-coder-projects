@@ -1,0 +1,197 @@
+<div class="space-y-8 animate-fade-in">
+  <mat-card class="p-8">
+    <mat-card-header class="mb-6">
+      <mat-card-title class="text-3xl font-bold text-center text-gray-800 w-full">
+        📚 使用说明
+      </mat-card-title>
+      <mat-card-subtitle class="text-center text-gray-600 text-lg w-full mt-2">
+        轻松学会人民币单位换算
+      </mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+
+  <mat-card class="p-6">
+    <mat-card-header class="mb-4">
+      <mat-card-title class="text-xl font-bold text-gray-700">
+        🎓 学习步骤
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="flex justify-center mb-6">
+        <div class="flex items-center space-x-2">
+          <button 
+            *ngFor="let step of steps; let i = index"
+            mat-icon-button
+            [color]="currentStep === i ? 'primary' : undefined"
+            (click)="goToStep(i)"
+            class="w-10 h-10">
+            {{ i + 1 }}
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 mb-6 min-h-[200px]">
+        <div class="text-center">
+          <div class="text-5xl mb-4">
+            {{ steps[currentStep].icon }}
+          </div>
+          <h3 class="text-2xl font-bold text-gray-800 mb-4">
+            {{ steps[currentStep].title }}
+          </h3>
+          <p class="text-lg text-gray-700 leading-relaxed max-w-2xl mx-auto">
+            {{ steps[currentStep].content }}
+          </p>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <button 
+          mat-stroked-button 
+          color="primary"
+          (click)="prevStep()"
+          [disabled]="currentStep === 0">
+          <mat-icon>arrow_back</mat-icon>
+          <span class="ml-2">上一步</span>
+        </button>
+        <span class="text-gray-600 font-medium">
+          {{ currentStep + 1 }} / {{ steps.length }}
+        </span>
+        <button 
+          mat-raised-button 
+          color="primary"
+          (click)="nextStep()"
+          [disabled]="currentStep === steps.length - 1">
+          <span class="mr-2">下一步</span>
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="p-6">
+    <mat-card-header class="mb-4">
+      <mat-card-title class="text-xl font-bold text-gray-700">
+        💵 人民币单位换算表
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="instruction-card p-6 rounded-lg text-center">
+          <div class="text-4xl mb-3">💰</div>
+          <h3 class="text-xl font-bold text-yuan mb-3">元</h3>
+          <div class="space-y-2 text-gray-700">
+            <p>1元 = <strong class="text-jiao">10角</strong></p>
+            <p>1元 = <strong class="text-fen">100分</strong></p>
+            <p class="text-sm text-gray-500 mt-3">人民币最大单位</p>
+          </div>
+        </div>
+
+        <div class="instruction-card p-6 rounded-lg text-center">
+          <div class="text-4xl mb-3">🪙</div>
+          <h3 class="text-xl font-bold text-jiao mb-3">角</h3>
+          <div class="space-y-2 text-gray-700">
+            <p>1角 = <strong class="text-fen">10分</strong></p>
+            <p>1角 = <strong class="text-yuan">0.1元</strong></p>
+            <p class="text-sm text-gray-500 mt-3">中间单位</p>
+          </div>
+        </div>
+
+        <div class="instruction-card p-6 rounded-lg text-center">
+          <div class="text-4xl mb-3">🪙</div>
+          <h3 class="text-xl font-bold text-fen mb-3">分</h3>
+          <div class="space-y-2 text-gray-700">
+            <p>1分 = <strong class="text-jiao">0.1角</strong></p>
+            <p>1分 = <strong class="text-yuan">0.01元</strong></p>
+            <p class="text-sm text-gray-500 mt-3">人民币最小单位</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8 tip-card p-6 rounded-lg">
+        <h4 class="font-bold text-lg mb-3 text-amber-800">🔗 换算关系图</h4>
+        <div class="flex flex-wrap items-center justify-center gap-4 text-lg">
+          <span class="highlight-number">1元</span>
+          <span class="text-2xl">= 10 ×</span>
+          <span class="highlight-number">1角</span>
+          <span class="text-2xl">= 100 ×</span>
+          <span class="highlight-number">1分</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="p-6">
+    <mat-card-header class="mb-4">
+      <mat-card-title class="text-xl font-bold text-gray-700">
+        ❓ 常见问题
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="space-y-4">
+        <mat-accordion>
+          <mat-expansion-panel *ngFor="let item of faq">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="font-bold text-gray-700">
+                {{ item.question }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p class="text-gray-600 leading-relaxed">
+              {{ item.answer }}
+            </p>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="p-6">
+    <mat-card-header class="mb-4">
+      <mat-card-title class="text-xl font-bold text-gray-700">
+        💡 学习小贴士
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div *ngFor="let tip of tips; let i = index" 
+             class="instruction-card p-4 rounded-lg flex items-start gap-3">
+          <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">
+            {{ i + 1 }}
+          </div>
+          <p class="text-gray-700 flex-1">
+            {{ tip }}
+          </p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="p-6 bg-gradient-to-r from-green-50 to-emerald-50">
+    <mat-card-content class="text-center">
+      <div class="text-5xl mb-4">🚀</div>
+      <h3 class="text-2xl font-bold text-green-800 mb-4">
+        准备好开始学习了吗？
+      </h3>
+      <p class="text-green-700 text-lg mb-6">
+        点击下方按钮，开始你的人民币换算学习之旅！
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <button 
+          mat-raised-button 
+          color="primary"
+          class="w-48 h-14 text-lg"
+          routerLink="/converter">
+          <mat-icon>payments</mat-icon>
+          <span class="ml-2">开始练习</span>
+        </button>
+        <button 
+          mat-raised-button 
+          color="accent"
+          class="w-48 h-14 text-lg"
+          routerLink="/game">
+          <mat-icon>games</mat-icon>
+          <span class="ml-2">挑战游戏</span>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,22 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.mat-mdc-raised-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mat-mdc-stroked-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mat-mdc-button-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

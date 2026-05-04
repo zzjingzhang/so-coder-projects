@@ -1,0 +1,135 @@
+<div class="container mx-auto px-4 py-6">
+  <div class="card">
+    <div class="card-header flex items-center justify-between">
+      <span class="text-xl font-bold text-gray-800">公告管理</span>
+      <button pButton type="button" label="新增公告" icon="pi pi-plus" class="btn btn-primary" (click)="addAnnouncement()"></button>
+    </div>
+
+    <p-fieldset legend="查询条件" [toggleable]="true" [collapsed]="true" class="mb-4">
+      <form [formGroup]="searchForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="form-group">
+          <label class="form-label">公告标题</label>
+          <input pInputText type="text" formControlName="title" placeholder="请输入公告标题" class="form-input" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">发布时间开始</label>
+          <p-calendar formControlName="publishTimeFrom" showTime="true" hourFormat="24" dateFormat="yy-mm-dd" placeholder="选择开始时间" [showIcon]="true" class="w-full"></p-calendar>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">发布时间结束</label>
+          <p-calendar formControlName="publishTimeTo" showTime="true" hourFormat="24" dateFormat="yy-mm-dd" placeholder="选择结束时间" [showIcon]="true" class="w-full"></p-calendar>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">适用层级</label>
+          <p-dropdown formControlName="level" [options]="levels" optionLabel="label" optionValue="value" placeholder="请选择层级" class="w-full"></p-dropdown>
+        </div>
+
+        <div class="form-group" *ngIf="searchForm.get('level')?.value">
+          <label class="form-label">产品</label>
+          <p-dropdown formControlName="productId" [options]="products" optionLabel="name" optionValue="id" placeholder="请选择产品" [disabled]="!searchForm.get('level')?.value" class="w-full"></p-dropdown>
+        </div>
+
+        <div class="form-group" *ngIf="searchForm.get('level')?.value === 'system' || searchForm.get('level')?.value === 'menu'">
+          <label class="form-label">系统</label>
+          <p-dropdown formControlName="systemId" [options]="filteredSystems" optionLabel="name" optionValue="id" placeholder="请选择系统" [disabled]="!searchForm.get('productId')?.value" class="w-full"></p-dropdown>
+        </div>
+
+        <div class="form-group" *ngIf="searchForm.get('level')?.value === 'menu'">
+          <label class="form-label">菜单</label>
+          <p-dropdown formControlName="menuId" [options]="filteredMenus" optionLabel="name" optionValue="id" placeholder="请选择菜单" [disabled]="!searchForm.get('systemId')?.value" class="w-full"></p-dropdown>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">状态</label>
+          <p-dropdown formControlName="status" [options]="statuses" optionLabel="label" optionValue="value" placeholder="请选择状态" class="w-full"></p-dropdown>
+        </div>
+      </form>
+
+      <div class="flex gap-3 mt-4">
+        <button pButton type="button" label="查询" icon="pi pi-search" class="btn btn-primary" (click)="search()"></button>
+        <button pButton type="button" label="重置" icon="pi pi-refresh" class="btn btn-secondary" (click)="resetSearch()"></button>
+      </div>
+    </p-fieldset>
+
+    <p-table #dt [value]="announcements" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+      currentPageReportTemplate="显示 {first} 到 {last} 条，共 {totalRecords} 条记录"
+      [rowsPerPageOptions]="[10, 20, 50]" [loading]="loading" class="w-full">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="title" style="width: 20%">
+            公告标题
+          </th>
+          <th pSortableColumn="publishTime" style="width: 15%">
+            发布时间
+          </th>
+          <th style="width: 10%">适用层级</th>
+          <th style="width: 10%">生效端口</th>
+          <th style="width: 15%">有效期</th>
+          <th style="width: 10%">状态</th>
+          <th style="width: 10%">阅读/点击</th>
+          <th style="width: 10%">操作</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-announcement>
+        <tr>
+          <td>
+            <span class="font-medium text-gray-800">{{ announcement.title }}</span>
+            <div *ngIf="announcement.summary" class="text-sm text-gray-500 mt-1 truncate">{{ announcement.summary }}</div>
+          </td>
+          <td>{{ formatDate(announcement.publishTime) }}</td>
+          <td>
+            <span class="tag tag-info">{{ getLevelLabel(announcement.level) }}</span>
+          </td>
+          <td>
+            <span class="tag tag-secondary">{{ getDeviceTypeLabel(announcement.deviceType) }}</span>
+          </td>
+          <td>
+            <div class="text-sm">
+              <div>开始: {{ formatDate(announcement.validFrom) }}</div>
+              <div>结束: {{ formatDate(announcement.validTo) }}</div>
+            </div>
+          </td>
+          <td>
+            <span [ngClass]="{
+              'tag tag-success': getStatusSeverity(announcement.status) === 'success',
+              'tag tag-info': getStatusSeverity(announcement.status) === 'info',
+              'tag tag-warning': getStatusSeverity(announcement.status) === 'warning',
+              'tag tag-danger': getStatusSeverity(announcement.status) === 'danger',
+              'tag tag-secondary': getStatusSeverity(announcement.status) === 'secondary'
+            }">{{ getStatusLabel(announcement.status) }}</span>
+          </td>
+          <td>
+            <span class="text-blue-600">{{ announcement.readCount }}</span>
+            <span class="text-gray-400 mx-1">/</span>
+            <span class="text-green-600">{{ announcement.clickCount }}</span>
+          </td>
+          <td>
+            <div class="flex gap-2">
+              <button pButton type="button" icon="pi pi-eye" class="p-button-text p-button-sm" pTooltip="查看" (click)="viewAnnouncement(announcement)"></button>
+              <button pButton type="button" icon="pi pi-pencil" class="p-button-text p-button-sm p-button-info" pTooltip="编辑" (click)="editAnnouncement(announcement)"></button>
+              <button pButton type="button" icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger" pTooltip="删除" (click)="deleteAnnouncement(announcement)"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="8" class="text-center py-8 text-gray-500">
+            <i class="pi pi-inbox text-4xl mb-2"></i>
+            <p>暂无公告数据</p>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<app-announcement-form 
+  *ngIf="displayDialog"
+  [announcement]="selectedAnnouncement"
+  [isEditMode]="isEditMode"
+  (close)="onDialogClose()">
+</app-announcement-form>

@@ -1,0 +1,336 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #3B82F6;
+  --secondary: #10B981;
+  --accent: #F59E0B;
+  --danger: #EF4444;
+  --yuan: #EAB308;
+  --jiao: #22C55E;
+  --fen: #3B82F6;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Noto Sans SC', Roboto, "Helvetica Neue", sans-serif;
+}
+
+mat-card {
+  border-radius: 1rem !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+mat-button-toggle-group {
+  border-radius: 0.75rem !important;
+  overflow: hidden;
+}
+
+mat-button-toggle {
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+}
+
+mat-button-toggle.mat-button-toggle-checked {
+  background-color: var(--primary) !important;
+  color: white !important;
+}
+
+.mat-mdc-raised-button {
+  border-radius: 0.75rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+.mat-mdc-outlined-button {
+  border-radius: 0.75rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+}
+
+@keyframes coinDrop {
+  0% {
+    transform: translateY(-50px) scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(10px) scale(1.1);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes coinRemove {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.4);
+  }
+}
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes confetti {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100px) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.coin-drop {
+  animation: coinDrop 0.5s ease-out;
+}
+
+.coin-remove {
+  animation: coinRemove 0.3s ease-in forwards;
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+.bounce-in {
+  animation: bounce-in 0.5s ease-out;
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+.coin-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  min-height: 80px;
+}
+
+.coin {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.25rem;
+  color: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.coin:hover {
+  transform: scale(1.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
+}
+
+.coin-yuan {
+  background: linear-gradient(135deg, #EAB308 0%, #CA8A04 100%);
+  border: 3px solid #A16207;
+}
+
+.coin-jiao {
+  background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+  border: 3px solid #15803D;
+}
+
+.coin-fen {
+  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  border: 3px solid #1D4ED8;
+}
+
+.conversion-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+.conversion-arrow mat-icon {
+  font-size: 2rem;
+  color: #6366F1;
+  animation: pulse-glow 2s infinite;
+}
+
+.game-card {
+  transition: all 0.3s ease;
+}
+
+.game-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.success-animation {
+  animation: bounce-in 0.5s ease-out;
+}
+
+.error-animation {
+  animation: shake 0.5s ease-in-out;
+}
+
+.timer-bar {
+  height: 4px;
+  background: linear-gradient(90deg, #10B981, #3B82F6);
+  transition: width 1s linear;
+}
+
+.score-badge {
+  background: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-weight: bold;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.instruction-card {
+  background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
+  border-left: 4px solid #3B82F6;
+}
+
+.tip-card {
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+  border-left: 4px solid #F59E0B;
+}
+
+.warning-card {
+  background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
+  border-left: 4px solid #EF4444;
+}
+
+.highlight-number {
+  background: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.decimal-display {
+  font-family: 'Courier New', monospace;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1E293B;
+  background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+  border: 2px solid #E2E8F0;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.decimal-point {
+  color: #6366F1;
+  font-size: 2.5rem;
+  margin: 0 0.25rem;
+}
+
+.unit-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.amount-unit {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-left: 0.25rem;
+}
+
+.amount-yuan {
+  color: #CA8A04;
+}
+
+.amount-jiao {
+  color: #16A34A;
+}
+
+.amount-fen {
+  color: #2563EB;
+}
+
+.nav-button {
+  transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+  transform: translateY(-2px);
+}
+
+.nav-button.active {
+  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+
+.title-bar {
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+  color: white;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}

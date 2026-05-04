@@ -1,0 +1,267 @@
+<div class="space-y-6 animate-fade-in">
+  <mat-card *ngIf="!gameStarted" class="p-8">
+    <mat-card-header class="mb-6">
+      <mat-card-title class="text-3xl font-bold text-center text-gray-800 w-full">
+        🎮 人民币换算挑战
+      </mat-card-title>
+      <mat-card-subtitle class="text-center text-gray-600 text-lg w-full mt-2">
+        通过操作硬币来匹配目标金额！
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="mb-8">
+        <h3 class="text-xl font-bold mb-4 text-gray-700">选择难度：</h3>
+        <mat-button-toggle-group 
+          [(ngModel)]="selectedLevel" 
+          class="w-full flex flex-wrap justify-center gap-2">
+          <mat-button-toggle 
+            *ngFor="let level of gameLevels; let i = index"
+            [value]="i"
+            class="flex-1 min-w-[120px]">
+            <div class="p-2 text-center">
+              <div class="font-bold text-lg">{{ level.name }}</div>
+              <div class="text-sm text-gray-600">
+                <span *ngIf="level.includeFen">含分 </span>
+                <span *ngIf="level.includeJiao">含角 </span>
+                <span>0-{{ level.maxYuan }}元</span>
+              </div>
+              <div class="text-xs text-gray-500 mt-1">
+                限时 {{ level.timeLimit }}秒
+              </div>
+            </div>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
+      <div class="text-center">
+        <button mat-raised-button 
+                color="primary"
+                class="w-64 h-16 text-xl"
+                (click)="startGame()">
+          <mat-icon>play_circle</mat-icon>
+          <span class="ml-2">开始挑战！</span>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngIf="gameStarted" class="p-6 game-card">
+    <div class="flex flex-col md:flex-row items-center justify-between mb-4 gap-4">
+      <div class="flex items-center gap-4">
+        <span class="score-badge">
+          第 {{ round }} / {{ totalRounds }} 轮
+        </span>
+        <span class="score-badge bg-gradient-to-r from-yellow-400 to-orange-500">
+          得分: {{ score }}
+        </span>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="w-32">
+          <mat-progress-bar 
+            [value]="getTimePercentage()"
+            [color]="timeLeft > maxTime * 0.3 ? 'primary' : 'warn'">
+          </mat-progress-bar>
+          <p class="text-center text-sm mt-1 font-medium">
+            ⏱️ {{ timeLeft }}秒
+          </p>
+        </div>
+        <button mat-icon-button color="primary" (click)="togglePause()">
+          <mat-icon>{{ gamePaused ? 'play_arrow' : 'pause' }}</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <mat-card *ngIf="!gamePaused" class="p-6 mb-6 bg-gradient-to-r from-blue-50 to-purple-50">
+      <div class="text-center">
+        <h3 class="text-lg font-bold text-gray-700 mb-3">🎯 目标金额</h3>
+        <div *ngIf="currentTarget" class="space-y-4">
+          <div class="text-4xl font-bold">
+            <span *ngIf="currentTarget.yuan > 0" class="amount-yuan">{{ currentTarget.yuan }}元 </span>
+            <span *ngIf="currentTarget.jiao > 0" class="amount-jiao">{{ currentTarget.jiao }}角 </span>
+            <span *ngIf="currentTarget.fen > 0" class="amount-fen">{{ currentTarget.fen }}分</span>
+            <span *ngIf="currentTarget.yuan === 0 && currentTarget.jiao === 0 && currentTarget.fen === 0" class="text-gray-500">0元</span>
+          </div>
+          <div class="decimal-display inline-block">
+            <span class="amount-yuan">{{ currentTarget.yuan }}</span>
+            <span class="decimal-point">.</span>
+            <span class="amount-jiao">{{ currentTarget.jiao }}</span>
+            <span class="amount-fen">{{ currentTarget.fen }}</span>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+    <div *ngIf="!gamePaused" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <mat-card class="p-4 border-t-4 border-yuan">
+        <div class="flex items-center justify-between mb-3">
+          <span class="font-bold text-yuan text-lg">💰 元</span>
+          <span class="highlight-number">{{ currentState.yuan }}</span>
+        </div>
+        <div class="coin-container mb-4" [class.bounce-in]="animationStates.yuan">
+          <div *ngFor="let coin of getCoinsArray(currentState.yuan)" 
+               class="coin coin-yuan coin-drop text-sm">
+            元
+          </div>
+          <div *ngIf="currentState.yuan === 0" class="text-gray-400">-</div>
+        </div>
+        <div class="flex gap-2">
+          <button mat-raised-button color="primary" class="flex-1" (click)="removeCoin('yuan')">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <button mat-raised-button color="accent" class="flex-1" (click)="addCoin('yuan')">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </mat-card>
+
+      <mat-card class="p-4 border-t-4 border-jiao">
+        <div class="flex items-center justify-between mb-3">
+          <span class="font-bold text-jiao text-lg">🪙 角</span>
+          <span class="highlight-number">{{ currentState.jiao }}</span>
+        </div>
+        <div class="coin-container mb-4" [class.bounce-in]="animationStates.jiao">
+          <div *ngFor="let coin of getCoinsArray(currentState.jiao)" 
+               class="coin coin-jiao coin-drop text-sm">
+            角
+          </div>
+          <div *ngIf="currentState.jiao === 0" class="text-gray-400">-</div>
+        </div>
+        <div class="flex gap-2">
+          <button mat-raised-button color="primary" class="flex-1" (click)="removeCoin('jiao')">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <button mat-raised-button color="accent" class="flex-1" (click)="addCoin('jiao')">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </mat-card>
+
+      <mat-card class="p-4 border-t-4 border-fen">
+        <div class="flex items-center justify-between mb-3">
+          <span class="font-bold text-fen text-lg">🪙 分</span>
+          <span class="highlight-number">{{ currentState.fen }}</span>
+        </div>
+        <div class="coin-container mb-4" [class.bounce-in]="animationStates.fen">
+          <div *ngFor="let coin of getCoinsArray(currentState.fen)" 
+               class="coin coin-fen coin-drop text-sm">
+            分
+          </div>
+          <div *ngIf="currentState.fen === 0" class="text-gray-400">-</div>
+        </div>
+        <div class="flex gap-2">
+          <button mat-raised-button color="primary" class="flex-1" (click)="removeCoin('fen')">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <button mat-raised-button color="accent" class="flex-1" (click)="addCoin('fen')">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </mat-card>
+    </div>
+
+    <div *ngIf="showSuccess" class="mb-6">
+      <mat-card class="p-6 bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 success-animation">
+        <div class="flex items-center gap-4">
+          <div class="text-5xl">🎉</div>
+          <div>
+            <h3 class="text-2xl font-bold text-green-700">太棒了！</h3>
+            <p class="text-green-600 text-lg">{{ successMessage }}</p>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <div *ngIf="showError" class="mb-6">
+      <mat-card class="p-6 bg-gradient-to-r from-red-50 to-pink-50 border-l-4 border-red-500 error-animation">
+        <div class="flex items-center gap-4">
+          <div class="text-5xl">🤔</div>
+          <div>
+            <h3 class="text-2xl font-bold text-red-700">再试一次！</h3>
+            <p class="text-red-600 text-lg">{{ errorMessage }}</p>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <div *ngIf="!gamePaused" class="flex justify-center gap-4">
+      <button mat-stroked-button 
+              color="warn"
+              class="w-32 h-14 text-lg"
+              (click)="skipRound()">
+        <mat-icon>skip_next</mat-icon>
+        <span class="ml-2">跳过</span>
+      </button>
+      <button mat-raised-button 
+              color="primary"
+              class="w-48 h-14 text-xl"
+              (click)="submitAnswer()">
+        <mat-icon>check_circle</mat-icon>
+        <span class="ml-2">确认答案</span>
+      </button>
+    </div>
+
+    <div *ngIf="gamePaused" class="text-center py-12">
+      <div class="text-6xl mb-4">⏸️</div>
+      <h3 class="text-2xl font-bold text-gray-700 mb-4">游戏暂停中</h3>
+      <button mat-raised-button 
+              color="primary"
+              (click)="togglePause()">
+        <mat-icon>play_arrow</mat-icon>
+        <span class="ml-2">继续游戏</span>
+      </button>
+    </div>
+  </mat-card>
+
+  <mat-card *ngIf="!gameStarted && round > 0" class="p-8">
+    <mat-card-header class="mb-6">
+      <mat-card-title class="text-3xl font-bold text-center text-gray-800 w-full">
+        🏆 游戏结束
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="text-center space-y-6">
+        <div class="text-6xl mb-4">
+          {{ score >= 700 ? '🎉' : score >= 500 ? '⭐' : '💪' }}
+        </div>
+        
+        <div class="text-4xl font-bold text-purple-600 mb-2">
+          总分: {{ score }}
+        </div>
+        
+        <div class="text-2xl font-semibold text-gray-700">
+          {{ getScoreGrade() }}
+        </div>
+
+        <div class="instruction-card p-6 rounded-lg max-w-md mx-auto">
+          <h4 class="font-bold text-lg mb-3 text-blue-800">📊 成绩统计</h4>
+          <div class="grid grid-cols-2 gap-4 text-left">
+            <div>
+              <span class="text-gray-600">完成轮数:</span>
+              <span class="font-bold ml-2">{{ round - (round === totalRounds + 1 ? 0 : 1) }} / {{ totalRounds }}</span>
+            </div>
+            <div>
+              <span class="text-gray-600">难度:</span>
+              <span class="font-bold ml-2">{{ gameLevels[selectedLevel].name }}</span>
+            </div>
+            <div>
+              <span class="text-gray-600">满分:</span>
+              <span class="font-bold ml-2">{{ totalRounds * 100 }}</span>
+            </div>
+            <div>
+              <span class="text-gray-600">正确率:</span>
+              <span class="font-bold ml-2">{{ getAccuracyPercentage() }}%</span>
+            </div>
+          </div>
+        </div>
+
+        <button mat-raised-button 
+                color="primary"
+                class="w-64 h-16 text-xl"
+                (click)="startGame()">
+          <mat-icon>refresh</mat-icon>
+          <span class="ml-2">再来一局！</span>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

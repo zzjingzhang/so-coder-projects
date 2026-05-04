@@ -1,0 +1,636 @@
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-4 md:p-8">
+  <!-- 标题区域 -->
+  <div class="text-center mb-8">
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
+      DNA复制过程交互式动画
+    </h1>
+    <p class="text-gray-600 text-lg">
+      探索半保留复制的完整过程，了解解旋酶、碱基配对和DNA聚合酶的作用
+    </p>
+  </div>
+
+  <!-- 主要内容区域 -->
+  <div class="max-w-7xl mx-auto">
+    <!-- 步骤进度条 -->
+    <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-semibold text-gray-700">复制步骤</h2>
+        <span class="text-sm text-gray-500">
+          步骤 {{ currentStep + 1 }} / {{ animationSteps.length }}
+        </span>
+      </div>
+      
+      <!-- 步骤指示器 -->
+      <div class="flex overflow-x-auto pb-2">
+        @for (step of animationSteps; track step.id) {
+          <button
+            (click)="goToStep(step.id)"
+            class="flex-shrink-0 min-w-max px-3 py-2 mx-1 rounded-lg text-sm font-medium transition-all duration-300"
+            [ngClass]="{
+              'bg-blue-600 text-white shadow-md': currentStep === step.id,
+              'bg-blue-100 text-blue-800': currentStep > step.id,
+              'bg-gray-100 text-gray-600 hover:bg-gray-200': currentStep < step.id
+            }"
+          >
+            {{ step.id + 1 }}. {{ step.title }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- 动画展示和控制面板 -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- 左侧：动画区域 -->
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-semibold text-gray-700">
+              {{ animationSteps[currentStep]?.title }}
+            </h2>
+            <div class="flex items-center gap-2">
+              <span class="text-sm text-gray-500">速度:</span>
+              <nz-select 
+                [(ngModel)]="animationSpeed" 
+                class="w-24"
+                nzSize="small"
+              >
+                <nz-option nzLabel="慢" nzValue="3000"></nz-option>
+                <nz-option nzLabel="中" nzValue="2000"></nz-option>
+                <nz-option nzLabel="快" nzValue="1000"></nz-option>
+              </nz-select>
+            </div>
+          </div>
+
+          <!-- 动画画布 -->
+          <div class="relative bg-gradient-to-b from-gray-50 to-gray-100 rounded-lg p-8 min-h-[400px] overflow-hidden">
+            <!-- DNA链容器 -->
+            <div class="dna-container relative mx-auto" style="width: 600px; height: 350px;">
+              
+              <!-- 解旋酶 -->
+              @if (helicasePosition > 0) {
+                <div 
+                  class="absolute transition-all duration-1000 ease-in-out"
+                  [style.left.px]="helicasePosition * 60 + 50"
+                  [style.top.px]="150"
+                >
+                  <div class="relative">
+                    <div class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                      <span class="text-white font-bold text-xs">解旋酶</span>
+                    </div>
+                    @if (helicasePosition === 2) {
+                      <div class="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center animate-bounce">
+                        <span class="text-xs font-bold">!</span>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+
+              <!-- DNA聚合酶 -->
+              @if (polymerasePosition > 0) {
+                <div 
+                  class="absolute transition-all duration-1000 ease-in-out"
+                  [style.left.px]="polymerasePosition * 60 + 100"
+                  [style.top.px]="80"
+                >
+                  <div class="w-14 h-14 bg-green-600 rounded-full flex items-center justify-center shadow-lg">
+                    <span class="text-white font-bold text-xs">聚合酶</span>
+                  </div>
+                </div>
+              }
+
+              <!-- 上方模板链 (5' -> 3') -->
+              <div class="absolute top-0 left-0 right-0 flex justify-center items-start gap-1">
+                @for (pair of basePairs; track $index) {
+                  <div 
+                    class="nucleotide-group flex flex-col items-center transition-all duration-700"
+                    [class.transform]="dnaUnwound && $index >= 2"
+                    [style.transform]="dnaUnwound && $index >= 2 ? 'translateY(-30px)' : 'translateY(0)'"
+                  >
+                    <!-- 磷酸基团 -->
+                    <div class="w-6 h-6 bg-purple-400 rounded-full flex items-center justify-center mb-1 shadow-sm">
+                      <span class="text-xs font-bold text-white">P</span>
+                    </div>
+                    
+                    <!-- 脱氧核糖 -->
+                    <div class="w-8 h-8 bg-blue-300 rounded flex items-center justify-center mb-1 shadow-sm">
+                      <span class="text-xs font-bold text-blue-800">糖</span>
+                    </div>
+                    
+                    <!-- 碱基 -->
+                    <div 
+                      class="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-white shadow-md transition-all duration-500"
+                      [style.backgroundColor]="pair.topColor"
+                      [class.scale-110]="currentStep >= 6 && $index < newStrandSynthesized"
+                    >
+                      {{ pair.top }}
+                    </div>
+                    
+                    <!-- 碱基名称 -->
+                    <div class="text-xs text-gray-600 mt-1">
+                      {{ baseNames[pair.top] }}
+                    </div>
+                  </div>
+                }
+              </div>
+
+              <!-- 氢键连接 -->
+              @if (hydrogenBondsVisible) {
+                <div class="absolute top-40 left-0 right-0 flex justify-center gap-1">
+                  @for (pair of basePairs; track $index) {
+                    <div class="flex flex-col items-center gap-1">
+                      <div class="w-1 h-4 bg-gray-400 rounded"></div>
+                      @if (pair.top === 'G' || pair.top === 'C') {
+                        <div class="w-1 h-2 bg-gray-400 rounded"></div>
+                        <div class="w-1 h-2 bg-gray-400 rounded"></div>
+                      }
+                      <div class="text-xs text-gray-500 mt-1">氢键</div>
+                    </div>
+                  }
+                </div>
+              }
+
+              <!-- 下方模板链 (3' -> 5') -->
+              <div class="absolute bottom-0 left-0 right-0 flex justify-center items-end gap-1">
+                @for (pair of basePairs; track $index) {
+                  <div 
+                    class="nucleotide-group flex flex-col items-center transition-all duration-700"
+                    [class.transform]="dnaUnwound && $index >= 2"
+                    [style.transform]="dnaUnwound && $index >= 2 ? 'translateY(30px)' : 'translateY(0)'"
+                  >
+                    <!-- 碱基名称 -->
+                    <div class="text-xs text-gray-600 mb-1">
+                      {{ baseNames[pair.bottom] }}
+                    </div>
+                    
+                    <!-- 碱基 -->
+                    <div 
+                      class="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-white shadow-md transition-all duration-500"
+                      [style.backgroundColor]="pair.bottomColor"
+                    >
+                      {{ pair.bottom }}
+                    </div>
+                    
+                    <!-- 脱氧核糖 -->
+                    <div class="w-8 h-8 bg-blue-300 rounded flex items-center justify-center mt-1 shadow-sm">
+                      <span class="text-xs font-bold text-blue-800">糖</span>
+                    </div>
+                    
+                    <!-- 磷酸基团 -->
+                    <div class="w-6 h-6 bg-purple-400 rounded-full flex items-center justify-center mt-1 shadow-sm">
+                      <span class="text-xs font-bold text-white">P</span>
+                    </div>
+                  </div>
+                }
+              </div>
+
+              <!-- 新合成的链 (下方链的互补链) -->
+              @if (newStrandSynthesized > 0) {
+                <div class="absolute bottom-24 left-0 right-0 flex justify-center items-end gap-1">
+                  @for (pair of basePairs; track $index) {
+                    @if ($index < newStrandSynthesized) {
+                      <div 
+                        class="nucleotide-group flex flex-col items-center animate-fadeIn"
+                        [style.animationDelay]="$index * 100 + 'ms'"
+                      >
+                        <!-- 碱基名称 -->
+                        <div class="text-xs text-green-600 mb-1 font-semibold">
+                          {{ baseNames[getComplementaryBase(pair.bottom)] }}
+                        </div>
+                        
+                        <!-- 碱基 (新合成的，用不同的样式表示) -->
+                        <div 
+                          class="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-white shadow-md border-2 border-green-500"
+                          [style.backgroundColor]="baseColors[getComplementaryBase(pair.bottom)]"
+                          [class.animate-pulse]="$index === newStrandSynthesized - 1"
+                        >
+                          {{ getComplementaryBase(pair.bottom) }}
+                        </div>
+                        
+                        <!-- 脱氧核糖 (新合成的) -->
+                        <div class="w-8 h-8 bg-green-200 rounded flex items-center justify-center mt-1 shadow-sm border border-green-400">
+                          <span class="text-xs font-bold text-green-800">糖</span>
+                        </div>
+                        
+                        <!-- 磷酸基团 (新合成的) -->
+                        <div class="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center mt-1 shadow-sm">
+                          <span class="text-xs font-bold text-white">P</span>
+                        </div>
+                        
+                        <!-- 新链标识 -->
+                        @if ($index === 0) {
+                          <div class="absolute -top-8 left-1/2 transform -translate-x-1/2">
+                            <span class="text-xs font-bold text-green-600 bg-green-100 px-2 py-1 rounded">
+                              新合成链
+                            </span>
+                          </div>
+                        }
+                      </div>
+                    }
+                  }
+                </div>
+              }
+
+              <!-- SSB蛋白 -->
+              @if (ssbVisible) {
+                <div class="absolute top-20 left-1/2 transform -translate-x-1/2 flex gap-8">
+                  <div class="w-8 h-8 bg-yellow-500 rounded flex items-center justify-center shadow animate-bounce" style="animation-delay: 0ms;">
+                    <span class="text-xs font-bold text-white">SSB</span>
+                  </div>
+                  <div class="w-8 h-8 bg-yellow-500 rounded flex items-center justify-center shadow animate-bounce" style="animation-delay: 200ms;">
+                    <span class="text-xs font-bold text-white">SSB</span>
+                  </div>
+                  <div class="w-8 h-8 bg-yellow-500 rounded flex items-center justify-center shadow animate-bounce" style="animation-delay: 400ms;">
+                    <span class="text-xs font-bold text-white">SSB</span>
+                  </div>
+                </div>
+              }
+
+              <!-- RNA引物 -->
+              @if (primerVisible) {
+                <div class="absolute bottom-28 left-1/3 transform -translate-x-1/2">
+                  <div class="w-16 h-4 bg-red-400 rounded-full flex items-center justify-center shadow animate-pulse">
+                    <span class="text-xs font-bold text-white">RNA引物</span>
+                  </div>
+                </div>
+              }
+
+              <!-- 链方向标识 -->
+              <div class="absolute top-0 left-4 text-sm font-semibold text-blue-600">
+                5' → 3' (模板链)
+              </div>
+              <div class="absolute bottom-0 left-4 text-sm font-semibold text-blue-600">
+                3' → 5' (模板链)
+              </div>
+
+              <!-- 复制完成标识 -->
+              @if (replicationComplete) {
+                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-lg animate-fadeIn">
+                  <div class="bg-white p-8 rounded-xl shadow-2xl text-center transform scale-100 animate-bounceIn">
+                    <div class="text-5xl mb-4">🎉</div>
+                    <h3 class="text-2xl font-bold text-green-600 mb-2">复制完成！</h3>
+                    <p class="text-gray-600 mb-4">
+                      半保留复制成功完成
+                    </p>
+                    <div class="flex justify-center gap-4 mb-4">
+                      <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-100 to-green-100 rounded-full flex items-center justify-center border-2 border-blue-300">
+                          <span class="text-xs font-bold text-blue-800">DNA 1</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">旧链 + 新链</div>
+                      </div>
+                      <div class="text-2xl self-center">+</div>
+                      <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-100 to-green-100 rounded-full flex items-center justify-center border-2 border-green-300">
+                          <span class="text-xs font-bold text-green-800">DNA 2</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">旧链 + 新链</div>
+                      </div>
+                    </div>
+                    <p class="text-sm text-gray-500">
+                      每个新DNA分子都包含一条亲本链和一条新合成链
+                    </p>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- 步骤说明 -->
+          <div class="mt-6 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+            <h3 class="font-semibold text-blue-800 mb-2">当前步骤说明</h3>
+            <p class="text-gray-700">
+              {{ animationSteps[currentStep]?.description }}
+            </p>
+          </div>
+
+          <!-- 控制面板 -->
+          <div class="mt-6 flex flex-wrap justify-center gap-3">
+            <button
+              nz-button
+              nzType="default"
+              (click)="resetAnimation()"
+              class="flex items-center gap-2 px-6 py-2"
+            >
+              🔄 重置
+            </button>
+            
+            <button
+              nz-button
+              nzType="default"
+              (click)="prevStep()"
+              [disabled]="currentStep === 0"
+              class="flex items-center gap-2 px-6 py-2"
+            >
+              ⬅️ 上一步
+            </button>
+            
+            <button
+              nz-button
+              [nzType]="isPlaying ? 'default' : 'primary'"
+              (click)="isPlaying ? pauseAnimation() : playAnimation()"
+              class="flex items-center gap-2 px-8 py-2"
+            >
+              {{ isPlaying ? '⏸️ 暂停' : '▶️ 播放' }}
+            </button>
+            
+            <button
+              nz-button
+              nzType="default"
+              (click)="nextStep()"
+              [disabled]="currentStep === animationSteps.length - 1"
+              class="flex items-center gap-2 px-6 py-2"
+            >
+              ➡️ 下一步
+            </button>
+            
+            <button
+              nz-button
+              nzType="dashed"
+              (click)="toggleQuiz()"
+              class="flex items-center gap-2 px-6 py-2"
+            >
+              ❓ {{ showQuiz ? '隐藏测验' : '开始测验' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧：图例和信息 -->
+      <div class="space-y-6">
+        <!-- 碱基图例 -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">碱基图例</h3>
+          <div class="space-y-3">
+            @for (base of ['A', 'T', 'G', 'C']; track base) {
+              <div class="flex items-center gap-3 p-2 bg-gray-50 rounded-lg">
+                <div 
+                  class="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-white shadow"
+                  [style.backgroundColor]="baseColors[base]"
+                >
+                  {{ base }}
+                </div>
+                <div>
+                  <div class="font-medium text-gray-800">{{ baseNames[base] }}</div>
+                  <div class="text-xs text-gray-500">
+                    配对: {{ base }} ↔ {{ getComplementaryBase(base) }}
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- 分子组件图例 -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">分子组件</h3>
+          <div class="space-y-3">
+            <div class="flex items-center gap-3 p-2 bg-gray-50 rounded-lg">
+              <div class="w-8 h-8 bg-purple-400 rounded-full flex items-center justify-center shadow-sm">
+                <span class="text-xs font-bold text-white">P</span>
+              </div>
+              <div>
+                <div class="font-medium text-gray-800">磷酸基团</div>
+                <div class="text-xs text-gray-500">构成DNA骨架</div>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-3 p-2 bg-gray-50 rounded-lg">
+              <div class="w-8 h-8 bg-blue-300 rounded flex items-center justify-center shadow-sm">
+                <span class="text-xs font-bold text-blue-800">糖</span>
+              </div>
+              <div>
+                <div class="font-medium text-gray-800">脱氧核糖</div>
+                <div class="text-xs text-gray-500">五碳糖分子</div>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-3 p-2 bg-gray-50 rounded-lg">
+              <div class="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center shadow-sm">
+                <span class="text-xs font-bold text-white">P</span>
+              </div>
+              <div>
+                <div class="font-medium text-green-800">新磷酸</div>
+                <div class="text-xs text-gray-500">新合成链的磷酸</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 酶图例 -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">关键酶类</h3>
+          <div class="space-y-3">
+            <div class="flex items-center gap-3 p-2 bg-gray-50 rounded-lg">
+              <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center shadow">
+                <span class="text-xs font-bold text-white">解旋</span>
+              </div>
+              <div>
+                <div class="font-medium text-gray-800">解旋酶</div>
+                <div class="text-xs text-gray-500">打开DNA双螺旋</div>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-3 p-2 bg-gray-50 rounded-lg">
+              <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center shadow">
+                <span class="text-xs font-bold text-white">聚合</span>
+              </div>
+              <div>
+                <div class="font-medium text-gray-800">DNA聚合酶</div>
+                <div class="text-xs text-gray-500">合成新DNA链</div>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-3 p-2 bg-gray-50 rounded-lg">
+              <div class="w-8 h-8 bg-yellow-500 rounded flex items-center justify-center shadow">
+                <span class="text-xs font-bold text-white">SSB</span>
+              </div>
+              <div>
+                <div class="font-medium text-gray-800">SSB蛋白</div>
+                <div class="text-xs text-gray-500">稳定单链DNA</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 关键知识点 -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">关键知识点</h3>
+          <nz-collapse [nzBordered]="false">
+            <nz-collapse-panel nzHeader="碱基互补配对原则" nzActive>
+              <p class="text-gray-600 text-sm">
+                DNA中的碱基配对遵循严格的规则：
+                <br>- 腺嘌呤(A) ↔ 胸腺嘧啶(T)：2条氢键
+                <br>- 鸟嘌呤(G) ↔ 胞嘧啶(C)：3条氢键
+              </p>
+            </nz-collapse-panel>
+            <nz-collapse-panel nzHeader="半保留复制">
+              <p class="text-gray-600 text-sm">
+                DNA复制产生的每个新DNA分子都包含：
+                <br>- 一条来自亲本的旧链
+                <br>- 一条新合成的链
+                <br>这确保了遗传信息的准确传递。
+              </p>
+            </nz-collapse-panel>
+            <nz-collapse-panel nzHeader="5'→3'方向合成">
+              <p class="text-gray-600 text-sm">
+                DNA聚合酶只能沿5'→3'方向合成新链：
+                <br>- 前导链：连续合成
+                <br>- 后随链：通过冈崎片段不连续合成
+              </p>
+            </nz-collapse-panel>
+          </nz-collapse>
+        </div>
+      </div>
+    </div>
+
+    <!-- 小测验区域 -->
+    @if (showQuiz) {
+      <div class="mt-8 bg-white rounded-xl shadow-lg p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold text-gray-800">
+            📝 DNA复制知识测验
+          </h2>
+          <button
+            nz-button
+            nzType="default"
+            nzShape="circle"
+            (click)="toggleQuiz()"
+          >
+            ✖️
+          </button>
+        </div>
+
+        <div class="space-y-8">
+          @for (question of getQuizQuestions(); track $index) {
+            <div 
+              class="p-6 rounded-lg border-2 transition-all duration-300"
+              [ngClass]="{
+                'border-green-300 bg-green-50': quizAnswers[$index] !== undefined && isQuizAnswerCorrect($index),
+                'border-red-300 bg-red-50': quizAnswers[$index] !== undefined && !isQuizAnswerCorrect($index),
+                'border-gray-200 bg-gray-50': quizAnswers[$index] === undefined
+              }"
+            >
+              <div class="flex items-start gap-3 mb-4">
+                <span 
+                  class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-white"
+                  [ngClass]="{
+                    'bg-green-500': quizAnswers[$index] !== undefined && isQuizAnswerCorrect($index),
+                    'bg-red-500': quizAnswers[$index] !== undefined && !isQuizAnswerCorrect($index),
+                    'bg-blue-500': quizAnswers[$index] === undefined
+                  }"
+                >
+                  {{ $index + 1 }}
+                </span>
+                <h3 class="text-lg font-semibold text-gray-800">
+                  {{ question.question }}
+                </h3>
+              </div>
+
+              <div class="space-y-2 ml-11">
+                @for (option of question.options; track optionIndex; let optionIndex = $index) {
+                  <label 
+                    class="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all duration-200 border"
+                    [ngClass]="{
+                      'border-green-500 bg-green-100': quizAnswers[$index] !== undefined && optionIndex === question.correctAnswer,
+                      'border-red-500 bg-red-100': quizAnswers[$index] !== undefined && optionIndex === quizAnswers[$index] && optionIndex !== question.correctAnswer,
+                      'border-gray-200 hover:border-blue-300 hover:bg-blue-50': quizAnswers[$index] === undefined
+                    }"
+                  >
+                    <input
+                      type="radio"
+                      name="question-{{ $index }}"
+                      [value]="optionIndex"
+                      [(ngModel)]="quizAnswers[$index]"
+                      (change)="selectQuizAnswer($index, optionIndex)"
+                      class="w-4 h-4 text-blue-600"
+                      [disabled]="quizAnswers[$index] !== undefined"
+                    />
+                    <span 
+                      class="font-medium"
+                      [ngClass]="{
+                        'text-green-700': quizAnswers[$index] !== undefined && optionIndex === question.correctAnswer,
+                        'text-red-700': quizAnswers[$index] !== undefined && optionIndex === quizAnswers[$index] && optionIndex !== question.correctAnswer,
+                        'text-gray-700': quizAnswers[$index] === undefined
+                      }"
+                    >
+                      {{ getOptionLetter(optionIndex) }}. {{ option }}
+                    </span>
+                    
+                    @if (quizAnswers[$index] !== undefined) {
+                      @if (optionIndex === question.correctAnswer) {
+                        <span class="ml-auto text-green-500">
+                          ✅ 正确答案
+                        </span>
+                      }
+                      @if (optionIndex === quizAnswers[$index] && optionIndex !== question.correctAnswer) {
+                        <span class="ml-auto text-red-500">
+                          ❌ 你的选择
+                        </span>
+                      }
+                    }
+                  </label>
+                }
+              </div>
+
+              <!-- 解释 -->
+              @if (quizAnswers[$index] !== undefined) {
+                <div 
+                  class="mt-4 p-4 rounded-lg ml-11"
+                  [ngClass]="{
+                    'bg-green-100 text-green-800': isQuizAnswerCorrect($index),
+                    'bg-red-100 text-red-800': !isQuizAnswerCorrect($index)
+                  }"
+                >
+                  <div class="flex items-center gap-2 mb-2">
+                    @if (isQuizAnswerCorrect($index)) {
+                      ✅
+                    } @else {
+                      ℹ️
+                    }
+                    <span class="font-semibold">
+                      {{ isQuizAnswerCorrect($index) ? '回答正确！' : '详细解释：' }}
+                    </span>
+                  </div>
+                  <p class="text-sm">{{ question.explanation }}</p>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- 测验进度 -->
+        <div class="mt-8 p-4 bg-gray-50 rounded-lg">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-gray-600">测验进度</span>
+            <span class="font-semibold text-gray-800">
+              {{ quizAnswers.filter(a => a !== undefined).length }} / {{ getQuizQuestions().length }} 题已回答
+            </span>
+          </div>
+          
+          @if (quizAnswers.filter(a => a !== undefined).length === getQuizQuestions().length) {
+            <div class="mt-4 text-center">
+              <div class="text-2xl font-bold mb-2">
+                @if (quizAnswers.filter((a, i) => isQuizAnswerCorrect(i)).length === getQuizQuestions().length) {
+                  <span class="text-green-600">🎉 太棒了！全部正确！</span>
+                } @else {
+                  <span class="text-blue-600">
+                    得分：{{ quizAnswers.filter((a, i) => isQuizAnswerCorrect(i)).length }} / {{ getQuizQuestions().length }}
+                  </span>
+                }
+              </div>
+              <button
+                nz-button
+                nzType="primary"
+                (click)="quizAnswers = []"
+                class="mt-2"
+              >
+                重新测验
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

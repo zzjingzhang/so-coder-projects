@@ -1,0 +1,253 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- 顶部导航栏 -->
+  <nav class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16 items-center">
+        <div class="flex items-center gap-3">
+          <i class="pi pi-bullhorn text-blue-600 text-2xl"></i>
+          <span class="text-xl font-bold text-gray-800">公告管理系统</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <button 
+            pButton 
+            type="button" 
+            label="公告管理" 
+            icon="pi pi-list" 
+            [class.btn-primary]="currentDemo === 'management'"
+            [class.btn-secondary]="currentDemo !== 'management'"
+            (click)="currentDemo = 'management'"></button>
+          <button 
+            pButton 
+            type="button" 
+            label="公告展示" 
+            icon="pi pi-eye" 
+            [class.btn-primary]="currentDemo === 'display'"
+            [class.btn-secondary]="currentDemo !== 'display'"
+            (click)="currentDemo = 'display'"></button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 内容区域 -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <!-- 公告管理页面 -->
+    <div *ngIf="currentDemo === 'management'">
+      <app-announcement-list></app-announcement-list>
+    </div>
+
+    <!-- 公告展示页面 -->
+    <div *ngIf="currentDemo === 'display'">
+      <div class="card">
+        <div class="card-header">
+          <span class="text-xl font-bold text-gray-800">公告展示演示</span>
+          <p class="text-sm text-gray-500 mt-1">
+            此页面演示公告在不同层级和不同设备上的显示效果
+          </p>
+        </div>
+
+        <!-- 配置区域 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div class="form-group">
+            <label class="form-label">适用层级</label>
+            <p-dropdown 
+              [(ngModel)]="selectedLevel" 
+              [options]="levels" 
+              optionLabel="label" 
+              optionValue="value"
+              (onChange)="onLevelChange()"
+              class="w-full"></p-dropdown>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">产品</label>
+            <p-dropdown 
+              [(ngModel)]="selectedProductId" 
+              [options]="products" 
+              optionLabel="name" 
+              optionValue="id"
+              (onChange)="onProductChange($event.value)"
+              class="w-full"></p-dropdown>
+          </div>
+
+          <div class="form-group" *ngIf="selectedLevel === AnnouncementLevel.SYSTEM || selectedLevel === AnnouncementLevel.MENU">
+            <label class="form-label">系统</label>
+            <p-dropdown 
+              [(ngModel)]="selectedSystemId" 
+              [options]="filteredSystems" 
+              optionLabel="name" 
+              optionValue="id"
+              (onChange)="onSystemChange($event.value)"
+              [disabled]="!selectedProductId"
+              class="w-full"></p-dropdown>
+          </div>
+
+          <div class="form-group" *ngIf="selectedLevel === AnnouncementLevel.MENU">
+            <label class="form-label">菜单</label>
+            <p-dropdown 
+              [(ngModel)]="selectedMenuId" 
+              [options]="filteredMenus" 
+              optionLabel="name" 
+              optionValue="id"
+              [disabled]="!selectedSystemId"
+              class="w-full"></p-dropdown>
+          </div>
+        </div>
+
+        <!-- 显示模式切换 -->
+        <div class="flex gap-3 mb-6">
+          <button 
+            pButton 
+            type="button" 
+            label="弹窗模式（首次访问）" 
+            icon="pi pi-window-maximize" 
+            [class.btn-primary]="displayMode === 'popup'"
+            [class.btn-secondary]="displayMode !== 'popup'"
+            (click)="displayMode = 'popup'"></button>
+          <button 
+            pButton 
+            type="button" 
+            label="轮播模式（后续访问）" 
+            icon="pi pi-refresh" 
+            [class.btn-primary]="displayMode === 'carousel'"
+            [class.btn-secondary]="displayMode !== 'carousel'"
+            (click)="displayMode = 'carousel'"></button>
+        </div>
+
+        <!-- 当前配置信息 -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+          <div class="flex items-center gap-2 text-blue-700">
+            <i class="pi pi-info-circle"></i>
+            <span class="font-medium">当前配置：</span>
+          </div>
+          <div class="mt-2 text-sm text-blue-600">
+            <span>层级：{{ getLevelLabel(selectedLevel) }}</span>
+            <span class="mx-2">|</span>
+            <span>产品：{{ getCurrentProductName() }}</span>
+            <span *ngIf="selectedLevel === AnnouncementLevel.SYSTEM || selectedLevel === AnnouncementLevel.MENU" class="mx-2">|</span>
+            <span *ngIf="selectedLevel === AnnouncementLevel.SYSTEM || selectedLevel === AnnouncementLevel.MENU">系统：{{ getCurrentSystemName() }}</span>
+            <span *ngIf="selectedLevel === AnnouncementLevel.MENU" class="mx-2">|</span>
+            <span *ngIf="selectedLevel === AnnouncementLevel.MENU">菜单：{{ getCurrentMenuName() }}</span>
+          </div>
+        </div>
+
+        <!-- 弹窗模式演示 -->
+        <div *ngIf="displayMode === 'popup'" class="space-y-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800">弹窗模式</h3>
+              <p class="text-sm text-gray-500">模拟用户首次访问页面时的公告弹窗显示</p>
+            </div>
+            <div class="flex gap-3">
+              <p-dropdown 
+                [(ngModel)]="popupDeviceType" 
+                [options]="deviceTypes" 
+                optionLabel="label" 
+                optionValue="value"
+                (onChange)="loadDemoData()"
+                styleClass="w-32"></p-dropdown>
+              <button 
+                pButton 
+                type="button" 
+                label="显示弹窗" 
+                icon="pi pi-play" 
+                class="btn btn-primary"
+                (click)="showAnnouncementPopup()"
+                [disabled]="popupAnnouncements.length === 0"></button>
+            </div>
+          </div>
+
+          <div class="bg-gray-100 rounded-lg p-8 text-center" *ngIf="popupAnnouncements.length === 0">
+            <i class="pi pi-inbox text-gray-400 text-5xl mb-3"></i>
+            <p class="text-gray-500">当前层级下暂无未读公告</p>
+            <p class="text-sm text-gray-400 mt-1">（弹窗模式仅显示未读公告）</p>
+          </div>
+
+          <div *ngIf="popupAnnouncements.length > 0" class="bg-gray-100 rounded-lg p-4">
+            <p class="text-sm text-gray-600 mb-3">
+              找到 <span class="font-semibold text-blue-600">{{ popupAnnouncements.length }}</span> 条未读公告
+            </p>
+            <div class="space-y-2">
+              <div 
+                *ngFor="let ann of popupAnnouncements"
+                class="bg-white rounded p-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <i class="pi pi-bell text-blue-500"></i>
+                  <div>
+                    <div class="font-medium text-gray-800">{{ ann.title }}</div>
+                    <div class="text-sm text-gray-500">{{ getLevelLabel(ann.level) }} · {{ ann.readCount }}人已读</div>
+                  </div>
+                </div>
+                <span class="tag tag-secondary">{{ announcementService.getDeviceTypeLabel(ann.deviceType) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 轮播模式演示 -->
+        <div *ngIf="displayMode === 'carousel'" class="space-y-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800">轮播模式</h3>
+              <p class="text-sm text-gray-500">模拟用户关闭弹窗后，后续访问页面时的公告轮播显示</p>
+            </div>
+            <p-dropdown 
+              [(ngModel)]="carouselDeviceType" 
+              [options]="deviceTypes" 
+              optionLabel="label" 
+              optionValue="value"
+              (onChange)="loadDemoData()"
+              styleClass="w-32"></p-dropdown>
+          </div>
+
+          <!-- PC端轮播预览 -->
+          <div *ngIf="carouselDeviceType === DeviceType.PC" class="border border-gray-200 rounded-lg overflow-hidden">
+            <div class="bg-gray-200 px-4 py-2 text-sm text-gray-600 flex items-center gap-2">
+              <i class="pi pi-desktop"></i>
+              <span>PC端页面预览</span>
+            </div>
+            <app-announcement-carousel 
+              [announcements]="carouselAnnouncements"
+              [deviceType]="DeviceType.PC"
+              (viewDetail)="onViewDetail($event)">
+            </app-announcement-carousel>
+            <div *ngIf="carouselAnnouncements.length === 0" class="bg-white p-8 text-center">
+              <i class="pi pi-inbox text-gray-400 text-3xl mb-2"></i>
+              <p class="text-gray-500">当前层级下暂无已读公告</p>
+              <p class="text-sm text-gray-400 mt-1">（轮播模式仅显示已读公告）</p>
+            </div>
+          </div>
+
+          <!-- 移动端轮播预览 -->
+          <div *ngIf="carouselDeviceType === DeviceType.MOBILE" class="flex justify-center">
+            <div class="w-80 border-4 border-gray-800 rounded-3xl overflow-hidden shadow-lg">
+              <div class="bg-gray-800 px-4 py-2 text-sm text-gray-400 text-center">
+                <span>移动端预览</span>
+              </div>
+              <div class="bg-white">
+                <app-announcement-carousel 
+                  [announcements]="carouselAnnouncements"
+                  [deviceType]="DeviceType.MOBILE"
+                  (viewDetail)="onViewDetail($event)">
+                </app-announcement-carousel>
+                <div *ngIf="carouselAnnouncements.length === 0" class="p-6 text-center">
+                  <i class="pi pi-inbox text-gray-400 text-2xl mb-2"></i>
+                  <p class="text-gray-500 text-sm">暂无已读公告</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- 弹窗组件 -->
+<app-announcement-popup 
+  *ngIf="showPopup && popupAnnouncements.length > 0"
+  [announcements]="popupAnnouncements"
+  [deviceType]="popupDeviceType"
+  (close)="onPopupClose()"
+  (viewDetail)="onViewDetail($event)">
+</app-announcement-popup>

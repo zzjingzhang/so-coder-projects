@@ -1,0 +1,189 @@
+<div class="space-y-6 animate-fade-in">
+  <mat-card class="p-6">
+    <mat-card-header class="mb-4">
+      <mat-card-title class="text-2xl font-bold text-gray-800">
+        🪙 当前金额
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+        <div class="text-center">
+          <div class="decimal-display">
+            <span class="amount-yuan">{{ coinState.yuan }}</span>
+            <span class="decimal-point">.</span>
+            <span class="amount-jiao">{{ (decimalAmount * 100 | number: '2.0-0')?.toString()?.charAt(0) || '0' }}</span>
+            <span class="amount-fen">{{ (decimalAmount * 100 | number: '2.0-0')?.toString()?.charAt(1) || '0' }}</span>
+          </div>
+          <p class="text-gray-600 mt-2 text-lg">小数形式</p>
+        </div>
+        <div class="text-4xl text-gray-400">=</div>
+        <div class="text-center">
+          <div class="text-3xl font-bold">
+            <span *ngIf="coinState.yuan > 0" class="amount-yuan">{{ coinState.yuan }}元 </span>
+            <span *ngIf="coinState.jiao > 0" class="amount-jiao">{{ coinState.jiao }}角 </span>
+            <span *ngIf="coinState.fen > 0" class="amount-fen">{{ coinState.fen }}分</span>
+            <span *ngIf="coinState.yuan === 0 && coinState.jiao === 0 && coinState.fen === 0" class="text-gray-500">0元</span>
+          </div>
+          <p class="text-gray-600 mt-2 text-lg">汉字形式</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <mat-card class="p-6 border-t-4 border-yuan" [class.shake]="animationStates.yuan">
+      <mat-card-header class="mb-4">
+        <div class="flex items-center justify-between w-full">
+          <mat-card-title class="text-xl font-bold text-yuan">
+            💰 元
+          </mat-card-title>
+          <span class="highlight-number text-2xl">{{ coinState.yuan }}</span>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="coin-container mb-6" [class.bounce-in]="animationStates.yuan">
+          <div *ngFor="let coin of getCoinsArray(coinState.yuan)" 
+               class="coin coin-yuan coin-drop">
+            元
+          </div>
+          <div *ngIf="coinState.yuan === 0" class="text-gray-400 text-lg">
+            点击下方按钮添加硬币
+          </div>
+        </div>
+        <div class="flex items-center justify-center gap-4">
+          <button mat-raised-button 
+                  color="primary"
+                  class="w-24 h-16 text-2xl"
+                  (click)="removeCoin('yuan')">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <button mat-raised-button 
+                  color="accent"
+                  class="w-24 h-16 text-2xl"
+                  (click)="addCoin('yuan')">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="p-6 border-t-4 border-jiao">
+      <mat-card-header class="mb-4">
+        <div class="flex items-center justify-between w-full">
+          <mat-card-title class="text-xl font-bold text-jiao">
+            🪙 角
+          </mat-card-title>
+          <span class="highlight-number text-2xl">{{ coinState.jiao }}</span>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="coin-container mb-6" [class.bounce-in]="animationStates.jiao">
+          <div *ngFor="let coin of getCoinsArray(coinState.jiao)" 
+               class="coin coin-jiao coin-drop">
+            角
+          </div>
+          <div *ngIf="coinState.jiao === 0" class="text-gray-400 text-lg">
+            点击下方按钮添加硬币
+          </div>
+        </div>
+        <div class="flex items-center justify-center gap-4">
+          <button mat-raised-button 
+                  color="primary"
+                  class="w-24 h-16 text-2xl"
+                  (click)="removeCoin('jiao')">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <button mat-raised-button 
+                  color="accent"
+                  class="w-24 h-16 text-2xl"
+                  (click)="addCoin('jiao')">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="p-6 border-t-4 border-fen">
+      <mat-card-header class="mb-4">
+        <div class="flex items-center justify-between w-full">
+          <mat-card-title class="text-xl font-bold text-fen">
+            🪙 分
+          </mat-card-title>
+          <span class="highlight-number text-2xl">{{ coinState.fen }}</span>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="coin-container mb-6" [class.bounce-in]="animationStates.fen">
+          <div *ngFor="let coin of getCoinsArray(coinState.fen)" 
+               class="coin coin-fen coin-drop">
+            分
+          </div>
+          <div *ngIf="coinState.fen === 0" class="text-gray-400 text-lg">
+            点击下方按钮添加硬币
+          </div>
+        </div>
+        <div class="flex items-center justify-center gap-4">
+          <button mat-raised-button 
+                  color="primary"
+                  class="w-24 h-16 text-2xl"
+                  (click)="removeCoin('fen')">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <button mat-raised-button 
+                  color="accent"
+                  class="w-24 h-16 text-2xl"
+                  (click)="addCoin('fen')">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card class="p-6 bg-gradient-to-r from-purple-50 to-pink-50">
+    <mat-card-header class="mb-4">
+      <mat-card-title class="text-xl font-bold text-purple-700">
+        📚 换算规则
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="instruction-card p-4 rounded-lg">
+          <h3 class="font-bold text-lg mb-3 text-blue-800">🤔 如何换算？</h3>
+          <div class="space-y-2 text-gray-700">
+            <p class="flex items-center gap-2">
+              <span class="w-3 h-3 bg-yuan rounded-full"></span>
+              <strong>10角</strong> = <strong>1元</strong>
+            </p>
+            <p class="flex items-center gap-2">
+              <span class="w-3 h-3 bg-jiao rounded-full"></span>
+              <strong>10分</strong> = <strong>1角</strong>
+            </p>
+            <p class="flex items-center gap-2">
+              <span class="w-3 h-3 bg-fen rounded-full"></span>
+              <strong>100分</strong> = <strong>1元</strong>
+            </p>
+          </div>
+        </div>
+        <div class="tip-card p-4 rounded-lg">
+          <h3 class="font-bold text-lg mb-3 text-amber-800">💡 小提示</h3>
+          <ul class="space-y-2 text-gray-700">
+            <li>• 当你添加了10个"分"硬币时，它们会自动变成1个"角"硬币</li>
+            <li>• 当你添加了10个"角"硬币时，它们会自动变成1个"元"硬币</li>
+            <li>• 观察小数形式中，小数点后第一位是角，第二位是分</li>
+          </ul>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="flex justify-center">
+    <button mat-raised-button 
+            color="warn"
+            class="w-48 h-14 text-lg"
+            (click)="reset()">
+      <mat-icon>refresh</mat-icon>
+      <span class="ml-2">重新开始</span>
+    </button>
+  </div>
+</div>

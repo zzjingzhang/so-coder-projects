@@ -1,0 +1,376 @@
+<div class="w-full max-w-7xl mx-auto px-4 py-6">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <!-- Canvas Section -->
+    <div class="lg:col-span-8">
+      <mat-card class="w-full">
+        <mat-card-header class="bg-indigo-50">
+          <mat-card-title class="text-xl font-bold text-indigo-800">
+            图形变换画布
+          </mat-card-title>
+          <mat-card-subtitle class="text-indigo-600">
+            {{ isCustomShapeMode ? '点击画布添加顶点来创建自定义图形' : '通过控制面板调整图形变换' }}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="flex justify-center bg-white p-4 rounded-lg shadow-inner">
+            <canvas 
+              #canvas 
+              class="border-2 border-gray-200 rounded cursor-crosshair"
+              (click)="onCanvasClick($event)"
+              style="width: 600px; height: 500px; max-width: 100%;"
+            ></canvas>
+          </div>
+          
+          <div class="mt-6 flex flex-wrap gap-4 justify-center">
+            <button 
+              mat-raised-button 
+              color="primary"
+              (click)="saveCurrentState()"
+              *ngIf="!isCustomShapeMode"
+              class="min-w-[140px] h-12 flex items-center justify-center gap-2"
+            >
+              <mat-icon>save</mat-icon>
+              <span>保存当前状态</span>
+            </button>
+            
+            <button 
+              mat-raised-button 
+              color="warn"
+              (click)="clearHistory()"
+              *ngIf="transformHistory.length > 0"
+              class="min-w-[140px] h-12 flex items-center justify-center gap-2"
+            >
+              <mat-icon>delete_sweep</mat-icon>
+              <span>清除历史轨迹</span>
+            </button>
+            
+            <button 
+              mat-raised-button 
+              color="accent"
+              (click)="resetTransform()"
+              *ngIf="!isCustomShapeMode"
+              class="min-w-[140px] h-12 flex items-center justify-center gap-2"
+            >
+              <mat-icon>refresh</mat-icon>
+              <span>重置变换</span>
+            </button>
+          </div>
+          
+          <div class="mt-4" *ngIf="transformHistory.length > 0">
+            <p class="text-center text-gray-600">
+              已保存 <span class="font-bold text-indigo-600">{{ transformHistory.length }}</span> 个变换状态
+            </p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    
+    <!-- Control Panel -->
+    <div class="lg:col-span-4 space-y-6">
+      <!-- Shape Selection -->
+      <mat-card>
+        <mat-card-header class="bg-blue-50">
+          <mat-card-title class="text-lg font-bold text-blue-800">
+            选择图形
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-button-toggle-group 
+            [(ngModel)]="shapeForm.value.shape"
+            (change)="onShapeSelect($event.value)"
+            class="w-full"
+            vertical
+          >
+            <mat-button-toggle 
+              *ngFor="let shape of predefinedShapes" 
+              [value]="shape.name"
+              class="mb-2 h-12"
+            >
+              {{ shape.name }}
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+          
+          <div class="mt-4">
+            <button 
+              mat-stroked-button 
+              color="primary"
+              (click)="startCustomShape()"
+              *ngIf="!isCustomShapeMode"
+              class="w-full h-12 flex items-center justify-center gap-2"
+            >
+              <mat-icon>create</mat-icon>
+              <span>创建自定义图形</span>
+            </button>
+            
+            <div *ngIf="isCustomShapeMode" class="space-y-3">
+              <p class="text-sm text-gray-600 text-center">
+                已添加 <span class="font-bold text-purple-600">{{ customShapePoints.length }}</span> 个顶点
+              </p>
+              <button 
+                mat-raised-button 
+                color="primary"
+                (click)="finishCustomShape()"
+                class="w-full h-12 flex items-center justify-center gap-2"
+                [disabled]="customShapePoints.length < 3"
+              >
+                <mat-icon>check</mat-icon>
+                <span>完成创建</span>
+              </button>
+              <button 
+                mat-stroked-button 
+                color="warn"
+                (click)="cancelCustomShape()"
+                class="w-full h-12 flex items-center justify-center gap-2"
+              >
+                <mat-icon>cancel</mat-icon>
+                <span>取消</span>
+              </button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      
+      <!-- Rotation Center Selection -->
+      <mat-card *ngIf="!isCustomShapeMode">
+        <mat-card-header class="bg-red-50">
+          <mat-card-title class="text-lg font-bold text-red-800">
+            旋转中心点
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>选择中心点</mat-label>
+            <mat-select 
+              [(ngModel)]="selectedCenterOption"
+              (selectionChange)="onCenterOptionChange($event.value)"
+            >
+              <mat-option *ngFor="let option of centerOptions" [value]="option">
+                {{ option }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+          <div *ngIf="selectedCenterOption === '自定义'" class="space-y-3 mt-2">
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label>中心点 X 坐标</mat-label>
+              <input 
+                matInput 
+                type="number" 
+                [(ngModel)]="customCenter.x"
+                (input)="onCustomCenterXChange(customCenter.x)"
+                [min]="0"
+                [max]="canvasWidth"
+              >
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label>中心点 Y 坐标</mat-label>
+              <input 
+                matInput 
+                type="number" 
+                [(ngModel)]="customCenter.y"
+                (input)="onCustomCenterYChange(customCenter.y)"
+                [min]="0"
+                [max]="canvasHeight"
+              >
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      
+      <!-- Rotation Control -->
+      <mat-card *ngIf="!isCustomShapeMode">
+        <mat-card-header class="bg-green-50">
+          <mat-card-title class="text-lg font-bold text-green-800">
+            旋转控制
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="text-center mb-4">
+            <span class="text-2xl font-bold text-green-700">
+              {{ currentRotation }}°
+            </span>
+          </div>
+          
+          <mat-slider 
+            min="0" 
+            max="360" 
+            step="1" 
+            class="w-full mb-4"
+            discrete
+            showTickMarks
+          >
+            <input 
+              matSliderThumb 
+              [(ngModel)]="currentRotation"
+              (ngModelChange)="onRotationChange()"
+            >
+          </mat-slider>
+          
+          <div class="grid grid-cols-4 gap-2">
+            <button 
+              mat-stroked-button 
+              (click)="rotate(-90)"
+              class="h-12 flex items-center justify-center"
+            >
+              -90°
+            </button>
+            <button 
+              mat-stroked-button 
+              (click)="rotate(-45)"
+              class="h-12 flex items-center justify-center"
+            >
+              -45°
+            </button>
+            <button 
+              mat-stroked-button 
+              (click)="rotate(45)"
+              class="h-12 flex items-center justify-center"
+            >
+              +45°
+            </button>
+            <button 
+              mat-stroked-button 
+              (click)="rotate(90)"
+              class="h-12 flex items-center justify-center"
+            >
+              +90°
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      
+      <!-- Translation Control -->
+      <mat-card *ngIf="!isCustomShapeMode">
+        <mat-card-header class="bg-purple-50">
+          <mat-card-title class="text-lg font-bold text-purple-800">
+            平移控制
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="text-center mb-4">
+            <span class="text-lg font-bold text-purple-700">
+              X: {{ currentTranslateX }}px | Y: {{ currentTranslateY }}px
+            </span>
+          </div>
+          
+          <!-- Arrow buttons for translation -->
+          <div class="flex flex-col items-center gap-2 mb-6">
+            <button 
+              mat-raised-button 
+              color="primary"
+              (click)="translate('up')"
+              class="w-20 h-12 flex items-center justify-center gap-1"
+            >
+              <mat-icon>arrow_upward</mat-icon>
+              <span>上</span>
+            </button>
+            <div class="flex gap-2">
+              <button 
+                mat-raised-button 
+                color="primary"
+                (click)="translate('left')"
+                class="w-20 h-12 flex items-center justify-center gap-1"
+              >
+                <mat-icon>arrow_back</mat-icon>
+                <span>左</span>
+              </button>
+              <div class="w-20 h-12"></div>
+              <button 
+                mat-raised-button 
+                color="primary"
+                (click)="translate('right')"
+                class="w-20 h-12 flex items-center justify-center gap-1"
+              >
+                <span>右</span>
+                <mat-icon>arrow_forward</mat-icon>
+              </button>
+            </div>
+            <button 
+              mat-raised-button 
+              color="primary"
+              (click)="translate('down')"
+              class="w-20 h-12 flex items-center justify-center gap-1"
+            >
+              <mat-icon>arrow_downward</mat-icon>
+              <span>下</span>
+            </button>
+          </div>
+          
+          <!-- Sliders for fine control -->
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                水平平移 (X)
+              </label>
+              <mat-slider 
+                min="-300" 
+                max="300" 
+                step="1" 
+                class="w-full"
+              >
+                <input 
+                  matSliderThumb 
+                  [(ngModel)]="currentTranslateX"
+                  (ngModelChange)="onTranslateXChange()"
+                >
+              </mat-slider>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                垂直平移 (Y)
+              </label>
+              <mat-slider 
+                min="-250" 
+                max="250" 
+                step="1" 
+                class="w-full"
+              >
+                <input 
+                  matSliderThumb 
+                  [(ngModel)]="currentTranslateY"
+                  (ngModelChange)="onTranslateYChange()"
+                >
+              </mat-slider>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      
+      <!-- Trail Options -->
+      <mat-card *ngIf="!isCustomShapeMode">
+        <mat-card-header class="bg-orange-50">
+          <mat-card-title class="text-lg font-bold text-orange-800">
+            轨迹显示
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-slide-toggle 
+            [(ngModel)]="showTrail"
+            (change)="draw()"
+            class="w-full mb-4"
+          >
+            显示历史轨迹
+          </mat-slide-toggle>
+          
+          <div *ngIf="showTrail">
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              轨迹透明度
+            </label>
+            <mat-slider 
+              min="0.1" 
+              max="0.8" 
+              step="0.1" 
+              class="w-full"
+            >
+              <input 
+                matSliderThumb 
+                [(ngModel)]="trailOpacity"
+                (ngModelChange)="draw()"
+              >
+            </mat-slider>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

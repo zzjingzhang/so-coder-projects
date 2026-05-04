@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+  background-color: #f3f4f6;
+  line-height: 1.5;
+}
+
+/* Angular Material 覆盖样式 */
+mat-card {
+  display: block !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+mat-card-header {
+  padding: 16px !important;
+}
+
+mat-card-content {
+  padding: 16px !important;
+}
+
+mat-button-toggle-group {
+  width: 100% !important;
+}
+
+mat-button-toggle {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: 500 !important;
+  height: 48px !important;
+}
+
+mat-slider {
+  width: 100% !important;
+}
+
+mat-form-field {
+  width: 100% !important;
+}
+
+button[mat-raised-button],
+button[mat-stroked-button] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: 500 !important;
+  height: 48px !important;
+  padding: 0 16px !important;
+}
+
+mat-slide-toggle {
+  width: 100% !important;
+  font-weight: 500 !important;
+}

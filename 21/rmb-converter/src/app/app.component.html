@@ -1,0 +1,80 @@
+<div class="min-h-screen flex flex-col">
+  <header class="title-bar shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="text-4xl float-animation">💰</div>
+          <div>
+            <h1 class="text-2xl sm:text-3xl font-bold">{{ title }}</h1>
+            <p class="text-blue-100 text-sm sm:text-base">探索人民币单位的奥秘！</p>
+          </div>
+        </div>
+        <nav class="hidden md:flex space-x-2">
+          <button 
+            mat-raised-button
+            class="nav-button"
+            [class.active]="isActive('/converter')"
+            (click)="navigateTo('/converter')"
+            color="primary">
+            <mat-icon>payments</mat-icon>
+            <span class="ml-2">硬币操作</span>
+          </button>
+          <button 
+            mat-raised-button
+            class="nav-button"
+            [class.active]="isActive('/game')"
+            (click)="navigateTo('/game')"
+            color="primary">
+            <mat-icon>games</mat-icon>
+            <span class="ml-2">小游戏</span>
+          </button>
+          <button 
+            mat-raised-button
+            class="nav-button"
+            [class.active]="isActive('/instructions')"
+            (click)="navigateTo('/instructions')"
+            color="primary">
+            <mat-icon>menu_book</mat-icon>
+            <span class="ml-2">使用说明</span>
+          </button>
+        </nav>
+      </div>
+      <nav class="md:hidden mt-4 flex space-x-2">
+        <button 
+          mat-stroked-button
+          class="nav-button flex-1"
+          [class.active]="isActive('/converter')"
+          (click)="navigateTo('/converter')">
+          <mat-icon>payments</mat-icon>
+          <span class="ml-1">硬币</span>
+        </button>
+        <button 
+          mat-stroked-button
+          class="nav-button flex-1"
+          [class.active]="isActive('/game')"
+          (click)="navigateTo('/game')">
+          <mat-icon>games</mat-icon>
+          <span class="ml-1">游戏</span>
+        </button>
+        <button 
+          mat-stroked-button
+          class="nav-button flex-1"
+          [class.active]="isActive('/instructions')"
+          (click)="navigateTo('/instructions')">
+          <mat-icon>menu_book</mat-icon>
+          <span class="ml-1">说明</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl mx-auto w-full px-4 py-6 sm:px-6 lg:px-8">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="bg-gray-800 text-white py-4 mt-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-gray-300 text-sm">专为小学三年级数学课程设计 | 人民币单位换算学习工具</p>
+    </div>
+  </footer>
+</div>

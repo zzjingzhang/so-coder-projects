@@ -1,0 +1,192 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 全局样式 */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* 按钮样式 */
+.btn {
+  @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 inline-flex items-center justify-center;
+}
+
+.btn-primary {
+  @apply bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 text-gray-800 hover:bg-gray-300 active:bg-gray-400;
+}
+
+.btn-danger {
+  @apply bg-red-600 text-white hover:bg-red-700 active:bg-red-800;
+}
+
+.btn-success {
+  @apply bg-green-600 text-white hover:bg-green-700 active:bg-green-800;
+}
+
+/* 表单样式 */
+.form-group {
+  @apply mb-4;
+}
+
+.form-label {
+  @apply block text-sm font-medium text-gray-700 mb-1;
+}
+
+.form-input {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+}
+
+.form-select {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+}
+
+.form-textarea {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+}
+
+/* 卡片样式 */
+.card {
+  @apply bg-white rounded-lg shadow-md p-6 mb-4;
+}
+
+.card-header {
+  @apply text-lg font-semibold mb-4 pb-2 border-b border-gray-200;
+}
+
+/* 表格样式 */
+.table-container {
+  @apply overflow-x-auto;
+}
+
+.table {
+  @apply w-full border-collapse;
+}
+
+.table th {
+  @apply bg-gray-100 text-left px-4 py-3 font-semibold text-gray-700 border-b;
+}
+
+.table td {
+  @apply px-4 py-3 border-b border-gray-200;
+}
+
+.table tr:hover {
+  @apply bg-gray-50;
+}
+
+/* 模态框样式 */
+.modal-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
+}
+
+.modal-content {
+  @apply bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto;
+}
+
+.modal-header {
+  @apply flex items-center justify-between px-6 py-4 border-b border-gray-200;
+}
+
+.modal-title {
+  @apply text-xl font-semibold text-gray-800;
+}
+
+.modal-close-btn {
+  @apply text-gray-500 hover:text-gray-700 focus:outline-none;
+}
+
+.modal-body {
+  @apply px-6 py-4;
+}
+
+.modal-footer {
+  @apply flex justify-end gap-3 px-6 py-4 border-t border-gray-200;
+}
+
+/* 公告弹窗样式 */
+.announcement-popup {
+  @apply fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50;
+}
+
+.announcement-popup-content {
+  @apply bg-white rounded-xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden;
+}
+
+.announcement-popup-header {
+  @apply bg-blue-600 text-white px-6 py-4;
+}
+
+.announcement-popup-title {
+  @apply text-xl font-bold;
+}
+
+.announcement-popup-body {
+  @apply px-6 py-4 max-h-64 overflow-y-auto;
+}
+
+.announcement-popup-footer {
+  @apply flex justify-end gap-3 px-6 py-4 bg-gray-50;
+}
+
+/* 轮播公告样式 */
+.announcement-carousel {
+  @apply bg-blue-50 border-l-4 border-blue-600 py-2 px-4 overflow-hidden;
+}
+
+.announcement-carousel-item {
+  @apply flex items-center gap-2;
+}
+
+.announcement-carousel-title {
+  @apply text-blue-700 font-medium cursor-pointer hover:underline;
+}
+
+/* 自定义标签样式，替代p-tag */
+.tag {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium;
+}
+
+.tag-info {
+  @apply bg-blue-100 text-blue-800;
+}
+
+.tag-success {
+  @apply bg-green-100 text-green-800;
+}
+
+.tag-warning {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.tag-danger {
+  @apply bg-red-100 text-red-800;
+}
+
+.tag-secondary {
+  @apply bg-gray-100 text-gray-800;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .card {
+    @apply p-4;
+  }
+  
+  .table th, .table td {
+    @apply px-2 py-2 text-sm;
+  }
+  
+  .btn {
+    @apply px-3 py-1.5 text-sm;
+  }
+}

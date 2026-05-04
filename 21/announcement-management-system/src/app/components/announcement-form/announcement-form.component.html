@@ -1,0 +1,200 @@
+<p-dialog 
+  [(visible)]="display" 
+  [header]="dialogTitle" 
+  [modal]="true" 
+  [style]="{ width: '900px' }" 
+  [baseZIndex]="10000"
+  [closable]="true"
+  (onHide)="onClose()">
+  
+  <form [formGroup]="form" *ngIf="form">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="form-group col-span-2">
+        <label class="form-label">公告标题 <span class="text-red-500">*</span></label>
+        <input 
+          pInputText 
+          type="text" 
+          formControlName="title" 
+          placeholder="请输入公告标题" 
+          class="form-input"
+          [readonly]="isViewOnly"
+          [ngClass]="{ 'border-red-500': form.get('title')?.invalid && form.get('title')?.touched }" />
+        <small *ngIf="form.get('title')?.invalid && form.get('title')?.touched" class="text-red-500">
+          <span *ngIf="form.get('title')?.errors?.['required']">请输入公告标题</span>
+          <span *ngIf="form.get('title')?.errors?.['maxlength']">标题不能超过200个字符</span>
+        </small>
+      </div>
+
+      <div class="form-group col-span-2">
+        <label class="form-label">公告摘要</label>
+        <textarea 
+          pTextarea 
+          formControlName="summary" 
+          placeholder="请输入公告摘要（可选）" 
+          rows="2"
+          class="form-textarea"
+          [readonly]="isViewOnly"
+          [ngClass]="{ 'border-red-500': form.get('summary')?.invalid && form.get('summary')?.touched }"></textarea>
+        <small *ngIf="form.get('summary')?.errors?.['maxlength']" class="text-red-500">
+          摘要不能超过500个字符
+        </small>
+      </div>
+
+      <div class="form-group col-span-2">
+        <label class="form-label">公告内容 <span class="text-red-500">*</span></label>
+        <textarea 
+          pTextarea 
+          formControlName="content" 
+          placeholder="请输入公告内容（支持HTML）" 
+          rows="6"
+          class="form-textarea"
+          [readonly]="isViewOnly"
+          [ngClass]="{ 'border-red-500': form.get('content')?.invalid && form.get('content')?.touched }"></textarea>
+        <small *ngIf="form.get('content')?.invalid && form.get('content')?.touched" class="text-red-500">
+          请输入公告内容
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">发布时间 <span class="text-red-500">*</span></label>
+        <p-calendar 
+          formControlName="publishTime" 
+          showTime="true" 
+          hourFormat="24" 
+          dateFormat="yy-mm-dd"
+          [showIcon]="true"
+          [readonlyInput]="isViewOnly"
+          [disabled]="isViewOnly"
+          class="w-full"></p-calendar>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">生效端口 <span class="text-red-500">*</span></label>
+        <p-dropdown 
+          formControlName="deviceType" 
+          [options]="deviceTypes" 
+          optionLabel="label" 
+          optionValue="value"
+          [disabled]="isViewOnly"
+          placeholder="请选择生效端口" 
+          class="w-full"></p-dropdown>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">有效期开始 <span class="text-red-500">*</span></label>
+        <p-calendar 
+          formControlName="validFrom" 
+          showTime="true" 
+          hourFormat="24" 
+          dateFormat="yy-mm-dd"
+          [showIcon]="true"
+          [readonlyInput]="isViewOnly"
+          [disabled]="isViewOnly"
+          class="w-full"></p-calendar>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">有效期结束 <span class="text-red-500">*</span></label>
+        <p-calendar 
+          formControlName="validTo" 
+          showTime="true" 
+          hourFormat="24" 
+          dateFormat="yy-mm-dd"
+          [showIcon]="true"
+          [readonlyInput]="isViewOnly"
+          [disabled]="isViewOnly"
+          class="w-full"></p-calendar>
+        <small *ngIf="form.errors?.['dateRangeInvalid']" class="text-red-500">
+          有效期结束时间必须晚于开始时间
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">适用层级 <span class="text-red-500">*</span></label>
+        <p-dropdown 
+          formControlName="level" 
+          [options]="levels" 
+          optionLabel="label" 
+          optionValue="value"
+          [disabled]="isViewOnly"
+          placeholder="请选择适用层级" 
+          class="w-full"></p-dropdown>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">发布状态 <span class="text-red-500">*</span></label>
+        <p-dropdown 
+          formControlName="status" 
+          [options]="statuses" 
+          optionLabel="label" 
+          optionValue="value"
+          [disabled]="isViewOnly"
+          placeholder="请选择发布状态" 
+          class="w-full"></p-dropdown>
+      </div>
+
+      <div class="form-group" *ngIf="form.get('level')?.value">
+        <label class="form-label">产品 <span class="text-red-500" *ngIf="form.get('level')?.value">*</span></label>
+        <p-dropdown 
+          formControlName="productId" 
+          [options]="products" 
+          optionLabel="name" 
+          optionValue="id"
+          [disabled]="isViewOnly"
+          placeholder="请选择产品" 
+          class="w-full"></p-dropdown>
+        <small *ngIf="form.get('productId')?.invalid && form.get('productId')?.touched" class="text-red-500">
+          请选择产品
+        </small>
+      </div>
+
+      <div class="form-group" *ngIf="form.get('level')?.value === 'system' || form.get('level')?.value === 'menu'">
+        <label class="form-label">系统 <span class="text-red-500">*</span></label>
+        <p-dropdown 
+          formControlName="systemId" 
+          [options]="filteredSystems" 
+          optionLabel="name" 
+          optionValue="id"
+          [disabled]="isViewOnly || !form.get('productId')?.value"
+          placeholder="请选择系统" 
+          class="w-full"></p-dropdown>
+        <small *ngIf="form.get('systemId')?.invalid && form.get('systemId')?.touched" class="text-red-500">
+          请选择系统
+        </small>
+      </div>
+
+      <div class="form-group" *ngIf="form.get('level')?.value === 'menu'">
+        <label class="form-label">菜单 <span class="text-red-500">*</span></label>
+        <p-dropdown 
+          formControlName="menuId" 
+          [options]="filteredMenus" 
+          optionLabel="name" 
+          optionValue="id"
+          [disabled]="isViewOnly || !form.get('systemId')?.value"
+          placeholder="请选择菜单" 
+          class="w-full"></p-dropdown>
+        <small *ngIf="form.get('menuId')?.invalid && form.get('menuId')?.touched" class="text-red-500">
+          请选择菜单
+        </small>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
+      <button 
+        pButton 
+        type="button" 
+        label="取消" 
+        icon="pi pi-times" 
+        class="btn btn-secondary"
+        (click)="onClose()"></button>
+      <button 
+        pButton 
+        type="button" 
+        label="保存" 
+        icon="pi pi-check" 
+        class="btn btn-primary"
+        *ngIf="!isViewOnly"
+        (click)="onSubmit()"></button>
+    </div>
+  </form>
+</p-dialog>

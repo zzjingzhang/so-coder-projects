@@ -1,0 +1,144 @@
+/* 全局样式重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: 'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+#app {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* 全局动画定义 */
+@keyframes scrollNames {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes celebrate {
+  0%, 100% {
+    transform: scale(1);
+    color: #ff6b6b;
+  }
+  25% {
+    transform: scale(1.1);
+    color: #4ecdc4;
+  }
+  50% {
+    transform: scale(1.2);
+    color: #45b7d1;
+  }
+  75% {
+    transform: scale(1.1);
+    color: #f9ca24;
+  }
+}
+
+@keyframes rainbow {
+  0% {
+    box-shadow: 0 0 8px #ff0000, 0 0 16px #ff0000;
+    border-color: #ff0000;
+  }
+  16% {
+    box-shadow: 0 0 8px #ff7f00, 0 0 16px #ff7f00;
+    border-color: #ff7f00;
+  }
+  33% {
+    box-shadow: 0 0 8px #ffff00, 0 0 16px #ffff00;
+    border-color: #ffff00;
+  }
+  50% {
+    box-shadow: 0 0 8px #00ff00, 0 0 16px #00ff00;
+    border-color: #00ff00;
+  }
+  66% {
+    box-shadow: 0 0 8px #0000ff, 0 0 16px #0000ff;
+    border-color: #0000ff;
+  }
+  83% {
+    box-shadow: 0 0 8px #8b00ff, 0 0 16px #8b00ff;
+    border-color: #8b00ff;
+  }
+  100% {
+    box-shadow: 0 0 8px #ff0000, 0 0 16px #ff0000;
+    border-color: #ff0000;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.scrolling-container {
+  overflow: hidden;
+  height: 80px;
+  position: relative;
+}
+
+.scrolling-names {
+  animation: scrollNames 0.5s linear infinite;
+}
+
+.celebrating {
+  animation: celebrate 0.5s ease-in-out infinite;
+}
+
+.rainbow-border {
+  animation: rainbow 1s linear infinite;
+}
+
+.bouncing {
+  animation: bounce 0.5s ease-in-out infinite;
+}
+
+.floating {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* 确保表格样式不影响布局 */
+table, th, td {
+  border: none;
+  border-collapse: collapse;
+}
+
+/* 确保按钮样式正确 */
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
