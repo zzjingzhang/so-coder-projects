@@ -1,0 +1,144 @@
+.scene-container {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f0f5ff 0%, #e6e9ff 100%);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.scene {
+  position: relative;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease-out;
+}
+
+.cube {
+  position: absolute;
+  transform-style: preserve-3d;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cube-face {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 24px;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  box-sizing: border-box;
+  backface-visibility: visible;
+}
+
+.cube-face.front {
+  background: rgba(255, 107, 107, 0.85);
+}
+
+.cube-face.back {
+  background: rgba(255, 165, 2, 0.85);
+}
+
+.cube-face.right {
+  background: rgba(46, 213, 115, 0.85);
+}
+
+.cube-face.left {
+  background: rgba(30, 144, 255, 0.85);
+}
+
+.cube-face.top {
+  background: rgba(255, 215, 0, 0.85);
+}
+
+.cube-face.bottom {
+  background: rgba(155, 89, 182, 0.85);
+}
+
+.face-label {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  user-select: none;
+}
+
+.ortho-view-card {
+  min-height: 220px;
+}
+
+.ortho-grid {
+  display: grid;
+  gap: 2px;
+  justify-content: center;
+  background-color: #f0f0f0;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.ortho-cell {
+  border: 1px solid #d1d5db;
+  background-color: #ffffff;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.ortho-cell.filled {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: #5a67d8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .scene-container {
+    height: 300px;
+  }
+  
+  .face-label {
+    font-size: 18px;
+  }
+}
+
+/* 按钮样式优化 */
+.ant-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ant-btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  box-shadow: 0 2px 6px rgba(102, 126, 234, 0.4);
+}
+
+.ant-btn-primary:hover {
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.5);
+}
+
+.ant-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: none;
+}
+
+.ant-card-head {
+  border-radius: 12px 12px 0 0;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.ant-slider-track {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.ant-slider-handle::after {
+  box-shadow: 0 0 0 2px #667eea;
+}

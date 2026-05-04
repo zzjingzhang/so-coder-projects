@@ -1,0 +1,19 @@
+/* 自定义样式补充 */
+.p-slider .p-slider-handle {
+  border: 2px solid #3b82f6 !important;
+  background-color: #3b82f6 !important;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4) !important;
+}
+
+.p-slider .p-slider-range {
+  background: linear-gradient(90deg, #3b82f6, #6366f1) !important;
+}
+
+.p-card {
+  border-radius: 1rem !important;
+}
+
+.p-button {
+  border-radius: 0.75rem !important;
+  font-weight: 600 !important;
+}

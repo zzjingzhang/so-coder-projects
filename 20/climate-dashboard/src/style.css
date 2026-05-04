@@ -1,0 +1,333 @@
+@import "tailwindcss";
+
+:root {
+  --primary-color: #3b82f6;
+  --primary-hover: #2563eb;
+  --secondary-color: #10b981;
+  --accent-color: #f59e0b;
+  --danger-color: #ef4444;
+  --success-color: #22c55e;
+  --bg-light: #f8fafc;
+  --bg-dark: #0f172a;
+  --text-light: #1e293b;
+  --text-dark: #f1f5f9;
+  --border-color: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  min-height: 100vh;
+  color: var(--text-light);
+}
+
+#app {
+  width: 100%;
+  min-height: 100vh;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes chartGrow {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.6s ease-out forwards;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.6s ease-out forwards;
+}
+
+.pulse-animation {
+  animation: pulse 2s infinite;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #2563eb 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+
+.btn-secondary {
+  background: white;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-secondary:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+.stats-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.stats-card-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.stats-card-label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.header-gradient {
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+  color: white;
+}
+
+/* PrimeVue Button Styles */
+.p-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  padding: 0.75rem 1.25rem !important;
+  border-radius: 0.5rem !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
+  border: none !important;
+  gap: 0.5rem !important;
+}
+
+.p-button:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+}
+
+.p-button-primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+  color: white !important;
+}
+
+.p-button-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4) !important;
+}
+
+.p-button-outlined {
+  background: white !important;
+  color: #3b82f6 !important;
+  border: 2px solid #3b82f6 !important;
+}
+
+.p-button-outlined:hover:not(:disabled) {
+  background: #3b82f6 !important;
+  color: white !important;
+}
+
+.p-button-success {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%) !important;
+  color: white !important;
+}
+
+.p-button-success:hover:not(:disabled) {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4) !important;
+}
+
+.p-button .p-button-icon {
+  font-size: 1rem !important;
+}
+
+/* PrimeVue Slider Styles */
+.p-slider {
+  position: relative !important;
+  height: 10px !important;
+  background: #e2e8f0 !important;
+  border-radius: 9999px !important;
+  cursor: pointer !important;
+}
+
+.p-slider .p-slider-range {
+  position: absolute !important;
+  height: 100% !important;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa) !important;
+  border-radius: 9999px !important;
+}
+
+.p-slider .p-slider-handle {
+  position: absolute !important;
+  width: 22px !important;
+  height: 22px !important;
+  border-radius: 50% !important;
+  background: white !important;
+  border: 3px solid #3b82f6 !important;
+  cursor: grab !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3) !important;
+  transition: all 0.2s ease !important;
+  z-index: 10 !important;
+}
+
+.p-slider .p-slider-handle:hover {
+  transform: translate(-50%, -50%) scale(1.1) !important;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4) !important;
+}
+
+.p-slider .p-slider-handle:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2), 0 2px 10px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* PrimeVue SelectButton Styles */
+.p-selectbutton {
+  display: inline-flex !important;
+  border-radius: 0.5rem !important;
+  overflow: hidden !important;
+  background: #e2e8f0 !important;
+  padding: 0.25rem !important;
+  gap: 0.25rem !important;
+}
+
+.p-selectbutton .p-button {
+  border-radius: 0.375rem !important;
+  padding: 0.5rem 1rem !important;
+  background: transparent !important;
+  color: #475569 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.p-selectbutton .p-button:hover {
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: #3b82f6 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.p-selectbutton .p-button.p-highlight {
+  background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+  color: white !important;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3) !important;
+}
+
+.p-selectbutton .p-button.p-highlight:hover {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4) !important;
+}
+
+@media (max-width: 768px) {
+  .stats-card-value {
+    font-size: 2rem;
+  }
+  
+  .p-selectbutton {
+    flex-wrap: wrap !important;
+  }
+  
+  .p-selectbutton .p-button {
+    flex: 1 1 calc(50% - 0.25rem) !important;
+  }
+}
