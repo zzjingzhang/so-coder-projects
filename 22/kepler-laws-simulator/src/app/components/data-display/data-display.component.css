@@ -1,0 +1,259 @@
+.data-display {
+  padding: 16px;
+  height: 100%;
+  overflow-y: auto;
+  background-color: #1a1f3a;
+}
+
+.panel-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 16px 0;
+  text-align: center;
+}
+
+.data-section {
+  margin-bottom: 16px;
+  background-color: #1a1f3a;
+  border: 1px solid #2a2f4a;
+}
+
+.data-section ::ng-deep .ant-card-head {
+  background-color: #0f1328;
+  border-bottom: 1px solid #2a2f4a;
+}
+
+.data-section ::ng-deep .ant-card-head-title {
+  color: #4a90e2;
+  font-weight: 600;
+}
+
+.data-section ::ng-deep .ant-card-body {
+  padding: 16px;
+}
+
+.laws-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.law-card {
+  background: linear-gradient(135deg, #0f1328 0%, #1a1f3a 100%);
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid #2a2f4a;
+}
+
+.law-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.law-icon {
+  font-size: 16px;
+  color: #4a90e2;
+}
+
+.law-number {
+  font-size: 12px;
+  font-weight: 600;
+  color: #4a90e2;
+  opacity: 0.8;
+}
+
+.law-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.law-description {
+  font-size: 11px;
+  color: #aaa;
+  line-height: 1.5;
+}
+
+.data-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.data-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+  background-color: #0f1328;
+  border-radius: 6px;
+  border: 1px solid #2a2f4a;
+}
+
+.data-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.data-label {
+  font-size: 11px;
+  color: #888;
+  font-weight: 500;
+}
+
+.data-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.data-value.highlight-red {
+  color: #ff6b6b;
+}
+
+.data-value.highlight-cyan {
+  color: #4ecdc4;
+}
+
+.data-value.highlight-green {
+  color: #4ade80;
+}
+
+.area-law-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.area-law-description {
+  font-size: 12px;
+  color: #ccc;
+  line-height: 1.5;
+  padding: 10px;
+  background-color: #0f1328;
+  border-radius: 6px;
+  border-left: 3px solid #4a90e2;
+}
+
+.speed-comparison {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.speed-bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.speed-label {
+  font-size: 10px;
+  color: #888;
+}
+
+.speed-label.speed-label-min {
+  text-align: left;
+  color: #4ecdc4;
+}
+
+.speed-label.speed-label-max {
+  text-align: right;
+  color: #ff6b6b;
+}
+
+.speed-bar {
+  position: relative;
+  height: 8px;
+  margin: 0 4px;
+}
+
+.speed-bar-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #4ecdc4 0%, #4ade80 50%, #ff6b6b 100%);
+  border-radius: 4px;
+  opacity: 0.3;
+}
+
+.speed-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #4ecdc4 0%, #4ade80 50%, #ff6b6b 100%);
+  border-radius: 4px;
+  opacity: 0.7;
+}
+
+.speed-indicator {
+  position: absolute;
+  top: -4px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.indicator-dot {
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 3px solid #4ade80;
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+}
+
+.speed-values {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 8px;
+  text-align: center;
+}
+
+.speed-value-min,
+.speed-value-current,
+.speed-value-max {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+  background-color: #0f1328;
+  border-radius: 4px;
+}
+
+.speed-value-min .label,
+.speed-value-current .label,
+.speed-value-max .label {
+  font-size: 10px;
+  color: #888;
+}
+
+.speed-value-min .value,
+.speed-value-current .value,
+.speed-value-max .value {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.area-law-note {
+  font-size: 11px;
+  color: #888;
+  line-height: 1.5;
+  padding: 10px;
+  background-color: rgba(74, 144, 226, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(74, 144, 226, 0.3);
+}
+
+.info-icon {
+  color: #4a90e2;
+  margin-right: 6px;
+  vertical-align: middle;
+}

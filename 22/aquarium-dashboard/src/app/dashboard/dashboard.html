@@ -1,0 +1,372 @@
+<div class="min-h-screen bg-gradient-to-br from-cyan-50 to-blue-50 p-6">
+  <!-- Header -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-4">
+        <div class="w-14 h-14 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-md">
+          <span class="text-white text-3xl">🐠</span>
+        </div>
+        <div>
+          <h1 class="text-2xl md:text-3xl font-bold text-gray-800">水族箱智能管理系统</h1>
+          <p class="text-gray-500 text-sm">实时监控与智能管理</p>
+        </div>
+      </div>
+      <div class="bg-gray-50 rounded-xl px-6 py-3">
+        <p class="text-sm text-gray-500">当前时间</p>
+        <p class="text-lg font-semibold text-gray-800">{{ currentTime }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Stats Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    <!-- Temperature Card -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+      <div class="flex justify-between items-start mb-4">
+        <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+          <span class="text-2xl">🌡️</span>
+        </div>
+        <span class="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full font-medium">正常</span>
+      </div>
+      <h3 class="text-gray-500 text-sm font-medium mb-2">平均水温</h3>
+      <p class="text-4xl font-bold text-gray-800 mb-1">{{ averageTemperature }}°C</p>
+      <p class="text-sm text-gray-400">目标: 26.0°C - 28.0°C</p>
+    </div>
+
+    <!-- pH Card -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+      <div class="flex justify-between items-start mb-4">
+        <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+          <span class="text-2xl">💧</span>
+        </div>
+        <span class="text-xs bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full font-medium">注意</span>
+      </div>
+      <h3 class="text-gray-500 text-sm font-medium mb-2">pH 值</h3>
+      <p class="text-4xl font-bold text-gray-800 mb-1">{{ averagePh }}</p>
+      <p class="text-sm text-gray-400">目标: 6.8 - 7.2</p>
+    </div>
+
+    <!-- Fish Count Card -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+      <div class="flex justify-between items-start mb-4">
+        <div class="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center">
+          <span class="text-2xl">🐟</span>
+        </div>
+        <span class="text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-full font-medium">健康</span>
+      </div>
+      <h3 class="text-gray-500 text-sm font-medium mb-2">鱼类总数</h3>
+      <p class="text-4xl font-bold text-gray-800 mb-1">{{ totalFishCount }}</p>
+      <p class="text-sm text-gray-400">分布在 {{ tanks.length }} 个水箱</p>
+    </div>
+
+    <!-- Filter Status Card -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+      <div class="flex justify-between items-start mb-4">
+        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+          <span class="text-2xl">⚙️</span>
+        </div>
+        <span class="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full font-medium">运行中</span>
+      </div>
+      <h3 class="text-gray-500 text-sm font-medium mb-2">过滤器状态</h3>
+      <p class="text-4xl font-bold text-gray-800 mb-1">{{ getRunningFiltersCount() }}/{{ filters.length }}</p>
+      <p class="text-sm text-gray-400">运行中 / 总数</p>
+    </div>
+  </div>
+
+  <!-- Tanks Grid -->
+  <div class="mb-6">
+    <h2 class="text-xl font-bold text-gray-800 mb-4">📦 水箱详情</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div *ngFor="let tank of tanks" class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+        <div class="bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-4">
+          <div class="flex justify-between items-center">
+            <h3 class="text-white font-bold text-lg">{{ tank.name }}</h3>
+            <span class="bg-white bg-opacity-20 text-white text-sm px-3 py-1 rounded-full">{{ tank.volume }}L</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <div class="space-y-4">
+            <!-- Temperature -->
+            <div>
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-sm text-gray-500">水温</span>
+                <span class="text-sm font-semibold" [ngClass]="getTemperatureStatus(tank.currentTemperature, tank.targetTemperature)">
+                  {{ tank.currentTemperature }}°C
+                </span>
+              </div>
+              <div class="w-full bg-gray-100 rounded-full h-2">
+                <div class="bg-gradient-to-r from-blue-400 to-orange-400 h-2 rounded-full" style="width: 75%"></div>
+              </div>
+              <p class="text-xs text-gray-400 mt-1">目标: {{ tank.targetTemperature }}°C</p>
+            </div>
+
+            <!-- pH -->
+            <div>
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-sm text-gray-500">pH 值</span>
+                <span class="text-sm font-semibold" [ngClass]="getPhStatus(tank.currentPh, tank.targetPh)">
+                  {{ tank.currentPh }}
+                </span>
+              </div>
+              <div class="w-full bg-gray-100 rounded-full h-2">
+                <div class="bg-gradient-to-r from-red-400 via-green-400 to-blue-400 h-2 rounded-full" style="width: 70%"></div>
+              </div>
+              <p class="text-xs text-gray-400 mt-1">目标: {{ tank.targetPh }}</p>
+            </div>
+
+            <!-- Fish Count -->
+            <div class="flex items-center justify-between p-3 bg-cyan-50 rounded-xl">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">🐠</span>
+                <span class="text-sm text-gray-600">鱼类数量</span>
+              </div>
+              <span class="text-lg font-bold text-cyan-600">{{ tank.fishCount }}</span>
+            </div>
+
+            <!-- Water Change Info -->
+            <div class="grid grid-cols-2 gap-3 pt-3 border-t border-gray-100">
+              <div class="text-center p-2 bg-gray-50 rounded-lg">
+                <p class="text-xs text-gray-400">上次换水</p>
+                <p class="text-sm font-medium text-gray-700">{{ tank.lastWaterChange }}</p>
+              </div>
+              <div class="text-center p-2 bg-gray-50 rounded-lg">
+                <p class="text-xs text-gray-400">下次换水</p>
+                <p class="text-sm font-medium text-gray-700">{{ tank.nextWaterChange }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Middle Section -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <!-- Feeding Schedule -->
+    <div class="bg-white rounded-2xl shadow-lg p-6">
+      <div class="flex justify-between items-center mb-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center">
+            <span class="text-xl">🍽️</span>
+          </div>
+          <div>
+            <h2 class="text-lg font-bold text-gray-800">喂食时间表</h2>
+            <p class="text-xs text-gray-500">今日计划</p>
+          </div>
+        </div>
+        <span class="text-sm bg-blue-100 text-blue-600 px-4 py-1 rounded-full font-medium">
+          {{ getCompletedCount() }}/{{ feedingSchedules.length }} 已完成
+        </span>
+      </div>
+
+      <div class="space-y-3">
+        <div *ngFor="let schedule of feedingSchedules" 
+             class="flex items-center justify-between p-4 rounded-xl transition-all duration-200 hover:bg-gray-50"
+             [ngClass]="schedule.completed ? 'bg-green-50 border border-green-100' : 'bg-gray-50'">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center"
+                 [ngClass]="schedule.completed ? 'bg-green-500' : 'bg-gray-300'">
+              <span class="text-white text-sm font-bold">{{ schedule.time.split(':')[0] }}</span>
+            </div>
+            <div>
+              <p class="font-medium text-gray-800" [ngClass]="schedule.completed ? 'line-through text-gray-400' : ''">
+                {{ schedule.time }} - {{ schedule.foodType }}
+              </p>
+              <p class="text-xs text-gray-500">
+                数量: {{ schedule.amount }} | 水箱: {{ getTankName(schedule.tankId) }}
+              </p>
+            </div>
+          </div>
+          <button 
+            class="px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center"
+            [ngClass]="schedule.completed 
+              ? 'bg-gray-200 text-gray-500 hover:bg-gray-300' 
+              : 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:shadow-lg'"
+            (click)="toggleFeeding(schedule)">
+            <span *ngIf="schedule.completed">✓ 已完成</span>
+            <span *ngIf="!schedule.completed">标记完成</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter Status -->
+    <div class="bg-white rounded-2xl shadow-lg p-6">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
+          <span class="text-xl">⚙️</span>
+        </div>
+        <div>
+          <h2 class="text-lg font-bold text-gray-800">过滤器状态</h2>
+          <p class="text-xs text-gray-500">实时监控</p>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div *ngFor="let filter of filters" class="p-4 rounded-xl border transition-all duration-200 hover:shadow-md"
+             [ngClass]="{
+               'border-green-200 bg-green-50': filter.status === 'running',
+               'border-yellow-200 bg-yellow-50': filter.status === 'maintenance',
+               'border-red-200 bg-red-50': filter.status === 'stopped'
+             }">
+          <div class="flex justify-between items-start mb-3">
+            <div>
+              <h3 class="font-semibold text-gray-800">{{ filter.name }}</h3>
+              <p class="text-sm text-gray-500">{{ filter.type }} | {{ getTankName(filter.tankId) }}</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full animate-pulse"
+                    [ngClass]="{
+                      'bg-green-500': filter.status === 'running',
+                      'bg-yellow-500': filter.status === 'maintenance',
+                      'bg-red-500': filter.status === 'stopped'
+                    }"></span>
+              <span class="text-sm font-medium" [ngClass]="getStatusColor(filter.status)">
+                {{ getStatusText(filter.status) }}
+              </span>
+            </div>
+          </div>
+
+          <div *ngIf="filter.status === 'running'" class="mb-3">
+            <div class="flex justify-between items-center mb-1">
+              <span class="text-xs text-gray-500">效率</span>
+              <span class="text-sm font-semibold text-green-600">{{ filter.efficiency }}%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div class="bg-gradient-to-r from-green-400 to-green-600 h-2 rounded-full transition-all duration-500"
+                   [style.width.%]="filter.efficiency"></div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div class="p-2 bg-white bg-opacity-50 rounded-lg">
+              <p class="text-xs text-gray-400">上次维护</p>
+              <p class="font-medium text-gray-700">{{ filter.lastMaintenance }}</p>
+            </div>
+            <div class="p-2 bg-white bg-opacity-50 rounded-lg">
+              <p class="text-xs text-gray-400">下次维护</p>
+              <p class="font-medium text-gray-700">{{ filter.nextMaintenance }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Water Quality Chart Section -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+          <span class="text-xl">📊</span>
+        </div>
+        <div>
+          <h2 class="text-lg font-bold text-gray-800">水质趋势图表</h2>
+          <p class="text-xs text-gray-500">最近10天数据</p>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <span class="text-xs bg-cyan-100 text-cyan-600 px-3 py-1 rounded-full">水温 (°C)</span>
+        <span class="text-xs bg-purple-100 text-purple-600 px-3 py-1 rounded-full">pH 值</span>
+        <span class="text-xs bg-red-100 text-red-600 px-3 py-1 rounded-full">氨氮 (mg/L)</span>
+        <span class="text-xs bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full">亚硝酸盐 (mg/L)</span>
+        <span class="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full">硝酸盐 (mg/L)</span>
+      </div>
+    </div>
+
+    <!-- Visual Chart Representation -->
+    <div class="overflow-x-auto">
+      <div class="min-w-[800px]">
+        <!-- Temperature and pH Chart -->
+        <div class="mb-8">
+          <h3 class="text-sm font-semibold text-gray-600 mb-4">水温与 pH 趋势</h3>
+          <div class="flex items-end justify-between gap-2 h-48 px-4">
+            <div *ngFor="let data of waterQualityHistory" class="flex-1 flex flex-col items-center gap-2">
+              <div class="flex items-end gap-1 h-40">
+                <!-- Temperature Bar -->
+                <div class="w-4 bg-gradient-to-t from-cyan-400 to-orange-400 rounded-t-lg transition-all duration-300 hover:opacity-80"
+                     [style.height.%]="((data.temperature - 24) / 4) * 100"
+                     [matTooltip]="'水温: ' + data.temperature + '°C'">
+                </div>
+                <!-- pH Bar (scaled) -->
+                <div class="w-4 bg-gradient-to-t from-purple-300 to-purple-500 rounded-t-lg transition-all duration-300 hover:opacity-80"
+                     [style.height.%]="((data.ph - 6.5) / 1.5) * 100"
+                     [matTooltip]="'pH: ' + data.ph">
+                </div>
+              </div>
+              <span class="text-xs text-gray-500 font-medium">{{ data.date }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nitrate Chart -->
+        <div class="mb-8">
+          <h3 class="text-sm font-semibold text-gray-600 mb-4">硝酸盐含量趋势 (mg/L)</h3>
+          <div class="flex items-end justify-between gap-2 h-40 px-4">
+            <div *ngFor="let data of waterQualityHistory" class="flex-1 flex flex-col items-center gap-2">
+              <div class="w-8 bg-gradient-to-t from-green-300 to-green-500 rounded-t-lg transition-all duration-300 hover:opacity-80"
+                   [style.height.%]="(data.nitrate / 30) * 100"
+                   [matTooltip]="'硝酸盐: ' + data.nitrate + ' mg/L'">
+              </div>
+              <span class="text-xs text-gray-500 font-medium">{{ data.date }}</span>
+            </div>
+          </div>
+          <div class="flex justify-between px-4 mt-2">
+            <span class="text-xs text-red-500">⚠️ 警告: >40 mg/L</span>
+            <span class="text-xs text-yellow-500">⚠️ 注意: 20-40 mg/L</span>
+            <span class="text-xs text-green-500">✓ 正常: <20 mg/L</span>
+          </div>
+        </div>
+
+        <!-- Ammonia and Nitrite Chart -->
+        <div>
+          <h3 class="text-sm font-semibold text-gray-600 mb-4">氨氮与亚硝酸盐含量 (mg/L)</h3>
+          <div class="flex items-end justify-between gap-2 h-32 px-4">
+            <div *ngFor="let data of waterQualityHistory" class="flex-1 flex flex-col items-center gap-2">
+              <div class="flex items-end gap-1 h-24">
+                <!-- Ammonia Bar -->
+                <div class="w-4 bg-gradient-to-t from-red-200 to-red-500 rounded-t-lg transition-all duration-300 hover:opacity-80"
+                     [style.height.%]="(data.ammonia / 0.1) * 100"
+                     [matTooltip]="'氨氮: ' + data.ammonia + ' mg/L'">
+                </div>
+                <!-- Nitrite Bar -->
+                <div class="w-4 bg-gradient-to-t from-yellow-200 to-yellow-500 rounded-t-lg transition-all duration-300 hover:opacity-80"
+                     [style.height.%]="(data.nitrite / 0.1) * 100"
+                     [matTooltip]="'亚硝酸盐: ' + data.nitrite + ' mg/L'">
+                </div>
+              </div>
+              <span class="text-xs text-gray-500 font-medium">{{ data.date }}</span>
+            </div>
+          </div>
+          <div class="flex justify-between px-4 mt-2">
+            <span class="text-xs text-red-500">⚠️ 氨氮应保持 <0.02 mg/L</span>
+            <span class="text-xs text-yellow-500">⚠️ 亚硝酸盐应保持 <0.02 mg/L</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="bg-white rounded-2xl shadow-lg p-6">
+    <h2 class="text-lg font-bold text-gray-800 mb-4">⚡ 快捷操作</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <button class="p-6 bg-gradient-to-br from-cyan-500 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all duration-300 flex flex-col items-center gap-2">
+        <span class="text-3xl">💧</span>
+        <span class="font-medium">换水记录</span>
+      </button>
+      <button class="p-6 bg-gradient-to-br from-orange-400 to-red-500 text-white rounded-xl hover:shadow-lg transition-all duration-300 flex flex-col items-center gap-2">
+        <span class="text-3xl">📋</span>
+        <span class="font-medium">维护计划</span>
+      </button>
+      <button class="p-6 bg-gradient-to-br from-green-400 to-emerald-600 text-white rounded-xl hover:shadow-lg transition-all duration-300 flex flex-col items-center gap-2">
+        <span class="text-3xl">📝</span>
+        <span class="font-medium">水质检测</span>
+      </button>
+      <button class="p-6 bg-gradient-to-br from-purple-400 to-indigo-600 text-white rounded-xl hover:shadow-lg transition-all duration-300 flex flex-col items-center gap-2">
+        <span class="text-3xl">📊</span>
+        <span class="font-medium">数据报表</span>
+      </button>
+    </div>
+  </div>
+</div>

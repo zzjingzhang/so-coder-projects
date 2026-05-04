@@ -1,0 +1,44 @@
+<div class="simulator-container">
+  <header class="simulator-header">
+    <div class="header-content">
+      <h1 class="title">
+        <span nz-icon nzType="rocket" nzTheme="outline" class="title-icon"></span>
+        开普勒定律可视化模拟器
+      </h1>
+      <p class="subtitle">探索行星运动规律，直观理解开普勒三大定律</p>
+    </div>
+  </header>
+
+  <main class="simulator-main">
+    <div class="layout-container">
+      <div class="left-panel">
+        <app-control-panel></app-control-panel>
+      </div>
+
+      <div class="center-panel">
+        <div class="visualization-wrapper">
+          <div class="visualization-header">
+            <span class="visualization-title">轨道可视化</span>
+            <div class="visualization-status">
+              <span nz-icon nzType="dot-chart" nzTheme="outline" class="status-icon"></span>
+              <span class="status-text">实时渲染</span>
+            </div>
+          </div>
+          <div class="visualization-container">
+            <app-orbit-visualization></app-orbit-visualization>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-panel">
+        <app-data-display></app-data-display>
+      </div>
+    </div>
+  </main>
+
+  <footer class="simulator-footer">
+    <p class="footer-text">
+      本工具用于高中物理教学演示，基于开普勒运动定律和牛顿万有引力定律
+    </p>
+  </footer>
+</div>

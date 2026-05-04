@@ -1,0 +1,118 @@
+:host {
+  display: block;
+}
+
+/* 按钮样式优化 */
+.p-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.p-button .p-button-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.p-button-lg {
+  padding: 1rem 1.5rem;
+  font-size: 1.125rem;
+}
+
+/* 输入框样式 */
+.p-inputtext {
+  width: 100%;
+}
+
+/* 下拉框样式 */
+.p-dropdown {
+  width: 100%;
+}
+
+/* 数字输入框样式 */
+.p-inputnumber {
+  width: 100%;
+}
+
+.p-inputnumber input {
+  width: 100%;
+}
+
+/* 序列显示优化 */
+.sequence-base {
+  transition: all 0.2s ease;
+}
+
+.sequence-base:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 高亮效果 */
+.highlighted-base {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+  }
+}
+
+/* 侧边栏动画 */
+.fixed-sidebar {
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.fixed-sidebar.open {
+  transform: translateX(0);
+}
+
+/* 遮罩层 */
+.overlay {
+  background-color: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(2px);
+}
+
+/* 响应式调整 */
+@media (max-width: 1024px) {
+  .sequence-base {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .sequence-base {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

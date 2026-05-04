@@ -1,0 +1,121 @@
+<div class="data-display">
+  <h2 class="panel-title">数据显示</h2>
+
+  <nz-card class="data-section" nzSize="small" nzTitle="开普勒三大定律">
+    <div class="laws-container">
+      <div *ngFor="let law of keplerLaws" class="law-card">
+        <div class="law-header">
+          <span nz-icon [nzType]="law.icon" nzTheme="outline" class="law-icon"></span>
+          <span class="law-number">第{{ law.number }}定律</span>
+        </div>
+        <div class="law-title">{{ law.title }}</div>
+        <div class="law-description">{{ law.description }}</div>
+      </div>
+    </div>
+  </nz-card>
+
+  <nz-card class="data-section" nzSize="small" nzTitle="轨道数据">
+    <div class="data-grid" *ngIf="orbitData">
+      <div class="data-item">
+        <span class="data-label">半长轴</span>
+        <span class="data-value">{{ formatDistance(orbitData.semiMajorAxis) }}</span>
+      </div>
+      <div class="data-item">
+        <span class="data-label">偏心率</span>
+        <span class="data-value" [style.color]="getEccentricityColor(orbitData.eccentricity)">
+          {{ orbitData.eccentricity.toFixed(4) }}
+        </span>
+      </div>
+      <div class="data-item">
+        <span class="data-label">轨道类型</span>
+        <span class="data-value" [style.color]="getEccentricityColor(orbitData.eccentricity)">
+          {{ getEccentricityLabel(orbitData.eccentricity) }}
+        </span>
+      </div>
+      <div class="data-item">
+        <span class="data-label">轨道周期</span>
+        <span class="data-value">{{ formatTime(orbitData.period) }}</span>
+      </div>
+      <div class="data-item">
+        <span class="data-label">近地点</span>
+        <span class="data-value highlight-red">{{ formatDistance(orbitData.periapsis) }}</span>
+      </div>
+      <div class="data-item">
+        <span class="data-label">远地点</span>
+        <span class="data-value highlight-cyan">{{ formatDistance(orbitData.apoapsis) }}</span>
+      </div>
+      <div class="data-item">
+        <span class="data-label">近地点速度</span>
+        <span class="data-value highlight-red">{{ formatSpeed(orbitData.periapsisSpeed) }}</span>
+      </div>
+      <div class="data-item">
+        <span class="data-label">远地点速度</span>
+        <span class="data-value highlight-cyan">{{ formatSpeed(orbitData.apoapsisSpeed) }}</span>
+      </div>
+      <div class="data-item full-width">
+        <span class="data-label">平均速度</span>
+        <span class="data-value">{{ formatSpeed(orbitData.meanSpeed) }}</span>
+      </div>
+    </div>
+  </nz-card>
+
+  <nz-card class="data-section" nzSize="small" nzTitle="实时卫星状态">
+    <div class="data-grid" *ngIf="satelliteState">
+      <div class="data-item">
+        <span class="data-label">当前位置</span>
+        <span class="data-value">{{ formatDistance(satelliteState.distance) }}</span>
+      </div>
+      <div class="data-item">
+        <span class="data-label">当前速度</span>
+        <span class="data-value highlight-green">{{ formatSpeed(satelliteState.speed) }}</span>
+      </div>
+      <div class="data-item">
+        <span class="data-label">真近点角</span>
+        <span class="data-value">{{ formatAngle(satelliteState.trueAnomaly) }}</span>
+      </div>
+      <div class="data-item">
+        <span class="data-label">模拟时间</span>
+        <span class="data-value">{{ formatTime(satelliteState.time) }}</span>
+      </div>
+    </div>
+  </nz-card>
+
+  <nz-card class="data-section" nzSize="small" nzTitle="面积定律演示">
+    <div class="area-law-container">
+      <div class="area-law-description">
+        {{ getAreaLawDescription() }}
+      </div>
+      <div class="speed-comparison" *ngIf="orbitData">
+        <div class="speed-bar-container">
+          <div class="speed-label speed-label-min">远地点 (最慢)</div>
+          <div class="speed-bar">
+            <div class="speed-bar-track"></div>
+            <div class="speed-bar-fill" [style.width.%]="getSpeedComparison().percentage"></div>
+            <div class="speed-indicator" [style.left.%]="getSpeedComparison().percentage">
+              <div class="indicator-dot"></div>
+            </div>
+          </div>
+          <div class="speed-label speed-label-max">近地点 (最快)</div>
+        </div>
+        <div class="speed-values">
+          <div class="speed-value-min">
+            <span class="label">远地点</span>
+            <span class="value highlight-cyan">{{ orbitData ? formatSpeed(orbitData.apoapsisSpeed) : '-' }}</span>
+          </div>
+          <div class="speed-value-current">
+            <span class="label">当前</span>
+            <span class="value highlight-green">{{ satelliteState ? formatSpeed(satelliteState.speed) : '-' }}</span>
+          </div>
+          <div class="speed-value-max">
+            <span class="label">近地点</span>
+            <span class="value highlight-red">{{ orbitData ? formatSpeed(orbitData.periapsisSpeed) : '-' }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="area-law-note">
+        <span nz-icon nzType="info-circle" nzTheme="outline" class="info-icon"></span>
+        速度变化验证了开普勒第二定律：在相等时间内，卫星与地球的连线扫过的面积相等。
+      </div>
+    </div>
+  </nz-card>
+</div>
