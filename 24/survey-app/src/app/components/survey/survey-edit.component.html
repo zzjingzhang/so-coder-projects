@@ -1,0 +1,195 @@
+<div class="min-h-screen bg-gray-50 p-4 md:p-8">
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-6">
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">
+        {{ isEditMode ? '编辑调查' : '创建新调查' }}
+      </h1>
+      <p class="text-gray-600">
+        定义您的调查问卷（1-10道单选题，每道题2-5个选项）
+      </p>
+    </div>
+
+    <form [formGroup]="surveyForm" (ngSubmit)="onSubmit()">
+      <mat-card class="mb-6">
+        <mat-card-header>
+          <mat-card-title class="flex items-center">
+            <mat-icon class="mr-2 text-primary-500">title</mat-icon>
+            调查基本信息
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="mt-4">
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>调查标题</mat-label>
+            <input matInput formControlName="title" placeholder="请输入调查标题" maxlength="100">
+            <mat-hint align="end">{{ surveyForm.get('title')?.value?.length || 0 }}/100</mat-hint>
+            @if (surveyForm.get('title')?.invalid && surveyForm.get('title')?.touched) {
+              <mat-error>
+                @if (surveyForm.get('title')?.errors?.['required']) { 标题不能为空 }
+                @if (surveyForm.get('title')?.errors?.['maxlength']) { 标题不能超过100个字符 }
+              </mat-error>
+            }
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="mb-4 flex justify-between items-center">
+        <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+          <mat-icon class="mr-2 text-primary-500">question_answer</mat-icon>
+          问题列表
+          <span class="ml-2 text-sm font-normal text-gray-500">
+            ({{ questions.length }}/10 道题)
+          </span>
+        </h2>
+        <button 
+          mat-raised-button 
+          color="primary" 
+          type="button"
+          (click)="addQuestion()"
+          [disabled]="questions.length >= 10"
+          class="flex items-center"
+        >
+          <mat-icon class="mr-1">add</mat-icon>
+          添加问题
+        </button>
+      </div>
+
+      @if (questions.errors?.['minQuestions'] && questions.touched) {
+        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+          至少需要 {{ questions.errors?.['minQuestions'].required }} 道题
+        </div>
+      }
+
+      <div formArrayName="questions">
+        @for (question of questions.controls; let i = $index; track i) {
+          <mat-card class="mb-6 border-l-4 border-blue-400">
+            <mat-card-header class="flex justify-between items-start">
+              <mat-card-title class="text-lg">
+                问题 {{ i + 1 }}
+              </mat-card-title>
+              <button 
+                mat-icon-button 
+                color="warn" 
+                type="button"
+                (click)="removeQuestion(i)"
+                [disabled]="questions.length <= 1"
+                matTooltip="删除问题"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-card-header>
+            <mat-card-content class="mt-4">
+              <div [formGroupName]="i">
+                <mat-form-field appearance="fill" class="w-full mb-4">
+                  <mat-label>问题内容</mat-label>
+                  <textarea 
+                    matInput 
+                    formControlName="text" 
+                    rows="2"
+                    placeholder="请输入问题内容"
+                    maxlength="200"
+                  ></textarea>
+                  <mat-hint align="end">{{ question.get('text')?.value?.length || 0 }}/200</mat-hint>
+                  @if (question.get('text')?.invalid && question.get('text')?.touched) {
+                    <mat-error>
+                      @if (question.get('text')?.errors?.['required']) { 问题内容不能为空 }
+                      @if (question.get('text')?.errors?.['maxlength']) { 问题内容不能超过200个字符 }
+                    </mat-error>
+                  }
+                </mat-form-field>
+
+                <div class="mb-2 flex justify-between items-center">
+                  <h3 class="font-medium text-gray-700 flex items-center">
+                    <mat-icon class="mr-1 text-sm">radio_button_checked</mat-icon>
+                    选项
+                    <span class="ml-2 text-xs font-normal text-gray-500">
+                      ({{ getOptions(i).length }}/5 个选项)
+                    </span>
+                  </h3>
+                  <button 
+                    mat-button 
+                    color="primary" 
+                    type="button"
+                    (click)="addOption(i)"
+                    [disabled]="getOptions(i).length >= 5"
+                    class="flex items-center text-sm"
+                  >
+                    <mat-icon class="mr-1 text-sm">add_circle</mat-icon>
+                    添加选项
+                  </button>
+                </div>
+
+                @if (getOptions(i).errors?.['minOptions'] && getOptions(i).touched) {
+                  <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-lg mb-4 text-sm">
+                    每道题至少需要 {{ getOptions(i).errors?.['minOptions'].required }} 个选项
+                  </div>
+                }
+
+                <div formArrayName="options" class="space-y-3">
+                  @for (option of getOptions(i).controls; let j = $index; track j) {
+                    <div [formGroupName]="j" class="flex items-center gap-3">
+                      <mat-icon class="text-gray-400">radio_button_unchecked</mat-icon>
+                      <mat-form-field appearance="fill" class="flex-1">
+                        <mat-label>选项 {{ j + 1 }}</mat-label>
+                        <input 
+                          matInput 
+                          formControlName="text" 
+                          placeholder="请输入选项内容"
+                          maxlength="100"
+                        >
+                        @if (option.get('text')?.invalid && option.get('text')?.touched) {
+                          <mat-error>选项内容不能为空</mat-error>
+                        }
+                      </mat-form-field>
+                      <button 
+                        mat-icon-button 
+                        color="warn" 
+                        type="button"
+                        (click)="removeOption(i, j)"
+                        [disabled]="getOptions(i).length <= 2"
+                        matTooltip="删除选项"
+                      >
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </div>
+                  }
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+
+      @if (errorMessage) {
+        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 flex items-center">
+          <mat-icon class="mr-2">error</mat-icon>
+          <span>{{ errorMessage }}</span>
+        </div>
+      }
+
+      <mat-card>
+        <mat-card-content class="flex justify-end gap-4 pt-4">
+          <button 
+            mat-button 
+            type="button" 
+            (click)="onCancel()"
+            class="px-6 py-2"
+          >
+            取消
+          </button>
+          <button 
+            mat-raised-button 
+            color="primary" 
+            type="submit"
+            [disabled]="surveyForm.invalid || isLoading"
+            class="px-8 py-2"
+          >
+            @if (isLoading) {
+              <mat-spinner diameter="20" class="mr-2"></mat-spinner>
+            }
+            {{ isLoading ? '保存中...' : (isEditMode ? '保存修改' : '保存调查') }}
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,176 @@
+<div class="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 flex flex-col items-center justify-center p-4">
+  <h1 class="text-4xl md:text-5xl font-bold text-white mb-2 text-center">3D 立方体旋转</h1>
+  <p class="text-gray-300 mb-8 text-center">点击按钮或拖动滑块来控制立方体的旋转</p>
+
+  <div class="perspective-1000 mb-12">
+    <div class="cube-container" [ngStyle]="getCubeStyle()">
+      <div class="cube-face front">
+        <span>前面</span>
+      </div>
+      <div class="cube-face back">
+        <span>后面</span>
+      </div>
+      <div class="cube-face right">
+        <span>右面</span>
+      </div>
+      <div class="cube-face left">
+        <span>左面</span>
+      </div>
+      <div class="cube-face top">
+        <span>上面</span>
+      </div>
+      <div class="cube-face bottom">
+        <span>下面</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 w-full max-w-2xl shadow-2xl">
+    <div class="mb-6">
+      <h2 class="text-white text-xl font-semibold mb-4">自动旋转</h2>
+      <div class="flex flex-wrap gap-4 items-center">
+        <button 
+          mat-raised-button 
+          [color]="isAutoRotating() ? 'warn' : 'primary'"
+          (click)="toggleAutoRotation()"
+          class="flex items-center justify-center h-12"
+        >
+          <mat-icon class="mr-2">{{ isAutoRotating() ? 'pause' : 'play_arrow' }}</mat-icon>
+          {{ isAutoRotating() ? '停止旋转' : '开始旋转' }}
+        </button>
+        
+        <div class="flex-1 min-w-[200px]">
+          <label class="text-white text-sm block mb-2">旋转速度: {{ rotationSpeed() }}</label>
+          <mat-slider 
+            min="0.5" 
+            max="5" 
+            step="0.5" 
+            discrete 
+            showTickMarks
+            [(ngModel)]="rotationSpeed"
+            class="w-full"
+          >
+            <input matSliderThumb>
+          </mat-slider>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <h2 class="text-white text-xl font-semibold mb-4">手动旋转</h2>
+      
+      <div class="grid grid-cols-3 gap-3 max-w-xs mx-auto mb-6">
+        <div></div>
+        <button 
+          mat-raised-button 
+          color="accent"
+          (click)="rotate('up')"
+          class="flex items-center justify-center h-12"
+        >
+          <mat-icon>arrow_upward</mat-icon>
+        </button>
+        <div></div>
+        
+        <button 
+          mat-raised-button 
+          color="accent"
+          (click)="rotate('left')"
+          class="flex items-center justify-center h-12"
+        >
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <button 
+          mat-raised-button 
+          color="primary"
+          (click)="rotate('flip')"
+          class="flex items-center justify-center h-12"
+        >
+          翻转
+        </button>
+        <button 
+          mat-raised-button 
+          color="accent"
+          (click)="rotate('right')"
+          class="flex items-center justify-center h-12"
+        >
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+        
+        <div></div>
+        <button 
+          mat-raised-button 
+          color="accent"
+          (click)="rotate('down')"
+          class="flex items-center justify-center h-12"
+        >
+          <mat-icon>arrow_downward</mat-icon>
+        </button>
+        <div></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="text-white text-sm block mb-2">X 轴旋转: {{ rotateX() }}°</label>
+          <mat-slider 
+            min="0" 
+            max="360" 
+            step="1" 
+            discrete 
+            showTickMarks
+            [(ngModel)]="rotateX"
+            class="w-full"
+          >
+            <input matSliderThumb>
+          </mat-slider>
+        </div>
+        
+        <div>
+          <label class="text-white text-sm block mb-2">Y 轴旋转: {{ rotateY() }}°</label>
+          <mat-slider 
+            min="0" 
+            max="360" 
+            step="1" 
+            discrete 
+            showTickMarks
+            [(ngModel)]="rotateY"
+            class="w-full"
+          >
+            <input matSliderThumb>
+          </mat-slider>
+        </div>
+        
+        <div>
+          <label class="text-white text-sm block mb-2">Z 轴旋转: {{ rotateZ() }}°</label>
+          <mat-slider 
+            min="0" 
+            max="360" 
+            step="1" 
+            discrete 
+            showTickMarks
+            [(ngModel)]="rotateZ"
+            class="w-full"
+          >
+            <input matSliderThumb>
+          </mat-slider>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-center">
+      <button 
+        mat-raised-button 
+        color="warn"
+        (click)="reset()"
+        class="flex items-center justify-center h-12 px-8"
+      >
+        <mat-icon class="mr-2">refresh</mat-icon>
+        重置
+      </button>
+    </div>
+  </div>
+
+  <div class="mt-8 text-center text-gray-400 text-sm">
+    <p>当前角度 | X: {{ rotateX() }}° | Y: {{ rotateY() }}° | Z: {{ rotateZ() }}°</p>
+    <p class="mt-2">状态: {{ isAutoRotating() ? '自动旋转中' : '手动模式' }} | 速度: {{ rotationSpeed() }}</p>
+  </div>
+</div>

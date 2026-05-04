@@ -1,0 +1,20 @@
+mat-card {
+  border-radius: 12px;
+}
+
+::ng-deep .mat-mdc-card {
+  border-radius: 12px !important;
+}
+
+::ng-deep .mat-mdc-table {
+  width: 100%;
+}
+
+::ng-deep .mat-mdc-header-cell,
+::ng-deep .mat-mdc-cell {
+  padding: 12px 16px;
+}
+
+::ng-deep .mat-mdc-header-cell {
+  font-weight: 500;
+}

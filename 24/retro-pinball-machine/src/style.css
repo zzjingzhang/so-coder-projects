@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --retro-pink: #ff00ff;
+  --retro-blue: #00ffff;
+  --retro-green: #00ff00;
+  --retro-yellow: #ffff00;
+  --retro-orange: #ff6600;
+  --retro-red: #ff0000;
+  --retro-purple: #9900ff;
+  --dark-bg: #0a0a0a;
+  --border-glow: rgba(255, 255, 255, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--dark-bg);
+  font-family: 'Press Start 2P', cursive, system-ui, sans-serif;
+  overflow: hidden;
+}
+
+#app {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #0a0a0a 0%, #1a1a2e 100%);
+}
+
+@font-face {
+  font-family: 'Press Start 2P';
+  src: local('Press Start 2P');
+}
+
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow: 
+      0 0 4px #fff,
+      0 0 11px #fff,
+      0 0 19px #fff,
+      0 0 40px var(--retro-pink),
+      0 0 80px var(--retro-pink),
+      0 0 90px var(--retro-pink),
+      0 0 100px var(--retro-pink),
+      0 0 150px var(--retro-pink);
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+  }
+}
+
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 5px var(--retro-blue),
+      0 0 10px var(--retro-blue),
+      0 0 20px var(--retro-blue),
+      0 0 40px var(--retro-blue);
+  }
+  50% {
+    box-shadow: 
+      0 0 10px var(--retro-blue),
+      0 0 20px var(--retro-blue),
+      0 0 40px var(--retro-blue),
+      0 0 80px var(--retro-blue);
+  }
+}
+
+@keyframes bumperGlow {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes flash {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.pinball-canvas {
+  border: 4px solid var(--retro-pink);
+  border-radius: 10px;
+  box-shadow: 
+    0 0 10px var(--retro-pink),
+    0 0 20px var(--retro-pink),
+    inset 0 0 20px rgba(255, 0, 255, 0.1);
+}
+
+.retro-button {
+  background: linear-gradient(180deg, #2a2a4a 0%, #1a1a2e 100%);
+  border: 2px solid var(--retro-blue);
+  color: var(--retro-blue);
+  font-family: 'Press Start 2P', cursive;
+  font-size: 12px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.retro-button:hover {
+  background: linear-gradient(180deg, #3a3a5a 0%, #2a2a4e 100%);
+  box-shadow: 
+    0 0 10px var(--retro-blue),
+    0 0 20px var(--retro-blue),
+    inset 0 0 10px rgba(0, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.retro-button:active {
+  transform: translateY(0);
+}
+
+.score-display {
+  font-family: 'Press Start 2P', cursive;
+  color: var(--retro-yellow);
+  text-shadow: 
+    0 0 5px var(--retro-yellow),
+    0 0 10px var(--retro-yellow),
+    0 0 20px var(--retro-yellow);
+  font-size: 24px;
+  animation: flicker 3s infinite;
+}
+
+.multiplier-display {
+  font-family: 'Press Start 2P', cursive;
+  color: var(--retro-green);
+  text-shadow: 
+    0 0 5px var(--retro-green),
+    0 0 10px var(--retro-green),
+    0 0 20px var(--retro-green);
+  font-size: 18px;
+}
+
+.control-label {
+  font-family: 'Press Start 2P', cursive;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}

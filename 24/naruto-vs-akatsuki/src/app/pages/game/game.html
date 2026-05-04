@@ -1,0 +1,189 @@
+<div class="min-h-screen bg-gradient-to-b from-sky-400 via-green-300 to-green-500 flex flex-col">
+  <!-- 顶部信息栏 -->
+  <div class="bg-gradient-to-r from-naruto-orange to-red-500 p-4 shadow-lg">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-6">
+        <div class="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2">
+          <span class="text-white font-bold text-lg">💧 查克拉: {{ chakra }}</span>
+        </div>
+        <div class="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2">
+          <span class="text-white font-bold text-lg">⭐ 分数: {{ score }}</span>
+        </div>
+        <div class="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2">
+          <span class="text-white font-bold text-lg">🌊 波次: {{ wave }}/5</span>
+        </div>
+      </div>
+      
+      <div class="flex items-center space-x-3">
+        <button 
+          nz-button 
+          nzSize="large"
+          class="bg-white/20 hover:bg-white/30 text-white border-none"
+          (click)="togglePause()"
+        >
+          {{ isPaused ? '▶️ 继续' : '⏸️ 暂停' }}
+        </button>
+        <button 
+          nz-button 
+          nzSize="large"
+          class="bg-white/20 hover:bg-white/30 text-white border-none"
+          (click)="backToMenu()"
+        >
+          🏠 菜单
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 暂停遮罩 -->
+  <div *ngIf="isPaused && !isGameOver" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-8 text-center shadow-2xl">
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">⏸️ 游戏暂停</h2>
+      <button 
+        nz-button 
+        nzType="primary" 
+        nzSize="large"
+        class="bg-gradient-to-r from-green-500 to-blue-500 h-16 text-xl font-bold border-none"
+        (click)="togglePause()"
+      >
+        ▶️ 继续游戏
+      </button>
+    </div>
+  </div>
+
+  <!-- 游戏结束遮罩 -->
+  <div *ngIf="isGameOver" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-8 text-center shadow-2xl">
+      <h2 class="text-5xl font-bold mb-4" [ngClass]="isVictory ? 'text-green-600' : 'text-red-600'">
+        {{ isVictory ? '🎉 胜利！' : '💀 失败！' }}
+      </h2>
+      <p class="text-2xl text-gray-600 mb-2">最终分数: {{ score }}</p>
+      <p class="text-xl text-gray-500 mb-6">到达波次: {{ wave }}</p>
+    </div>
+  </div>
+
+  <!-- 游戏主区域 -->
+  <div class="flex-1 flex flex-col p-4">
+    <div class="max-w-6xl mx-auto w-full flex-1 flex flex-col">
+      <!-- 游戏网格 -->
+      <div class="flex-1 bg-gradient-to-b from-green-400 to-green-600 rounded-3xl p-4 shadow-2xl mb-4 overflow-hidden">
+        <div class="h-full flex flex-col">
+          <!-- 行 -->
+          <div 
+            *ngFor="let row of [].constructor(gridRows); let rowIndex = index" 
+            class="flex-1 flex border-b-2 border-green-700/30 last:border-b-0"
+          >
+            <!-- 左侧边界 -->
+            <div class="w-16 bg-gradient-to-r from-red-600 to-red-500 flex items-center justify-center">
+              <span class="text-white font-bold text-xs">🏠</span>
+            </div>
+
+            <!-- 游戏格子 -->
+            <div 
+              *ngFor="let col of [].constructor(gridCols); let colIndex = index"
+              class="flex-1 border-r border-green-700/30 last:border-r-0 game-cell relative flex items-center justify-center cursor-pointer"
+              [ngClass]="{
+                'bg-green-300/50': (rowIndex + colIndex) % 2 === 0,
+                'bg-green-500/50': (rowIndex + colIndex) % 2 !== 0,
+                'ring-4 ring-yellow-400': canPlaceNinja(rowIndex, colIndex)
+              }"
+              (click)="placeNinja(rowIndex, colIndex)"
+            >
+              <!-- 忍者 -->
+              <ng-container *ngIf="getNinjaAt(rowIndex, colIndex) as ninja">
+                <div 
+                  class="absolute inset-1 flex flex-col items-center justify-center spawn-effect"
+                  [ngClass]="{ 'attack-effect': ninja.isAttacking }"
+                >
+                  <div class="text-3xl md:text-4xl">{{ ninja.emoji }}</div>
+                  <div class="w-full mt-1">
+                    <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                      <div 
+                        class="h-full health-bar"
+                        [ngClass]="getHealthColor(ninja.health, ninja.maxHealth)"
+                        [style.width.%]="getHealthPercentage(ninja.health, ninja.maxHealth)"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- 敌人 -->
+              <ng-container *ngFor="let enemy of getEnemiesAt(rowIndex)">
+                <div 
+                  class="absolute flex flex-col items-center justify-center"
+                  [style.left.%]="(enemy.col / gridCols) * 100"
+                  [style.transform]="'translateX(-50%)'"
+                >
+                  <div 
+                    class="text-3xl md:text-4xl enemy"
+                    [ngClass]="{ 'hurt-effect': enemy.isEating }"
+                  >
+                    {{ enemy.emoji }}
+                  </div>
+                  <div class="w-12 mt-1">
+                    <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                      <div 
+                        class="h-full health-bar bg-red-500"
+                        [style.width.%]="getHealthPercentage(enemy.health, enemy.maxHealth)"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- 弹幕 -->
+              <ng-container *ngFor="let proj of getProjectilesAt(rowIndex)">
+                <div 
+                  class="absolute text-2xl md:text-3xl"
+                  [style.left.%]="(proj.col / gridCols) * 100"
+                  [style.transform]="'translateX(-50%)'"
+                >
+                  {{ proj.emoji }}
+                </div>
+              </ng-container>
+            </div>
+
+            <!-- 右侧边界 -->
+            <div class="w-8 bg-gradient-to-l from-red-600/30"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 忍者选择栏 -->
+      <div class="bg-gradient-to-r from-naruto-blue to-purple-600 rounded-3xl p-4 shadow-2xl">
+        <h3 class="text-white font-bold text-lg mb-3 text-center">🥷 选择忍者</h3>
+        <div class="flex flex-wrap justify-center gap-3">
+          <button 
+          *ngFor="let ninjaType of ninjaTypes"
+          class="ninja-card bg-white rounded-2xl p-3 w-24 md:w-28 flex flex-col items-center"
+          [ngClass]="{
+            'ring-4 ring-yellow-400': selectedNinja?.name === ninjaType.name,
+            'opacity-50': chakra < ninjaType.cost
+          }"
+          [disabled]="chakra < ninjaType.cost"
+          (click)="selectNinja(ninjaType)"
+          nz-tooltip
+          [nzTooltipTitle]="ninjaType.name + ' - ' + ninjaType.specialAbility"
+          nzTooltipPlacement="top"
+        >
+          <div class="text-3xl md:text-4xl mb-1">{{ ninjaType.emoji }}</div>
+          <div class="text-xs font-bold text-gray-800">{{ ninjaType.name }}</div>
+          <div class="flex items-center text-xs text-blue-600 font-semibold mt-1">
+            💧 {{ ninjaType.cost }}
+          </div>
+          <div class="flex items-center text-xs text-red-600 font-semibold">
+            ❤️ {{ ninjaType.health }}
+          </div>
+        </button>
+      </div>
+
+      <!-- 提示信息 -->
+      <div *ngIf="selectedNinja" class="mt-3 text-center">
+        <span class="bg-yellow-400 text-gray-800 px-4 py-2 rounded-full font-bold text-sm">
+          已选择: {{ selectedNinja.emoji }} {{ selectedNinja.name }} - 点击游戏格子放置
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

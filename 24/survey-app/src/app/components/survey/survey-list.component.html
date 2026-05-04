@@ -1,0 +1,113 @@
+<div class="min-h-screen bg-gray-50 p-4 md:p-8">
+  <div class="max-w-6xl mx-auto">
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-800 mb-2 flex items-center">
+        <mat-icon class="mr-3 text-primary-500">{{ getStatusIcon() }}</mat-icon>
+        {{ getPageTitle() }}
+      </h1>
+      <p class="text-gray-600">{{ getPageSubtitle() }}</p>
+    </div>
+
+    @if (isLoading) {
+      <div class="flex justify-center items-center py-20">
+        <mat-spinner diameter="48"></mat-spinner>
+      </div>
+    } @else if (surveys.length === 0) {
+      <mat-card>
+        <mat-card-content class="flex flex-col items-center justify-center py-16">
+          <mat-icon class="text-8xl text-gray-300 mb-4">
+            {{ listType === 'open' ? 'inbox' : 'bar_chart' }}
+          </mat-icon>
+          <h3 class="text-xl font-semibold text-gray-600 mb-2">
+            暂无{{ listType === 'open' ? '开放' : '已关闭' }}调查
+          </h3>
+          <p class="text-gray-500 text-center max-w-md">
+            @if (listType === 'open') {
+              @if (isCoordinator()) {
+                目前没有开放的调查。您可以创建新调查并发布它。
+              } @else {
+                目前没有开放的调查可供参与。请稍后再试或联系管理员。
+              }
+            } @else {
+              目前没有已关闭的调查结果可查看。
+            }
+          </p>
+          @if (isCoordinator() && listType === 'open') {
+            <button mat-raised-button color="primary" class="mt-6" routerLink="/survey/create">
+              <mat-icon class="mr-2">add</mat-icon>
+              创建新调查
+            </button>
+          }
+        </mat-card-content>
+      </mat-card>
+    } @else {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (survey of surveys; track survey.id) {
+          <mat-card class="hover:shadow-lg transition-shadow">
+            <mat-card-header>
+              <div class="flex justify-between items-start w-full">
+                <mat-card-title class="text-lg font-semibold">{{ survey.title }}</mat-card-title>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ getStatusBadgeClass() }}">
+                  <mat-icon class="text-sm mr-1">{{ getStatusIcon() }}</mat-icon>
+                  {{ listType === 'open' ? '开放中' : '已关闭' }}
+                </span>
+              </div>
+            </mat-card-header>
+            
+            <mat-card-content>
+              <div class="mt-4 space-y-2 text-sm text-gray-600">
+                <div class="flex items-center">
+                  <mat-icon class="text-gray-400 mr-2 text-sm">question_answer</mat-icon>
+                  <span>{{ survey.questions.length }} 个问题</span>
+                </div>
+                <div class="flex items-center">
+                  <mat-icon class="text-gray-400 mr-2 text-sm">schedule</mat-icon>
+                  <span>更新于 {{ survey.updatedAt | date:'yyyy-MM-dd HH:mm' }}</span>
+                </div>
+                
+                @if (listType === 'open' && isRespondent() && hasCompletedSurvey(survey.id)) {
+                  <div class="mt-3 flex items-center text-green-600">
+                    <mat-icon class="mr-1 text-sm">check_circle</mat-icon>
+                    <span class="text-sm font-medium">您已完成此调查</span>
+                  </div>
+                }
+              </div>
+            </mat-card-content>
+            
+            <mat-card-actions class="justify-end">
+              @if (listType === 'open') {
+                @if (isCoordinator()) {
+                  <button mat-button color="primary" (click)="manageSurvey(survey.id)">
+                    管理
+                  </button>
+                } @else {
+                  <button 
+                    mat-raised-button 
+                    color="primary"
+                    (click)="takeSurvey(survey.id)"
+                    [disabled]="hasCompletedSurvey(survey.id)"
+                  >
+                    <mat-icon class="mr-1">edit</mat-icon>
+                    {{ hasCompletedSurvey(survey.id) ? '已完成' : '参与调查' }}
+                  </button>
+                }
+              } @else {
+                <button mat-raised-button color="primary" (click)="viewResults(survey.id)">
+                  <mat-icon class="mr-1">bar_chart</mat-icon>
+                  查看结果
+                </button>
+              }
+            </mat-card-actions>
+          </mat-card>
+        }
+      </div>
+    }
+
+    <div class="mt-8">
+      <button mat-button routerLink="/dashboard" class="flex items-center">
+        <mat-icon class="mr-1">arrow_back</mat-icon>
+        返回仪表板
+      </button>
+    </div>
+  </div>
+</div>

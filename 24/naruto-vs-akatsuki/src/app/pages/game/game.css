@@ -1,0 +1,69 @@
+.ninja-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.ninja-card:hover:not(.opacity-50) {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.ninja-card:active:not(.opacity-50) {
+  transform: translateY(0);
+}
+
+.game-cell {
+  position: relative;
+  min-height: 60px;
+}
+
+@media (min-width: 768px) {
+  .game-cell {
+    min-height: 80px;
+  }
+}
+
+.spawn-effect {
+  animation: spawnIn 0.5s ease-out;
+}
+
+@keyframes spawnIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.attack-effect {
+  animation: attackFlash 0.2s ease-out;
+}
+
+@keyframes attackFlash {
+  0% { filter: brightness(1); }
+  50% { filter: brightness(2); }
+  100% { filter: brightness(1); }
+}
+
+.hurt-effect {
+  animation: hurtShake 0.3s ease-out;
+}
+
+@keyframes hurtShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+.enemy {
+  animation: enemyWalk 0.5s infinite alternate;
+}
+
+@keyframes enemyWalk {
+  from { transform: translateY(0); }
+  to { transform: translateY(-5px); }
+}

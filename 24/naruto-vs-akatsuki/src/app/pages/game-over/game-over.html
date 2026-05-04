@@ -1,0 +1,84 @@
+<div class="min-h-screen flex items-center justify-center p-4" 
+  [ngClass]="isVictory ? 'bg-gradient-to-b from-yellow-400 via-orange-500 to-red-500' : 'bg-gradient-to-b from-gray-700 via-gray-800 to-gray-900'">
+  
+  <div class="bg-white/95 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl max-w-lg w-full text-center">
+    <!-- 结果图标 -->
+    <div class="text-8xl mb-6 animate-bounce-slow">
+      {{ isVictory ? '🏆' : '💀' }}
+    </div>
+
+    <!-- 结果标题 -->
+    <h1 
+      class="text-5xl font-bold mb-4"
+      [ngClass]="isVictory ? 'text-green-600' : 'text-red-600'"
+    >
+      {{ isVictory ? '胜利！' : '失败！' }}
+    </h1>
+
+    <!-- 结果描述 -->
+    <p class="text-xl text-gray-600 mb-8">
+      {{ isVictory 
+        ? '🎉 恭喜你成功保卫了忍者村！晓组织已被击退！' 
+        : '😢 忍者村被晓组织攻破了...不要放弃，再试一次！' 
+      }}
+    </p>
+
+    <!-- 统计信息 -->
+    <div class="grid grid-cols-2 gap-4 mb-8">
+      <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-4">
+        <div class="text-3xl mb-2">⭐</div>
+        <div class="text-2xl font-bold text-blue-600">{{ finalScore }}</div>
+        <div class="text-sm text-gray-600">最终分数</div>
+      </div>
+      <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-4">
+        <div class="text-3xl mb-2">🌊</div>
+        <div class="text-2xl font-bold text-purple-600">{{ waveReached }}/5</div>
+        <div class="text-sm text-gray-600">到达波次</div>
+      </div>
+    </div>
+
+    <!-- 评价 -->
+    <div class="mb-8 p-4 rounded-2xl"
+      [ngClass]="{
+        'bg-yellow-100': isVictory && finalScore >= 500,
+        'bg-green-100': isVictory && finalScore < 500,
+        'bg-red-100': !isVictory
+      }"
+    >
+      <p class="text-lg font-bold"
+        [ngClass]="{
+          'text-yellow-700': isVictory && finalScore >= 500,
+          'text-green-700': isVictory && finalScore < 500,
+          'text-red-700': !isVictory
+        }"
+      >
+        {{ isVictory 
+          ? (finalScore >= 500 ? '🌟 传说级忍者！你的实力令人敬畏！' : '👍 出色的表现！继续努力！')
+          : '💪 不要气馁！失败是成功之母！'
+        }}
+      </p>
+    </div>
+
+    <!-- 按钮 -->
+    <div class="space-y-4">
+      <button 
+        nz-button 
+        nzType="primary" 
+        nzSize="large"
+        class="w-full h-16 text-xl font-bold bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 border-none shadow-lg transform hover:scale-105 transition-all"
+        (click)="restartGame()"
+      >
+        🔄 再来一局
+      </button>
+
+      <button 
+        nz-button 
+        nzSize="large"
+        class="w-full h-16 text-xl font-bold bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white border-none shadow-lg transform hover:scale-105 transition-all"
+        (click)="backToMenu()"
+      >
+        🏠 返回主菜单
+      </button>
+    </div>
+  </div>
+</div>

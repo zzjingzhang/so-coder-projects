@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.game-container {
+  background: linear-gradient(180deg, #87CEEB 0%, #98FB98 100%);
+}
+
+.ninja-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.ninja-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.game-cell {
+  transition: background-color 0.2s ease;
+}
+
+.game-cell:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.enemy {
+  animation: enemyWalk 0.5s infinite alternate;
+}
+
+@keyframes enemyWalk {
+  from { transform: translateY(0); }
+  to { transform: translateY(-3px); }
+}
+
+.projectile {
+  animation: projectileMove 0.1s linear;
+}
+
+@keyframes projectileMove {
+  from { transform: translateX(0); }
+  to { transform: translateX(10px); }
+}
+
+.health-bar {
+  transition: width 0.3s ease;
+}
+
+.spawn-effect {
+  animation: spawnIn 0.5s ease-out;
+}
+
+@keyframes spawnIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.attack-effect {
+  animation: attackFlash 0.2s ease-out;
+}
+
+@keyframes attackFlash {
+  0% { filter: brightness(1); }
+  50% { filter: brightness(2); }
+  100% { filter: brightness(1); }
+}
+
+.hurt-effect {
+  animation: hurtShake 0.3s ease-out;
+}
+
+@keyframes hurtShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}

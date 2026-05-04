@@ -1,0 +1,15 @@
+mat-card {
+  border-radius: 12px;
+}
+
+::ng-deep .mat-mdc-card {
+  border-radius: 12px !important;
+}
+
+button[mat-raised-button], button[mat-button] {
+  border-radius: 8px;
+}
+
+::ng-deep .mat-mdc-radio-button {
+  height: 24px;
+}

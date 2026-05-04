@@ -1,0 +1,15 @@
+mat-card {
+  border-radius: 12px;
+}
+
+::ng-deep .mat-mdc-card {
+  border-radius: 12px !important;
+}
+
+button[mat-raised-button] {
+  border-radius: 8px;
+}
+
+button[mat-raised-button].flex {
+  min-height: 120px;
+}

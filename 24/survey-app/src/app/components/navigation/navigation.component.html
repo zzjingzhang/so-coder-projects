@@ -1,0 +1,99 @@
+<mat-toolbar color="primary" class="shadow-md">
+  <button 
+    mat-icon-button 
+    (click)="toggleMenu()"
+    class="md:hidden"
+  >
+    <mat-icon>{{ isMenuOpen ? 'close' : 'menu' }}</mat-icon>
+  </button>
+  
+  <span class="text-xl font-bold cursor-pointer" routerLink="/dashboard">
+    <mat-icon class="mr-2">poll</mat-icon>
+    调查管理系统
+  </span>
+  
+  <span class="flex-1"></span>
+  
+  <div class="hidden md:flex items-center space-x-2">
+    @if (currentUser) {
+      <button mat-button routerLink="/dashboard" routerLinkActive="active">
+        <mat-icon class="mr-1">dashboard</mat-icon>
+        仪表板
+      </button>
+      
+      @if (isCoordinator()) {
+        <button mat-button routerLink="/survey/create" routerLinkActive="active">
+          <mat-icon class="mr-1">add_circle</mat-icon>
+          创建调查
+        </button>
+      }
+      
+      <button mat-button routerLink="/surveys/open" routerLinkActive="active">
+        <mat-icon class="mr-1">list</mat-icon>
+        开放调查
+      </button>
+      
+      <button mat-button routerLink="/surveys/closed" routerLinkActive="active">
+        <mat-icon class="mr-1">bar_chart</mat-icon>
+        调查结果
+      </button>
+      
+      <mat-divider vertical class="mx-2"></mat-divider>
+      
+      <span class="text-sm mr-2">
+        <mat-icon class="mr-1 align-middle">person</mat-icon>
+        {{ currentUser.username }}
+        <span class="ml-1 text-xs bg-white/20 px-2 py-0.5 rounded">
+          {{ isCoordinator() ? '管理员' : '受访者' }}
+        </span>
+      </span>
+      
+      <button mat-raised-button color="warn" (click)="logout()" class="ml-2">
+        <mat-icon class="mr-1">logout</mat-icon>
+        退出
+      </button>
+    } @else {
+      <button mat-button routerLink="/login">
+        <mat-icon class="mr-1">login</mat-icon>
+        登录
+      </button>
+      <button mat-raised-button color="accent" routerLink="/register">
+        <mat-icon class="mr-1">person_add</mat-icon>
+        注册
+      </button>
+    }
+  </div>
+</mat-toolbar>
+
+@if (isMenuOpen && currentUser) {
+  <mat-nav-list class="md:hidden bg-white shadow-lg">
+    <a mat-list-item routerLink="/dashboard" (click)="toggleMenu()">
+      <mat-icon matListItemIcon>dashboard</mat-icon>
+      <span matListItemTitle>仪表板</span>
+    </a>
+    
+    @if (isCoordinator()) {
+      <a mat-list-item routerLink="/survey/create" (click)="toggleMenu()">
+        <mat-icon matListItemIcon>add_circle</mat-icon>
+        <span matListItemTitle>创建调查</span>
+      </a>
+    }
+    
+    <a mat-list-item routerLink="/surveys/open" (click)="toggleMenu()">
+      <mat-icon matListItemIcon>list</mat-icon>
+      <span matListItemTitle>开放调查</span>
+    </a>
+    
+    <a mat-list-item routerLink="/surveys/closed" (click)="toggleMenu()">
+      <mat-icon matListItemIcon>bar_chart</mat-icon>
+      <span matListItemTitle>调查结果</span>
+    </a>
+    
+    <mat-divider></mat-divider>
+    
+    <a mat-list-item (click)="logout()">
+      <mat-icon matListItemIcon color="warn">logout</mat-icon>
+      <span matListItemTitle class="text-warn-500">退出登录</span>
+    </a>
+  </mat-nav-list>
+}

@@ -1,0 +1,67 @@
+<div class="min-h-screen bg-gradient-to-b from-orange-400 via-red-500 to-purple-600 flex flex-col items-center justify-center p-4">
+  <div class="text-center mb-8">
+    <h1 class="text-6xl font-bold text-white mb-4 drop-shadow-lg animate-pulse-slow">
+      🍥 {{ gameTitle }} 🍥
+    </h1>
+    <p class="text-2xl text-yellow-200 font-semibold">{{ gameSubtitle }}</p>
+  </div>
+
+  <div class="bg-white/90 backdrop-blur-md rounded-3xl p-8 shadow-2xl max-w-lg w-full">
+    <div class="flex justify-center mb-8">
+      <div class="text-8xl animate-bounce-slow">🍥</div>
+    </div>
+
+    <div class="space-y-4">
+      <button 
+        nz-button 
+        nzType="primary" 
+        nzSize="large"
+        class="w-full h-16 text-xl font-bold bg-gradient-to-r from-naruto-orange to-red-500 hover:from-orange-600 hover:to-red-600 border-none shadow-lg transform hover:scale-105 transition-all"
+        (click)="startGame()"
+      >
+        🎮 开始游戏
+      </button>
+
+      <button 
+        nz-button 
+        nzSize="large"
+        class="w-full h-16 text-xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white border-none shadow-lg transform hover:scale-105 transition-all"
+        (click)="toggleInstructions()"
+      >
+        📖 游戏说明
+      </button>
+    </div>
+
+    <div *ngIf="showInstructions" class="mt-6 p-4 bg-yellow-50 rounded-xl border-2 border-yellow-300">
+      <h3 class="text-lg font-bold text-yellow-800 mb-3">🎯 游戏玩法</h3>
+      <ul class="space-y-2 text-sm text-gray-700">
+        <li>• 点击下方的忍者卡片选择忍者</li>
+        <li>• 点击游戏格子放置忍者</li>
+        <li>• 忍者会自动攻击同一行的敌人</li>
+        <li>• 收集查克拉（💧）来放置更多忍者</li>
+        <li>• 不要让敌人到达左侧边界！</li>
+      </ul>
+      
+      <h3 class="text-lg font-bold text-yellow-800 mb-3 mt-4">🥷 忍者介绍</h3>
+      <ul class="space-y-2 text-sm text-gray-700">
+        <li>• 🍥 鸣人 - 发射螺旋丸攻击敌人</li>
+        <li>• 🔥 佐助 - 发射火球术攻击</li>
+        <li>• 💎 卡卡西 - 写轮眼，高伤害攻击</li>
+        <li>• 🌸 小樱 - 医疗忍者，恢复附近忍者</li>
+        <li>• 🦊 九尾查克拉 - 自动产生查克拉</li>
+      </ul>
+
+      <h3 class="text-lg font-bold text-red-800 mb-3 mt-4">👿 敌人介绍</h3>
+      <ul class="space-y-2 text-sm text-gray-700">
+        <li>• 🌑 普通晓组织成员 - 基础敌人</li>
+        <li>• 💀 佩恩 - 高血量敌人</li>
+        <li>• 🐍 大蛇丸 - 快速移动敌人</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mt-8 text-center text-white/80">
+    <p class="text-sm">使用 Angular + Tailwind CSS + NG-ZORRO 构建</p>
+    <p class="text-xs mt-2">© 2026 火影忍者游戏</p>
+  </div>
+</div>

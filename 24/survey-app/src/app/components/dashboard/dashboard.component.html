@@ -1,0 +1,174 @@
+<div class="min-h-screen bg-gray-50 p-4 md:p-8">
+  <div class="max-w-7xl mx-auto">
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">
+        欢迎回来，{{ currentUser?.username }}！
+      </h1>
+      <p class="text-gray-600">
+        当前角色：<span class="font-medium text-primary-600">
+          {{ isCoordinator() ? '调查协调员（管理员）' : '调查受访者（普通用户）' }}
+        </span>
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      @if (isCoordinator()) {
+        <mat-card class="cursor-pointer hover:shadow-lg transition-shadow" (click)="createSurvey()">
+          <mat-card-content class="flex flex-col items-center justify-center py-8">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+              <mat-icon class="text-green-600 text-4xl">add_circle</mat-icon>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">创建调查</h3>
+            <p class="text-gray-500 text-center text-sm">创建新的调查问卷，设置问题和选项</p>
+          </mat-card-content>
+        </mat-card>
+      }
+
+      <mat-card class="cursor-pointer hover:shadow-lg transition-shadow" (click)="viewOpenSurveys()">
+        <mat-card-content class="flex flex-col items-center justify-center py-8">
+          <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+            <mat-icon class="text-blue-600 text-4xl">list</mat-icon>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">开放调查</h3>
+          <p class="text-gray-500 text-center text-sm">
+            当前有 <span class="font-bold text-blue-600">{{ openSurveys.length }}</span> 个开放调查
+          </p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="cursor-pointer hover:shadow-lg transition-shadow" (click)="viewClosedSurveys()">
+        <mat-card-content class="flex flex-col items-center justify-center py-8">
+          <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
+            <mat-icon class="text-purple-600 text-4xl">bar_chart</mat-icon>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">调查结果</h3>
+          <p class="text-gray-500 text-center text-sm">
+            已完成 <span class="font-bold text-purple-600">{{ closedSurveys.length }}</span> 个调查
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    @if (isCoordinator() && draftSurveys.length > 0) {
+      <mat-card class="mb-6">
+        <mat-card-header>
+          <mat-card-title class="flex items-center">
+            <mat-icon class="mr-2 text-orange-500">draft</mat-icon>
+            草稿调查
+          </mat-card-title>
+          <mat-card-subtitle>您有 {{ draftSurveys.length }} 个未发布的调查草稿</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+            @for (survey of draftSurveys; track survey.id) {
+              <mat-card class="border-l-4 border-orange-400">
+                <mat-card-header>
+                  <mat-card-title class="text-lg">{{ survey.title }}</mat-card-title>
+                  <mat-card-subtitle>{{ survey.questions.length }} 个问题</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                  <p class="text-sm text-gray-500">
+                    创建于 {{ survey.createdAt | date:'yyyy-MM-dd HH:mm' }}
+                  </p>
+                </mat-card-content>
+                <mat-card-actions>
+                  <button mat-button color="primary" [routerLink]="['/survey/edit', survey.id]">
+                    编辑
+                  </button>
+                </mat-card-actions>
+              </mat-card>
+            }
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    @if (openSurveys.length > 0) {
+      <mat-card class="mb-6">
+        <mat-card-header>
+          <mat-card-title class="flex items-center">
+            <mat-icon class="mr-2 text-blue-500">public</mat-icon>
+            最近开放的调查
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+            @for (survey of openSurveys.slice(0, 3); track survey.id) {
+              <mat-card class="border-l-4 border-blue-400 hover:shadow-md transition-shadow cursor-pointer"
+                        [routerLink]="isCoordinator() ? ['/survey/manage', survey.id] : ['/survey/take', survey.id]">
+                <mat-card-header>
+                  <mat-card-title class="text-lg">{{ survey.title }}</mat-card-title>
+                  <mat-card-subtitle>{{ survey.questions.length }} 个问题</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                  <p class="text-sm text-gray-500">
+                    更新于 {{ survey.updatedAt | date:'yyyy-MM-dd HH:mm' }}
+                  </p>
+                </mat-card-content>
+                <mat-card-actions>
+                  <button mat-button color="primary">
+                    {{ isCoordinator() ? '管理' : '参与' }}
+                  </button>
+                </mat-card-actions>
+              </mat-card>
+            }
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    @if (closedSurveys.length > 0) {
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title class="flex items-center">
+            <mat-icon class="mr-2 text-purple-500">check_circle</mat-icon>
+            最近完成的调查
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+            @for (survey of closedSurveys.slice(0, 3); track survey.id) {
+              <mat-card class="border-l-4 border-purple-400 hover:shadow-md transition-shadow cursor-pointer"
+                        [routerLink]="['/survey/results', survey.id]">
+                <mat-card-header>
+                  <mat-card-title class="text-lg">{{ survey.title }}</mat-card-title>
+                  <mat-card-subtitle>{{ survey.questions.length }} 个问题</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                  <p class="text-sm text-gray-500">
+                    关闭于 {{ survey.updatedAt | date:'yyyy-MM-dd HH:mm' }}
+                  </p>
+                </mat-card-content>
+                <mat-card-actions>
+                  <button mat-button color="primary">查看结果</button>
+                </mat-card-actions>
+              </mat-card>
+            }
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    @if (draftSurveys.length === 0 && openSurveys.length === 0 && closedSurveys.length === 0) {
+      <mat-card>
+        <mat-card-content class="flex flex-col items-center justify-center py-16">
+          <mat-icon class="text-8xl text-gray-300 mb-4">inbox</mat-icon>
+          <h3 class="text-xl font-semibold text-gray-600 mb-2">暂无调查</h3>
+          <p class="text-gray-500 text-center max-w-md">
+            @if (isCoordinator()) {
+              您还没有创建任何调查。点击"创建调查"开始您的第一个调查。
+            } @else {
+              目前没有开放的调查可供参与。请稍后再试或联系管理员。
+            }
+          </p>
+          @if (isCoordinator()) {
+            <button mat-raised-button color="primary" class="mt-6" (click)="createSurvey()">
+              <mat-icon class="mr-2">add</mat-icon>
+              创建第一个调查
+            </button>
+          }
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+</div>
