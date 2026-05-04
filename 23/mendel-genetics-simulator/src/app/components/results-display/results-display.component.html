@@ -1,0 +1,589 @@
+<div class="results-display-container">
+  <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">📊 实验结果分析</h2>
+    <p class="text-gray-600 mb-6">
+      恭喜你完成了孟德尔遗传定律的模拟实验！让我们详细分析实验结果，深入理解遗传学的基本原理。
+    </p>
+
+    <div class="flex flex-wrap gap-2 mb-6 border-b border-gray-200 pb-2">
+      @for (tab of tabs; track tab; let i = $index) {
+        <button
+          class="px-4 py-2 rounded-t-lg font-medium transition-all duration-200"
+          [class.bg-blue-500]="activeTab === i"
+          [class.text-white]="activeTab === i"
+          [class.bg-gray-100]="activeTab !== i"
+          [class.text-gray-600]="activeTab !== i"
+          [class.hover:bg-gray-200]="activeTab !== i"
+          (click)="selectTab(i)"
+        >
+          <span class="mr-2">{{ tab.icon }}</span>{{ tab.title }}
+        </button>
+      }
+    </div>
+
+    @if (activeTab === 0) {
+      <div class="p-4 fade-in">
+        <div class="grid md:grid-cols-3 gap-6 mb-8">
+          <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+              <h4 class="font-bold text-gray-800">P代（亲本）</h4>
+            </div>
+            <div class="p-6 text-center">
+              <div class="flex justify-center gap-4">
+                <div class="text-center">
+                  <div
+                    class="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center border-4 border-blue-500 shadow-sm"
+                    [style.background-color]="getTraitColor(true)"
+                  >
+                    <span 
+                      class="text-lg font-bold"
+                      [style.color]="getTraitTextColor(true)"
+                    >
+                      {{ getAlleleLetter() }}{{ getAlleleLetter() }}
+                    </span>
+                  </div>
+                  <p class="text-sm font-medium">{{ dominantTrait?.name || '显性' }}</p>
+                  <span class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium mt-1">纯合显性</span>
+                </div>
+                <div class="flex items-center text-2xl text-gray-400">×</div>
+                <div class="text-center">
+                  <div
+                    class="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center border-4 border-orange-500 shadow-sm"
+                    [style.background-color]="getTraitColor(false)"
+                  >
+                    <span 
+                      class="text-lg font-bold"
+                      [style.color]="getTraitTextColor(false)"
+                    >
+                      {{ getLowerAlleleLetter() }}{{ getLowerAlleleLetter() }}
+                    </span>
+                  </div>
+                  <p class="text-sm font-medium">{{ recessiveTrait?.name || '隐性' }}</p>
+                  <span class="inline-block bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium mt-1">纯合隐性</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+              <h4 class="font-bold text-gray-800">F1代（子一代）</h4>
+            </div>
+            <div class="p-6">
+              <div class="flex justify-center flex-wrap gap-2">
+                @if (f1Generation) {
+                  @for (offspring of f1Generation.offspring; track offspring; let i = $index) {
+                    <div class="text-center">
+                      <div
+                        class="w-14 h-14 rounded-full mx-auto mb-2 flex items-center justify-center border-4"
+                        [class.border-cyan-500]="offspring.isDominant"
+                        [class.border-orange-500]="!offspring.isDominant"
+                        [style.background-color]="getTraitColor(offspring.isDominant)"
+                      >
+                        <span 
+                          class="text-base font-bold"
+                          [style.color]="getTraitTextColor(offspring.isDominant)"
+                        >
+                          {{ offspring.genotype }}
+                        </span>
+                      </div>
+                    </div>
+                  }
+                }
+              </div>
+              <div class="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <div class="flex items-start">
+                  <div class="text-blue-500 mr-3 text-xl">ℹ️</div>
+                  <div>
+                    <p class="font-bold text-blue-800">F1代全部为杂合子</p>
+                    <p class="text-sm text-blue-700 mt-1">
+                      基因型：{{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}，表型：全部为{{ dominantTrait?.name || '显性性状' }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+              <h4 class="font-bold text-gray-800">F2代（子二代）</h4>
+            </div>
+            <div class="p-6">
+              <div class="flex justify-center flex-wrap gap-2">
+                @if (f2Generation) {
+                  @for (offspring of f2Generation.offspring; track offspring; let i = $index) {
+                    <div class="text-center">
+                      <div
+                        class="w-14 h-14 rounded-full mx-auto mb-2 flex items-center justify-center border-4"
+                        [class.border-blue-500]="offspring.isDominant && offspring.genotype === getAlleleLetter() + getAlleleLetter()"
+                        [class.border-cyan-500]="offspring.isDominant && offspring.genotype !== getAlleleLetter() + getAlleleLetter()"
+                        [class.border-orange-500]="!offspring.isDominant"
+                        [style.background-color]="getTraitColor(offspring.isDominant)"
+                      >
+                        <span 
+                          class="text-base font-bold"
+                          [style.color]="getTraitTextColor(offspring.isDominant)"
+                        >
+                          {{ offspring.genotype }}
+                        </span>
+                      </div>
+                    </div>
+                  }
+                }
+              </div>
+              <div class="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
+                <div class="flex items-start">
+                  <div class="text-green-500 mr-3 text-xl">✅</div>
+                  <div>
+                    <p class="font-bold text-green-800">F2代出现性状分离</p>
+                    <p class="text-sm text-green-700 mt-1">
+                      表型比例：3{{ dominantTrait?.name || '显性' }} : 1{{ recessiveTrait?.name || '隐性' }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+          <h4 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">📈 关键发现</h4>
+          <div class="space-y-4">
+            <div class="flex items-start">
+              <div class="w-3 h-3 rounded-full bg-blue-500 mr-3 mt-1.5"></div>
+              <div>
+                <p class="font-bold">P代杂交</p>
+                <p class="text-gray-600">纯合显性（{{ getAlleleLetter() }}{{ getAlleleLetter() }}）× 纯合隐性（{{ getLowerAlleleLetter() }}{{ getLowerAlleleLetter() }}）</p>
+                <p class="text-sm text-blue-600">结果：F1代全部为杂合子（{{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}），表现显性性状</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div class="w-3 h-3 rounded-full bg-cyan-500 mr-3 mt-1.5"></div>
+              <div>
+                <p class="font-bold">F1代自交</p>
+                <p class="text-gray-600">杂合子（{{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}）× 杂合子（{{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}）</p>
+                <p class="text-sm text-cyan-600">关键：形成配子时，等位基因分离</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div class="w-3 h-3 rounded-full bg-green-500 mr-3 mt-1.5"></div>
+              <div>
+                <p class="font-bold">F2代结果</p>
+                <p class="text-gray-600">基因型比例：1{{ getAlleleLetter() }}{{ getAlleleLetter() }} : 2{{ getAlleleLetter() }}{{ getLowerAlleleLetter() }} : 1{{ getLowerAlleleLetter() }}{{ getLowerAlleleLetter() }}</p>
+                <p class="text-gray-600">表型比例：3{{ dominantTrait?.name || '显性' }} : 1{{ recessiveTrait?.name || '隐性' }}</p>
+                <p class="text-sm text-green-600">证明了孟德尔分离定律！</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (activeTab === 1) {
+      <div class="p-4 fade-in">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">🔬 F2代基因型分析</h3>
+        
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+          <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+            <h4 class="font-bold text-gray-700 mb-4 text-center">基因型分布</h4>
+            <div class="flex justify-center items-end gap-4 h-64">
+              @for (item of getGenotypeRatioItems(); track item) {
+                <div class="text-center">
+                  <div 
+                    class="w-24 rounded-t-lg transition-all duration-1000 ease-out"
+                    [style.height.%]="item.value * 25"
+                    [style.background-color]="item.color"
+                  ></div>
+                  <p class="mt-2 font-bold" [style.color]="item.color">
+                    {{ item.genotype }}
+                  </p>
+                  <p class="text-sm text-gray-600">{{ item.label }}</p>
+                  <p class="text-lg font-bold">{{ item.value }}</p>
+                </div>
+              }
+            </div>
+            <div class="text-center mt-4">
+              <p class="text-2xl font-bold text-gray-800">
+                基因型比例：
+                <span class="text-blue-600">1</span>
+                <span class="text-gray-400">:</span>
+                <span class="text-cyan-600">2</span>
+                <span class="text-gray-400">:</span>
+                <span class="text-orange-600">1</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+            <h4 class="font-bold text-gray-700 mb-4">基因型详情</h4>
+            <div class="space-y-4">
+              @for (item of getGenotypeRatioItems(); track item) {
+                <div class="border border-gray-200 rounded-lg p-4">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="font-bold" [style.color]="item.color">{{ item.genotype }} - {{ item.label }}</span>
+                    <span class="font-bold" [style.color]="item.color">
+                      {{ formatPercentage(getGenotypeRatioPercentage()[item.genotype || ''] || 0) }}
+                    </span>
+                  </div>
+                  <div class="w-full bg-gray-200 rounded-full h-4">
+                    <div 
+                      class="h-4 rounded-full transition-all duration-1000"
+                      [style.width.%]="getGenotypeRatioPercentage()[item.genotype || ''] || 0"
+                      [style.background-color]="item.color"
+                    ></div>
+                  </div>
+                  <p class="text-sm text-gray-500 mt-2">数量：{{ item.value }}</p>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+          <h4 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">💡 理解基因型</h4>
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="p-4 bg-blue-50 rounded-lg">
+              <h5 class="font-bold text-blue-800 mb-2">
+                {{ getAlleleLetter() }}{{ getAlleleLetter() }} - 纯合显性
+              </h5>
+              <p class="text-sm text-gray-700">
+                两个等位基因都是显性基因。这种个体自交时，后代不会发生性状分离，全部表现显性性状。
+              </p>
+              <p class="text-xs text-gray-500 mt-2">
+                F2代比例：{{ formatPercentage(getGenotypeRatioPercentage()[getAlleleLetter() + getAlleleLetter()] || 0) }}
+              </p>
+            </div>
+
+            <div class="p-4 bg-cyan-50 rounded-lg">
+              <h5 class="font-bold text-cyan-800 mb-2">
+                {{ getAlleleLetter() }}{{ getLowerAlleleLetter() }} - 杂合子
+              </h5>
+              <p class="text-sm text-gray-700">
+                两个等位基因不同，一个显性一个隐性。这种个体自交时，后代会发生性状分离。
+              </p>
+              <p class="text-xs text-gray-500 mt-2">
+                F2代比例：{{ formatPercentage(getGenotypeRatioPercentage()[getAlleleLetter() + getLowerAlleleLetter()] || 0) }}
+              </p>
+            </div>
+
+            <div class="p-4 bg-orange-50 rounded-lg">
+              <h5 class="font-bold text-orange-800 mb-2">
+                {{ getLowerAlleleLetter() }}{{ getLowerAlleleLetter() }} - 纯合隐性
+              </h5>
+              <p class="text-sm text-gray-700">
+                两个等位基因都是隐性基因。只有在这种情况下，隐性性状才能表现出来。
+              </p>
+              <p class="text-xs text-gray-500 mt-2">
+                F2代比例：{{ formatPercentage(getGenotypeRatioPercentage()[getLowerAlleleLetter() + getLowerAlleleLetter()] || 0) }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (activeTab === 2) {
+      <div class="p-4 fade-in">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">👀 F2代表型分析</h3>
+        
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+          <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+            <h4 class="font-bold text-gray-700 mb-4 text-center">表型分布</h4>
+            <div class="flex justify-center items-end gap-8 h-64">
+              @for (item of getPhenotypeRatioItems(); track item; let i = $index) {
+                <div class="text-center">
+                  <div 
+                    class="w-32 rounded-t-lg transition-all duration-1000 ease-out"
+                    [style.height.%]="item.value * 25"
+                    [style.background-color]="item.color"
+                  ></div>
+                  <p class="mt-2 font-bold" [style.color]="item.color">
+                    {{ item.label }}
+                  </p>
+                  <p class="text-2xl font-bold">{{ item.value }}</p>
+                </div>
+              }
+            </div>
+            <div class="text-center mt-4">
+              <p class="text-3xl font-bold text-gray-800">
+                表型比例：
+                <span class="text-blue-600">3</span>
+                <span class="text-gray-400">:</span>
+                <span class="text-orange-600">1</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+            <h4 class="font-bold text-gray-700 mb-4">表型详情</h4>
+            <div class="space-y-4">
+              <div class="border border-gray-200 rounded-lg p-4">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="font-bold text-blue-800">{{ dominantTrait?.name || '显性性状' }}</span>
+                  <span class="font-bold text-blue-600">
+                    {{ formatPercentage(getPhenotypeRatioPercentage().dominant) }}
+                  </span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-4">
+                  <div 
+                    class="h-4 rounded-full transition-all duration-1000 bg-blue-500"
+                    [style.width.%]="getPhenotypeRatioPercentage().dominant"
+                  ></div>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">
+                  包含基因型：{{ getAlleleLetter() }}{{ getAlleleLetter() }} 和 {{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}
+                </p>
+              </div>
+
+              <div class="border border-gray-200 rounded-lg p-4">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="font-bold text-orange-800">{{ recessiveTrait?.name || '隐性性状' }}</span>
+                  <span class="font-bold text-orange-600">
+                    {{ formatPercentage(getPhenotypeRatioPercentage().recessive) }}
+                  </span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-4">
+                  <div 
+                    class="h-4 rounded-full transition-all duration-1000 bg-orange-500"
+                    [style.width.%]="getPhenotypeRatioPercentage().recessive"
+                  ></div>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">
+                  只有基因型：{{ getLowerAlleleLetter() }}{{ getLowerAlleleLetter() }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+          <h4 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">🧠 关键概念：基因型 vs 表型</h4>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="p-4 bg-gray-50 rounded-lg">
+              <h5 class="font-bold text-gray-800 mb-3">为什么表型比例是 3:1？</h5>
+              <p class="text-gray-700 mb-2">
+                因为显性基因（{{ getAlleleLetter() }}）完全掩盖了隐性基因（{{ getLowerAlleleLetter() }}）的表现。
+              </p>
+              <div class="space-y-2 mt-3">
+                <p class="text-sm">
+                  <span class="font-bold text-blue-600">{{ getAlleleLetter() }}{{ getAlleleLetter() }}</span>
+                  → 表现{{ dominantTrait?.name || '显性性状' }}
+                </p>
+                <p class="text-sm">
+                  <span class="font-bold text-cyan-600">{{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}</span>
+                  → 表现{{ dominantTrait?.name || '显性性状' }}（显性基因掩盖隐性基因）
+                </p>
+                <p class="text-sm">
+                  <span class="font-bold text-orange-600">{{ getLowerAlleleLetter() }}{{ getLowerAlleleLetter() }}</span>
+                  → 表现{{ recessiveTrait?.name || '隐性性状' }}（没有显性基因）
+                </p>
+              </div>
+              <p class="text-sm text-gray-600 mt-3">
+                结果：<span class="font-bold">3个表现显性</span>，<span class="font-bold">1个表现隐性</span>
+              </p>
+            </div>
+
+            <div class="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+              <h5 class="font-bold text-yellow-800 mb-3">⚠️ 重要提醒</h5>
+              <p class="text-yellow-700 mb-2">
+                <span class="font-bold">表型相同 ≠ 基因型相同</span>
+              </p>
+              <p class="text-sm text-yellow-700 mb-3">
+                {{ getAlleleLetter() }}{{ getAlleleLetter() }} 和 {{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}
+                都表现为{{ dominantTrait?.name || '显性性状' }}，但它们的基因型不同！
+              </p>
+              <hr class="my-4 border-yellow-300">
+              <h6 class="font-bold text-yellow-800 mb-2">如何区分？</h6>
+              <p class="text-sm text-yellow-700">
+                使用<span class="font-bold">测交实验</span>：将待测个体与隐性纯合子（{{ getLowerAlleleLetter() }}{{ getLowerAlleleLetter() }}）杂交。
+              </p>
+              <ul class="text-xs text-yellow-700 mt-2 space-y-1">
+                <li class="flex items-start">
+                  <span class="mr-2">•</span>
+                  <span>如果后代全部显性 → 待测个体是纯合子（{{ getAlleleLetter() }}{{ getAlleleLetter() }}）</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="mr-2">•</span>
+                  <span>如果后代有显性也有隐性 → 待测个体是杂合子（{{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}）</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (activeTab === 3) {
+      <div class="p-4 fade-in">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">📚 孟德尔分离定律总结</h3>
+
+        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl p-6 mb-6">
+          <h4 class="text-xl font-bold mb-3">🎯 分离定律的核心内容</h4>
+          <p class="text-indigo-100 leading-relaxed">
+            在形成配子时，成对的<span class="bg-white/20 px-2 py-1 rounded font-bold">等位基因</span>彼此分离，
+            分别进入不同的配子中，每个配子只含有每对等位基因中的<span class="bg-white/20 px-2 py-1 rounded font-bold">一个</span>。
+          </p>
+        </div>
+
+        <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6 mb-6">
+          <h4 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">📋 实验要点回顾</h4>
+          <div class="space-y-4">
+            <div class="flex items-start">
+              <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold mr-3 flex-shrink-0">1</div>
+              <div>
+                <p class="font-bold">选择亲本</p>
+                <p class="text-gray-600">选择具有相对性状的纯合亲本</p>
+                <p class="text-sm text-gray-500">纯合显性（{{ getAlleleLetter() }}{{ getAlleleLetter() }}）× 纯合隐性（{{ getLowerAlleleLetter() }}{{ getLowerAlleleLetter() }}）</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div class="w-8 h-8 rounded-full bg-cyan-500 flex items-center justify-center text-white font-bold mr-3 flex-shrink-0">2</div>
+              <div>
+                <p class="font-bold">P代杂交</p>
+                <p class="text-gray-600">F1代全部为杂合子，表现显性性状</p>
+                <p class="text-sm text-gray-500">基因型：{{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}，表型：{{ dominantTrait?.name || '显性' }}</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white font-bold mr-3 flex-shrink-0">3</div>
+              <div>
+                <p class="font-bold">F1代自交</p>
+                <p class="text-gray-600">杂合子自交，等位基因分离</p>
+                <p class="text-sm text-gray-500">产生两种配子：含{{ getAlleleLetter() }}的和含{{ getLowerAlleleLetter() }}的</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div class="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold mr-3 flex-shrink-0">4</div>
+              <div>
+                <p class="font-bold">F2代结果</p>
+                <p class="text-gray-600">出现性状分离</p>
+                <p class="text-sm text-gray-500">基因型比例 1:2:1，表型比例 3:1</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6 mb-6">
+          <h4 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">💡 关键理解</h4>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <h5 class="font-bold text-gray-800 mb-3">为什么F1代全部是显性？</h5>
+              <p class="text-gray-700">
+                因为F1代是杂合子（{{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}），
+                显性基因（{{ getAlleleLetter() }}）对隐性基因（{{ getLowerAlleleLetter() }}）是完全显性。
+                只要有一个显性基因，就表现显性性状。
+              </p>
+            </div>
+            <div>
+              <h5 class="font-bold text-gray-800 mb-3">为什么F2代会出现隐性？</h5>
+              <p class="text-gray-700">
+                因为F1代在形成配子时，{{ getAlleleLetter() }} 和 {{ getLowerAlleleLetter() }} 会分离。
+                当两个含{{ getLowerAlleleLetter() }}的配子结合时，就形成了{{ getLowerAlleleLetter() }}{{ getLowerAlleleLetter() }}，
+                表现为隐性性状。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6 mb-6">
+          <h4 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">🎓 核心概念</h4>
+          <div class="space-y-4">
+            <div class="border border-gray-200 rounded-lg p-4">
+              <h5 class="font-bold text-gray-800 mb-2">基因与等位基因</h5>
+              <p class="text-gray-700"><strong>基因</strong>：控制生物性状的遗传因子。</p>
+              <p class="text-gray-700"><strong>等位基因</strong>：位于同源染色体相同位置，控制同一性状的不同形态的基因。</p>
+              <p class="text-sm text-gray-500 mt-2">例如：控制豌豆花色的基因有两种等位基因：{{ getAlleleLetter() }}（紫色）和 {{ getLowerAlleleLetter() }}（白色）</p>
+            </div>
+            <div class="border border-gray-200 rounded-lg p-4">
+              <h5 class="font-bold text-gray-800 mb-2">基因型与表型</h5>
+              <p class="text-gray-700"><strong>基因型</strong>：生物体的遗传组成（基因组合）。</p>
+              <p class="text-gray-700"><strong>表型</strong>：生物体表现出来的可观察的性状。</p>
+              <p class="text-sm text-gray-500 mt-2">
+                关键：表型相同 ≠ 基因型相同（{{ getAlleleLetter() }}{{ getAlleleLetter() }} 和 {{ getAlleleLetter() }}{{ getLowerAlleleLetter() }} 都表现显性）
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+          <h4 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">🏆 实验收获</h4>
+          <div class="space-y-4">
+            <div class="p-4 bg-green-50 rounded-lg">
+              <h5 class="font-bold text-green-800 mb-2">✅ 你学到了什么？</h5>
+              <ul class="text-sm text-green-700 space-y-1">
+                <li class="flex items-start">
+                  <span class="mr-2">•</span>
+                  <span>理解了基因、等位基因、基因型、表型等基本概念</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="mr-2">•</span>
+                  <span>掌握了显性和隐性的区别</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="mr-2">•</span>
+                  <span>理解了纯合子和杂合子的遗传行为</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="mr-2">•</span>
+                  <span>直观地看到了性状从亲代传递给子代的过程</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="mr-2">•</span>
+                  <span>理解了3:1表型比例和1:2:1基因型比例的由来</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="mr-2">•</span>
+                  <span>深入理解了孟德尔分离定律的核心内容</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="p-4 bg-blue-50 rounded-lg">
+              <h5 class="font-bold text-blue-800 mb-2">🔬 分离定律的意义</h5>
+              <p class="text-sm text-blue-700">
+                孟德尔分离定律是遗传学的基本定律之一，它解释了：
+              </p>
+              <ul class="text-sm text-blue-700 mt-2 space-y-1">
+                <li class="flex items-start">
+                  <span class="mr-2">•</span>
+                  <span>为什么后代会出现与亲代不同的性状</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="mr-2">•</span>
+                  <span>为什么某些性状会"隔代遗传"</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="mr-2">•</span>
+                  <span>如何预测杂交后代的性状比例</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="mr-2">•</span>
+                  <span>为现代遗传学奠定了理论基础</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="flex justify-center gap-4">
+    <button
+      class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold rounded-lg transition-colors duration-200 flex items-center justify-center"
+      (click)="onBack()"
+    >
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path>
+      </svg>
+      返回上一步
+    </button>
+    <button
+      class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg flex items-center justify-center"
+      (click)="onReset()"
+    >
+      🔄 重新开始实验
+    </button>
+  </div>
+</div>

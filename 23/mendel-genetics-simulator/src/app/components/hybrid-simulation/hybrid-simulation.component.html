@@ -1,0 +1,652 @@
+<div class="hybrid-simulation-container">
+  @if (message) {
+    <div 
+      class="fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg transition-all duration-300 fade-in"
+      [class.bg-green-500]="messageType === 'success'"
+      [class.bg-red-500]="messageType === 'error'"
+      [class.text-white]="true"
+    >
+      {{ message }}
+    </div>
+  }
+
+  <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">🧪 杂交模拟实验</h2>
+    <p class="text-gray-600 mb-6">
+      现在让我们模拟孟德尔的豌豆杂交实验，观察性状是如何从亲代传递给子代的。
+    </p>
+
+    <div class="mb-8">
+      <div class="flex items-center justify-between flex-wrap">
+        @for (phase of phases; track phase; let i = $index) {
+          @if (i > 0) {
+            <div 
+              class="flex-1 h-1 mx-2"
+              [class.bg-blue-500]="currentPhase > i"
+              [class.bg-gray-300]="currentPhase <= i"
+            ></div>
+          }
+          <div 
+              class="relative cursor-pointer" (click)="goToPhase(i)">
+            <div 
+              class="w-12 h-12 rounded-full flex items-center justify-center border-2 transition-colors"
+              [class.bg-blue-500]="currentPhase >= i"
+              [class.bg-white]="currentPhase < i"
+              [class.border-blue-500]="currentPhase >= i"
+              [class.border-gray-300]="currentPhase < i"
+              [class.text-white]="currentPhase >= i"
+              [class.text-gray-500]="currentPhase < i"
+            >
+              <span class="font-bold">{{ i + 1 }}</span>
+            </div>
+            <div class="absolute top-16 left-1/2 transform -translate-x-1/2 w-32 text-center">
+              <p 
+                class="text-sm font-medium"
+                [class.text-blue-600]="currentPhase >= i"
+                [class.text-gray-500]="currentPhase < i"
+              >{{ phase.title }}</p>
+              <p 
+                class="text-xs"
+                [class.text-blue-400]="currentPhase >= i"
+                [class.text-gray-400]="currentPhase < i"
+              >{{ phase.description }}</p>
+            </div>
+          </div>
+        }
+      </div>
+      <div class="h-16"></div>
+    </div>
+
+    @if (currentPhase === 0) {
+      <div class="phase-content fade-in">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">第一步：P代（亲本）杂交</h3>
+        <p class="text-gray-600 mb-6">
+          孟德尔选择了具有相对性状的纯合亲本进行杂交。这里我们用
+          <span class="font-bold text-blue-600">{{ dominantTrait?.name || '紫色花' }}</span>（PP，纯合显性）和
+          <span class="font-bold text-orange-600">{{ recessiveTrait?.name || '白色花' }}</span>（pp，纯合隐性）作为亲本。
+        </p>
+
+        <div class="flex items-center justify-center gap-8 mb-8 flex-wrap">
+          <div class="text-center">
+            <div
+              class="w-24 h-24 rounded-full mx-auto mb-2 flex items-center justify-center border-4 border-blue-500 shadow-sm"
+              [style.background-color]="dominantTrait?.imageUrl ? 'transparent' : '#8B5CF6'"
+            >
+              @if (dominantTrait?.imageUrl && dominantTrait.imageUrl.startsWith('data')) {
+                <img 
+                  [src]="dominantTrait?.imageUrl" 
+                  class="w-full h-full rounded-full object-cover"
+                  alt="显性性状"
+                />
+              } @else {
+                <span class="text-2xl font-bold text-white drop-shadow-lg">
+                  {{ getAlleleLetter() }}{{ getAlleleLetter() }}
+                </span>
+              }
+            </div>
+            <p class="font-bold text-blue-600">{{ dominantTrait?.name || '显性性状' }}</p>
+            <span class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium mt-1">纯合显性</span>
+            <p class="text-sm text-gray-500 mt-1">基因型: {{ getAlleleLetter() }}{{ getAlleleLetter() }}</p>
+          </div>
+
+          <div class="text-4xl text-gray-400">×</div>
+
+          <div class="text-center">
+            <div
+              class="w-24 h-24 rounded-full mx-auto mb-2 flex items-center justify-center border-4 border-orange-500 shadow-sm"
+              [style.background-color]="recessiveTrait?.imageUrl ? 'transparent' : '#F3F4F6'"
+            >
+              @if (recessiveTrait?.imageUrl && recessiveTrait.imageUrl.startsWith('data')) {
+                <img 
+                  [src]="recessiveTrait?.imageUrl" 
+                  class="w-full h-full rounded-full object-cover"
+                  alt="隐性性状"
+                />
+              } @else {
+                <span class="text-2xl font-bold text-gray-800">
+                  {{ getLowerAlleleLetter() }}{{ getLowerAlleleLetter() }}
+                </span>
+              }
+            </div>
+            <p class="font-bold text-orange-600">{{ recessiveTrait?.name || '隐性性状' }}</p>
+            <span class="inline-block bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium mt-1">纯合隐性</span>
+            <p class="text-sm text-gray-500 mt-1">基因型: {{ getLowerAlleleLetter() }}{{ getLowerAlleleLetter() }}</p>
+          </div>
+        </div>
+
+        @if (!showPCross) {
+          <div class="text-center mb-8">
+            <button
+              class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg flex items-center justify-center mx-auto disabled:opacity-50 disabled:cursor-not-allowed"
+              [disabled]="isAnimating"
+              (click)="startPCrossAnimation()"
+            >
+              @if (isAnimating) {
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                杂交中...
+              } @else {
+                ▶️ 开始杂交动画
+              }
+            </button>
+          </div>
+        }
+
+        @if (isAnimating && currentPhase === 0) {
+          <div class="animation-container p-6 bg-gray-50 rounded-lg mb-6">
+            <h4 class="font-bold text-gray-800 mb-4">动画进度</h4>
+            <div class="space-y-3">
+              @for (step of animationSteps; track step; let i = $index) {
+                <div class="flex items-start">
+                  <div 
+                    class="w-8 h-8 rounded-full flex items-center justify-center mr-3 flex-shrink-0"
+                    [class.bg-blue-500]="animationStep >= i"
+                    [class.bg-gray-300]="animationStep < i"
+                    [class.text-white]="animationStep >= i"
+                    [class.text-gray-600]="animationStep < i"
+                  >
+                    {{ i + 1 }}
+                  </div>
+                  <div>
+                    <p 
+                      class="font-medium"
+                      [class.text-blue-700]="animationStep >= i"
+                      [class.text-gray-500]="animationStep < i"
+                    >{{ step.label }}</p>
+                    <p 
+                      class="text-sm"
+                      [class.text-blue-500]="animationStep >= i"
+                      [class.text-gray-400]="animationStep < i"
+                    >{{ step.description }}</p>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        @if (pPunnettSquare && (isAnimating || showPCross)) {
+          <div class="p-6 bg-blue-50 rounded-lg mb-6">
+            <h4 class="font-bold text-blue-800 mb-4 text-center">📊 P代杂交棋盘法（Punnett Square）</h4>
+            <div class="flex justify-center overflow-x-auto">
+              <table class="border-collapse">
+                <thead>
+                  <tr>
+                    <th class="p-2"></th>
+                    <th class="p-4 bg-blue-100 font-bold text-center border-2 border-gray-300">{{ getAlleleLetter() }}</th>
+                    <th class="p-4 bg-blue-100 font-bold text-center border-2 border-gray-300">{{ getAlleleLetter() }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (row of pPunnettSquare; track row; let i = $index) {
+                    <tr>
+                      <td class="p-4 bg-orange-100 font-bold text-center border-2 border-gray-300">
+                        {{ i === 0 ? getLowerAlleleLetter() : getLowerAlleleLetter() }}
+                      </td>
+                      @for (cell of row; track cell; let j = $index) {
+                        <td 
+                          class="p-6 text-center border-2 border-gray-300"
+                          [class.bg-blue-200]="cell.isDominant"
+                          [class.bg-orange-200]="!cell.isDominant"
+                        >
+                          <span class="text-xl font-bold">
+                            {{ cell.genotype }}
+                          </span>
+                        </td>
+                      }
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        }
+
+        @if (showPCross && f1Generation) {
+          <div class="p-6 bg-green-50 rounded-lg">
+            <h4 class="font-bold text-green-800 mb-4 text-center">🎉 F1代结果</h4>
+            
+            <div class="flex justify-center gap-4 flex-wrap mb-4">
+              @for (offspring of f1Generation.offspring; track offspring; let i = $index) {
+                <div 
+                  class="text-center p-4 bg-white rounded-lg shadow"
+                >
+                  <div
+                    class="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center border-4"
+                    [class.border-blue-500]="offspring.isDominant"
+                    [class.border-orange-500]="!offspring.isDominant"
+                    [style.background-color]="offspring.isDominant ? '#8B5CF6' : '#F3F4F6'"
+                  >
+                    <span 
+                      class="text-lg font-bold"
+                      [class.text-white]="offspring.isDominant"
+                      [class.text-gray-800]="!offspring.isDominant"
+                    >
+                      {{ offspring.genotype }}
+                    </span>
+                  </div>
+                  <p class="text-sm font-medium">
+                    {{ offspring.isDominant ? (dominantTrait?.name || '显性') : (recessiveTrait?.name || '隐性') }}
+                  </p>
+                </div>
+              }
+            </div>
+
+            <hr class="my-6 border-gray-300">
+
+            <div class="text-center">
+              <p class="text-lg font-bold text-green-700 mb-2">
+                关键发现：F1代全部表现为<span class="text-blue-600">显性性状</span>！
+              </p>
+              <p class="text-gray-600">
+                基因型：全部为 <span class="font-bold text-cyan-600">{{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}</span>（杂合子）
+              </p>
+              <p class="text-gray-600 mt-1">
+                表型：全部为 <span class="font-bold text-blue-600">{{ dominantTrait?.name || '显性性状' }}</span>
+              </p>
+            </div>
+
+            <div class="text-center mt-6">
+              <button
+                class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg flex items-center justify-center mx-auto"
+                (click)="currentPhase = 1"
+              >
+                继续 F1 代自交
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    @if (currentPhase === 1) {
+      <div class="phase-content fade-in">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">第二步：F1代自交</h3>
+        <p class="text-gray-600 mb-6">
+          F1代全部是杂合子（{{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}）。
+          让F1代自交，看看会发生什么有趣的现象！
+        </p>
+
+        <div class="flex items-center justify-center gap-8 mb-8 flex-wrap">
+          <div class="text-center">
+            <div
+              class="w-24 h-24 rounded-full mx-auto mb-2 flex items-center justify-center border-4 border-cyan-500 bg-purple-400 shadow-sm"
+            >
+              <span class="text-2xl font-bold text-white drop-shadow-lg">
+                {{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}
+              </span>
+            </div>
+            <p class="font-bold text-cyan-600">{{ dominantTrait?.name || '显性性状' }}</p>
+            <span class="inline-block bg-cyan-100 text-cyan-800 px-3 py-1 rounded-full text-sm font-medium mt-1">杂合子</span>
+            <p class="text-sm text-gray-500 mt-1">F1代</p>
+          </div>
+
+          <div class="text-4xl text-gray-400">×</div>
+
+          <div class="text-center">
+            <div
+              class="w-24 h-24 rounded-full mx-auto mb-2 flex items-center justify-center border-4 border-cyan-500 bg-purple-400 shadow-sm"
+            >
+              <span class="text-2xl font-bold text-white drop-shadow-lg">
+                {{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}
+              </span>
+            </div>
+            <p class="font-bold text-cyan-600">{{ dominantTrait?.name || '显性性状' }}</p>
+            <span class="inline-block bg-cyan-100 text-cyan-800 px-3 py-1 rounded-full text-sm font-medium mt-1">杂合子</span>
+            <p class="text-sm text-gray-500 mt-1">F1代</p>
+          </div>
+        </div>
+
+        @if (!showF1Cross) {
+          <div class="text-center mb-8">
+            <button
+              class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg flex items-center justify-center mx-auto disabled:opacity-50 disabled:cursor-not-allowed"
+              [disabled]="isAnimating"
+              (click)="startF1CrossAnimation()"
+            >
+              @if (isAnimating) {
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                自交中...
+              } @else {
+                ▶️ 开始自交动画
+              }
+            </button>
+          </div>
+        }
+
+        @if (isAnimating && currentPhase === 1) {
+          <div class="p-6 bg-gray-50 rounded-lg mb-6">
+            <h4 class="font-bold text-gray-800 mb-4">动画进度</h4>
+            <div class="space-y-3">
+              @for (step of f1AnimationSteps; track step; let i = $index) {
+                <div class="flex items-start">
+                  <div 
+                    class="w-8 h-8 rounded-full flex items-center justify-center mr-3 flex-shrink-0"
+                    [class.bg-cyan-500]="animationStep >= i"
+                    [class.bg-gray-300]="animationStep < i"
+                    [class.text-white]="animationStep >= i"
+                    [class.text-gray-600]="animationStep < i"
+                  >
+                    {{ i + 1 }}
+                  </div>
+                  <div>
+                    <p 
+                      class="font-medium"
+                      [class.text-cyan-700]="animationStep >= i"
+                      [class.text-gray-500]="animationStep < i"
+                    >{{ step.label }}</p>
+                    <p 
+                      class="text-sm"
+                      [class.text-cyan-500]="animationStep >= i"
+                      [class.text-gray-400]="animationStep < i"
+                    >{{ step.description }}</p>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        @if (f1PunnettSquare && (isAnimating || showF1Cross)) {
+          <div class="p-6 bg-cyan-50 rounded-lg mb-6">
+            <h4 class="font-bold text-cyan-800 mb-4 text-center">📊 F1代自交棋盘法</h4>
+            <div class="flex justify-center overflow-x-auto">
+              <table class="border-collapse">
+                <thead>
+                  <tr>
+                    <th class="p-2"></th>
+                    <th class="p-4 bg-cyan-100 font-bold text-center border-2 border-gray-300">{{ getAlleleLetter() }}</th>
+                    <th class="p-4 bg-cyan-100 font-bold text-center border-2 border-gray-300">{{ getLowerAlleleLetter() }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (row of f1PunnettSquare; track row; let i = $index) {
+                    <tr>
+                      <td class="p-4 bg-cyan-100 font-bold text-center border-2 border-gray-300">
+                        {{ i === 0 ? getAlleleLetter() : getLowerAlleleLetter() }}
+                      </td>
+                      @for (cell of row; track cell; let j = $index) {
+                        <td 
+                          class="p-6 text-center border-2 border-gray-300"
+                          [class.bg-blue-200]="cell.isDominant && cell.genotype === getAlleleLetter() + getAlleleLetter()"
+                          [class.bg-cyan-200]="cell.isDominant && cell.genotype !== getAlleleLetter() + getAlleleLetter()"
+                          [class.bg-orange-200]="!cell.isDominant"
+                        >
+                          <span 
+                            class="text-xl font-bold"
+                            [class.text-blue-700]="cell.isDominant && cell.genotype === getAlleleLetter() + getAlleleLetter()"
+                            [class.text-cyan-700]="cell.isDominant && cell.genotype !== getAlleleLetter() + getAlleleLetter()"
+                            [class.text-orange-700]="!cell.isDominant"
+                          >
+                            {{ cell.genotype }}
+                          </span>
+                        </td>
+                      }
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-4 flex justify-center gap-4 flex-wrap">
+              <span class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                {{ getAlleleLetter() }}{{ getAlleleLetter() }} 纯合显性
+              </span>
+              <span class="inline-block bg-cyan-100 text-cyan-800 px-3 py-1 rounded-full text-sm font-medium">
+                {{ getAlleleLetter() }}{{ getLowerAlleleLetter() }} 杂合子
+              </span>
+              <span class="inline-block bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">
+                {{ getLowerAlleleLetter() }}{{ getLowerAlleleLetter() }} 纯合隐性
+              </span>
+            </div>
+          </div>
+        }
+
+        @if (showF1Cross && f2Generation) {
+          <div class="p-6 bg-purple-50 rounded-lg">
+            <h4 class="font-bold text-purple-800 mb-4 text-center">🎉 F2代结果 - 性状分离！</h4>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              @for (offspring of f2Generation.offspring; track offspring; let i = $index) {
+                <div 
+                  class="text-center p-4 bg-white rounded-lg shadow"
+                >
+                  <div
+                    class="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center border-4"
+                    [class.border-blue-500]="offspring.isDominant && offspring.genotype === getAlleleLetter() + getAlleleLetter()"
+                    [class.border-cyan-500]="offspring.isDominant && offspring.genotype !== getAlleleLetter() + getAlleleLetter()"
+                    [class.border-orange-500]="!offspring.isDominant"
+                    [style.background-color]="getPhenotypeColor(offspring.isDominant)"
+                  >
+                    <span 
+                      class="text-lg font-bold"
+                      [class.text-white]="offspring.isDominant"
+                      [class.text-gray-800]="!offspring.isDominant"
+                    >
+                      {{ offspring.genotype }}
+                    </span>
+                  </div>
+                  <p class="text-sm font-medium">
+                    {{ offspring.isDominant ? (dominantTrait?.name || '显性') : (recessiveTrait?.name || '隐性') }}
+                  </p>
+                </div>
+              }
+            </div>
+
+            <hr class="my-6 border-gray-300">
+
+            <div class="grid md:grid-cols-2 gap-6">
+              <div class="text-center p-4 bg-white rounded-lg shadow">
+                <h5 class="font-bold text-gray-700 mb-3">基因型比例</h5>
+                <div class="text-5xl font-bold text-blue-600 my-4">
+                  1<span class="text-gray-400">:</span>2<span class="text-gray-400">:</span>1
+                </div>
+                <div class="flex justify-center gap-2 flex-wrap">
+                  <span class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                    {{ getAlleleLetter() }}{{ getAlleleLetter() }}
+                  </span>
+                  <span class="inline-block bg-cyan-100 text-cyan-800 px-3 py-1 rounded-full text-sm font-medium">
+                    {{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}
+                  </span>
+                  <span class="inline-block bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">
+                    {{ getLowerAlleleLetter() }}{{ getLowerAlleleLetter() }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="text-center p-4 bg-white rounded-lg shadow">
+                <h5 class="font-bold text-gray-700 mb-3">表型比例</h5>
+                <div class="text-5xl font-bold text-green-600 my-4">
+                  3<span class="text-gray-400">:</span>1
+                </div>
+                <div class="flex justify-center gap-2 flex-wrap">
+                  <span class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                    {{ dominantTrait?.name || '显性性状' }} (3)
+                  </span>
+                  <span class="inline-block bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">
+                    {{ recessiveTrait?.name || '隐性性状' }} (1)
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <h5 class="font-bold text-yellow-800 mb-2">💡 关键发现</h5>
+              <ul class="text-sm text-yellow-700 space-y-1">
+                <li class="flex items-start">
+                  <span class="mr-2">•</span>
+                  <span>F2代出现了<span class="font-bold">性状分离</span>：既有显性性状，也有隐性性状</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="mr-2">•</span>
+                  <span>表型比例约为 <span class="font-bold">3:1</span>（3个显性 : 1个隐性）</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="mr-2">•</span>
+                  <span>基因型比例为 <span class="font-bold">1:2:1</span>（1PP : 2Pp : 1pp）</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="mr-2">•</span>
+                  <span>这证明了<span class="font-bold">分离定律</span>：成对的等位基因在形成配子时会分离</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="text-center mt-6">
+              <button
+                class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg flex items-center justify-center mx-auto"
+                (click)="currentPhase = 2"
+              >
+                查看详细结果分析
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    @if (currentPhase === 2) {
+      <div class="phase-content fade-in">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">第三步：结果分析</h3>
+        <p class="text-gray-600 mb-6">
+          让我们总结一下整个杂交实验的结果，深入理解孟德尔分离定律。
+        </p>
+
+        @if (pGeneration && f1Generation && f2Generation) {
+          <div class="space-y-6">
+            <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+              <h4 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">📋 实验总结</h4>
+              <div class="space-y-4">
+                <div class="flex items-start">
+                  <div class="w-3 h-3 rounded-full bg-blue-500 mr-3 mt-1.5"></div>
+                  <div>
+                    <p class="font-bold">P代（亲本）</p>
+                    <p>纯合显性（{{ getAlleleLetter() }}{{ getAlleleLetter() }}） × 纯合隐性（{{ getLowerAlleleLetter() }}{{ getLowerAlleleLetter() }}）</p>
+                    <p class="text-sm text-gray-500">表型：{{ dominantTrait?.name || '显性' }} × {{ recessiveTrait?.name || '隐性' }}</p>
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <div class="w-3 h-3 rounded-full bg-cyan-500 mr-3 mt-1.5"></div>
+                  <div>
+                    <p class="font-bold">F1代（子一代）</p>
+                    <p>全部为杂合子（{{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}）</p>
+                    <p class="text-sm text-gray-500">表型：全部为{{ dominantTrait?.name || '显性' }}</p>
+                    <p class="text-sm text-cyan-600">💡 说明：显性基因完全掩盖了隐性基因的表现</p>
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <div class="w-3 h-3 rounded-full bg-green-500 mr-3 mt-1.5"></div>
+                  <div>
+                    <p class="font-bold">F2代（子二代）</p>
+                    <p>基因型比例：1{{ getAlleleLetter() }}{{ getAlleleLetter() }} : 2{{ getAlleleLetter() }}{{ getLowerAlleleLetter() }} : 1{{ getLowerAlleleLetter() }}{{ getLowerAlleleLetter() }}</p>
+                    <p>表型比例：3{{ dominantTrait?.name || '显性' }} : 1{{ recessiveTrait?.name || '隐性' }}</p>
+                    <p class="text-sm text-green-600">💡 关键：隐性性状在F2代重新出现！</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+              <h4 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">📝 基因型 vs 表型</h4>
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="p-4 bg-blue-50 rounded-lg">
+                  <h5 class="font-bold text-blue-800 mb-3">基因型</h5>
+                  <p class="text-gray-700 mb-2">
+                    基因型是生物体的<span class="font-bold">遗传组成</span>，即基因的组合方式。
+                  </p>
+                  <div class="space-y-2 mt-3">
+                    <div class="flex items-center gap-3">
+                      <span class="w-20 font-bold text-blue-600">{{ getAlleleLetter() }}{{ getAlleleLetter() }}</span>
+                      <span class="text-gray-600">→ 纯合显性</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                      <span class="w-20 font-bold text-cyan-600">{{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}</span>
+                      <span class="text-gray-600">→ 杂合子</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                      <span class="w-20 font-bold text-orange-600">{{ getLowerAlleleLetter() }}{{ getLowerAlleleLetter() }}</span>
+                      <span class="text-gray-600">→ 纯合隐性</span>
+                    </div>
+                  </div>
+                  <p class="text-sm text-gray-500 mt-3">
+                    💡 基因型比例：1 : 2 : 1
+                  </p>
+                </div>
+
+                <div class="p-4 bg-green-50 rounded-lg">
+                  <h5 class="font-bold text-green-800 mb-3">表型</h5>
+                  <p class="text-gray-700 mb-2">
+                    表型是生物体<span class="font-bold">表现出来</span>的可观察的性状。
+                  </p>
+                  <div class="space-y-2 mt-3">
+                    <div class="flex items-center gap-3">
+                      <span class="w-20 font-bold text-blue-600">{{ getAlleleLetter() }}{{ getAlleleLetter() }}</span>
+                      <span class="text-gray-600">→ {{ dominantTrait?.name || '显性性状' }}</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                      <span class="w-20 font-bold text-cyan-600">{{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}</span>
+                      <span class="text-gray-600">→ {{ dominantTrait?.name || '显性性状' }}</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                      <span class="w-20 font-bold text-orange-600">{{ getLowerAlleleLetter() }}{{ getLowerAlleleLetter() }}</span>
+                      <span class="text-gray-600">→ {{ recessiveTrait?.name || '隐性性状' }}</span>
+                    </div>
+                  </div>
+                  <p class="text-sm text-gray-500 mt-3">
+                    💡 表型比例：3 : 1（因为{{ getAlleleLetter() }}{{ getAlleleLetter() }}和{{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}都表现显性）
+                  </p>
+                </div>
+              </div>
+
+              <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <h5 class="font-bold text-yellow-800 mb-2">⚠️ 重要概念</h5>
+                <p class="text-yellow-700">
+                  <span class="font-bold">表型相同 ≠ 基因型相同</span>
+                </p>
+                <p class="text-sm text-yellow-700 mt-1">
+                  例如：{{ getAlleleLetter() }}{{ getAlleleLetter() }} 和 {{ getAlleleLetter() }}{{ getLowerAlleleLetter() }}
+                  都表现为{{ dominantTrait?.name || '显性性状' }}，但它们的基因型不同！
+                </p>
+                <p class="text-sm text-yellow-700 mt-2">
+                  这就是为什么需要<span class="font-bold">测交实验</span>来鉴定一个显性个体是纯合子还是杂合子。
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center mt-8">
+            <button
+              class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg flex items-center justify-center mx-auto"
+              (click)="onComplete()"
+            >
+              ✅ 完成实验
+            </button>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="flex justify-center gap-4 mt-6">
+    <button
+      class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold rounded-lg transition-colors duration-200 flex items-center justify-center"
+      (click)="onBack()"
+    >
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path>
+      </svg>
+      返回上一步
+    </button>
+  </div>
+</div>

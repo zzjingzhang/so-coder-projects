@@ -1,0 +1,60 @@
+.knowledge-container {
+  max-width: 100%;
+}
+
+.formula-box {
+  background-color: #fff;
+  border-left: 4px solid #1890ff;
+  padding: 16px;
+  border-radius: 4px;
+  margin: 16px 0;
+  font-family: 'Courier New', monospace;
+}
+
+.knowledge-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.knowledge-section h3 {
+  color: white;
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+.knowledge-section p {
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.8;
+}
+
+.knowledge-section .highlight {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.ratio-display {
+  font-size: 48px;
+  font-weight: bold;
+  color: #1890ff;
+  text-align: center;
+  margin: 24px 0;
+}
+
+::ng-deep .ant-tabs-tab {
+  font-size: 16px !important;
+}
+
+::ng-deep .ant-card-head-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+::ng-deep .ant-descriptions-item-label {
+  font-weight: bold;
+  color: #1890ff;
+}

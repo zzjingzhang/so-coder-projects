@@ -1,0 +1,84 @@
+.hybrid-simulation-container {
+  max-width: 100%;
+}
+
+.phase-content {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.punnett-table {
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+
+.punnett-table th,
+.punnett-table td {
+  border: 2px solid #d9d9d9;
+  padding: 12px 20px;
+  text-align: center;
+  min-width: 80px;
+}
+
+.punnett-table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.ratio-display {
+  font-size: 48px;
+  font-weight: bold;
+  color: #1890ff;
+  text-align: center;
+  margin: 16px 0;
+}
+
+.knowledge-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.knowledge-section h3 {
+  color: white;
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+.knowledge-section p {
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.8;
+}
+
+.knowledge-section .highlight {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+::ng-deep .ant-card-head-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+::ng-deep .ant-steps-item {
+  cursor: pointer;
+}
+
+::ng-deep .ant-descriptions-item-label {
+  font-weight: bold;
+  color: #1890ff;
+}

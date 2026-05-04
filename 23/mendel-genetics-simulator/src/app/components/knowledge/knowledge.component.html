@@ -1,0 +1,352 @@
+<div class="knowledge-container">
+  <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">📚 孟德尔遗传定律知识要点</h2>
+    <p class="text-gray-600 mb-6">
+      格雷戈尔·孟德尔（1822-1884）通过豌豆杂交实验，发现了遗传的基本规律。
+      让我们一起学习这些重要的遗传学概念！
+    </p>
+
+    <div class="flex flex-wrap gap-2 mb-6 border-b border-gray-200 pb-2">
+      @for (tab of tabs; track tab; let i = $index) {
+        <button
+          class="px-4 py-2 rounded-t-lg font-medium transition-all duration-200"
+          [class.bg-blue-500]="activeTab === i"
+          [class.text-white]="activeTab === i"
+          [class.bg-gray-100]="activeTab !== i"
+          [class.text-gray-600]="activeTab !== i"
+          [class.hover:bg-gray-200]="activeTab !== i"
+          (click)="selectTab(i)"
+        >
+          <span class="mr-2">{{ tab.icon }}</span>{{ tab.title }}
+        </button>
+      }
+    </div>
+
+    @if (activeTab === 0) {
+      <div class="p-4 fade-in">
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-5 border border-blue-200">
+            <h3 class="text-lg font-bold text-blue-800 mb-3">🧬 基因与等位基因</h3>
+            <p class="text-gray-700 mb-3">
+              <strong>基因</strong>：控制生物性状的遗传因子。
+            </p>
+            <p class="text-gray-700 mb-3">
+              <strong>等位基因</strong>：位于同源染色体相同位置，控制同一性状的不同形态的基因。
+            </p>
+            <div class="bg-white rounded-lg p-3 border-l-4 border-blue-500">
+              <p class="text-sm font-mono text-gray-600">例如：豌豆花色基因有两种等位基因</p>
+              <p class="text-lg font-bold text-blue-600">P（紫色）和 p（白色）</p>
+            </div>
+          </div>
+
+          <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-5 border border-green-200">
+            <h3 class="text-lg font-bold text-green-800 mb-3">🔤 基因型与表型</h3>
+            <p class="text-gray-700 mb-3">
+              <strong>基因型</strong>：生物体的遗传组成（基因组合）。
+            </p>
+            <p class="text-gray-700 mb-3">
+              <strong>表型</strong>：生物体表现出来的可观察的性状。
+            </p>
+            <div class="space-y-2 mt-3">
+              <div class="inline-flex items-center bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium mr-2">
+                PP → 纯合显性 → 紫色花
+              </div>
+              <div class="inline-flex items-center bg-cyan-100 text-cyan-800 px-3 py-1 rounded-full text-sm font-medium mr-2">
+                Pp → 杂合子 → 紫色花
+              </div>
+              <div class="inline-flex items-center bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">
+                pp → 纯合隐性 → 白色花
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-5 border border-purple-200">
+            <h3 class="text-lg font-bold text-purple-800 mb-3">👑 显性与隐性</h3>
+            <p class="text-gray-700 mb-3">
+              <strong>显性基因</strong>：在杂合状态下能够表现出来的基因，用大写字母表示（如 P）。
+            </p>
+            <p class="text-gray-700 mb-3">
+              <strong>隐性基因</strong>：在杂合状态下被掩盖，只有在纯合状态下才能表现的基因，用小写字母表示（如 p）。
+            </p>
+            <div class="bg-white rounded-lg p-3 border-l-4 border-green-500">
+              <p class="text-sm text-gray-600">关键规律：</p>
+              <p class="font-bold text-green-700">只要有一个显性基因，就表现显性性状</p>
+              <p class="font-bold text-orange-700">只有两个都是隐性基因，才表现隐性性状</p>
+            </div>
+          </div>
+
+          <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-5 border border-orange-200">
+            <h3 class="text-lg font-bold text-orange-800 mb-3">🧪 纯合子与杂合子</h3>
+            <p class="text-gray-700 mb-3">
+              <strong>纯合子</strong>：等位基因相同的个体。
+            </p>
+            <p class="text-gray-700 mb-3">
+              <strong>杂合子</strong>：等位基因不同的个体。
+            </p>
+            <div class="grid grid-cols-2 gap-4 mt-3">
+              <div class="text-center p-4 bg-white rounded-lg shadow-sm">
+                <p class="text-3xl font-bold text-blue-600">PP</p>
+                <p class="text-sm text-gray-600">纯合显性</p>
+                <p class="text-xs text-gray-500">自交后代不分离</p>
+              </div>
+              <div class="text-center p-4 bg-white rounded-lg shadow-sm">
+                <p class="text-3xl font-bold text-cyan-600">Pp</p>
+                <p class="text-sm text-gray-600">杂合子</p>
+                <p class="text-xs text-gray-500">自交后代会分离</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (activeTab === 1) {
+      <div class="p-4 fade-in">
+        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl p-6 mb-6">
+          <h3 class="text-xl font-bold mb-3">📖 孟德尔分离定律</h3>
+          <p class="text-indigo-100 leading-relaxed">
+            在形成配子时，成对的<span class="bg-white/20 px-2 py-1 rounded font-bold">等位基因</span>彼此分离，
+            分别进入不同的配子中，每个配子只含有每对等位基因中的<span class="bg-white/20 px-2 py-1 rounded font-bold">一个</span>。
+          </p>
+        </div>
+
+        <div class="bg-gray-50 rounded-xl p-6 mb-6">
+          <h3 class="text-xl font-bold text-gray-800 mb-4">🔬 经典豌豆实验</h3>
+          
+          <div class="mb-6">
+            <h4 class="font-bold text-gray-700 mb-3">第一步：P代（亲本）杂交</h4>
+            <div class="flex items-center justify-center gap-4 flex-wrap">
+              <div class="text-center">
+                <div class="w-24 h-24 rounded-full mx-auto mb-2 flex items-center justify-center border-4 border-blue-500 bg-purple-500">
+                  <span class="text-2xl font-bold text-white drop-shadow-lg">PP</span>
+                </div>
+                <p class="font-bold text-blue-600">紫色花</p>
+                <div class="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm font-medium">纯合显性</div>
+                <p class="text-sm text-gray-500 mt-1">基因型: PP</p>
+              </div>
+              <div class="text-4xl text-gray-400">×</div>
+              <div class="text-center">
+                <div class="w-24 h-24 rounded-full mx-auto mb-2 flex items-center justify-center border-4 border-orange-500 bg-gray-100">
+                  <span class="text-2xl font-bold text-gray-800">pp</span>
+                </div>
+                <p class="font-bold text-orange-600">白色花</p>
+                <div class="inline-block bg-orange-100 text-orange-800 px-2 py-1 rounded text-sm font-medium">纯合隐性</div>
+                <p class="text-sm text-gray-500 mt-1">基因型: pp</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <h4 class="font-bold text-gray-700 mb-3">第二步：F1代自交</h4>
+            <div class="flex items-center justify-center gap-4 flex-wrap">
+              <div class="text-center">
+                <div class="w-24 h-24 rounded-full mx-auto mb-2 flex items-center justify-center border-4 border-cyan-500 bg-purple-400">
+                  <span class="text-2xl font-bold text-white drop-shadow-lg">Pp</span>
+                </div>
+                <p class="font-bold text-cyan-600">紫色花</p>
+                <div class="inline-block bg-cyan-100 text-cyan-800 px-2 py-1 rounded text-sm font-medium">杂合子</div>
+                <p class="text-sm text-gray-500 mt-1">F1代</p>
+              </div>
+              <div class="text-4xl text-gray-400">×</div>
+              <div class="text-center">
+                <div class="w-24 h-24 rounded-full mx-auto mb-2 flex items-center justify-center border-4 border-cyan-500 bg-purple-400">
+                  <span class="text-2xl font-bold text-white drop-shadow-lg">Pp</span>
+                </div>
+                <p class="font-bold text-cyan-600">紫色花</p>
+                <div class="inline-block bg-cyan-100 text-cyan-800 px-2 py-1 rounded text-sm font-medium">杂合子</div>
+                <p class="text-sm text-gray-500 mt-1">F1代</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg p-6 border-2 border-blue-200">
+            <h4 class="font-bold text-blue-800 mb-4 text-center text-lg">📊 F2代结果</h4>
+            <div class="grid md:grid-cols-2 gap-8">
+              <div class="text-center">
+                <p class="text-sm text-gray-600 mb-2">基因型比例</p>
+                <div class="text-5xl font-bold text-blue-600 my-4">
+                  1<span class="text-gray-400">:</span>2<span class="text-gray-400">:</span>1
+                </div>
+                <div class="flex justify-center gap-2 flex-wrap">
+                  <div class="inline-flex items-center bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">PP</div>
+                  <div class="inline-flex items-center bg-cyan-100 text-cyan-800 px-3 py-1 rounded-full text-sm font-medium">Pp</div>
+                  <div class="inline-flex items-center bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">pp</div>
+                </div>
+              </div>
+              <div class="text-center">
+                <p class="text-sm text-gray-600 mb-2">表型比例</p>
+                <div class="text-5xl font-bold text-green-600 my-4">
+                  3<span class="text-gray-400">:</span>1
+                </div>
+                <div class="flex justify-center gap-2 flex-wrap">
+                  <div class="inline-flex items-center bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">紫色花 (3)</div>
+                  <div class="inline-flex items-center bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">白色花 (1)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+          <h3 class="text-xl font-bold text-gray-800 mb-4">💡 关键发现</h3>
+          
+          <div class="space-y-4">
+            <div class="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-500">
+              <h4 class="font-bold text-blue-800 mb-2">为什么F1代全部是紫色？</h4>
+              <p class="text-gray-700">
+                因为F1代是杂合子（Pp），
+                显性基因（P）完全掩盖了隐性基因（p）的表现。
+                这称为<span class="font-bold text-blue-600">完全显性</span>。
+              </p>
+            </div>
+
+            <div class="bg-orange-50 rounded-lg p-4 border-l-4 border-orange-500">
+              <h4 class="font-bold text-orange-800 mb-2">为什么F2代会出现白色？</h4>
+              <p class="text-gray-700">
+                F1代（Pp）在形成配子时，P 和 p 会<span class="font-bold text-orange-600">分离</span>，
+                产生两种配子：含P的和含p的。
+                当两个含p的配子结合时，就形成了pp（纯合隐性），表现为白色花。
+              </p>
+            </div>
+
+            <div class="bg-green-50 rounded-lg p-4 border-l-4 border-green-500">
+              <h4 class="font-bold text-green-800 mb-2">3:1的比例是怎么来的？</h4>
+              <p class="text-gray-700 mb-3">使用棋盘法（Punnett Square）分析F1代自交：</p>
+              <div class="bg-white rounded-lg p-4 overflow-x-auto">
+                <table class="w-full max-w-xs mx-auto">
+                  <thead>
+                    <tr>
+                      <th class="p-2"></th>
+                      <th class="p-2 bg-cyan-100 font-bold text-center border border-gray-300">P</th>
+                      <th class="p-2 bg-cyan-100 font-bold text-center border border-gray-300">p</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="p-2 bg-cyan-100 font-bold text-center border border-gray-300">P</td>
+                      <td class="p-2 text-center border border-gray-300 bg-blue-200">
+                        <span class="font-bold text-blue-700">PP</span>
+                      </td>
+                      <td class="p-2 text-center border border-gray-300 bg-cyan-200">
+                        <span class="font-bold text-cyan-700">Pp</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 bg-cyan-100 font-bold text-center border border-gray-300">p</td>
+                      <td class="p-2 text-center border border-gray-300 bg-cyan-200">
+                        <span class="font-bold text-cyan-700">Pp</span>
+                      </td>
+                      <td class="p-2 text-center border border-gray-300 bg-orange-200">
+                        <span class="font-bold text-orange-700">pp</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="mt-3 text-gray-700">
+                表型结果：
+                <span class="font-bold text-blue-600">3个显性</span>（PP, Pp, Pp）
+                : 
+                <span class="font-bold text-orange-600">1个隐性</span>（pp）
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (activeTab === 2) {
+      <div class="p-4 fade-in">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">📋 实验步骤</h3>
+        
+        <div class="relative pl-8 mb-8">
+          <div class="absolute left-0 top-0 bottom-0 w-0.5 bg-blue-200"></div>
+          
+          <div class="relative mb-8">
+            <div class="absolute left-[-34px] w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
+            <div class="bg-gray-50 rounded-lg p-4 ml-4">
+              <h4 class="font-bold text-gray-800 mb-2">选择亲本</h4>
+              <p class="text-gray-600">选择具有相对性状的纯合亲本进行杂交。</p>
+              <p class="text-sm text-gray-500 mt-1">例如：纯合紫色花（PP）× 纯合白色花（pp）</p>
+            </div>
+          </div>
+
+          <div class="relative mb-8">
+            <div class="absolute left-[-34px] w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
+            <div class="bg-gray-50 rounded-lg p-4 ml-4">
+              <h4 class="font-bold text-gray-800 mb-2">P代杂交</h4>
+              <p class="text-gray-600">将两个亲本进行杂交，观察子一代（F1）的表现。</p>
+              <p class="text-sm text-gray-500 mt-1">结果：F1代全部为杂合子（Pp），表现显性性状</p>
+            </div>
+          </div>
+
+          <div class="relative mb-8">
+            <div class="absolute left-[-34px] w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
+            <div class="bg-gray-50 rounded-lg p-4 ml-4">
+              <h4 class="font-bold text-gray-800 mb-2">F1代自交</h4>
+              <p class="text-gray-600">让F1代个体自交或相互杂交，观察子二代（F2）的表现。</p>
+              <p class="text-sm text-gray-500 mt-1">关键：形成配子时，等位基因分离，产生两种配子</p>
+            </div>
+          </div>
+
+          <div class="relative">
+            <div class="absolute left-[-34px] w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
+            <div class="bg-green-50 rounded-lg p-4 ml-4 border border-green-200">
+              <h4 class="font-bold text-green-800 mb-2">统计分析比例</h4>
+              <p class="text-gray-700">统计F2代中各种表型的数量，计算比例。</p>
+              <p class="text-sm text-green-600 mt-1 font-bold">关键发现：表型比例约为 3:1，基因型比例为 1:2:1</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-4 mb-6">
+          <div class="text-center p-6 bg-blue-50 rounded-xl border border-blue-200">
+            <div class="text-4xl mb-3">🖼️</div>
+            <h4 class="font-bold text-gray-800 mb-2">上传性状图片</h4>
+            <p class="text-sm text-gray-600">可以上传你喜欢的显性和隐性性状图片</p>
+          </div>
+          <div class="text-center p-6 bg-green-50 rounded-xl border border-green-200">
+            <div class="text-4xl mb-3">🧪</div>
+            <h4 class="font-bold text-gray-800 mb-2">模拟杂交过程</h4>
+            <p class="text-sm text-gray-600">直观地看到P代→F1代→F2代的遗传过程</p>
+          </div>
+          <div class="text-center p-6 bg-orange-50 rounded-xl border border-orange-200">
+            <div class="text-4xl mb-3">📊</div>
+            <h4 class="font-bold text-gray-800 mb-2">分析遗传比例</h4>
+            <p class="text-sm text-gray-600">理解3:1表型比例和1:2:1基因型比例的由来</p>
+          </div>
+        </div>
+
+        <div class="bg-yellow-50 rounded-xl p-6 border border-yellow-200">
+          <h4 class="font-bold text-yellow-800 mb-3">💡 小提示</h4>
+          <ul class="text-sm text-yellow-700 space-y-2">
+            <li class="flex items-start">
+              <span class="mr-2">•</span>
+              <span>记住：大写字母表示显性基因，小写字母表示隐性基因</span>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2">•</span>
+              <span>基因型决定表型，但表型相同基因型不一定相同（PP和Pp都表现为显性）</span>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2">•</span>
+              <span>分离定律的核心是：成对的基因在形成配子时会分离</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="text-center">
+    <button
+      class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg flex items-center justify-center mx-auto"
+      (click)="onNext()"
+    >
+      <span>我已掌握基本知识，开始实验</span>
+      <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+      </svg>
+    </button>
+  </div>
+</div>

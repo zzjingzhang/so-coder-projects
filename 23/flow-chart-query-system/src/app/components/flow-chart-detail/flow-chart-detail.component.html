@@ -1,0 +1,333 @@
+<div class="detail-container">
+  <div class="detail-header mb-6">
+    <button 
+      mat-stroked-button 
+      (click)="goBack()" 
+      class="flex items-center gap-2 mb-4"
+      color="primary"
+    >
+      <mat-icon>arrow_back</mat-icon>
+      返回列表
+    </button>
+
+    <div *ngIf="loading" class="loading-container flex items-center justify-center py-16">
+      <mat-spinner diameter="40"></mat-spinner>
+      <span class="ml-4 text-gray-500">加载中...</span>
+    </div>
+
+    <div *ngIf="!loading && !flowChart" class="error-container text-center py-16">
+      <mat-icon class="text-gray-400 text-6xl mb-4">error_outline</mat-icon>
+      <p class="text-gray-500 text-lg">流程图不存在或已被删除</p>
+      <button mat-raised-button color="primary" (click)="goBack()" class="mt-4">
+        返回列表
+      </button>
+    </div>
+
+    <div *ngIf="!loading && flowChart" class="info-card">
+      <mat-card class="shadow-md">
+        <mat-card-header class="pb-4">
+          <div mat-card-avatar class="header-avatar bg-blue-500 flex items-center justify-center rounded-full w-12 h-12">
+            <mat-icon class="text-white text-xl">schema</mat-icon>
+          </div>
+          <mat-card-title class="text-xl font-semibold text-gray-800">{{ flowChart.name }}</mat-card-title>
+          <mat-card-subtitle class="text-gray-500">{{ flowChart.description }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="info-grid grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="info-item flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+              <mat-icon class="text-blue-500">person</mat-icon>
+              <div>
+                <p class="text-xs text-gray-500 mb-1">创建人</p>
+                <p class="text-sm font-medium text-gray-700">{{ flowChart.creator }}</p>
+              </div>
+            </div>
+            <div class="info-item flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+              <mat-icon class="text-green-500">schedule</mat-icon>
+              <div>
+                <p class="text-xs text-gray-500 mb-1">创建时间</p>
+                <p class="text-sm font-medium text-gray-700">{{ flowChart.createTime }}</p>
+              </div>
+            </div>
+            <div class="info-item flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+              <mat-icon class="text-purple-500">account_tree</mat-icon>
+              <div>
+                <p class="text-xs text-gray-500 mb-1">节点数量</p>
+                <p class="text-sm font-medium text-gray-700">{{ flowChart.nodes.length }} 个节点</p>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && flowChart" class="flow-chart-container">
+    <div class="chart-header flex items-center justify-between mb-4 pb-3 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-700 flex items-center gap-2">
+        <mat-icon>timeline</mat-icon>
+        流程图可视化
+      </h3>
+      <div class="legend flex items-center gap-4 text-sm">
+        <span class="flex items-center gap-1">
+          <span class="w-3 h-3 rounded-full bg-green-500"></span>
+          开始节点
+        </span>
+        <span class="flex items-center gap-1">
+          <span class="w-3 h-3 rounded-full bg-blue-500"></span>
+          处理节点
+        </span>
+        <span class="flex items-center gap-1">
+          <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+          判断节点
+        </span>
+        <span class="flex items-center gap-1">
+          <span class="w-3 h-3 rounded-full bg-red-500"></span>
+          结束节点
+        </span>
+        <span class="text-gray-500 text-xs">点击节点查看详情</span>
+      </div>
+    </div>
+
+    <div class="chart-wrapper bg-white border border-gray-200 rounded-lg p-4 overflow-x-auto">
+      <svg 
+        [attr.width]="svgWidth" 
+        [attr.height]="svgHeight"
+        class="flow-chart-svg"
+      >
+        <defs>
+          <marker 
+            id="arrowhead" 
+            markerWidth="10" 
+            markerHeight="7" 
+            refX="9" 
+            refY="3.5" 
+            orient="auto"
+          >
+            <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280" />
+          </marker>
+          <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+          </filter>
+        </defs>
+
+        <ng-container *ngIf="flowChart">
+          <g class="connections">
+            <ng-container *ngFor="let node of flowChart.nodes">
+              <ng-container *ngFor="let connectedId of node.connectedTo">
+                <ng-container *ngIf="getNodeById(connectedId) as toNode">
+                  <path
+                    [attr.d]="getConnectionPath(node, toNode)"
+                    fill="none"
+                    stroke="#6b7280"
+                    stroke-width="2"
+                    marker-end="url(#arrowhead)"
+                    class="connection-line"
+                  />
+                </ng-container>
+              </ng-container>
+            </ng-container>
+          </g>
+
+          <g class="nodes">
+            <g 
+              *ngFor="let node of flowChart.nodes"
+              class="flow-node cursor-pointer"
+              (click)="onNodeClick(node)"
+              [class.selected]="selectedNodeId === node.id"
+            >
+              <ng-container [ngSwitch]="node.nodeType">
+                <g *ngSwitchCase="'start'" class="node-group">
+                  <ellipse
+                    [attr.cx]="getNodeCenterX(node)"
+                    [attr.cy]="getNodeCenterY(node)"
+                    [attr.rx]="node.width / 2"
+                    [attr.ry]="node.height / 2"
+                    [attr.fill]="getNodeFillColor(node.nodeType, selectedNodeId === node.id)"
+                    [attr.stroke]="getNodeStrokeColor(node.nodeType)"
+                    stroke-width="2"
+                    filter="url(#shadow)"
+                    class="node-shape"
+                  />
+                  <text
+                    [attr.x]="getNodeCenterX(node)"
+                    [attr.y]="getNodeCenterY(node) + 4"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                    fill="white"
+                    font-size="13"
+                    font-weight="500"
+                    pointer-events="none"
+                  >
+                    {{ node.name }}
+                  </text>
+                </g>
+
+                <g *ngSwitchCase="'end'" class="node-group">
+                  <ellipse
+                    [attr.cx]="getNodeCenterX(node)"
+                    [attr.cy]="getNodeCenterY(node)"
+                    [attr.rx]="node.width / 2"
+                    [attr.ry]="node.height / 2"
+                    [attr.fill]="getNodeFillColor(node.nodeType, selectedNodeId === node.id)"
+                    [attr.stroke]="getNodeStrokeColor(node.nodeType)"
+                    stroke-width="2"
+                    filter="url(#shadow)"
+                    class="node-shape"
+                  />
+                  <text
+                    [attr.x]="getNodeCenterX(node)"
+                    [attr.y]="getNodeCenterY(node) + 4"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                    fill="white"
+                    font-size="13"
+                    font-weight="500"
+                    pointer-events="none"
+                  >
+                    {{ node.name }}
+                  </text>
+                </g>
+
+                <g *ngSwitchCase="'process'" class="node-group">
+                  <rect
+                    [attr.x]="node.x"
+                    [attr.y]="node.y"
+                    [attr.width]="node.width"
+                    [attr.height]="node.height"
+                    rx="4"
+                    [attr.fill]="getNodeFillColor(node.nodeType, selectedNodeId === node.id)"
+                    [attr.stroke]="getNodeStrokeColor(node.nodeType)"
+                    stroke-width="2"
+                    filter="url(#shadow)"
+                    class="node-shape"
+                  />
+                  <text
+                    [attr.x]="getNodeCenterX(node)"
+                    [attr.y]="getNodeCenterY(node) + 4"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                    fill="white"
+                    font-size="13"
+                    font-weight="500"
+                    pointer-events="none"
+                  >
+                    {{ node.name }}
+                  </text>
+                </g>
+
+                <g *ngSwitchCase="'decision'" class="node-group">
+                  <polygon
+                    [attr.points]="getDecisionPoints(node)"
+                    [attr.fill]="getNodeFillColor(node.nodeType, selectedNodeId === node.id)"
+                    [attr.stroke]="getNodeStrokeColor(node.nodeType)"
+                    stroke-width="2"
+                    filter="url(#shadow)"
+                    class="node-shape"
+                  />
+                  <text
+                    [attr.x]="getNodeCenterX(node)"
+                    [attr.y]="getNodeCenterY(node) + 4"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                    fill="white"
+                    font-size="13"
+                    font-weight="500"
+                    pointer-events="none"
+                  >
+                    {{ node.name }}
+                  </text>
+                </g>
+
+                <g *ngSwitchCase="'parallel'" class="node-group">
+                  <rect
+                    [attr.x]="node.x"
+                    [attr.y]="node.y"
+                    [attr.width]="node.width"
+                    [attr.height]="node.height"
+                    rx="2"
+                    [attr.fill]="getNodeFillColor(node.nodeType, selectedNodeId === node.id)"
+                    [attr.stroke]="getNodeStrokeColor(node.nodeType)"
+                    stroke-width="2"
+                    filter="url(#shadow)"
+                    class="node-shape"
+                  />
+                  <line
+                    [attr.x1]="node.x + 10"
+                    [attr.y1]="getNodeCenterY(node)"
+                    [attr.x2]="node.x + 10"
+                    [attr.y2]="node.y + 10"
+                    stroke="white"
+                    stroke-width="2"
+                  />
+                  <line
+                    [attr.x1]="node.x + 10"
+                    [attr.y1]="getNodeCenterY(node)"
+                    [attr.x2]="node.x + 10"
+                    [attr.y2]="node.y + node.height - 10"
+                    stroke="white"
+                    stroke-width="2"
+                  />
+                  <line
+                    [attr.x1]="node.x + node.width - 10"
+                    [attr.y1]="getNodeCenterY(node)"
+                    [attr.x2]="node.x + node.width - 10"
+                    [attr.y2]="node.y + 10"
+                    stroke="white"
+                    stroke-width="2"
+                  />
+                  <line
+                    [attr.x1]="node.x + node.width - 10"
+                    [attr.y1]="getNodeCenterY(node)"
+                    [attr.x2]="node.x + node.width - 10"
+                    [attr.y2]="node.y + node.height - 10"
+                    stroke="white"
+                    stroke-width="2"
+                  />
+                  <text
+                    [attr.x]="getNodeCenterX(node)"
+                    [attr.y]="getNodeCenterY(node) + 4"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                    fill="white"
+                    font-size="13"
+                    font-weight="500"
+                    pointer-events="none"
+                  >
+                    {{ node.name }}
+                  </text>
+                </g>
+
+                <g *ngSwitchDefault class="node-group">
+                  <rect
+                    [attr.x]="node.x"
+                    [attr.y]="node.y"
+                    [attr.width]="node.width"
+                    [attr.height]="node.height"
+                    rx="4"
+                    [attr.fill]="getNodeFillColor(node.nodeType, selectedNodeId === node.id)"
+                    [attr.stroke]="getNodeStrokeColor(node.nodeType)"
+                    stroke-width="2"
+                    filter="url(#shadow)"
+                    class="node-shape"
+                  />
+                  <text
+                    [attr.x]="getNodeCenterX(node)"
+                    [attr.y]="getNodeCenterY(node) + 4"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                    fill="white"
+                    font-size="13"
+                    font-weight="500"
+                    pointer-events="none"
+                  >
+                    {{ node.name }}
+                  </text>
+                </g>
+              </ng-container>
+            </g>
+          </g>
+        </ng-container>
+      </svg>
+    </div>
+  </div>
+</div>

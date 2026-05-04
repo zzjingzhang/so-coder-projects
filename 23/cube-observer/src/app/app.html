@@ -1,0 +1,276 @@
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+  <!-- 标题区域 -->
+  <header class="py-8 px-4 text-center">
+    <h1 class="text-3xl md:text-4xl font-bold text-indigo-800 mb-2">
+      3D立方体观察工具
+    </h1>
+    <p class="text-lg text-indigo-600">四年级数学 · 几何探索</p>
+  </header>
+
+  <!-- 主内容区域 -->
+  <main class="container mx-auto px-4 pb-12">
+    <div class="grid lg:grid-cols-3 gap-8">
+      
+      <!-- 立方体展示区域 -->
+      <div class="lg:col-span-2">
+        <mat-card class="p-6 shadow-lg rounded-2xl bg-white/80 backdrop-blur">
+          <mat-card-title class="text-xl font-semibold text-gray-800 mb-4 text-center">
+            拖动立方体来观察
+          </mat-card-title>
+          
+          <!-- 3D立方体容器 -->
+          <div 
+            #cubeContainer
+            class="cube-wrapper mx-auto cursor-grab active:cursor-grabbing"
+            (mousedown)="onMouseDown($event)"
+            (touchstart)="onTouchStart($event)"
+          >
+            <div class="scene">
+              <div class="cube" [style.transform]="transform">
+                <!-- 前面 - 红色 -->
+                <div class="face front bg-red-400 border-red-600">
+                  <span class="face-label">前面</span>
+                </div>
+                <!-- 后面 - 蓝色 -->
+                <div class="face back bg-blue-400 border-blue-600">
+                  <span class="face-label">后面</span>
+                </div>
+                <!-- 右面 - 绿色 -->
+                <div class="face right bg-green-400 border-green-600">
+                  <span class="face-label">右面</span>
+                </div>
+                <!-- 左面 - 橙色 -->
+                <div class="face left bg-orange-400 border-orange-600">
+                  <span class="face-label">左面</span>
+                </div>
+                <!-- 上面 - 紫色 -->
+                <div class="face top bg-purple-400 border-purple-600">
+                  <span class="face-label">上面</span>
+                </div>
+                <!-- 底面 - 青色 -->
+                <div class="face bottom bg-cyan-400 border-cyan-600">
+                  <span class="face-label">底面</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 控制按钮 -->
+          <div class="mt-8 flex flex-wrap justify-center gap-3">
+            <button 
+              mat-raised-button 
+              color="primary"
+              (click)="resetView()"
+              class="min-w-28 py-2 text-base font-medium"
+            >
+              重置视图
+            </button>
+            <button 
+              mat-raised-button 
+              color="accent"
+              (click)="frontView()"
+              class="min-w-28 py-2 text-base font-medium"
+            >
+              前面
+            </button>
+            <button 
+              mat-raised-button 
+              color="accent"
+              (click)="topView()"
+              class="min-w-28 py-2 text-base font-medium"
+            >
+              上面
+            </button>
+            <button 
+              mat-raised-button 
+              color="accent"
+              (click)="sideView()"
+              class="min-w-28 py-2 text-base font-medium"
+            >
+              侧面
+            </button>
+          </div>
+        </mat-card>
+      </div>
+
+      <!-- 使用说明区域 -->
+      <div class="space-y-6">
+        <!-- 操作指南 -->
+        <mat-card class="p-5 shadow-lg rounded-2xl bg-white/80 backdrop-blur">
+          <mat-card-title class="text-lg font-semibold text-indigo-700 mb-3">
+            🖱️ 操作指南
+          </mat-card-title>
+          <mat-card-content>
+            <ul class="space-y-2 text-gray-700">
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-500 font-bold">•</span>
+                <span><strong>鼠标拖动</strong>：按住鼠标左键拖动来旋转立方体</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-500 font-bold">•</span>
+                <span><strong>触屏滑动</strong>：在手机或平板上用手指滑动</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-500 font-bold">•</span>
+                <span><strong>快捷按钮</strong>：点击按钮快速切换到标准视角</span>
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- 按钮说明 -->
+        <mat-card class="p-5 shadow-lg rounded-2xl bg-white/80 backdrop-blur">
+          <mat-card-title class="text-lg font-semibold text-indigo-700 mb-3">
+            🎯 按钮功能
+          </mat-card-title>
+          <mat-card-content>
+            <div class="space-y-3 text-gray-700">
+              <div class="flex items-center gap-3">
+                <span class="inline-block w-3 h-3 rounded bg-indigo-500"></span>
+                <span><strong>重置视图</strong>：回到初始观察角度</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="inline-block w-3 h-3 rounded bg-pink-500"></span>
+                <span><strong>前面</strong>：从正前方观察</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="inline-block w-3 h-3 rounded bg-pink-500"></span>
+                <span><strong>上面</strong>：从正上方俯视</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="inline-block w-3 h-3 rounded bg-pink-500"></span>
+                <span><strong>侧面</strong>：从正右侧观察</span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- 知识要点 -->
+        <mat-card class="p-5 shadow-lg rounded-2xl bg-white/80 backdrop-blur">
+          <mat-card-title class="text-lg font-semibold text-indigo-700 mb-3">
+            📚 知识要点
+          </mat-card-title>
+          <mat-card-content>
+            <div class="space-y-4">
+              <div class="bg-blue-50 p-4 rounded-xl">
+                <p class="text-gray-800 font-medium mb-2">观察立方体的特征：</p>
+                <ul class="space-y-1 text-gray-700">
+                  <li>• 立方体有 <strong class="text-blue-600">6 个面</strong></li>
+                  <li>• 每个面都是 <strong class="text-blue-600">正方形</strong></li>
+                  <li>• 立方体有 <strong class="text-blue-600">12 条边</strong></li>
+                  <li>• 立方体有 <strong class="text-blue-600">8 个顶点</strong></li>
+                </ul>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- 思考题 -->
+        <mat-card class="p-5 shadow-lg rounded-2xl bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-yellow-200">
+          <mat-card-title class="text-lg font-semibold text-orange-700 mb-3">
+            🤔 思考题
+          </mat-card-title>
+          <mat-card-content>
+            <div class="space-y-3 text-gray-700">
+              <p class="font-medium">从不同角度观察立方体：</p>
+              <ol class="list-decimal list-inside space-y-2">
+                <li>从一个角最多能看到几个面？</li>
+                <li>从正前方只能看到几个面？</li>
+                <li>有没有可能同时看到4个面？</li>
+                <li>相对的两个面能同时看到吗？</li>
+              </ol>
+              <p class="mt-4 text-sm text-orange-600 italic">
+                💡 提示：试着旋转立方体，自己找出答案！
+              </p>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="py-4 text-center text-indigo-600 text-sm">
+    <p>3D立方体观察工具 · 让数学学习更有趣</p>
+  </footer>
+</div>
+
+<!-- 3D立方体相关样式 -->
+<style>
+  .cube-wrapper {
+    width: 280px;
+    height: 280px;
+    perspective: 800px;
+  }
+
+  .scene {
+    width: 100%;
+    height: 100%;
+    perspective: 1000px;
+  }
+
+  .cube {
+    width: 160px;
+    height: 160px;
+    position: relative;
+    transform-style: preserve-3d;
+    margin: 60px auto;
+    transition: transform 0.1s ease-out;
+  }
+
+  .face {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid;
+    box-sizing: border-box;
+    opacity: 0.9;
+    backface-visibility: visible;
+  }
+
+  .face-label {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    user-select: none;
+  }
+
+  /* 立方体各面位置 - 使用 translateX/Y/Z 和 rotate 来定位 */
+  .front {
+    transform: translateZ(80px);
+  }
+
+  .back {
+    transform: rotateY(180deg) translateZ(80px);
+  }
+
+  .right {
+    transform: rotateY(90deg) translateZ(80px);
+  }
+
+  .left {
+    transform: rotateY(-90deg) translateZ(80px);
+  }
+
+  .top {
+    transform: rotateX(90deg) translateZ(80px);
+  }
+
+  .bottom {
+    transform: rotateX(-90deg) translateZ(80px);
+  }
+
+  /* 按钮样式优化 */
+  ::ng-deep .mat-mdc-raised-button {
+    height: 44px !important;
+    border-radius: 12px !important;
+  }
+
+  ::ng-deep .mat-mdc-button-touch-target {
+    height: 44px !important;
+  }
+</style>
